@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { LogoIcon, MenuIcon, CloseIcon } from './Icons';
+import logoImg from '../../assets/logo.svg';
+import { MenuIcon, CloseIcon } from './Icons';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -35,7 +36,7 @@ const Navbar = () => {
       <div className="container nav-wrapper">
         <div className="logo">
           <a href="#home" className="nav-link logo-link" onClick={() => handleLinkClick('#home')} style={{ padding: 0 }}>
-            <LogoIcon className="logo-icon" />
+            <img src={logoImg} alt="TrackAdemy" className="logo-icon" />
             <span className="logo-text">Track<span>Ademy</span></span>
           </a>
         </div>

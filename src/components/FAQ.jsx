@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { ChevronIcon, FAQIllustration } from './Icons';
+import { ChevronIcon } from './Icons';
+import faqImg from '../../assets/landing-page/FAQ.svg';
 
 const FAQ = () => {
   const [activeIndex, setActiveIndex] = useState(0); // First item active by default
@@ -42,7 +43,7 @@ const FAQ = () => {
           <h3 className="faq-heading">Frequently Asked<br /><span>Questions</span></h3>
           <p>Find answers to common questions about TrackAdemy. Need further assistance? Feel free to contact our support team!</p>
           <div className="faq-illustration">
-            <FAQIllustration />
+            <img src={faqImg} alt="FAQ" />
           </div>
         </div>
 

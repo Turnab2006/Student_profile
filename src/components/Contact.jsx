@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { LocationIcon, PhoneIcon, ContactIllustration } from './Icons';
+import locationImg from '../../assets/landing-page/location.svg';
+import phoneImg from '../../assets/landing-page/phone.svg';
+import contactIll from '../../assets/landing-page/Contact-us.svg';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -43,17 +45,17 @@ const Contact = () => {
           
           <div className="contact-info">
             <div className="contact-info-row">
-              <LocationIcon />
+              <img src={locationImg} alt="Location" />
               <span>Canal S Rd, Beleghata, Kolkata, West Bengal 700015</span>
             </div>
             <div className="contact-info-row">
-              <PhoneIcon />
+              <img src={phoneImg} alt="Phone" />
               <span>+91 9853962140</span>
             </div>
           </div>
           
           <div className="contact-illustration">
-            <ContactIllustration />
+            <img src={contactIll} alt="Contact us" />
           </div>
         </div>
 

@@ -1,5 +1,7 @@
 import React from 'react';
-import { LogoIcon, LocationIcon, PhoneIcon } from './Icons';
+import logoImg from '../../assets/logo.svg';
+import locationImg from '../../assets/landing-page/location.svg';
+import phoneImg from '../../assets/landing-page/phone.svg';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -10,7 +12,7 @@ const Footer = () => {
         <div className="footer-content">
           <div className="footer-section">
             <div className="logo" style={{ marginBottom: '10px' }}>
-              <LogoIcon className="logo-icon" />
+              <img src={logoImg} alt="TrackAdemy" className="logo-icon" />
               <span className="logo-text">Track<span>Ademy</span></span>
             </div>
             <p>Empowering educational systems and stakeholders through scalable technology.</p>
@@ -30,11 +32,11 @@ const Footer = () => {
             <h4>Contact Info</h4>
             <div className="social-links">
               <div className="footer-contact-row">
-                <LocationIcon />
+                <img src={locationImg} alt="Location" />
                 <span>Canal S Rd, Beleghata, Kolkata, West Bengal 700015</span>
               </div>
               <div className="footer-contact-row">
-                <PhoneIcon />
+                <img src={phoneImg} alt="Phone" />
                 <span>+91 9853962140</span>
               </div>
             </div>

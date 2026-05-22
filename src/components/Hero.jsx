@@ -1,5 +1,8 @@
 import React from 'react';
-import { SecureIcon, SeamlessIcon, SmartIcon, DashboardIllustration } from './Icons';
+import secureImg from '../../assets/landing-page/secure.svg';
+import seamlessImg from '../../assets/landing-page/seamless.svg';
+import smartImg from '../../assets/landing-page/smart.svg';
+import landingIll from '../../assets/landing-page/landing-page.svg';
 
 const Hero = () => {
   return (
@@ -29,16 +32,16 @@ const Hero = () => {
           </div>
           
           <div className="hero-image">
-            <DashboardIllustration />
+            <img src={landingIll} alt="TrackAdemy dashboard" />
           </div>
           
           {/* Outlined Feature Tray */}
           <div className="feature-wrapper">
             {/* Secure */}
             <div className="feature-box">
-              <div className="icon-box">
-                <SecureIcon />
-              </div>
+                <div className="icon-box">
+                  <img src={secureImg} alt="Secure" />
+                </div>
               <div className="text">
                 <h3>Secure</h3>
                 <p>Role-based<br />Access</p>
@@ -48,7 +51,7 @@ const Hero = () => {
             {/* Seamless */}
             <div className="feature-box">
               <div className="icon-box">
-                <SeamlessIcon />
+                <img src={seamlessImg} alt="Seamless" />
               </div>
               <div className="text">
                 <h3>Seamless</h3>
@@ -59,7 +62,7 @@ const Hero = () => {
             {/* Smart */}
             <div className="feature-box">
               <div className="icon-box">
-                <SmartIcon />
+                <img src={smartImg} alt="Smart" />
               </div>
               <div className="text">
                 <h3>Smart</h3>

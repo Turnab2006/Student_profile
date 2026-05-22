@@ -1,5 +1,7 @@
 import React from 'react';
-import { StudentsIcon, MentorsIcon, InstitutionsIcon } from './Icons';
+import studentsImg from '../../assets/landing-page/Active-students.svg';
+import mentorsImg from '../../assets/landing-page/Expert-mentors.svg';
+import institutionsImg from '../../assets/landing-page/Institutions.svg';
 
 const Stats = () => {
   return (
@@ -14,7 +16,7 @@ const Stats = () => {
           {/* Students */}
           <div className="benefit-card stat students">
             <div className="benefit-icon">
-              <StudentsIcon />
+              <img src={studentsImg} alt="Active Students" />
             </div>
             <div className="stat-content">
               <div className="stat-number">10k+</div>
@@ -26,7 +28,7 @@ const Stats = () => {
           {/* Mentors */}
           <div className="benefit-card stat mentors">
             <div className="benefit-icon">
-              <MentorsIcon />
+              <img src={mentorsImg} alt="Expert Mentors" />
             </div>
             <div className="stat-content">
               <div className="stat-number">500+</div>
@@ -38,7 +40,7 @@ const Stats = () => {
           {/* Institutions */}
           <div className="benefit-card stat institutions">
             <div className="benefit-icon">
-              <InstitutionsIcon />
+              <img src={institutionsImg} alt="Institutions" />
             </div>
             <div className="stat-content">
               <div className="stat-number">100+</div>
