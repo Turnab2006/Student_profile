@@ -47,10 +47,10 @@ const navSections = [
 
 export default function Sidebar({ activePage = "dashboard", onNavigate }) {
   return (
-    <aside className="w-56 h-full bg-white flex flex-col border-r border-gray-100 shrink-0">
+    <aside className="w-64 h-full bg-white flex flex-col border-r border-gray-100 shrink-0">
       {/* Logo */}
-      <div className="px-6 py-5 border-b border-gray-100">
-        <span className="text-lg font-bold text-gray-800 tracking-wide">LOGO</span>
+      <div className="px-5 py-4 border-b border-gray-100">
+        <span className="text-lg font-bold text-gray-800 tracking-wide block text-center">LOGO</span>
       </div>
 
       {/* Nav */}
@@ -66,7 +66,7 @@ export default function Sidebar({ activePage = "dashboard", onNavigate }) {
                 onClick={() => onNavigate?.(page)}
                 className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                   activePage === page
-                    ? "bg-primary text-white"
+                    ? "bg-primary/10 text-primary"
                     : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
                 }`}
               >
@@ -80,7 +80,7 @@ export default function Sidebar({ activePage = "dashboard", onNavigate }) {
 
       {/* Logout */}
       <div className="px-3 py-4 border-t border-gray-100">
-        <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-red-400 hover:bg-red-50 transition-colors">
+        <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-red-400 hover:bg-red-50 transition-colors bg-red-50/70">
           <LogOut size={16} />
           Logout
         </button>

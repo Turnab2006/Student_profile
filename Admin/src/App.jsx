@@ -2,6 +2,7 @@ import { useState } from "react";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
 import Students from "./pages/Students";
+import AddStudent from "./pages/AddStudent";
 import Mentors from "./pages/Mentors";
 import AddMentor from "./pages/AddMentor";
 import Notices from "./pages/Notices";
@@ -17,6 +18,7 @@ export default function App() {
     switch (activePage) {
       case "dashboard":    return <Dashboard />;
       case "students":     return <Students onNavigate={setActivePage} />;
+      case "add-student":  return <AddStudent onNavigate={setActivePage} />;
       case "mentors":      return <Mentors onNavigate={setActivePage} />;
       case "add-mentor":   return <AddMentor onNavigate={setActivePage} />;
       case "notices":      return <Notices onNavigate={setActivePage} />;

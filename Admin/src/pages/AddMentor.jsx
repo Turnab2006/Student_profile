@@ -1,11 +1,9 @@
 import { useState } from "react";
 import {
   User, Mail, Phone, Hash, Upload, Download, Shield,
-  ArrowRight, ArrowLeft, ChevronDown, Info, Menu, Check, BookOpen,
-  GraduationCap, Users, Briefcase,
+  ArrowRight, ArrowLeft, ChevronDown, Info, Menu, Check,
+  Users, CircleUserRound, MapPinned, CheckCircle2, Briefcase, GraduationCap,
 } from "lucide-react";
-
-// ── Shared form components ──
 
 function Label({ children, required }) {
   return (
@@ -39,11 +37,9 @@ function SelectInput({ placeholder, options = [], value, onChange }) {
   );
 }
 
-// ── Step indicator ──
-
 const STEPS = [
   { n: 1, label: "Mentor Details" },
-  { n: 2, label: "Assign Subject" },
+  { n: 2, label: "Assign Mentees" },
   { n: 3, label: "Review & Submit" },
 ];
 
@@ -75,17 +71,14 @@ function StepIndicator({ current }) {
   );
 }
 
-// ── Subject assignment data ──
-
-const availableSubjects = [
-  { code: "EE601", name: "Power System Analysis",    semester: "6th", dept: "EE", students: 45 },
-  { code: "EE602", name: "Electrical Drives",         semester: "6th", dept: "EE", students: 40 },
-  { code: "EE603", name: "Control System II",         semester: "6th", dept: "EE", students: 42 },
-  { code: "EE604", name: "Microprocessor & Interfacing", semester: "6th", dept: "EE", students: 38 },
-  { code: "ECE601", name: "Digital Signal Processing",  semester: "6th", dept: "ECE", students: 35 },
-  { code: "ECE602", name: "Communication Engg",       semester: "6th", dept: "ECE", students: 32 },
-  { code: "ECE603", name: "VLSI Design",              semester: "6th", dept: "ECE", students: 30 },
-  { code: "CS601", name: "Machine Learning",          semester: "6th", dept: "CS", students: 50 },
+const availableMentees = [
+  { initials: "TS", name: "Tamoha Sengupta", email: "tamoha.sengupta@abc.edu.in", roll: "lee2024001", avatarBg: "bg-emerald-100", avatarText: "text-emerald-700" },
+  { initials: "TR", name: "Tarun Roy", email: "tarun.roy@abc.edu.in", roll: "lee2024002", avatarBg: "bg-sky-100", avatarText: "text-sky-700" },
+  { initials: "MC", name: "Madhurima Chatterjee", email: "madhurima.c@abc.edu.in", roll: "lee2024003", avatarBg: "bg-violet-100", avatarText: "text-violet-700" },
+  { initials: "ND", name: "Nilankur Das", email: "nilankur.das@abc.edu.in", roll: "lee2024004", avatarBg: "bg-amber-100", avatarText: "text-amber-700" },
+  { initials: "AR", name: "Abhinandan Roy", email: "abhinandan.roy@abc.edu.in", roll: "lee2024005", avatarBg: "bg-green-100", avatarText: "text-green-700" },
+  { initials: "SG", name: "Subhamita Ganguly", email: "subhamita.g@abc.edu.in", roll: "lee2024006", avatarBg: "bg-pink-100", avatarText: "text-pink-700" },
+  { initials: "AB", name: "Alok Bhattacharya", email: "alok.bhattacharya@abc.edu.in", roll: "lee2024007", avatarBg: "bg-cyan-100", avatarText: "text-cyan-700" },
 ];
 
 // ── Step 1: Mentor Details Form ──
@@ -197,80 +190,165 @@ function MentorDetailsForm({ form, setForm }) {
   );
 }
 
-// ── Step 2: Assign Subject ──
+// ── Step 2: Assign Mentees ──
 
-function AssignSubject({ selected, setSelected }) {
-  const toggle = (code) =>
-    setSelected((prev) => prev.includes(code) ? prev.filter((c) => c !== code) : [...prev, code]);
+function AssignMentees({ selected, setSelected }) {
+  const selectedMentees = availableMentees.filter((mentee) => selected.includes(mentee.roll));
 
-  const toggleAll = () =>
-    setSelected(selected.length === availableSubjects.length ? [] : availableSubjects.map((s) => s.code));
+  const toggle = (roll) => {
+    setSelected((prev) =>
+      prev.includes(roll) ? prev.filter((item) => item !== roll) : [...prev, roll]
+    );
+  };
+
+  const remove = (roll) => setSelected((prev) => prev.filter((item) => item !== roll));
+  const clearAll = () => setSelected([]);
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+    <div>
       <div className="flex items-start gap-3 mb-5">
         <span className="w-7 h-7 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center shrink-0">2</span>
         <div>
-          <h2 className="text-sm font-semibold text-gray-800">Assign Subjects</h2>
-          <p className="text-xs text-gray-400 mt-0.5">Select the subjects this mentor will teach</p>
+          <h2 className="text-sm font-semibold text-gray-800">Assign Mentees</h2>
+          <p className="text-xs text-gray-400 mt-0.5">Search and select students to assign under this mentor.</p>
         </div>
       </div>
 
-      {/* Filter bar */}
-      <div className="flex items-center gap-3 mb-4 flex-wrap">
-        <div className="relative flex-1 min-w-[180px]">
-          <input type="text" placeholder="Search subjects..."
-            className="w-full pl-3 pr-4 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-green-300" />
+      <div className="grid grid-cols-[minmax(0,1.1fr)_auto_minmax(320px,0.9fr)] gap-6 items-start">
+        <section className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+          <div className="p-4 border-b border-gray-100">
+            <div className="flex items-center gap-3">
+              <div className="relative flex-1 min-w-0">
+                <input
+                  type="text"
+                  placeholder="Search by roll number or email address..."
+                  className="w-full h-12 pl-11 pr-4 rounded-xl border border-gray-200 bg-white text-sm text-gray-700 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-green-300"
+                />
+                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="m21 21-4.3-4.3" />
+                  </svg>
+                </div>
+              </div>
+              <select className="h-12 min-w-[132px] rounded-xl border border-gray-200 bg-white px-4 text-sm font-medium text-primary focus:outline-none focus:ring-2 focus:ring-green-300">
+                <option>All Programs</option>
+                <option>B.Tech</option>
+                <option>M.Tech</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="px-4 py-4 border-b border-gray-100 flex items-center gap-2">
+            <h3 className="text-sm font-semibold text-gray-800">Available Students</h3>
+            <span className="inline-flex items-center justify-center min-w-7 h-6 px-2 rounded-full bg-primary/10 text-primary text-xs font-bold">128</span>
+          </div>
+
+          <div className="divide-y divide-gray-100">
+            {availableMentees.map((mentee) => {
+              const isSelected = selected.includes(mentee.roll);
+              return (
+                <div key={mentee.roll} className="px-4 py-3 flex items-center gap-3 hover:bg-gray-50/70 transition-colors">
+                  <label className="shrink-0 inline-flex items-center justify-center w-5 h-5 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={isSelected}
+                      onChange={() => toggle(mentee.roll)}
+                      className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-green-300"
+                    />
+                  </label>
+
+                  <div className={`w-9 h-9 rounded-full ${mentee.avatarBg} ${mentee.avatarText} text-xs font-bold flex items-center justify-center shrink-0`}>
+                    {mentee.initials}
+                  </div>
+
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-semibold text-gray-800 truncate">{mentee.name}</p>
+                    <p className="text-[11px] text-gray-400 truncate">{mentee.email}</p>
+                  </div>
+
+                  <div className="text-right shrink-0 pr-2">
+                    <p className="text-sm font-semibold text-gray-700 leading-tight">{mentee.roll}</p>
+                    <p className="text-[11px] text-gray-400">Roll Number</p>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => toggle(mentee.roll)}
+                    className="ml-1 inline-flex items-center gap-1 rounded-lg bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary hover:bg-primary/15 transition-colors"
+                  >
+                    <span className="text-base leading-none">+</span>
+                    Add
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        <div className="pt-28 flex flex-col items-center gap-3 shrink-0">
+          <button type="button" className="w-12 h-12 rounded-lg border border-green-100 bg-primary-light text-primary flex items-center justify-center shadow-sm hover:bg-green-100 transition-colors">
+            <ArrowRight size={18} />
+          </button>
+          <button type="button" className="w-12 h-12 rounded-lg border border-gray-200 bg-white text-gray-400 flex items-center justify-center shadow-sm hover:bg-gray-50 transition-colors">
+            <ArrowLeft size={18} />
+          </button>
         </div>
-        <select className="border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-600 bg-white focus:outline-none focus:ring-2 focus:ring-green-300">
-          <option>All Departments</option>
-          <option>EE</option>
-          <option>ECE</option>
-          <option>CS</option>
-        </select>
-        <select className="border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-600 bg-white focus:outline-none focus:ring-2 focus:ring-green-300">
-          <option>All Semesters</option>
-          <option>6th</option>
-        </select>
+
+        <section className="space-y-4">
+          <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+            <div className="flex items-center justify-between px-4 py-4 border-b border-gray-100">
+              <div className="flex items-center gap-2">
+                <h3 className="text-sm font-semibold text-gray-800">Selected Mentees</h3>
+                <span className="inline-flex items-center justify-center min-w-7 h-6 px-2 rounded-full bg-primary/10 text-primary text-xs font-bold">{selected.length}</span>
+              </div>
+              <button type="button" onClick={clearAll} className="text-xs font-semibold text-red-500 hover:text-red-600 transition-colors">Clear All</button>
+            </div>
+
+            <div className="p-3 space-y-3 min-h-[280px]">
+              {selectedMentees.length > 0 ? (
+                selectedMentees.map((mentee) => (
+                  <div key={mentee.roll} className="flex items-center gap-3 rounded-xl border border-gray-100 px-3 py-3 shadow-sm">
+                    <div className={`w-9 h-9 rounded-full ${mentee.avatarBg} ${mentee.avatarText} text-xs font-bold flex items-center justify-center shrink-0`}>
+                      {mentee.initials}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-semibold text-gray-800 truncate">{mentee.name}</p>
+                      <p className="text-[11px] text-gray-400 truncate">{mentee.email}</p>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <p className="text-sm font-semibold text-gray-700 leading-tight">{mentee.roll}</p>
+                      <p className="text-[11px] text-gray-400">Roll Number</p>
+                    </div>
+                    <button type="button" onClick={() => remove(mentee.roll)} className="ml-1 text-gray-400 hover:text-gray-600 transition-colors">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M18 6 6 18" />
+                        <path d="m6 6 12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                ))
+              ) : (
+                <div className="h-[240px] flex items-center justify-center text-sm text-gray-400 border border-dashed border-gray-200 rounded-xl">
+                  No mentees selected
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="bg-primary-light border border-green-100 rounded-xl p-4 flex items-start gap-3">
+            <div className="w-10 h-10 rounded-full bg-white border border-green-100 flex items-center justify-center shrink-0 text-primary">
+              <Users size={18} />
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-primary">Assign Multiple Mentees</p>
+              <p className="text-xs text-gray-500 mt-0.5">You can assign multiple students to this mentor. Use search to find students quickly.</p>
+            </div>
+          </div>
+        </section>
       </div>
 
-      {/* Subject table */}
-      <div className="overflow-x-auto border border-gray-100 rounded-xl">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="bg-gray-50/80 border-b border-gray-100">
-              <th className="w-10 px-4 py-3">
-                <input type="checkbox" checked={selected.length === availableSubjects.length} onChange={toggleAll} className="rounded border-gray-300 accent-primary" />
-              </th>
-              {["Subject Code", "Subject Name", "Department", "Semester", "Students"].map((h) => (
-                <th key={h} className="text-left px-3 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">{h}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-50">
-            {availableSubjects.map((sub) => (
-              <tr key={sub.code}
-                className={`hover:bg-gray-50/60 transition-colors cursor-pointer ${selected.includes(sub.code) ? "bg-green-50/40" : ""}`}
-                onClick={() => toggle(sub.code)}
-              >
-                <td className="px-4 py-3">
-                  <input type="checkbox" checked={selected.includes(sub.code)} onChange={() => toggle(sub.code)}
-                    className="rounded border-gray-300 accent-primary" />
-                </td>
-                <td className="px-3 py-3 text-xs font-semibold text-gray-700">{sub.code}</td>
-                <td className="px-3 py-3 text-xs text-gray-600">{sub.name}</td>
-                <td className="px-3 py-3">
-                  <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-blue-100 text-blue-600">{sub.dept}</span>
-                </td>
-                <td className="px-3 py-3 text-xs text-gray-600">{sub.semester}</td>
-                <td className="px-3 py-3 text-xs text-gray-600">{sub.students}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      <p className="text-xs text-gray-400 mt-3">{selected.length} subject{selected.length !== 1 ? "s" : ""} selected</p>
+      <p className="text-xs text-gray-500 mt-4">{selected.length} mentee{selected.length !== 1 ? "s" : ""} selected</p>
     </div>
   );
 }
@@ -278,109 +356,211 @@ function AssignSubject({ selected, setSelected }) {
 // ── Step 3: Review & Submit ──
 
 function ReviewSubmit({ form, selectedSubjects, previousStep, onNavigate }) {
-  const assigned = availableSubjects.filter((s) => selectedSubjects.includes(s.code));
+  const assigned = availableMentees.filter((mentee) => selectedSubjects.includes(mentee.roll));
+  const mentorName = [form.firstName, form.middleName, form.lastName].filter(Boolean).join(" ").trim() || "Prof. Kawshik Chattarji";
+  const mentorEmail = form.email || "kawshik.c@abc.edu.in";
+  const employeeId = form.empId || "EMP2024001";
+  const department = form.dept || "Computer Science & Engineering";
+  const designation = form.designation || "Assistant Professor";
+  const qualification = form.qualification || "M.Tech in Computer Science";
+  const experience = "6 Years";
+  const joiningDate = form.joiningDate || "15 Apr 2022";
+  const totalMentees = selectedSubjects.length || 3;
+
+  const summaryRows = [
+    { icon: <CircleUserRound size={14} />, label: "Mentor", value: mentorName },
+    { icon: <MapPinned size={14} />, label: "Department", value: department },
+    { icon: <Hash size={14} />, label: "Employee ID", value: employeeId },
+    { icon: <Users size={14} />, label: "Total Mentees", value: totalMentees },
+    { icon: <CheckCircle2 size={14} />, label: "Status", value: "Active", pill: true },
+  ];
+
+  const checklistItems = [
+    "Mentor details added",
+    "Required information provided",
+    "Mentees assigned",
+    "All information looks correct",
+  ];
 
   return (
-    <div className="max-w-3xl mx-auto">
-      <div className="flex items-start gap-3 mb-6">
-        <span className="w-7 h-7 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center shrink-0">3</span>
-        <div>
-          <h2 className="text-sm font-semibold text-gray-800">Review & Submit</h2>
-          <p className="text-xs text-gray-400 mt-0.5">Please verify all the details before submitting</p>
-        </div>
-      </div>
-
-      <div className="space-y-4">
-        {/* Personal Info */}
-        <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
-          <p className="text-xs font-semibold text-primary mb-3">Personal Information</p>
-          <div className="grid grid-cols-3 gap-4">
-            {[
-              { label: "First Name", value: form.firstName },
-              { label: "Middle Name", value: form.middleName },
-              { label: "Last Name", value: form.lastName },
-              { label: "Email", value: form.email },
-              { label: "Contact", value: form.phone },
-              { label: "Date of Birth", value: form.dob },
-              { label: "Gender", value: form.gender },
-              { label: "Blood Group", value: form.bloodGroup },
-            ].map(({ label, value }) => (
-              <div key={label}>
-                <p className="text-[10px] text-gray-400 uppercase tracking-wide">{label}</p>
-                <p className="text-xs font-medium text-gray-700 mt-0.5">{value || "—"}</p>
+    <div className="w-full max-w-none">
+      <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1.75fr)_minmax(280px,0.95fr)] gap-4 items-start">
+        <div className="space-y-4">
+          <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
+            <div className="flex items-center justify-between gap-4 mb-1">
+              <div>
+                <h2 className="text-[15px] font-semibold text-gray-800">Review Mentor Details</h2>
+                <p className="text-xs text-gray-400 mt-0.5">Please review all the information before submitting.</p>
               </div>
-            ))}
-          </div>
-        </div>
+              <button type="button" className="inline-flex items-center gap-2 rounded-lg border border-primary/30 px-4 py-2 text-sm font-medium text-primary hover:bg-green-50 transition-colors">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="m18 2 4 4-14 14-4 1 1-4 14-14Z" />
+                </svg>
+                Edit
+              </button>
+            </div>
 
-        {/* Professional Info */}
-        <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
-          <p className="text-xs font-semibold text-primary mb-3">Professional Information</p>
-          <div className="grid grid-cols-3 gap-4">
-            {[
-              { label: "Employee ID", value: form.empId },
-              { label: "Department", value: form.dept },
-              { label: "Designation", value: form.designation },
-              { label: "Specialization", value: form.specialization },
-              { label: "Qualification", value: form.qualification },
-              { label: "Joining Date", value: form.joiningDate },
-            ].map(({ label, value }) => (
-              <div key={label}>
-                <p className="text-[10px] text-gray-400 uppercase tracking-wide">{label}</p>
-                <p className="text-xs font-medium text-gray-700 mt-0.5">{value || "—"}</p>
+            <div className="mt-4 rounded-lg border border-gray-100 overflow-hidden">
+              <div className="grid grid-cols-3 divide-x divide-y divide-gray-100 bg-white">
+                {[
+                  { label: "Full Name", value: mentorName, icon: CircleUserRound },
+                  { label: "Employee ID", value: employeeId, icon: Hash },
+                  { label: "Department", value: department, icon: MapPinned },
+                  { label: "College Email", value: mentorEmail, icon: Mail },
+                  { label: "Contact Number", value: form.phone || "+91 98765 43210", icon: Phone },
+                  { label: "Gender", value: form.gender || "Male", icon: Users },
+                  { label: "Designation / Role", value: designation, icon: Briefcase },
+                  { label: "Qualification", value: qualification, icon: GraduationCap },
+                  { label: "Experience", value: experience, icon: CheckCircle2 },
+                  { label: "Date of Joining", value: joiningDate, icon: MapPinned },
+                  { label: "Status", value: "Active", icon: CheckCircle2, pill: true },
+                ].map(({ label, value, icon: Icon, pill }) => (
+                  <div key={label} className="min-h-[66px] p-3 flex items-start gap-3 bg-white">
+                    <div className="w-6 h-6 rounded-md bg-primary-light flex items-center justify-center shrink-0 text-primary mt-0.5">
+                      <Icon size={13} />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-[10px] font-medium text-gray-500 uppercase tracking-wide">{label}</p>
+                      {pill ? (
+                        <span className="inline-flex items-center rounded-full bg-primary-light px-2 py-0.5 text-[11px] font-semibold text-primary mt-1">{value}</span>
+                      ) : (
+                        <p className="text-sm font-semibold text-gray-700 leading-snug mt-0.5">{value}</p>
+                      )}
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
+          </section>
 
-        {/* Assigned Subjects */}
-        <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
-          <p className="text-xs font-semibold text-primary mb-3">Assigned Subjects ({assigned.length})</p>
-          {assigned.length > 0 ? (
-            <div className="overflow-x-auto border border-gray-100 rounded-lg">
+          <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
+            <div className="flex items-center justify-between gap-4 mb-1">
+              <div>
+                <h2 className="text-[15px] font-semibold text-gray-800">Assigned Mentees ({assigned.length})</h2>
+                <p className="text-xs text-gray-400 mt-0.5">Review the mentees assigned to this mentor.</p>
+              </div>
+              <button type="button" className="inline-flex items-center gap-2 rounded-lg border border-primary/30 px-4 py-2 text-sm font-medium text-primary hover:bg-green-50 transition-colors">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="m18 2 4 4-14 14-4 1 1-4 14-14Z" />
+                  <path d="M12 20h9" />
+                </svg>
+                Edit
+              </button>
+            </div>
+
+            <div className="mt-4 overflow-hidden rounded-lg border border-gray-100">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="bg-gray-50/80 border-b border-gray-100">
-                    {["Code", "Subject", "Dept", "Semester", "Students"].map((h) => (
-                      <th key={h} className="text-left px-3 py-2 text-[10px] font-semibold text-gray-500 uppercase tracking-wide">{h}</th>
+                    {['#', 'Mentee Name', 'College Roll No.', 'Email Address', 'Program', 'Year'].map((column) => (
+                      <th key={column} className="px-3 py-3 text-left text-[10px] font-semibold uppercase tracking-wide text-gray-500">{column}</th>
                     ))}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-50">
-                  {assigned.map((sub) => (
-                    <tr key={sub.code}>
-                      <td className="px-3 py-2 text-xs font-semibold text-gray-700">{sub.code}</td>
-                      <td className="px-3 py-2 text-xs text-gray-600">{sub.name}</td>
-                      <td className="px-3 py-2"><span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-blue-100 text-blue-600">{sub.dept}</span></td>
-                      <td className="px-3 py-2 text-xs text-gray-600">{sub.semester}</td>
-                      <td className="px-3 py-2 text-xs text-gray-600">{sub.students}</td>
+                <tbody className="divide-y divide-gray-50 bg-white">
+                  {assigned.map((mentee, index) => (
+                    <tr key={mentee.roll} className="hover:bg-gray-50/40 transition-colors">
+                      <td className="px-3 py-3 text-xs text-gray-500">{index + 1}</td>
+                      <td className="px-3 py-3">
+                        <div className="flex items-center gap-2.5">
+                          <div className={`w-8 h-8 rounded-full ${mentee.avatarBg} ${mentee.avatarText} text-[10px] font-bold flex items-center justify-center shrink-0`}>
+                            {mentee.initials}
+                          </div>
+                          <span className="text-xs font-semibold text-gray-700">{mentee.name}</span>
+                        </div>
+                      </td>
+                      <td className="px-3 py-3 text-xs text-gray-600">{mentee.roll}</td>
+                      <td className="px-3 py-3 text-xs text-gray-600">{mentee.email}</td>
+                      <td className="px-3 py-3 text-xs text-gray-600">B.Tech CSE</td>
+                      <td className="px-3 py-3 text-xs text-gray-600">3rd Year</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-          ) : (
-            <p className="text-xs text-gray-400 italic">No subjects assigned yet</p>
-          )}
-        </div>
+          </section>
 
-        {/* Submit area */}
-        <div className="flex items-center justify-between pt-2">
-          <button onClick={previousStep}
-            className="flex items-center gap-2 text-sm font-medium text-gray-600 border border-gray-200 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">
-            <ArrowLeft size={15} />
-            Back
-          </button>
-          <div className="flex items-center gap-3">
-            <span className="text-[10px] text-gray-400">You can edit after submission</span>
-            <button
-              onClick={() => { alert("Mentor added successfully!"); onNavigate?.("mentors"); }}
-              className="flex items-center gap-2 text-sm font-medium text-white bg-primary px-6 py-2.5 rounded-lg hover:bg-green-600 transition-colors">
-              <Check size={15} />
-              Submit
+          <div className="flex items-end justify-between pt-1">
+            <button onClick={previousStep}
+              className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+              <ArrowLeft size={15} />
+              Previous
             </button>
+
+            <div className="flex flex-col items-end gap-1">
+              <div className="flex items-center gap-3">
+                <button onClick={() => onNavigate?.("mentors")}
+                  className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-5 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors">
+                  Cancel
+                </button>
+                <button
+                  onClick={() => { alert("Mentor added successfully!"); onNavigate?.("mentors"); }}
+                  className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-green-600 transition-colors">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M5 12h14" />
+                    <path d="m13 5 7 7-7 7" />
+                  </svg>
+                  Submit &amp; Assign Mentor
+                </button>
+              </div>
+              <p className="text-[11px] text-gray-400 flex items-center gap-1.5">
+                <Shield size={12} className="text-primary" />
+                Your data is safe and secure
+              </p>
+            </div>
           </div>
         </div>
+
+        <aside className="space-y-4">
+          <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
+            <h3 className="text-[15px] font-semibold text-primary mb-4">Summary</h3>
+            <div className="space-y-4">
+              {summaryRows.map((item) => (
+                <div key={item.label} className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-md bg-primary-light flex items-center justify-center shrink-0 text-primary mt-0.5">
+                    {item.icon}
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-medium text-gray-500 uppercase tracking-wide">{item.label}</p>
+                    {item.pill ? (
+                      <span className="inline-flex items-center rounded-full bg-primary-light px-2 py-0.5 text-[11px] font-semibold text-primary mt-1">{item.value}</span>
+                    ) : (
+                      <p className="text-xs text-gray-700 mt-0.5">{item.value}</p>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="bg-white rounded-xl border border-gray-100 shadow-sm p-5">
+            <h3 className="text-[15px] font-semibold text-primary mb-4">Checklist</h3>
+            <div className="space-y-3">
+              {checklistItems.map((item) => (
+                <div key={item} className="flex items-center gap-2.5">
+                  <CheckCircle2 size={16} className="text-primary shrink-0" />
+                  <span className="text-xs text-gray-700">{item}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="bg-white rounded-xl border border-blue-100 shadow-sm p-5">
+            <div className="flex items-start gap-3">
+              <div className="w-6 h-6 rounded-full bg-blue-50 flex items-center justify-center shrink-0 text-blue-500 mt-0.5">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10" />
+                  <path d="M12 16v-4" />
+                  <path d="M12 8h.01" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-[15px] font-semibold text-blue-500">Please Note</h3>
+                <p className="mt-1 text-xs leading-5 text-gray-500">Once you submit, the mentor will be created and assigned to the selected mentees. You can edit the details later if needed.</p>
+              </div>
+            </div>
+          </section>
+        </aside>
       </div>
     </div>
   );
@@ -505,7 +685,7 @@ export default function AddMentor({ onNavigate }) {
                   className={`flex items-center gap-2 text-sm font-medium px-5 py-2.5 rounded-lg transition-colors ${
                     canNextStep1 ? "bg-primary text-white hover:bg-green-600" : "bg-gray-100 text-gray-400 cursor-not-allowed"
                   }`}>
-                  Next: Assign Subject
+                  Next: Assign Mentees
                   <ArrowRight size={15} />
                 </button>
               </div>
@@ -515,18 +695,24 @@ export default function AddMentor({ onNavigate }) {
 
         {step === 2 && (
           <div>
-            <AssignSubject selected={selectedSubjects} setSelected={setSelectedSubjects} />
-            <div className="flex items-center justify-between mt-6 max-w-3xl">
+            <AssignMentees selected={selectedSubjects} setSelected={setSelectedSubjects} />
+            <div className="mt-6 bg-white border border-gray-100 rounded-xl shadow-sm px-4 py-4 flex items-center justify-between">
               <button onClick={prevStep}
-                className="flex items-center gap-2 text-sm font-medium text-gray-600 border border-gray-200 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">
+                className="flex items-center gap-2 text-sm font-medium text-gray-700 border border-gray-200 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">
                 <ArrowLeft size={15} />
-                Back
+                Previous
               </button>
-              <button onClick={nextStep}
-                className="flex items-center gap-2 text-sm font-medium text-white bg-primary px-5 py-2.5 rounded-lg hover:bg-green-600 transition-colors">
-                Next: Review & Submit
-                <ArrowRight size={15} />
-              </button>
+              <div className="flex items-center gap-3">
+                <button onClick={() => onNavigate?.("mentors")}
+                  className="flex items-center gap-2 text-sm font-medium text-gray-500 border border-gray-200 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">
+                  Cancel
+                </button>
+                <button onClick={nextStep}
+                  className="flex items-center gap-2 text-sm font-medium text-white bg-primary px-5 py-2.5 rounded-lg hover:bg-green-600 transition-colors">
+                  Next
+                  <ArrowRight size={15} />
+                </button>
+              </div>
             </div>
           </div>
         )}
