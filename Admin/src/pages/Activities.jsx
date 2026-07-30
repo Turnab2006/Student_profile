@@ -7,17 +7,14 @@ import {
   CalendarCheck,
   Clock,
   Trophy,
-  ChevronLeft,
-  ChevronRight,
   MoreHorizontal,
   SlidersHorizontal,
   Menu,
   CalendarDays,
   Users,
   MapPin,
-  Settings,
-  HelpCircle,
 } from "lucide-react";
+import AdminProfile from "../components/AdminProfile";
 
 const activities = [
   { id: "ACT001", title: "TECHNOVATE 2026",          type: "Technical",      date: "2026-05-17", time: "04:30 AM", venue: "RCCIIT", status: "Upcoming",   registered: 234, badgeColor: "bg-purple-100 text-purple-600", image: "https://via.placeholder.com/120x60?text=Techno", description: "Showcase innovation, creativity, and technical excellence among students and professionals." },
@@ -45,11 +42,22 @@ const stats = [
   { icon: <Trophy size={22} className="text-purple-500" />,      bg: "bg-purple-50", value: "13", label: "Completed",         sub: "Past activities" },
 ];
 
-function FilterDropdown({ label }) {
+function FilterDropdown({ value, onChange, options }) {
   return (
-    <button className="flex items-center gap-1.5 px-3 py-2 border border-gray-200 rounded-lg text-sm text-gray-600 bg-white hover:bg-gray-50 transition-colors whitespace-nowrap">
-      {label} <ChevronDown size={14} />
-    </button>
+    <div className="relative">
+      <select
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        className="appearance-none min-w-[150px] px-3 py-2 pr-8 border border-gray-200 rounded-lg text-sm text-gray-600 bg-white hover:bg-gray-50 transition-colors whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-green-300"
+      >
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+      <ChevronDown size={14} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-500" />
+    </div>
   );
 }
 
@@ -57,16 +65,52 @@ export default function Activities({ onNavigate }) {
   const [selected, setSelected] = useState([]);
   const [view, setView] = useState("grid"); // 'grid' or 'list'
   const [query, setQuery] = useState("");
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [typeFilter, setTypeFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [sortBy, setSortBy] = useState("newest");
+
+  const filteredActivities = activities.filter((activity) => {
+    const searchText = query.trim().toLowerCase();
+    const matchesSearch =
+      !searchText ||
+      activity.title.toLowerCase().includes(searchText) ||
+      activity.type.toLowerCase().includes(searchText) ||
+      activity.venue.toLowerCase().includes(searchText);
+
+    const matchesType = typeFilter === "all" || activity.type === typeFilter;
+    const matchesStatus = statusFilter === "all" || activity.status === statusFilter;
+
+    return matchesSearch && matchesType && matchesStatus;
+  });
+
+  const sortedActivities = [...filteredActivities].sort((left, right) => {
+    switch (sortBy) {
+      case "oldest":
+        return left.date.localeCompare(right.date);
+      case "title-asc":
+        return left.title.localeCompare(right.title);
+      case "title-desc":
+        return right.title.localeCompare(left.title);
+      case "newest":
+      default:
+        return right.date.localeCompare(left.date);
+    }
+  });
+
+  const visibleActivities = sortedActivities;
+  const visibleActivityIds = visibleActivities.map((activity) => activity.id);
+  const allVisibleSelected =
+    visibleActivityIds.length > 0 && visibleActivityIds.every((id) => selected.includes(id));
 
   const toggleAll = () =>
-    setSelected(selected.length === activities.length ? [] : activities.map((a) => a.id));
+    setSelected((prev) =>
+      allVisibleSelected
+        ? prev.filter((id) => !visibleActivityIds.includes(id))
+        : Array.from(new Set([...prev, ...visibleActivityIds]))
+    );
   const toggleOne = (id) =>
     setSelected((prev) => (prev.includes(id) ? prev.filter((r) => r !== id) : [...prev, id]));
 
-  const filtered = activities.filter((a) =>
-    a.title.toLowerCase().includes(query.toLowerCase()) || a.type.toLowerCase().includes(query.toLowerCase())
-  );
 
   return (
     <div className="flex-1 h-full flex flex-col overflow-hidden">
@@ -78,23 +122,7 @@ export default function Activities({ onNavigate }) {
             <p className="text-xs text-gray-400">Manage campus activities and events</p>
           </div>
         </div>
-        <div className="relative">
-          <button onClick={() => setMenuOpen((s) => !s)} className="flex items-center gap-2 px-2 py-1 rounded-md hover:bg-gray-50">
-            <div className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-sm font-semibold text-gray-600">A</div>
-            <ChevronDown size={14} className="text-gray-500" />
-          </button>
-
-          {menuOpen && (
-            <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-100 rounded-lg shadow-lg z-50">
-              <button onClick={() => { setMenuOpen(false); onNavigate?.('profile'); }} className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50">
-                <Settings size={16} className="text-gray-500" /> Profile & Settings
-              </button>
-              <button onClick={() => { setMenuOpen(false); onNavigate?.('support'); }} className="w-full flex items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 border-t border-gray-100">
-                <HelpCircle size={16} className="text-gray-500" /> Support Center
-              </button>
-            </div>
-          )}
-        </div>
+        <AdminProfile />
       </header>
 
       <main className="flex-1 overflow-y-auto p-6 space-y-4">
@@ -104,8 +132,8 @@ export default function Activities({ onNavigate }) {
             <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             <input value={query} onChange={(e) => setQuery(e.target.value)} type="text" placeholder="Search activities by title, type..." className="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-green-300" />
           </div>
-          <FilterDropdown label="All Types" />
-          <FilterDropdown label="All Status" />
+          <FilterDropdown value={typeFilter} onChange={setTypeFilter} options={[{ value: "all", label: "All Types" }, { value: "Technical", label: "Technical" }, { value: "Career", label: "Career" }, { value: "Sports", label: "Sports" }, { value: "Cultural", label: "Cultural" }, { value: "Academics", label: "Academics" }, { value: "Campaign", label: "Campaign" }, { value: "Trip", label: "Trip" }]} />
+          <FilterDropdown value={statusFilter} onChange={setStatusFilter} options={[{ value: "all", label: "All Status" }, { value: "Upcoming", label: "Upcoming" }, { value: "Ongoing", label: "Ongoing" }, { value: "Completed", label: "Completed" }, { value: "Cancelled", label: "Cancelled" }]} />
           <button onClick={() => onNavigate?.("add-activity")}
             className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-green-600 transition-colors whitespace-nowrap">
             <Plus size={15} />
@@ -167,11 +195,9 @@ export default function Activities({ onNavigate }) {
           ) : (
             <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
               <div className="flex items-center justify-between px-5 py-3 border-b border-gray-100">
-                <p className="text-xs text-gray-500">Showing {filtered.length} activities</p>
+                <p className="text-xs text-gray-500">Showing {visibleActivities.length} of {activities.length} activities</p>
                 <div className="flex items-center gap-2">
-                  <button className="flex items-center gap-1.5 text-xs text-gray-500 border border-gray-200 rounded-lg px-3 py-1.5 hover:bg-gray-50">
-                    Sort by: Newest <ChevronDown size={12} />
-                  </button>
+                  <FilterDropdown value={sortBy} onChange={setSortBy} options={[{ value: "newest", label: "Sort by: Newest" }, { value: "oldest", label: "Sort by: Oldest" }, { value: "title-asc", label: "Sort by: Title (A-Z)" }, { value: "title-desc", label: "Sort by: Title (Z-A)" }]} />
                   <button className="p-1.5 border border-gray-200 rounded-lg hover:bg-gray-50">
                     <SlidersHorizontal size={14} className="text-gray-500" />
                   </button>
@@ -182,7 +208,7 @@ export default function Activities({ onNavigate }) {
                   <thead>
                     <tr className="border-b border-gray-100 bg-gray-50/50">
                       <th className="w-10 px-4 py-3">
-                        <input type="checkbox" checked={selected.length === activities.length} onChange={toggleAll} className="rounded border-gray-300 accent-primary" />
+                        <input type="checkbox" checked={allVisibleSelected} onChange={toggleAll} className="rounded border-gray-300 accent-primary" />
                       </th>
                       {["Activity", "Type", "Date & Time", "Venue", "Actions"].map((h) => (
                         <th key={h} className="text-left px-3 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">{h}</th>
@@ -190,7 +216,7 @@ export default function Activities({ onNavigate }) {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-50">
-                    {filtered.map((a) => (
+                    {visibleActivities.map((a) => (
                       <tr key={a.id} className={`hover:bg-gray-50/60 transition-colors ${selected.includes(a.id) ? "bg-green-50/40" : ""}`}>
                         <td className="px-4 py-3">
                           <input type="checkbox" checked={selected.includes(a.id)} onChange={() => toggleOne(a.id)} className="rounded border-gray-300 accent-primary" />

@@ -14,10 +14,11 @@ import {
   SlidersHorizontal,
   Menu,
 } from "lucide-react";
+import AdminProfile from "../components/AdminProfile";
 
 const students = [
   { initials: "TS", name: "Tamsha Sengupta",      roll: "lee2024001",  dept: "EE",  program: "B.Tech Lateral", year: "3rd", semester: "Semester 6", mentor: "Debarati Roy",  avatarBg: "bg-teal-200",   avatarText: "text-teal-700" },
-  { initials: "TR", name: "Tarun Roy",             roll: "lee2024002",  dept: "EE",  program: "B.Tech Lateral", year: "3rd", semester: "Semester 6", mentor: "Debarati Roy",  avatarBg: "bg-blue-200",   avatarText: "text-blue-700" },
+  { initials: "TR", name: "Turnab Roy",             roll: "lee2024002",  dept: "cse",  program: "B.Tech", year: "3rd", semester: "Semester 6", mentor: "Debarati Roy",  avatarBg: "bg-blue-200",   avatarText: "text-blue-700" },
   { initials: "MC", name: "Madhurima Chatterjee",  roll: "lee2024003",  dept: "EE",  program: "B.Tech Lateral", year: "3rd", semester: "Semester 6", mentor: "Debarati Roy",  avatarBg: "bg-pink-200",   avatarText: "text-pink-700" },
   { initials: "ND", name: "Nilankur Das",          roll: "lee2024004",  dept: "EE",  program: "B.Tech Lateral", year: "3rd", semester: "Semester 6", mentor: "Debarati Roy",  avatarBg: "bg-orange-200", avatarText: "text-orange-700" },
   { initials: "AR", name: "Abhinandan Roy",        roll: "lee2024005",  dept: "EE",  program: "B.Tech Lateral", year: "3rd", semester: "Semester 6", mentor: "Debarati Roy",  avatarBg: "bg-purple-200", avatarText: "text-purple-700" },
@@ -62,20 +63,79 @@ const stats = [
   },
 ];
 
-function FilterDropdown({ label }) {
+function FilterDropdown({ value, onChange, options }) {
   return (
-    <button className="flex items-center gap-1.5 px-3 py-2 border border-gray-200 rounded-lg text-sm text-gray-600 bg-white hover:bg-gray-50 transition-colors whitespace-nowrap">
-      {label}
-      <ChevronDown size={14} />
-    </button>
+    <div className="relative">
+      <select
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        className="appearance-none min-w-[150px] px-3 py-2 pr-8 border border-gray-200 rounded-lg text-sm text-gray-600 bg-white hover:bg-gray-50 transition-colors whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-green-300"
+      >
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+      <ChevronDown size={14} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-500" />
+    </div>
   );
 }
 
 export default function Students({ onNavigate }) {
   const [selected, setSelected] = useState([]);
+  const [query, setQuery] = useState("");
+  const [programFilter, setProgramFilter] = useState("all");
+  const [yearFilter, setYearFilter] = useState("all");
+  const [deptFilter, setDeptFilter] = useState("all");
+  const [sortBy, setSortBy] = useState("name-asc");
+
+  const filteredStudents = students.filter((student) => {
+    const searchText = query.trim().toLowerCase();
+    const matchesSearch =
+      !searchText ||
+      student.name.toLowerCase().includes(searchText) ||
+      student.roll.toLowerCase().includes(searchText) ||
+      student.program.toLowerCase().includes(searchText) ||
+      student.dept.toLowerCase().includes(searchText) ||
+      student.mentor.toLowerCase().includes(searchText);
+
+    const matchesProgram = programFilter === "all" || student.program === programFilter;
+    const matchesYear = yearFilter === "all" || student.year === yearFilter;
+    const matchesDept = deptFilter === "all" || student.dept === deptFilter;
+
+    return matchesSearch && matchesProgram && matchesYear && matchesDept;
+  });
+
+  const sortedStudents = [...filteredStudents].sort((left, right) => {
+    switch (sortBy) {
+      case "name-desc":
+        return right.name.localeCompare(left.name);
+      case "roll-asc":
+        return left.roll.localeCompare(right.roll);
+      case "roll-desc":
+        return right.roll.localeCompare(left.roll);
+      case "year-asc":
+        return (parseInt(left.year, 10) || 0) - (parseInt(right.year, 10) || 0);
+      case "year-desc":
+        return (parseInt(right.year, 10) || 0) - (parseInt(left.year, 10) || 0);
+      case "name-asc":
+      default:
+        return left.name.localeCompare(right.name);
+    }
+  });
+
+  const visibleStudents = sortedStudents;
+  const visibleStudentIds = visibleStudents.map((student) => student.roll);
+  const allVisibleSelected =
+    visibleStudentIds.length > 0 && visibleStudentIds.every((roll) => selected.includes(roll));
 
   const toggleAll = () =>
-    setSelected(selected.length === students.length ? [] : students.map((s) => s.roll));
+    setSelected((prev) =>
+      allVisibleSelected
+        ? prev.filter((roll) => !visibleStudentIds.includes(roll))
+        : Array.from(new Set([...prev, ...visibleStudentIds]))
+    );
 
   const toggleOne = (roll) =>
     setSelected((prev) =>
@@ -93,9 +153,7 @@ export default function Students({ onNavigate }) {
             <p className="text-xs text-gray-400">Manage student accounts and profiles</p>
           </div>
         </div>
-        <div className="w-9 h-9 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center text-sm font-semibold text-gray-600">
-          A
-        </div>
+        <AdminProfile />
       </header>
 
       <main className="flex-1 overflow-y-auto p-6 space-y-4">
@@ -103,15 +161,11 @@ export default function Students({ onNavigate }) {
         <div className="flex items-center gap-3 flex-wrap">
           <div className="relative flex-1 min-w-[220px]">
             <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search students by name, ID or email..."
-              className="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-green-300"
-            />
+            <input value={query} onChange={(event) => setQuery(event.target.value)} type="text" placeholder="Search students by name, ID or email..." className="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-green-300" />
           </div>
-          <FilterDropdown label="All Programs" />
-          <FilterDropdown label="All Years" />
-          <FilterDropdown label="All Departments" />
+          <FilterDropdown value={programFilter} onChange={setProgramFilter} options={[{ value: "all", label: "All Programs" }, { value: "B.Tech Lateral", label: "B.Tech Lateral" }, { value: "B.Tech", label: "B.Tech" }, { value: "M.Tech", label: "M.Tech" }]} />
+          <FilterDropdown value={yearFilter} onChange={setYearFilter} options={[{ value: "all", label: "All Years" }, { value: "1st", label: "1st Year" }, { value: "2nd", label: "2nd Year" }, { value: "3rd", label: "3rd Year" }, { value: "4th", label: "4th Year" }]} />
+          <FilterDropdown value={deptFilter} onChange={setDeptFilter} options={[{ value: "all", label: "All Departments" }, { value: "EE", label: "EE" }, { value: "ECE", label: "ECE" }, { value: "CS", label: "CS" }, { value: "ME", label: "ME" }, { value: "CE", label: "CE" }]} />
           <button
             onClick={() => onNavigate?.("add-student")}
             className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-green-600 transition-colors whitespace-nowrap"
@@ -163,11 +217,9 @@ export default function Students({ onNavigate }) {
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
           {/* Table meta row */}
           <div className="flex items-center justify-between px-5 py-3 border-b border-gray-100">
-            <p className="text-xs text-gray-500">Showing 1 to 10 of 140 students</p>
+            <p className="text-xs text-gray-500">Showing {visibleStudents.length} of {students.length} students</p>
             <div className="flex items-center gap-2">
-              <button className="flex items-center gap-1.5 text-xs text-gray-500 border border-gray-200 rounded-lg px-3 py-1.5 hover:bg-gray-50">
-                Sort by: Name (A-Z) <ChevronDown size={12} />
-              </button>
+              <FilterDropdown value={sortBy} onChange={setSortBy} options={[{ value: "name-asc", label: "Sort by: Name (A-Z)" }, { value: "name-desc", label: "Sort by: Name (Z-A)" }, { value: "roll-asc", label: "Sort by: Roll (A-Z)" }, { value: "roll-desc", label: "Sort by: Roll (Z-A)" }, { value: "year-asc", label: "Sort by: Year (Low-High)" }, { value: "year-desc", label: "Sort by: Year (High-Low)" }]} />
               <button className="p-1.5 border border-gray-200 rounded-lg hover:bg-gray-50">
                 <SlidersHorizontal size={14} className="text-gray-500" />
               </button>
@@ -182,7 +234,7 @@ export default function Students({ onNavigate }) {
                   <th className="w-10 px-4 py-3">
                     <input
                       type="checkbox"
-                      checked={selected.length === students.length}
+                      checked={allVisibleSelected}
                       onChange={toggleAll}
                       className="rounded border-gray-300 accent-primary"
                     />
@@ -198,7 +250,7 @@ export default function Students({ onNavigate }) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
-                {students.map((s) => (
+                {visibleStudents.map((s) => (
                   <tr
                     key={s.roll}
                     className={`hover:bg-gray-50/60 transition-colors ${selected.includes(s.roll) ? "bg-green-50/40" : ""}`}

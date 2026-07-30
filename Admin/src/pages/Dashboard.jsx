@@ -8,9 +8,9 @@ import {
   Upload,
   Megaphone,
   BookOpen,
-  ChevronDown,
 } from "lucide-react";
 import adminHeroImage from "../assets/admin-hero.svg";
+import AdminProfile from "../components/AdminProfile";
 
 const stats = [
   { label: "Total Students", value: "2847", icon: Users, color: "text-red-400", bg: "bg-red-50", border: "border-l-red-400" },
@@ -45,16 +45,7 @@ export default function Dashboard() {
           <h1 className="text-[22px] font-bold leading-tight text-gray-800">Dashboard</h1>
           <p className="text-xs text-gray-400 mt-0.5">Welcome back, Admin! Here&apos;s what&apos;s happening today.</p>
         </div>
-        <div className="flex items-center gap-3">
-          <div className="text-right">
-            <p className="text-sm font-semibold text-gray-700">Admin User</p>
-            <p className="text-xs text-gray-400">Super admin</p>
-          </div>
-          <div className="w-9 h-9 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center text-sm font-semibold text-gray-600">
-            <span className="text-xs font-bold">A</span>
-          </div>
-          <ChevronDown size={14} className="text-gray-400" />
-        </div>
+        <AdminProfile />
       </header>
 
       <main className="flex-1 p-6 space-y-4 overflow-y-auto">

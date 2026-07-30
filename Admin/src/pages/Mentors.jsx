@@ -13,6 +13,7 @@ import {
   SlidersHorizontal,
   Menu,
 } from "lucide-react";
+import AdminProfile from "../components/AdminProfile";
 
 const mentors = [
   { initials: "DR", name: "Debarati Roy",            empId: "EMP001", dept: "EE",  specialization: "Power Systems",     students: 12, status: "Active",   avatarBg: "bg-purple-200", avatarText: "text-purple-700" },
@@ -40,19 +41,76 @@ const stats = [
   { icon: <Briefcase size={22} className="text-purple-500" />,   bg: "bg-purple-50", value: "8",   label: "Departments",    sub: "Active departments" },
 ];
 
-function FilterDropdown({ label }) {
+function FilterDropdown({ value, onChange, options }) {
   return (
-    <button className="flex items-center gap-1.5 px-3 py-2 border border-gray-200 rounded-lg text-sm text-gray-600 bg-white hover:bg-gray-50 transition-colors whitespace-nowrap">
-      {label} <ChevronDown size={14} />
-    </button>
+    <div className="relative">
+      <select
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        className="appearance-none min-w-[150px] px-3 py-2 pr-8 border border-gray-200 rounded-lg text-sm text-gray-600 bg-white hover:bg-gray-50 transition-colors whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-green-300"
+      >
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+      <ChevronDown size={14} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-500" />
+    </div>
   );
 }
 
 export default function Mentors({ onNavigate }) {
   const [selected, setSelected] = useState([]);
+  const [query, setQuery] = useState("");
+  const [deptFilter, setDeptFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [sortBy, setSortBy] = useState("name-asc");
+
+  const filteredMentors = mentors.filter((mentor) => {
+    const searchText = query.trim().toLowerCase();
+    const matchesSearch =
+      !searchText ||
+      mentor.name.toLowerCase().includes(searchText) ||
+      mentor.empId.toLowerCase().includes(searchText) ||
+      mentor.specialization.toLowerCase().includes(searchText) ||
+      mentor.dept.toLowerCase().includes(searchText);
+
+    const matchesDept = deptFilter === "all" || mentor.dept === deptFilter;
+    const matchesStatus = statusFilter === "all" || mentor.status === statusFilter;
+
+    return matchesSearch && matchesDept && matchesStatus;
+  });
+
+  const sortedMentors = [...filteredMentors].sort((left, right) => {
+    switch (sortBy) {
+      case "name-desc":
+        return right.name.localeCompare(left.name);
+      case "students-asc":
+        return left.students - right.students;
+      case "students-desc":
+        return right.students - left.students;
+      case "dept-asc":
+        return left.dept.localeCompare(right.dept);
+      case "dept-desc":
+        return right.dept.localeCompare(left.dept);
+      case "name-asc":
+      default:
+        return left.name.localeCompare(right.name);
+    }
+  });
+
+  const visibleMentors = sortedMentors;
+  const visibleMentorIds = visibleMentors.map((mentor) => mentor.empId);
+  const allVisibleSelected =
+    visibleMentorIds.length > 0 && visibleMentorIds.every((id) => selected.includes(id));
 
   const toggleAll = () =>
-    setSelected(selected.length === mentors.length ? [] : mentors.map((m) => m.empId));
+    setSelected((prev) =>
+      allVisibleSelected
+        ? prev.filter((id) => !visibleMentorIds.includes(id))
+        : Array.from(new Set([...prev, ...visibleMentorIds]))
+    );
 
   const toggleOne = (id) =>
     setSelected((prev) =>
@@ -70,7 +128,7 @@ export default function Mentors({ onNavigate }) {
             <p className="text-xs text-gray-400">Manage mentor accounts and profiles</p>
           </div>
         </div>
-        <div className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-sm font-semibold text-gray-600">A</div>
+        <AdminProfile />
       </header>
 
       <main className="flex-1 overflow-y-auto p-6 space-y-4">
@@ -78,11 +136,11 @@ export default function Mentors({ onNavigate }) {
         <div className="flex items-center gap-3 flex-wrap">
           <div className="relative flex-1 min-w-[220px]">
             <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-            <input type="text" placeholder="Search mentors by name, ID or email..." className="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-green-300" />
+            <input value={query} onChange={(event) => setQuery(event.target.value)} type="text" placeholder="Search mentors by name, ID or email..." className="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-green-300" />
           </div>
-          <FilterDropdown label="All Departments" />
-          <FilterDropdown label="All Status" />
-          <FilterDropdown label="Sort by" />
+          <FilterDropdown value={deptFilter} onChange={setDeptFilter} options={[{ value: "all", label: "All Departments" }, { value: "EE", label: "EE" }, { value: "ECE", label: "ECE" }, { value: "CS", label: "CS" }, { value: "ME", label: "ME" }, { value: "CE", label: "CE" }]} />
+          <FilterDropdown value={statusFilter} onChange={setStatusFilter} options={[{ value: "all", label: "All Status" }, { value: "Active", label: "Active" }, { value: "On Leave", label: "On Leave" }]} />
+          <FilterDropdown value={sortBy} onChange={setSortBy} options={[{ value: "name-asc", label: "Sort by: Name (A-Z)" }, { value: "name-desc", label: "Sort by: Name (Z-A)" }, { value: "students-desc", label: "Sort by: Students (High-Low)" }, { value: "students-asc", label: "Sort by: Students (Low-High)" }, { value: "dept-asc", label: "Sort by: Department (A-Z)" }, { value: "dept-desc", label: "Sort by: Department (Z-A)" }]} />
           <button
             onClick={() => onNavigate?.("add-mentor")}
             className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-green-600 transition-colors whitespace-nowrap"
@@ -109,11 +167,9 @@ export default function Mentors({ onNavigate }) {
         {/* Table */}
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
           <div className="flex items-center justify-between px-5 py-3 border-b border-gray-100">
-            <p className="text-xs text-gray-500">Showing 1 to 8 of 156 mentors</p>
+            <p className="text-xs text-gray-500">Showing {visibleMentors.length} of {mentors.length} mentors</p>
             <div className="flex items-center gap-2">
-              <button className="flex items-center gap-1.5 text-xs text-gray-500 border border-gray-200 rounded-lg px-3 py-1.5 hover:bg-gray-50">
-                Sort by: Name (A-Z) <ChevronDown size={12} />
-              </button>
+              <FilterDropdown value={sortBy} onChange={setSortBy} options={[{ value: "name-asc", label: "Sort by: Name (A-Z)" }, { value: "name-desc", label: "Sort by: Name (Z-A)" }, { value: "students-desc", label: "Sort by: Students (High-Low)" }, { value: "students-asc", label: "Sort by: Students (Low-High)" }, { value: "dept-asc", label: "Sort by: Department (A-Z)" }, { value: "dept-desc", label: "Sort by: Department (Z-A)" }]} />
               <button className="p-1.5 border border-gray-200 rounded-lg hover:bg-gray-50">
                 <SlidersHorizontal size={14} className="text-gray-500" />
               </button>
@@ -125,7 +181,7 @@ export default function Mentors({ onNavigate }) {
               <thead>
                 <tr className="border-b border-gray-100 bg-gray-50/50">
                   <th className="w-10 px-4 py-3">
-                    <input type="checkbox" checked={selected.length === mentors.length} onChange={toggleAll} className="rounded border-gray-300 accent-primary" />
+                    <input type="checkbox" checked={allVisibleSelected} onChange={toggleAll} className="rounded border-gray-300 accent-primary" />
                   </th>
                   {["Mentor", "Employee ID", "Department", "Specialization", "Students", "Status", "Actions"].map((h) => (
                     <th key={h} className="text-left px-3 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">{h}</th>
@@ -133,7 +189,7 @@ export default function Mentors({ onNavigate }) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
-                {mentors.map((m) => (
+                {visibleMentors.map((m) => (
                   <tr key={m.empId} className={`hover:bg-gray-50/60 transition-colors ${selected.includes(m.empId) ? "bg-green-50/40" : ""}`}>
                     <td className="px-4 py-3">
                       <input type="checkbox" checked={selected.includes(m.empId)} onChange={() => toggleOne(m.empId)} className="rounded border-gray-300 accent-primary" />

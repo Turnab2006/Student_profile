@@ -4,6 +4,7 @@ import {
   ArrowRight, ArrowLeft, ChevronDown, Info, Menu, Check,
   Users, CircleUserRound, MapPinned, CheckCircle2, Briefcase, GraduationCap,
 } from "lucide-react";
+import AdminProfile from "../components/AdminProfile";
 
 function Label({ children, required }) {
   return (
@@ -128,7 +129,7 @@ function MentorDetailsForm({ form, setForm }) {
         <div>
           <Label required>Date of Birth</Label>
           <input type="date" value={form.dob} onChange={upd("dob")}
-            className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-600 bg-white focus:outline-none focus:ring-2 focus:ring-green-300" />
+            className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-green-300" />
         </div>
         <div>
           <Label required>Gender</Label>
@@ -172,7 +173,7 @@ function MentorDetailsForm({ form, setForm }) {
         <div>
           <Label required>Joining Date</Label>
           <input type="date" value={form.joiningDate} onChange={upd("joiningDate")}
-            className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-600 bg-white focus:outline-none focus:ring-2 focus:ring-green-300" />
+            className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-green-300" />
         </div>
         <div>
           <Label>Years of Experience</Label>
@@ -596,14 +597,7 @@ export default function AddMentor({ onNavigate }) {
           </button>
           <h1 className="text-base font-semibold text-gray-800">Add Mentor</h1>
         </div>
-        <div className="flex items-center gap-3">
-          <div className="text-right">
-            <p className="text-sm font-semibold text-gray-700">Admin User</p>
-            <p className="text-xs text-gray-400">Super Admin</p>
-          </div>
-          <div className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-sm font-semibold text-gray-600">A</div>
-          <ChevronDown size={14} className="text-gray-400" />
-        </div>
+        <AdminProfile />
       </header>
 
       <main className="flex-1 overflow-y-auto p-6">

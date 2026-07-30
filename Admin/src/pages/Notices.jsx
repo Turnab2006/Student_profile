@@ -14,6 +14,7 @@ import {
   Menu,
   CalendarDays,
 } from "lucide-react";
+import AdminProfile from "../components/AdminProfile";
 
 const notices = [
   { id: "NTC001", title: "Semester Exam Schedule 2026",         category: "Academic",   date: "2026-05-20", status: "Active",   badgeColor: "bg-green-100 text-green-600" },
@@ -40,19 +41,71 @@ const categoryColors = {
   Event:     "bg-orange-100 text-orange-600",
 };
 
-function FilterDropdown({ label }) {
+function FilterDropdown({ value, onChange, options }) {
   return (
-    <button className="flex items-center gap-1.5 px-3 py-2 border border-gray-200 rounded-lg text-sm text-gray-600 bg-white hover:bg-gray-50 transition-colors whitespace-nowrap">
-      {label} <ChevronDown size={14} />
-    </button>
+    <div className="relative">
+      <select
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        className="appearance-none min-w-[150px] px-3 py-2 pr-8 border border-gray-200 rounded-lg text-sm text-gray-600 bg-white hover:bg-gray-50 transition-colors whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-green-300"
+      >
+        {options.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+      <ChevronDown size={14} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-500" />
+    </div>
   );
 }
 
 export default function Notices({ onNavigate }) {
   const [selected, setSelected] = useState([]);
+  const [query, setQuery] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [sortBy, setSortBy] = useState("newest");
+
+  const filteredNotices = notices.filter((notice) => {
+    const searchText = query.trim().toLowerCase();
+    const matchesSearch =
+      !searchText ||
+      notice.id.toLowerCase().includes(searchText) ||
+      notice.title.toLowerCase().includes(searchText) ||
+      notice.category.toLowerCase().includes(searchText);
+
+    const matchesCategory = categoryFilter === "all" || notice.category === categoryFilter;
+    const matchesStatus = statusFilter === "all" || notice.status === statusFilter;
+
+    return matchesSearch && matchesCategory && matchesStatus;
+  });
+
+  const sortedNotices = [...filteredNotices].sort((left, right) => {
+    switch (sortBy) {
+      case "oldest":
+        return left.date.localeCompare(right.date);
+      case "title-asc":
+        return left.title.localeCompare(right.title);
+      case "title-desc":
+        return right.title.localeCompare(left.title);
+      case "newest":
+      default:
+        return right.date.localeCompare(left.date);
+    }
+  });
+
+  const visibleNotices = sortedNotices;
+  const visibleNoticeIds = visibleNotices.map((notice) => notice.id);
+  const allVisibleSelected =
+    visibleNoticeIds.length > 0 && visibleNoticeIds.every((id) => selected.includes(id));
 
   const toggleAll = () =>
-    setSelected(selected.length === notices.length ? [] : notices.map((n) => n.id));
+    setSelected((prev) =>
+      allVisibleSelected
+        ? prev.filter((id) => !visibleNoticeIds.includes(id))
+        : Array.from(new Set([...prev, ...visibleNoticeIds]))
+    );
   const toggleOne = (id) =>
     setSelected((prev) => prev.includes(id) ? prev.filter((r) => r !== id) : [...prev, id]);
 
@@ -66,7 +119,7 @@ export default function Notices({ onNavigate }) {
             <p className="text-xs text-gray-400">Manage announcements and notices</p>
           </div>
         </div>
-        <div className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-sm font-semibold text-gray-600">A</div>
+        <AdminProfile />
       </header>
 
       <main className="flex-1 overflow-y-auto p-6 space-y-4">
@@ -74,10 +127,10 @@ export default function Notices({ onNavigate }) {
         <div className="flex items-center gap-3 flex-wrap">
           <div className="relative flex-1 min-w-[220px]">
             <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-            <input type="text" placeholder="Search notices by title, category..." className="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-green-300" />
+            <input value={query} onChange={(event) => setQuery(event.target.value)} type="text" placeholder="Search notices by title, category..." className="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-green-300" />
           </div>
-          <FilterDropdown label="All Categories" />
-          <FilterDropdown label="All Status" />
+          <FilterDropdown value={categoryFilter} onChange={setCategoryFilter} options={[{ value: "all", label: "All Categories" }, { value: "Academic", label: "Academic" }, { value: "General", label: "General" }, { value: "Placement", label: "Placement" }, { value: "Event", label: "Event" }]} />
+          <FilterDropdown value={statusFilter} onChange={setStatusFilter} options={[{ value: "all", label: "All Status" }, { value: "Active", label: "Active" }, { value: "Draft", label: "Draft" }, { value: "Archived", label: "Archived" }]} />
           <button onClick={() => onNavigate?.("add-notice")}
             className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-green-600 transition-colors whitespace-nowrap">
             <Plus size={15} />
@@ -102,11 +155,9 @@ export default function Notices({ onNavigate }) {
         {/* Table */}
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
           <div className="flex items-center justify-between px-5 py-3 border-b border-gray-100">
-            <p className="text-xs text-gray-500">Showing 1 to 8 of 48 notices</p>
+            <p className="text-xs text-gray-500">Showing {visibleNotices.length} of {notices.length} notices</p>
             <div className="flex items-center gap-2">
-              <button className="flex items-center gap-1.5 text-xs text-gray-500 border border-gray-200 rounded-lg px-3 py-1.5 hover:bg-gray-50">
-                Sort by: Newest <ChevronDown size={12} />
-              </button>
+              <FilterDropdown value={sortBy} onChange={setSortBy} options={[{ value: "newest", label: "Sort by: Newest" }, { value: "oldest", label: "Sort by: Oldest" }, { value: "title-asc", label: "Sort by: Title (A-Z)" }, { value: "title-desc", label: "Sort by: Title (Z-A)" }]} />
               <button className="p-1.5 border border-gray-200 rounded-lg hover:bg-gray-50">
                 <SlidersHorizontal size={14} className="text-gray-500" />
               </button>
@@ -118,7 +169,7 @@ export default function Notices({ onNavigate }) {
               <thead>
                 <tr className="border-b border-gray-100 bg-gray-50/50">
                   <th className="w-10 px-4 py-3">
-                    <input type="checkbox" checked={selected.length === notices.length} onChange={toggleAll} className="rounded border-gray-300 accent-primary" />
+                    <input type="checkbox" checked={allVisibleSelected} onChange={toggleAll} className="rounded border-gray-300 accent-primary" />
                   </th>
                   {["Notice ID", "Title", "Category", "Published Date", "Status", "Actions"].map((h) => (
                     <th key={h} className="text-left px-3 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">{h}</th>
@@ -126,7 +177,7 @@ export default function Notices({ onNavigate }) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
-                {notices.map((n) => (
+                {visibleNotices.map((n) => (
                   <tr key={n.id} className={`hover:bg-gray-50/60 transition-colors ${selected.includes(n.id) ? "bg-green-50/40" : ""}`}>
                     <td className="px-4 py-3">
                       <input type="checkbox" checked={selected.includes(n.id)} onChange={() => toggleOne(n.id)} className="rounded border-gray-300 accent-primary" />

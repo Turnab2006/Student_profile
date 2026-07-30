@@ -12,6 +12,7 @@ import {
   Paperclip,
   X,
 } from "lucide-react";
+import AdminProfile from "../components/AdminProfile";
 
 function Label({ children, required }) {
   return (
@@ -48,14 +49,7 @@ export default function AddNotice({ onNavigate }) {
           </button>
           <h1 className="text-base font-semibold text-gray-800">Create Notice</h1>
         </div>
-        <div className="flex items-center gap-3">
-          <div className="text-right">
-            <p className="text-sm font-semibold text-gray-700">Admin User</p>
-            <p className="text-xs text-gray-400">Super Admin</p>
-          </div>
-          <div className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center text-sm font-semibold text-gray-600">A</div>
-          <ChevronDown size={14} className="text-gray-400" />
-        </div>
+        <AdminProfile />
       </header>
 
       <main className="flex-1 overflow-y-auto p-6">
@@ -94,11 +88,8 @@ export default function AddNotice({ onNavigate }) {
               </div>
               <div>
                 <Label required>Publish Date</Label>
-                <div className="relative">
-                  <CalendarDays size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-                  <input type="date" value={form.publishDate} onChange={upd("publishDate")}
-                    className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-green-300" />
-                </div>
+                <input type="date" value={form.publishDate} onChange={upd("publishDate")}
+                  className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-green-300" />
               </div>
             </div>
 
