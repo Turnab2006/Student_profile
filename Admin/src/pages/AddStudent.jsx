@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
   ChevronDown,
   Menu,
+  Bell,
   Upload,
   FileText,
   Download,
@@ -17,6 +18,7 @@ import {
   MapPinned,
   CheckCircle2,
   Briefcase,
+  Building2,
 } from "lucide-react";
 import AdminProfile from "../components/AdminProfile";
 
@@ -79,6 +81,67 @@ function NumberBadge({ value }) {
     </span>
   );
 }
+
+const reviewStudentDetails = [
+  { label: "Full Name", value: "Tamsha Sengupta", icon: CircleUserRound },
+  { label: "College Roll No.", value: "lee2024001", icon: IdCard },
+  { label: "Program", value: "B.Tech Lateral", icon: Building2 },
+  { label: "College Email", value: "tamsha.s@abc.edu.in", icon: Mail },
+  { label: "Contact Number", value: "+91 98765 43210", icon: Phone },
+  { label: "Date of Birth", value: "15 Apr 2002", icon: CalendarDays },
+  { label: "Gender", value: "Male", icon: User },
+  { label: "Admission Year", value: "2024", icon: CalendarDays },
+  { label: "Session Name", value: "2024-2025", icon: CalendarDays },
+  { label: "Current Year", value: "3rd Year", icon: Building2 },
+  { label: "Current Semester", value: "Semester 6", icon: Building2 },
+  { label: "Status", value: "Active", icon: CheckCircle2, pill: true },
+];
+
+const reviewAcademicDetails = [
+  { label: "College Roll Number", value: "lee2024001", icon: IdCard },
+  { label: "Program", value: "B.Tech Lateral", icon: Building2 },
+  { label: "Department", value: "Electrical Engineering", icon: Building2 },
+  { label: "Admission Year", value: "2024", icon: CalendarDays },
+  { label: "Session Name", value: "2024-2025", icon: CalendarDays },
+  { label: "Graduation Year", value: "2027", icon: CalendarDays },
+  { label: "Current Year", value: "3rd Year", icon: CalendarDays },
+  { label: "Current Semester", value: "Semester 6", icon: CalendarDays },
+];
+
+const reviewParentDetails = [
+  { section: "Father's Details", fields: [
+    { label: "First Name", value: "Anirban" },
+    { label: "Middle Name", value: "Kumar" },
+    { label: "Last Name", value: "Sengupta" },
+    { label: "Contact Number", value: "+91 91234 56789" },
+    { label: "Email Address", value: "anirban.sengupta@gmail.com" },
+    { label: "Occupation", value: "Business" },
+  ] },
+  { section: "Mother's Details", fields: [
+    { label: "First Name", value: "Madhurima" },
+    { label: "Middle Name", value: "N/A" },
+    { label: "Last Name", value: "Sengupta" },
+    { label: "Contact Number", value: "+91 98765 07690" },
+    { label: "Email Address", value: "madhurima.sengupta@gmail.com" },
+    { label: "Occupation", value: "Homemaker" },
+  ] },
+];
+
+const reviewAddressDetails = [
+  { label: "Address Line 1", value: "123, Rabindra Sarny, Salt Lake" },
+  { label: "Address Line 2", value: "Block A, Near City Center" },
+  { label: "Country", value: "India" },
+  { label: "State / Province", value: "West Bengal" },
+  { label: "City", value: "Kolkata" },
+  { label: "Postal Code", value: "700064" },
+];
+
+const reviewChecklist = [
+  "Personal information added",
+  "Academic information added",
+  "Parent/Guardian details added",
+  "Address information added",
+];
 
 export default function AddStudent({ onNavigate }) {
   const [dragOver, setDragOver] = useState(false);
@@ -292,12 +355,283 @@ export default function AddStudent({ onNavigate }) {
               </button>
               <button
                 type="button"
+                onClick={() => setStep(3)}
                 className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-green-600 transition-colors"
               >
                 Review &amp; Submit
                 <ArrowRight size={15} />
               </button>
             </section>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  if (step === 3) {
+    return (
+      <div className="flex-1 h-full flex flex-col overflow-hidden bg-gray-50">
+        <header className="bg-white border-b border-gray-100 px-6 py-3 flex items-center justify-between shrink-0 shadow-[0_1px_0_rgba(0,0,0,0.02)]">
+          <div className="flex items-center gap-3 min-w-0">
+            <button type="button" onClick={() => onNavigate?.("students")} className="text-gray-500 hover:text-gray-700 transition-colors">
+              <Menu size={20} />
+            </button>
+            <div className="min-w-0">
+              <h1 className="text-base font-semibold text-gray-800">Add Student</h1>
+              <p className="text-xs text-gray-400 mt-0.5">
+                Students &gt; Add Student &gt; Parents Details &gt; <span className="text-primary font-medium">Review &amp; Submit</span>
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <button type="button" className="relative rounded-full p-2 hover:bg-gray-50 transition-colors">
+              <Bell size={18} className="text-gray-500" />
+              <span className="absolute right-1 top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-bold text-white">4</span>
+            </button>
+            <AdminProfile />
+          </div>
+        </header>
+
+        <main className="flex-1 overflow-y-auto p-4">
+          <div className="max-w-[1500px] mx-auto space-y-4">
+            <section className="bg-white rounded-xl border border-gray-200 shadow-sm px-5 py-4">
+              <h2 className="text-[22px] font-medium text-gray-800 leading-tight">Review &amp; Submit</h2>
+              <p className="text-sm text-gray-500 mt-1">Please review all the information carefully before submitting the student details.</p>
+            </section>
+
+            <section className="bg-white rounded-xl border border-gray-200 shadow-sm px-5 py-4">
+              <div className="grid grid-cols-3 gap-3 items-center">
+                <div className="flex items-center gap-3">
+                  <NumberBadge value={1} />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800">Personal Information</p>
+                    <p className="text-xs text-primary">Completed</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 justify-center">
+                  <NumberBadge value={2} />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800">Academic Information</p>
+                    <p className="text-xs text-primary">Completed</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 justify-end">
+                  <span className="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-sm font-bold">3</span>
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800">Review &amp; Submit</p>
+                    <p className="text-xs text-primary">In Progress</p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1.75fr)_minmax(280px,0.95fr)] gap-4 items-start">
+              <div className="space-y-4">
+                <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+                  <div className="flex items-center justify-between gap-4 mb-4">
+                    <div>
+                      <h3 className="text-sm font-semibold text-gray-800">Personal Information</h3>
+                      <p className="text-xs text-gray-400 mt-0.5">Please review the information below.</p>
+                    </div>
+                    <button type="button" className="inline-flex items-center gap-2 rounded-lg border border-primary/30 px-4 py-2 text-sm font-medium text-primary hover:bg-green-50 transition-colors">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="m18 2 4 4-14 14-4 1 1-4 14-14Z" />
+                      </svg>
+                      Edit
+                    </button>
+                  </div>
+
+                  <div className="rounded-lg border border-gray-100 overflow-hidden">
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-100">
+                      {reviewStudentDetails.map((item) => (
+                        <div key={item.label} className="min-h-[66px] p-3 flex items-start gap-3 bg-white">
+                          <div className="w-6 h-6 rounded-md bg-primary-light flex items-center justify-center shrink-0 text-primary mt-0.5">
+                            <item.icon size={13} />
+                          </div>
+                          <div>
+                            <p className="text-[10px] font-medium text-gray-500 uppercase tracking-wide">{item.label}</p>
+                            {item.pill ? (
+                              <span className="inline-flex items-center rounded-full bg-primary-light px-2 py-0.5 text-[11px] font-semibold text-primary mt-1">{item.value}</span>
+                            ) : (
+                              <p className="text-sm font-semibold text-gray-700 mt-0.5">{item.value}</p>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </section>
+
+                <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+                  <div className="flex items-center justify-between gap-4 mb-4">
+                    <div>
+                      <h3 className="text-sm font-semibold text-gray-800">Academic Information</h3>
+                      <p className="text-xs text-gray-400 mt-0.5">Verify the academic details before submitting.</p>
+                    </div>
+                    <button type="button" className="inline-flex items-center gap-2 rounded-lg border border-primary/30 px-4 py-2 text-sm font-medium text-primary hover:bg-green-50 transition-colors">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="m18 2 4 4-14 14-4 1 1-4 14-14Z" />
+                      </svg>
+                      Edit
+                    </button>
+                  </div>
+
+                  <div className="rounded-lg border border-gray-100 overflow-hidden">
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-100">
+                      {reviewAcademicDetails.map((item) => (
+                        <div key={item.label} className="min-h-[66px] p-3 flex items-start gap-3 bg-white">
+                          <div className="w-6 h-6 rounded-md bg-primary-light flex items-center justify-center shrink-0 text-primary mt-0.5">
+                            <item.icon size={13} />
+                          </div>
+                          <div>
+                            <p className="text-[10px] font-medium text-gray-500 uppercase tracking-wide">{item.label}</p>
+                            <p className="text-sm font-semibold text-gray-700 mt-0.5">{item.value}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </section>
+
+                <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+                  <div className="flex items-center justify-between gap-4 mb-4">
+                    <div>
+                      <h3 className="text-sm font-semibold text-gray-800">Parent / Guardian Details</h3>
+                      <p className="text-xs text-gray-400 mt-0.5">Check father&apos;s and mother&apos;s details carefully.</p>
+                    </div>
+                    <button type="button" className="inline-flex items-center gap-2 rounded-lg border border-primary/30 px-4 py-2 text-sm font-medium text-primary hover:bg-green-50 transition-colors">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="m18 2 4 4-14 14-4 1 1-4 14-14Z" />
+                      </svg>
+                      Edit
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
+                    {reviewParentDetails.map((group) => (
+                      <div key={group.section} className="rounded-lg border border-gray-100 p-4">
+                        <p className="text-xs font-semibold text-primary mb-4">{group.section}</p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                          {group.fields.map((field) => (
+                            <div key={field.label}>
+                              <p className="text-[10px] font-medium text-gray-500 uppercase tracking-wide">{field.label}</p>
+                              <p className="text-sm font-semibold text-gray-700 mt-0.5">{field.value}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+
+                <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+                  <div className="flex items-center justify-between gap-4 mb-4">
+                    <div>
+                      <h3 className="text-sm font-semibold text-gray-800">Address Information</h3>
+                      <p className="text-xs text-gray-400 mt-0.5">Review the current address details.</p>
+                    </div>
+                    <button type="button" className="inline-flex items-center gap-2 rounded-lg border border-primary/30 px-4 py-2 text-sm font-medium text-primary hover:bg-green-50 transition-colors">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="m18 2 4 4-14 14-4 1 1-4 14-14Z" />
+                      </svg>
+                      Edit
+                    </button>
+                  </div>
+
+                  <div className="rounded-lg border border-gray-100 p-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                      {reviewAddressDetails.map((item) => (
+                        <div key={item.label}>
+                          <p className="text-[10px] font-medium text-gray-500 uppercase tracking-wide">{item.label}</p>
+                          <p className="text-sm font-semibold text-gray-700 mt-0.5">{item.value}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </section>
+
+                <section className="bg-white rounded-xl border border-gray-200 shadow-sm px-5 py-4 flex items-center justify-between">
+                  <button type="button" onClick={() => setStep(2)} className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                    <ArrowLeft size={15} />
+                    Previous
+                  </button>
+
+                  <div className="flex items-end gap-3">
+                    <button type="button" onClick={() => onNavigate?.("students")} className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors">
+                      Cancel
+                    </button>
+                    <button type="button" onClick={() => onNavigate?.("students")} className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-green-600 transition-colors">
+                      Submit Student
+                      <ArrowRight size={15} />
+                    </button>
+                  </div>
+                </section>
+              </div>
+
+              <aside className="space-y-4">
+                <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+                  <h3 className="text-sm font-semibold text-primary mb-4">Student Summary</h3>
+                  <div className="space-y-4">
+                    <div className="flex items-start gap-3">
+                      <div className="w-10 h-10 rounded-full bg-primary-light text-primary flex items-center justify-center shrink-0 font-bold">TS</div>
+                      <div>
+                        <p className="text-sm font-semibold text-gray-800">Tamsha Sengupta</p>
+                        <p className="text-xs text-gray-400">B.Tech Lateral</p>
+                      </div>
+                    </div>
+
+                    {[
+                      ["College Roll Number", "lee2024001"],
+                      ["Department", "Electrical Engineering"],
+                      ["Year", "3rd Year"],
+                      ["Admission Year", "2024"],
+                      ["Session", "2024-2025"],
+                    ].map(([label, value]) => (
+                      <div key={label} className="flex items-start gap-3">
+                        <div className="w-6 h-6 rounded-md bg-primary-light flex items-center justify-center shrink-0 text-primary mt-0.5">
+                          <CheckCircle2 size={14} />
+                        </div>
+                        <div>
+                          <p className="text-[10px] font-medium text-gray-500 uppercase tracking-wide">{label}</p>
+                          <p className="text-xs text-gray-700 mt-0.5">{value}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+
+                <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+                  <h3 className="text-sm font-semibold text-primary mb-4">Checklist</h3>
+                  <div className="space-y-3">
+                    {reviewChecklist.map((item) => (
+                      <div key={item} className="flex items-center gap-2.5">
+                        <CheckCircle2 size={16} className="text-primary shrink-0" />
+                        <span className="text-xs text-gray-700">{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </section>
+
+                <section className="bg-white rounded-xl border border-blue-100 shadow-sm p-5">
+                  <div className="flex items-start gap-3">
+                    <div className="w-6 h-6 rounded-full bg-blue-50 flex items-center justify-center shrink-0 text-blue-500 mt-0.5">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M12 16v-4" />
+                        <path d="M12 8h.01" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 className="text-[15px] font-semibold text-blue-500">Please Note</h3>
+                      <p className="mt-1 text-xs leading-5 text-gray-500">
+                        Once you submit, the student will be created and all entered information will be saved. You can edit the record later if needed.
+                      </p>
+                    </div>
+                  </div>
+                </section>
+              </aside>
+            </div>
           </div>
         </main>
       </div>

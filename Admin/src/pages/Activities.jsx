@@ -164,7 +164,7 @@ export default function Activities({ onNavigate }) {
         <div className=""> 
           {view === "grid" ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filtered.map((a) => (
+              {visibleActivities.map((a) => (
                 <div key={a.id} className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden flex flex-col">
                   <div className="h-40 bg-gradient-to-r from-gray-200 via-gray-100 to-white flex items-end p-3">
                     <div className="bg-white/60 px-2 py-1 rounded text-[11px] font-semibold text-gray-700">{a.type}</div>
