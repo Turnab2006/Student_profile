@@ -135,7 +135,7 @@ export default function Dashboard({ onNavigate, onOpenSidebar }) {
                 <button
                   key={label}
                   type="button"
-                  onClick={() => handleAction(page)}
+                  onClick={() => handleQuickActionClick(page)}
                   className={`min-h-[85px] flex items-center justify-center gap-2.5 px-4 py-5 rounded-2xl text-xs sm:text-sm font-bold border border-emerald-200/60 ${color} ${bg} transition-all cursor-pointer hover:shadow-sm active:scale-[0.98] select-none`}
                 >
                   <Icon size={18} className="stroke-[2.2]" />
