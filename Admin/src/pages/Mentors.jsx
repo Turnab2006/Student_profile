@@ -117,18 +117,22 @@ export default function Mentors({ onNavigate }) {
       prev.includes(id) ? prev.filter((r) => r !== id) : [...prev, id]
     );
 
+  const openMentorDetails = (mentor) => onNavigate?.("mentor-details", mentor);
+
   return (
     <div className="flex-1 h-full flex flex-col overflow-hidden">
       {/* Topbar */}
-      <header className="bg-white border-b border-gray-100 px-6 py-3 flex items-center justify-between shrink-0">
+      <header className="h-[65px] bg-white border-b border-gray-100 px-6 flex items-center justify-between shrink-0 shadow-2xs">
         <div className="flex items-center gap-3">
-          <Menu size={20} className="text-gray-500" />
+          <button type="button" onClick={() => onNavigate?.("dashboard")} className="text-gray-500 hover:text-gray-700 transition-colors lg:hidden">
+            <Menu size={20} />
+          </button>
           <div>
-            <h1 className="text-base font-semibold text-gray-800">Mentors</h1>
-            <p className="text-xs text-gray-400">Manage mentor accounts and profiles</p>
+            <h1 className="text-xl font-bold text-gray-800 tracking-tight">Mentors</h1>
+            <p className="text-xs text-gray-400 mt-0.5">Manage mentor accounts and profiles</p>
           </div>
         </div>
-        <AdminProfile />
+        <AdminProfile name="Admin User" role="Super Admin" avatar="A" onNavigate={onNavigate} />
       </header>
 
       <main className="flex-1 overflow-y-auto p-6 space-y-4">
@@ -211,7 +215,12 @@ export default function Mentors({ onNavigate }) {
                     </td>
                     <td className="px-3 py-3">
                       <div className="flex items-center gap-2">
-                        <button className="text-[11px] font-semibold text-green-600 bg-green-50 hover:bg-green-100 px-3 py-1 rounded-full transition-colors">View</button>
+                        <button
+                          onClick={() => openMentorDetails(m)}
+                          className="text-[11px] font-semibold text-green-600 bg-green-50 hover:bg-green-100 px-3 py-1 rounded-full transition-colors"
+                        >
+                          View
+                        </button>
                         <button className="p-1 hover:bg-gray-100 rounded-full transition-colors">
                           <MoreHorizontal size={14} className="text-gray-400" />
                         </button>

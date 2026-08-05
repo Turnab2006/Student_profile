@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
 import Students from "./pages/Students";
 import AddStudent from "./pages/AddStudent";
 import Mentors from "./pages/Mentors";
+import MentorDetails from "./pages/MentorDetails";
 import AddMentor from "./pages/AddMentor";
 import Notices from "./pages/Notices";
 import AddNotice from "./pages/AddNotice";
@@ -12,24 +13,42 @@ import AddActivity from "./pages/AddActivity";
 import Settings from "./pages/Settings";
 import Support from "./pages/Support";
 import Semesters from "./pages/Semesters";
+import Subjects from "./pages/Subjects";
+import AddSubject from "./pages/AddSubject";
+import Attendances from "./pages/Attendances";
 import "./index.css";
 
 export default function App() {
-  const [activePage, setActivePage] = useState("settings");
+  const [activePage, setActivePage] = useState("attendances");
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const [subjectsList, setSubjectsList] = useState([]);
+
+  useEffect(() => {
+    function handleGlobalNav(e) {
+      if (e.detail) {
+        setActivePage(e.detail);
+      }
+    }
+    window.addEventListener("app-navigate", handleGlobalNav);
+    return () => window.removeEventListener("app-navigate", handleGlobalNav);
+  }, []);
 
   function renderPage() {
     switch (activePage) {
-      case "dashboard":    return <Dashboard />;
+      case "dashboard":    return <Dashboard onNavigate={setActivePage} />;
       case "students":     return <Students onNavigate={setActivePage} />;
       case "add-student":  return <AddStudent onNavigate={setActivePage} />;
       case "mentors":      return <Mentors onNavigate={setActivePage} />;
+      case "mentor-details": return <MentorDetails mentor={activePage?.mentor} onNavigate={setActivePage} />;
       case "add-mentor":   return <AddMentor onNavigate={setActivePage} />;
       case "notices":      return <Notices onNavigate={setActivePage} />;
       case "add-notice":   return <AddNotice onNavigate={setActivePage} />;
       case "activities":   return <Activities onNavigate={setActivePage} />;
       case "add-activity": return <AddActivity onNavigate={setActivePage} />;
       case "semesters":    return <Semesters onNavigate={setActivePage} />;
+      case "subjects":     return <Subjects onNavigate={setActivePage} subjectsList={subjectsList} setSubjectsList={setSubjectsList} />;
+      case "add-subject":  return <AddSubject onNavigate={setActivePage} subjectsList={subjectsList} setSubjectsList={setSubjectsList} />;
+      case "attendances":  return <Attendances onNavigate={setActivePage} />;
       case "settings":     return <Settings onNavigate={setActivePage} />;
       case "support":      return <Support onNavigate={setActivePage} />;
       default:

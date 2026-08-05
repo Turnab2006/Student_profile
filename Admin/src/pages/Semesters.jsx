@@ -90,9 +90,9 @@ function FilterSelect({ label, options }) {
 
 function SummaryCard({ icon: Icon, label, value, bg, iconColor }) {
   return (
-    <div className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm">
+    <div className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm h-full flex flex-col justify-between">
       <div className="flex items-start gap-3">
-        <div className={`flex h-11 w-11 items-center justify-center rounded-2xl ${bg}`}>
+        <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl ${bg}`}>
           <Icon size={20} className={iconColor} />
         </div>
         <div>
@@ -265,18 +265,18 @@ export default function Semesters({ onNavigate }) {
 
   return (
     <div className="flex-1 h-full flex flex-col overflow-hidden bg-[#f6f8fb]">
-      <header className="bg-white border-b border-gray-100 px-4 py-3 sm:px-6 flex items-center justify-between shrink-0 shadow-[0_1px_0_rgba(0,0,0,0.02)]">
+      <header className="h-[65px] bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-2xs">
         <div className="flex items-center gap-3 min-w-0 w-full sm:w-auto">
           <button type="button" onClick={() => onNavigate?.("dashboard")} className="h-9 w-9 rounded-full hover:bg-gray-50 flex items-center justify-center text-gray-500 lg:hidden">
             <Menu size={20} />
           </button>
           <div className="min-w-0">
-            <h1 className="text-base font-semibold text-gray-900 leading-tight sm:text-lg">Academics</h1>
-            <p className="text-xs text-gray-400">Configure and track academic sessions and programs</p>
+            <h1 className="text-xl font-bold text-gray-800 tracking-tight">Academics</h1>
+            <p className="text-xs text-gray-400 mt-0.5">Configure and track academic sessions and programs</p>
           </div>
         </div>
 
-        <AdminProfile />
+        <AdminProfile onNavigate={onNavigate} />
       </header>
 
       <main className="flex-1 overflow-y-auto p-3 sm:p-4 lg:p-5 relative">
@@ -296,50 +296,54 @@ export default function Semesters({ onNavigate }) {
             </button>
           </div>
 
-          <div className="grid grid-cols-1 xl:grid-cols-[1.2fr_1fr] gap-4 items-start">
-            <section className="rounded-2xl border border-gray-100 bg-white shadow-sm p-4 sm:p-5">
-              <div className="flex items-start justify-between gap-4 mb-5">
-                <div>
-                  <h2 className="text-sm font-semibold text-gray-800">Academic Summary</h2>
-                  <p className="text-xs text-gray-400 mt-0.5">Overview of your institution's academics</p>
+          <div className="grid grid-cols-1 xl:grid-cols-[1.2fr_1fr] gap-4 items-stretch">
+            <section className="rounded-2xl border border-gray-100 bg-white shadow-sm p-4 sm:p-5 h-full flex flex-col justify-between">
+              <div>
+                <div className="flex items-start justify-between gap-4 mb-5">
+                  <div>
+                    <h2 className="text-sm font-semibold text-gray-800">Academic Summary</h2>
+                    <p className="text-xs text-gray-400 mt-0.5">Overview of your institution's academics</p>
+                  </div>
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-light text-primary">
+                    <GraduationCap size={18} />
+                  </div>
                 </div>
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-light text-primary">
-                  <GraduationCap size={18} />
-                </div>
-              </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                {summaryCards.map((card) => (
-                  <SummaryCard key={card.label} {...card} />
-                ))}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                  {summaryCards.map((card) => (
+                    <SummaryCard key={card.label} {...card} />
+                  ))}
+                </div>
               </div>
             </section>
 
-            <section className="rounded-2xl border border-gray-100 bg-white shadow-sm p-4 sm:p-5">
-              <div className="flex items-start justify-between gap-4 mb-5">
-                <div>
-                  <h2 className="text-sm font-semibold text-gray-800">Student Overview</h2>
-                  <p className="text-xs text-gray-400 mt-0.5">Students across all programs and sessions</p>
+            <section className="rounded-2xl border border-gray-100 bg-white shadow-sm p-4 sm:p-5 h-full flex flex-col justify-between">
+              <div>
+                <div className="flex items-start justify-between gap-4 mb-5">
+                  <div>
+                    <h2 className="text-sm font-semibold text-gray-800">Student Overview</h2>
+                    <p className="text-xs text-gray-400 mt-0.5">Students across all programs and sessions</p>
+                  </div>
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-light text-primary">
+                    <Users size={18} />
+                  </div>
                 </div>
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-light text-primary">
-                  <Users size={18} />
-                </div>
-              </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-[220px_1fr] gap-4 items-center">
-                <DonutChart />
-                <div className="space-y-3">
-                  {overviewData.map((item) => (
-                    <div key={item.label} className="flex items-center justify-between gap-3 text-sm">
-                      <div className="flex items-center gap-2">
-                        <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: item.color }} />
-                        <span className="text-gray-600">{item.label}</span>
+                <div className="grid grid-cols-1 md:grid-cols-[220px_1fr] gap-4 items-center pt-2">
+                  <DonutChart />
+                  <div className="space-y-3">
+                    {overviewData.map((item) => (
+                      <div key={item.label} className="flex items-center justify-between gap-3 text-sm">
+                        <div className="flex items-center gap-2">
+                          <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: item.color }} />
+                          <span className="text-gray-600">{item.label}</span>
+                        </div>
+                        <div className="text-right">
+                          <p className="font-semibold text-gray-800">{item.value.toLocaleString()} <span className="text-xs text-gray-400">({item.percent}%)</span></p>
+                        </div>
                       </div>
-                      <div className="text-right">
-                        <p className="font-semibold text-gray-800">{item.value.toLocaleString()} <span className="text-xs text-gray-400">({item.percent}%)</span></p>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </div>
             </section>

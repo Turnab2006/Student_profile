@@ -78,24 +78,22 @@ export default function Support({ onNavigate }) {
 
   return (
     <div className="flex-1 h-full flex flex-col overflow-hidden bg-[#f6f8fb]">
-      <header className="bg-white border-b border-gray-100 px-4 py-3 sm:px-6 flex items-center justify-between shrink-0 shadow-[0_1px_0_rgba(0,0,0,0.02)]">
+      <header className="h-[65px] bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-2xs">
         <div className="flex items-center gap-3 min-w-0 w-full sm:w-auto">
           <button
             type="button"
             onClick={() => onNavigate?.("dashboard")}
-            className="h-9 w-9 rounded-full hover:bg-gray-50 flex items-center justify-center text-gray-500"
+            className="h-9 w-9 rounded-full hover:bg-gray-50 flex items-center justify-center text-gray-500 lg:hidden"
           >
             <Menu size={20} />
           </button>
           <div className="min-w-0">
-            <h1 className="text-lg font-semibold text-gray-900 leading-tight">Support Center</h1>
-            <p className="text-xs text-gray-400">Home &gt; Support Center</p>
+            <h1 className="text-xl font-bold text-gray-800 tracking-tight">Support Center</h1>
+            <p className="text-xs text-gray-400 mt-0.5">Help articles, contact support, and tickets</p>
           </div>
         </div>
 
-        <div className="flex w-full items-center gap-3 sm:w-auto">
-          <AdminProfile />
-        </div>
+        <AdminProfile name="Admin User" role="Super Admin" avatar="A" onNavigate={onNavigate} />
       </header>
 
       <main className="flex-1 overflow-y-auto p-4 lg:p-5">

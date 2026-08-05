@@ -160,6 +160,24 @@ export default function AddStudent({ onNavigate }) {
     admissionYear: "",
     sessionName: "",
     graduationYear: "",
+    fatherFirstName: "",
+    fatherMiddleName: "",
+    fatherLastName: "",
+    fatherPhone: "",
+    fatherEmail: "",
+    fatherOccupation: "",
+    motherFirstName: "",
+    motherMiddleName: "",
+    motherLastName: "",
+    motherPhone: "",
+    motherEmail: "",
+    motherOccupation: "",
+    addressLine1: "",
+    addressLine2: "",
+    country: "",
+    state: "",
+    city: "",
+    postalCode: "",
   });
 
   const update = (key) => (event) => setForm((prev) => ({ ...prev, [key]: event.target.value }));
@@ -167,18 +185,38 @@ export default function AddStudent({ onNavigate }) {
   const noOp = () => {};
 
   const checklistItems = [
-    "Personal information added",
-    "Academic information added",
-    "Parent/Guardian details added",
-    "Address information added",
+    {
+      key: "personal",
+      label: "Personal information added",
+      isDone: Boolean(form.firstName.trim() || form.lastName.trim() || form.email.trim()),
+      targetStep: 1,
+    },
+    {
+      key: "academic",
+      label: "Academic information added",
+      isDone: Boolean(form.rollNumber.trim() || form.program || form.department),
+      targetStep: 1,
+    },
+    {
+      key: "parent",
+      label: "Parent/Guardian details added",
+      isDone: Boolean(form.fatherFirstName.trim() || form.fatherPhone.trim() || form.motherFirstName.trim() || form.motherPhone.trim()),
+      targetStep: 2,
+    },
+    {
+      key: "address",
+      label: "Address information added",
+      isDone: Boolean(form.addressLine1.trim() || form.city.trim() || form.postalCode.trim()),
+      targetStep: 2,
+    },
   ];
 
   const parentFieldClass =
-    "w-full border border-gray-200 rounded-lg py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-green-300 transition-shadow placeholder:text-gray-400";
+    "w-full border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-green-300 transition-shadow placeholder:text-gray-400";
 
-  const renderParentIconInput = ({ placeholder, icon: Icon, type = "text" }) => (
+  const renderParentIconInput = ({ placeholder, icon: Icon, type = "text", value, onChange }) => (
     <div className="relative">
-      <input type={type} placeholder={placeholder} className={`${parentFieldClass} pl-9 pr-3`} />
+      <input type={type} placeholder={placeholder} value={value || ""} onChange={onChange} className={`${parentFieldClass} pl-9 pr-3`} />
       <Icon size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
     </div>
   );
@@ -186,160 +224,198 @@ export default function AddStudent({ onNavigate }) {
   if (step === 2) {
     return (
       <div className="flex-1 h-full flex flex-col overflow-hidden bg-gray-50">
-        <header className="bg-white border-b border-gray-100 px-6 py-3 flex items-center justify-between shrink-0 shadow-[0_1px_0_rgba(0,0,0,0.02)]">
+        <header className="h-[65px] bg-white border-b border-gray-100 px-6 flex items-center justify-between shrink-0 shadow-2xs">
           <div className="flex items-center gap-3">
-            <button type="button" onClick={() => onNavigate?.("students")} className="text-gray-500 hover:text-gray-700 transition-colors">
+            <button type="button" onClick={() => onNavigate?.("students")} className="text-gray-500 hover:text-gray-700 transition-colors lg:hidden">
               <Menu size={20} />
             </button>
             <div>
-              <h1 className="text-base font-semibold text-gray-800">Add Student</h1>
-              <p className="text-xs text-gray-400 mt-0.5">Students  &gt;  Add Student  &gt;  <span className="text-primary font-medium">Parents Details</span></p>
+              <h1 className="text-xl font-bold text-gray-800 tracking-tight">Add Student</h1>
+              <nav className="flex items-center gap-1.5 text-xs text-gray-400 mt-0.5">
+                <span className="hover:text-gray-600 cursor-pointer" onClick={() => onNavigate?.("students")}>Students</span>
+                <span>&gt;</span>
+                <span className="hover:text-gray-600 cursor-pointer" onClick={() => setStep(1)}>Add Student</span>
+                <span>&gt;</span>
+                <span className="text-[#0da651] font-semibold">Parents Details</span>
+              </nav>
             </div>
           </div>
-          <AdminProfile />
+          <AdminProfile name="Admin User" role="Super Admin" avatar="A" onNavigate={onNavigate} />
         </header>
 
-        <main className="flex-1 overflow-y-auto p-4">
-          <div className="max-w-[1500px] mx-auto space-y-4">
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6">
+          <div className="max-w-[1500px] mx-auto space-y-5">
             <section className="bg-white rounded-xl border border-gray-200 shadow-sm px-5 py-4">
               <h2 className="text-[22px] font-medium text-gray-800 leading-tight">Parent / Guardian Details</h2>
               <p className="text-sm text-gray-500 mt-1">Enter Father&apos;s &amp; Mother&apos;s Details</p>
             </section>
 
-            <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-4 items-start">
-              <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="w-7 h-7 rounded-full bg-primary/15 flex items-center justify-center text-primary">
-                    <CircleUserRound size={18} />
-                  </div>
-                  <h3 className="text-sm font-semibold text-gray-800">Father&apos;s Details</h3>
-                </div>
-
-                <div className="grid grid-cols-3 gap-3 mb-4">
-                  <div>
-                    <Label required>First Name</Label>
-                    <input className={parentFieldClass} placeholder="Enter First Name" />
-                  </div>
-                  <div>
-                    <Label>Middle Name</Label>
-                    <input className={parentFieldClass} placeholder="Enter Middle Name" />
-                  </div>
-                  <div>
-                    <Label required>Last Name</Label>
-                    <input className={parentFieldClass} placeholder="Enter Last Name" />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3 mb-4">
-                  <div>
-                    <Label required>Contact Number</Label>
-                    {renderParentIconInput({ placeholder: "Enter Contact Number", icon: Phone })}
-                  </div>
-                  <div>
-                    <Label required>Email Address</Label>
-                    {renderParentIconInput({ placeholder: "Enter Email Address", icon: Mail, type: "email" })}
-                  </div>
-                </div>
-
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 items-stretch">
+              {/* Father's Details Card */}
+              <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 sm:p-6 h-full flex flex-col justify-between">
                 <div>
-                  <Label required>Contact Number</Label>
-                  {renderParentIconInput({ placeholder: "Enter Occupation", icon: Briefcase })}
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="w-8 h-8 rounded-full bg-emerald-100/70 flex items-center justify-center text-[#0da651]">
+                      <CircleUserRound size={18} />
+                    </div>
+                    <h3 className="text-sm font-bold text-gray-800">Father&apos;s Details</h3>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 mb-4">
+                    <div>
+                      <Label required>First Name</Label>
+                      <input value={form.fatherFirstName} onChange={update("fatherFirstName")} className={parentFieldClass} placeholder="Enter First Name" />
+                    </div>
+                    <div>
+                      <Label>Middle Name</Label>
+                      <input value={form.fatherMiddleName} onChange={update("fatherMiddleName")} className={parentFieldClass} placeholder="Enter Middle Name" />
+                    </div>
+                    <div>
+                      <Label required>Last Name</Label>
+                      <input value={form.fatherLastName} onChange={update("fatherLastName")} className={parentFieldClass} placeholder="Enter Last Name" />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-4">
+                    <div>
+                      <Label required>Contact Number</Label>
+                      {renderParentIconInput({ placeholder: "Enter Contact Number", icon: Phone, value: form.fatherPhone, onChange: update("fatherPhone") })}
+                    </div>
+                    <div>
+                      <Label required>Email Address</Label>
+                      {renderParentIconInput({ placeholder: "Enter Email Address", icon: Mail, type: "email", value: form.fatherEmail, onChange: update("fatherEmail") })}
+                    </div>
+                  </div>
+
+                  <div>
+                    <Label>Occupation</Label>
+                    {renderParentIconInput({ placeholder: "Enter Occupation", icon: Briefcase, value: form.fatherOccupation, onChange: update("fatherOccupation") })}
+                  </div>
                 </div>
               </section>
 
-              <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="w-7 h-7 rounded-full bg-primary/15 flex items-center justify-center text-primary">
-                    <CircleUserRound size={18} />
-                  </div>
-                  <h3 className="text-sm font-semibold text-gray-800">Mother&apos;s Details</h3>
-                </div>
-
-                <div className="grid grid-cols-3 gap-3 mb-4">
-                  <div>
-                    <Label required>First Name</Label>
-                    <input className={parentFieldClass} placeholder="Enter First Name" />
-                  </div>
-                  <div>
-                    <Label>Middle Name</Label>
-                    <input className={parentFieldClass} placeholder="Enter Middle Name" />
-                  </div>
-                  <div>
-                    <Label required>Last Name</Label>
-                    <input className={parentFieldClass} placeholder="Enter Last Name" />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3 mb-4">
-                  <div>
-                    <Label required>Contact Number</Label>
-                    {renderParentIconInput({ placeholder: "Enter Contact Number", icon: Phone })}
-                  </div>
-                  <div>
-                    <Label required>Email Address</Label>
-                    {renderParentIconInput({ placeholder: "Enter Email Address", icon: Mail, type: "email" })}
-                  </div>
-                </div>
-
+              {/* Mother's Details Card */}
+              <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 sm:p-6 h-full flex flex-col justify-between">
                 <div>
-                  <Label required>Contact Number</Label>
-                  {renderParentIconInput({ placeholder: "Enter Occupation", icon: Briefcase })}
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="w-8 h-8 rounded-full bg-emerald-100/70 flex items-center justify-center text-[#0da651]">
+                      <CircleUserRound size={18} />
+                    </div>
+                    <h3 className="text-sm font-bold text-gray-800">Mother&apos;s Details</h3>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 mb-4">
+                    <div>
+                      <Label required>First Name</Label>
+                      <input value={form.motherFirstName} onChange={update("motherFirstName")} className={parentFieldClass} placeholder="Enter First Name" />
+                    </div>
+                    <div>
+                      <Label>Middle Name</Label>
+                      <input value={form.motherMiddleName} onChange={update("motherMiddleName")} className={parentFieldClass} placeholder="Enter Middle Name" />
+                    </div>
+                    <div>
+                      <Label required>Last Name</Label>
+                      <input value={form.motherLastName} onChange={update("motherLastName")} className={parentFieldClass} placeholder="Enter Last Name" />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-4">
+                    <div>
+                      <Label required>Contact Number</Label>
+                      {renderParentIconInput({ placeholder: "Enter Contact Number", icon: Phone, value: form.motherPhone, onChange: update("motherPhone") })}
+                    </div>
+                    <div>
+                      <Label required>Email Address</Label>
+                      {renderParentIconInput({ placeholder: "Enter Email Address", icon: Mail, type: "email", value: form.motherEmail, onChange: update("motherEmail") })}
+                    </div>
+                  </div>
+
+                  <div>
+                    <Label>Occupation</Label>
+                    {renderParentIconInput({ placeholder: "Enter Occupation", icon: Briefcase, value: form.motherOccupation, onChange: update("motherOccupation") })}
+                  </div>
                 </div>
               </section>
             </div>
 
-            <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1.55fr)_minmax(290px,0.75fr)] gap-4 items-start">
-              <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="w-7 h-7 rounded-full bg-primary/15 flex items-center justify-center text-primary">
-                    <MapPinned size={17} />
+            <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1.55fr)_minmax(290px,0.75fr)] gap-5 items-stretch">
+              {/* Address Details Card */}
+              <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 sm:p-6 h-full flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="w-8 h-8 rounded-full bg-emerald-100/70 flex items-center justify-center text-[#0da651]">
+                      <MapPinned size={18} />
+                    </div>
+                    <h3 className="text-sm font-bold text-gray-800">Address Details</h3>
                   </div>
-                  <h3 className="text-sm font-semibold text-gray-800">Address Details</h3>
-                </div>
 
-                <div className="grid grid-cols-2 gap-3 mb-4">
-                  <div>
-                    <Label required>Address Line 1</Label>
-                    <input className={parentFieldClass} placeholder="House no., Building, Street" />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-4">
+                    <div>
+                      <Label required>Address Line 1</Label>
+                      <input value={form.addressLine1} onChange={update("addressLine1")} className={parentFieldClass} placeholder="House no., Building, Street" />
+                    </div>
+                    <div>
+                      <Label>Address Line 2</Label>
+                      <input value={form.addressLine2} onChange={update("addressLine2")} className={parentFieldClass} placeholder="Area, Landmark (Optional)" />
+                    </div>
                   </div>
-                  <div>
-                    <Label>Address Line 2</Label>
-                    <input className={parentFieldClass} placeholder="Area, Landmark (Optional)" />
-                  </div>
-                </div>
 
-                <div className="grid grid-cols-4 gap-3">
-                  <div>
-                    <Label required>Country</Label>
-                    <SelectField placeholder="Select Country" options={[]} value="" onChange={noOp} />
-                  </div>
-                  <div>
-                    <Label required>State</Label>
-                    <SelectField placeholder="Select state" options={[]} value="" onChange={noOp} />
-                  </div>
-                  <div>
-                    <Label required>City</Label>
-                    <input className={parentFieldClass} placeholder="Enter City" />
-                  </div>
-                  <div>
-                    <Label required>Postal Code</Label>
-                    <input className={parentFieldClass} placeholder="Enter Pin code" />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+                    <div>
+                      <Label required>Country</Label>
+                      <SelectField placeholder="Select Country" options={["India", "USA", "UK", "Canada"]} value={form.country} onChange={update("country")} />
+                    </div>
+                    <div>
+                      <Label required>State</Label>
+                      <SelectField placeholder="Select state" options={["West Bengal", "Delhi", "Maharashtra", "Karnataka"]} value={form.state} onChange={update("state")} />
+                    </div>
+                    <div>
+                      <Label required>City</Label>
+                      <input value={form.city} onChange={update("city")} className={parentFieldClass} placeholder="Enter City" />
+                    </div>
+                    <div>
+                      <Label required>Postal Code</Label>
+                      <input value={form.postalCode} onChange={update("postalCode")} className={parentFieldClass} placeholder="Enter Pin code" />
+                    </div>
                   </div>
                 </div>
               </section>
 
-              <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 h-full">
-                <h3 className="text-sm font-semibold text-primary mb-5">Checklist</h3>
-                <div className="space-y-4">
-                  {checklistItems.map((item) => (
-                    <div key={item} className="flex items-center gap-3">
-                      <CheckCircle2 size={18} className="text-primary shrink-0" />
-                      <span className="text-xs font-medium text-gray-700">{item}</span>
-                    </div>
-                  ))}
+              {/* Checklist Card */}
+              <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 sm:p-6 h-full flex flex-col justify-between">
+                <div>
+                  <h3 className="text-sm font-bold text-[#0da651] mb-4">Checklist</h3>
+                  <div className="space-y-2">
+                    {checklistItems.map((item) => (
+                      <button
+                        key={item.key}
+                        type="button"
+                        onClick={() => setStep(item.targetStep)}
+                        className="w-full flex items-center gap-3 text-left p-2 rounded-xl hover:bg-gray-50 transition-colors cursor-pointer group"
+                      >
+                        {item.isDone ? (
+                          <CheckCircle2 size={18} className="text-[#0da651] shrink-0" />
+                        ) : (
+                          <div className="h-4.5 w-4.5 rounded-full border-2 border-gray-300 group-hover:border-emerald-400 shrink-0" />
+                        )}
+                        <span className={`text-xs font-semibold ${item.isDone ? "text-gray-800" : "text-gray-400"}`}>
+                          {item.label}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
                 </div>
-                <div className="mt-6 pt-4 border-t border-gray-100 text-center text-xs font-semibold text-primary">
-                  All required fields completed
+
+                <div className="mt-6 pt-4 border-t border-gray-100 text-center text-xs font-bold">
+                  {checklistItems.every((i) => i.isDone) ? (
+                    <span className="text-[#0da651] flex items-center justify-center gap-1.5">
+                      <CheckCircle2 size={14} /> All required fields completed
+                    </span>
+                  ) : (
+                    <span className="text-amber-600 font-semibold">
+                      {checklistItems.filter((i) => i.isDone).length} of 4 steps completed
+                    </span>
+                  )}
                 </div>
               </section>
             </div>
@@ -371,26 +447,23 @@ export default function AddStudent({ onNavigate }) {
   if (step === 3) {
     return (
       <div className="flex-1 h-full flex flex-col overflow-hidden bg-gray-50">
-        <header className="bg-white border-b border-gray-100 px-6 py-3 flex items-center justify-between shrink-0 shadow-[0_1px_0_rgba(0,0,0,0.02)]">
-          <div className="flex items-center gap-3 min-w-0">
-            <button type="button" onClick={() => onNavigate?.("students")} className="text-gray-500 hover:text-gray-700 transition-colors">
+        <header className="h-[65px] bg-white border-b border-gray-100 px-6 flex items-center justify-between shrink-0 shadow-2xs">
+          <div className="flex items-center gap-3">
+            <button type="button" onClick={() => onNavigate?.("students")} className="text-gray-500 hover:text-gray-700 transition-colors lg:hidden">
               <Menu size={20} />
             </button>
-            <div className="min-w-0">
-              <h1 className="text-base font-semibold text-gray-800">Add Student</h1>
-              <p className="text-xs text-gray-400 mt-0.5">
-                Students &gt; Add Student &gt; Parents Details &gt; <span className="text-primary font-medium">Review &amp; Submit</span>
-              </p>
+            <div>
+              <h1 className="text-xl font-bold text-gray-800 tracking-tight">Add Student</h1>
+              <nav className="flex items-center gap-1.5 text-xs text-gray-400 mt-0.5">
+                <span className="hover:text-gray-600 cursor-pointer" onClick={() => onNavigate?.("students")}>Students</span>
+                <span>&gt;</span>
+                <span className="hover:text-gray-600 cursor-pointer" onClick={() => setStep(1)}>Add Student</span>
+                <span>&gt;</span>
+                <span className="text-[#0da651] font-semibold">Review &amp; Submit</span>
+              </nav>
             </div>
           </div>
-
-          <div className="flex items-center gap-4">
-            <button type="button" className="relative rounded-full p-2 hover:bg-gray-50 transition-colors">
-              <Bell size={18} className="text-gray-500" />
-              <span className="absolute right-1 top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-bold text-white">4</span>
-            </button>
-            <AdminProfile />
-          </div>
+          <AdminProfile name="Admin User" role="Super Admin" avatar="A" onNavigate={onNavigate} />
         </header>
 
         <main className="flex-1 overflow-y-auto p-4">
@@ -434,7 +507,7 @@ export default function AddStudent({ onNavigate }) {
                       <h3 className="text-sm font-semibold text-gray-800">Personal Information</h3>
                       <p className="text-xs text-gray-400 mt-0.5">Please review the information below.</p>
                     </div>
-                    <button type="button" className="inline-flex items-center gap-2 rounded-lg border border-primary/30 px-4 py-2 text-sm font-medium text-primary hover:bg-green-50 transition-colors">
+                    <button type="button" onClick={() => setStep(1)} className="inline-flex items-center gap-2 rounded-lg border border-primary/30 px-4 py-2 text-sm font-medium text-primary hover:bg-green-50 transition-colors">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="m18 2 4 4-14 14-4 1 1-4 14-14Z" />
                       </svg>
@@ -445,16 +518,16 @@ export default function AddStudent({ onNavigate }) {
                   <div className="rounded-lg border border-gray-100 overflow-hidden">
                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-100">
                       {reviewStudentDetails.map((item) => (
-                        <div key={item.label} className="min-h-[66px] p-3 flex items-start gap-3 bg-white">
+                        <div key={item.label} className="min-h-[66px] p-3 flex items-start gap-3 bg-white min-w-0">
                           <div className="w-6 h-6 rounded-md bg-primary-light flex items-center justify-center shrink-0 text-primary mt-0.5">
                             <item.icon size={13} />
                           </div>
-                          <div>
+                          <div className="min-w-0 flex-1">
                             <p className="text-[10px] font-medium text-gray-500 uppercase tracking-wide">{item.label}</p>
                             {item.pill ? (
                               <span className="inline-flex items-center rounded-full bg-primary-light px-2 py-0.5 text-[11px] font-semibold text-primary mt-1">{item.value}</span>
                             ) : (
-                              <p className="text-sm font-semibold text-gray-700 mt-0.5">{item.value}</p>
+                              <p className="text-xs sm:text-sm font-semibold text-gray-700 mt-0.5 truncate" title={item.value}>{item.value}</p>
                             )}
                           </div>
                         </div>
@@ -469,7 +542,7 @@ export default function AddStudent({ onNavigate }) {
                       <h3 className="text-sm font-semibold text-gray-800">Academic Information</h3>
                       <p className="text-xs text-gray-400 mt-0.5">Verify the academic details before submitting.</p>
                     </div>
-                    <button type="button" className="inline-flex items-center gap-2 rounded-lg border border-primary/30 px-4 py-2 text-sm font-medium text-primary hover:bg-green-50 transition-colors">
+                    <button type="button" onClick={() => setStep(1)} className="inline-flex items-center gap-2 rounded-lg border border-primary/30 px-4 py-2 text-sm font-medium text-primary hover:bg-green-50 transition-colors">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="m18 2 4 4-14 14-4 1 1-4 14-14Z" />
                       </svg>
@@ -480,13 +553,13 @@ export default function AddStudent({ onNavigate }) {
                   <div className="rounded-lg border border-gray-100 overflow-hidden">
                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-100">
                       {reviewAcademicDetails.map((item) => (
-                        <div key={item.label} className="min-h-[66px] p-3 flex items-start gap-3 bg-white">
+                        <div key={item.label} className="min-h-[66px] p-3 flex items-start gap-3 bg-white min-w-0">
                           <div className="w-6 h-6 rounded-md bg-primary-light flex items-center justify-center shrink-0 text-primary mt-0.5">
                             <item.icon size={13} />
                           </div>
-                          <div>
+                          <div className="min-w-0 flex-1">
                             <p className="text-[10px] font-medium text-gray-500 uppercase tracking-wide">{item.label}</p>
-                            <p className="text-sm font-semibold text-gray-700 mt-0.5">{item.value}</p>
+                            <p className="text-xs sm:text-sm font-semibold text-gray-700 mt-0.5 truncate" title={item.value}>{item.value}</p>
                           </div>
                         </div>
                       ))}
@@ -500,7 +573,7 @@ export default function AddStudent({ onNavigate }) {
                       <h3 className="text-sm font-semibold text-gray-800">Parent / Guardian Details</h3>
                       <p className="text-xs text-gray-400 mt-0.5">Check father&apos;s and mother&apos;s details carefully.</p>
                     </div>
-                    <button type="button" className="inline-flex items-center gap-2 rounded-lg border border-primary/30 px-4 py-2 text-sm font-medium text-primary hover:bg-green-50 transition-colors">
+                    <button type="button" onClick={() => setStep(2)} className="inline-flex items-center gap-2 rounded-lg border border-primary/30 px-4 py-2 text-sm font-medium text-primary hover:bg-green-50 transition-colors">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="m18 2 4 4-14 14-4 1 1-4 14-14Z" />
                       </svg>
@@ -512,11 +585,11 @@ export default function AddStudent({ onNavigate }) {
                     {reviewParentDetails.map((group) => (
                       <div key={group.section} className="rounded-lg border border-gray-100 p-4">
                         <p className="text-xs font-semibold text-primary mb-4">{group.section}</p>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                           {group.fields.map((field) => (
-                            <div key={field.label}>
+                            <div key={field.label} className={`min-w-0 ${field.label === "Email Address" ? "col-span-1 md:col-span-2" : ""}`}>
                               <p className="text-[10px] font-medium text-gray-500 uppercase tracking-wide">{field.label}</p>
-                              <p className="text-sm font-semibold text-gray-700 mt-0.5">{field.value}</p>
+                              <p className="text-xs sm:text-sm font-semibold text-gray-700 mt-0.5 truncate" title={field.value}>{field.value}</p>
                             </div>
                           ))}
                         </div>
@@ -531,7 +604,7 @@ export default function AddStudent({ onNavigate }) {
                       <h3 className="text-sm font-semibold text-gray-800">Address Information</h3>
                       <p className="text-xs text-gray-400 mt-0.5">Review the current address details.</p>
                     </div>
-                    <button type="button" className="inline-flex items-center gap-2 rounded-lg border border-primary/30 px-4 py-2 text-sm font-medium text-primary hover:bg-green-50 transition-colors">
+                    <button type="button" onClick={() => setStep(2)} className="inline-flex items-center gap-2 rounded-lg border border-primary/30 px-4 py-2 text-sm font-medium text-primary hover:bg-green-50 transition-colors">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="m18 2 4 4-14 14-4 1 1-4 14-14Z" />
                       </svg>
@@ -542,9 +615,9 @@ export default function AddStudent({ onNavigate }) {
                   <div className="rounded-lg border border-gray-100 p-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                       {reviewAddressDetails.map((item) => (
-                        <div key={item.label}>
+                        <div key={item.label} className="min-w-0">
                           <p className="text-[10px] font-medium text-gray-500 uppercase tracking-wide">{item.label}</p>
-                          <p className="text-sm font-semibold text-gray-700 mt-0.5">{item.value}</p>
+                          <p className="text-xs sm:text-sm font-semibold text-gray-700 mt-0.5 truncate" title={item.value}>{item.value}</p>
                         </div>
                       ))}
                     </div>
@@ -640,14 +713,21 @@ export default function AddStudent({ onNavigate }) {
 
   return (
     <div className="flex-1 h-full flex flex-col overflow-hidden">
-      <header className="bg-white border-b border-gray-100 px-6 py-3 flex items-center justify-between shrink-0 shadow-[0_1px_0_rgba(0,0,0,0.02)]">
+      <header className="h-[65px] bg-white border-b border-gray-100 px-6 flex items-center justify-between shrink-0 shadow-2xs">
         <div className="flex items-center gap-3">
-          <button type="button" onClick={() => onNavigate?.("students")} className="text-gray-500 hover:text-gray-700 transition-colors">
+          <button type="button" onClick={() => onNavigate?.("students")} className="text-gray-500 hover:text-gray-700 transition-colors lg:hidden">
             <Menu size={20} />
           </button>
-          <h1 className="text-base font-semibold text-gray-800">Add Student</h1>
+          <div>
+            <h1 className="text-xl font-bold text-gray-800 tracking-tight">Add Student</h1>
+            <nav className="flex items-center gap-1.5 text-xs text-gray-400 mt-0.5">
+              <span className="hover:text-gray-600 cursor-pointer" onClick={() => onNavigate?.("students")}>Students</span>
+              <span>&gt;</span>
+              <span className="text-[#0da651] font-semibold">Add Student</span>
+            </nav>
+          </div>
         </div>
-        <AdminProfile />
+        <AdminProfile name="Admin User" role="Super Admin" avatar="A" onNavigate={onNavigate} />
       </header>
 
       <main className="flex-1 overflow-y-auto p-6">
