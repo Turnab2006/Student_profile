@@ -8,6 +8,7 @@ import {
   Upload,
   Megaphone,
   BookOpen,
+  Menu,
 } from "lucide-react";
 import adminHeroImage from "../assets/admin-hero.svg";
 import AdminProfile from "../components/AdminProfile";
@@ -36,23 +37,36 @@ const quickActions = [
   { icon: BookOpen,     label: "Upload Subject",  page: "add-subject",  color: "text-[#0da651]", bg: "bg-[#eaf8f1] hover:bg-[#d8f3e5]" },
 ];
 
-export default function Dashboard({ onNavigate }) {
-  const handleAction = (page) => {
-    if (onNavigate) {
+export default function Dashboard({ onNavigate, onOpenSidebar }) {
+  const handleQuickActionClick = (page) => {
+    if (page && onNavigate) {
       onNavigate(page);
-    } else {
-      const event = new CustomEvent("app-navigate", { detail: page });
-      window.dispatchEvent(event);
+      return;
     }
+    const event = new CustomEvent("app-navigate", { detail: "add-student" });
+    window.dispatchEvent(event);
   };
 
   return (
     <div className="flex-1 h-full flex flex-col overflow-hidden bg-[#f8fafc]">
       {/* Topbar */}
-      <header className="h-[65px] bg-white border-b border-gray-100 px-6 flex items-center justify-between shrink-0 shadow-2xs">
-        <div>
-          <h1 className="text-xl font-bold leading-tight text-gray-800 tracking-tight">Dashboard</h1>
-          <p className="text-xs text-gray-400 mt-0.5">Welcome back, Admin! Here&apos;s what&apos;s happening today.</p>
+      <header className="h-[65px] bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-2xs">
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => {
+              if (onOpenSidebar) onOpenSidebar();
+              else window.dispatchEvent(new CustomEvent("toggle-mobile-sidebar"));
+            }}
+            className="h-10 w-10 rounded-xl bg-gray-100/80 hover:bg-gray-200 active:scale-95 flex items-center justify-center text-gray-700 lg:hidden cursor-pointer transition-all shrink-0"
+            aria-label="Open sidebar"
+          >
+            <Menu size={20} />
+          </button>
+          <div>
+            <h1 className="text-lg sm:text-xl font-bold leading-tight text-gray-800 tracking-tight truncate">Dashboard</h1>
+            <p className="text-xs text-gray-400 mt-0.5 truncate hidden sm:block">Welcome back, Admin! Here&apos;s what&apos;s happening today.</p>
+          </div>
         </div>
         <AdminProfile name="Admin User" role="Super Admin" avatar="A" onNavigate={onNavigate} />
       </header>

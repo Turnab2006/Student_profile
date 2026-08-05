@@ -19,11 +19,12 @@ import {
   X,
   BookPlus,
   Command,
-  FolderOpen
+  FolderOpen,
+  Menu,
 } from "lucide-react";
 import AdminProfile from "../components/AdminProfile";
 
-export default function AddSubject({ onNavigate, subjectsList = [], setSubjectsList }) {
+export default function AddSubject({ onNavigate, subjectsList = [], setSubjectsList, onOpenSidebar }) {
   // Form State
   const [program, setProgram] = useState("B.Tech");
   const [courseBranch, setCourseBranch] = useState("Computer Science Engineering");
@@ -118,38 +119,28 @@ export default function AddSubject({ onNavigate, subjectsList = [], setSubjectsL
   return (
     <div className="flex-1 h-full flex flex-col overflow-hidden bg-[#f8fafc]">
       {/* Top Header Bar */}
-      <header className="bg-white border-b border-gray-100 px-6 py-3 flex items-center justify-between shrink-0 shadow-2xl shadow-gray-100/50">
-        <div>
-          <h1 className="text-xl font-bold text-gray-800 tracking-tight">Add New Subject</h1>
-          <nav className="flex items-center gap-1.5 text-xs text-gray-400 mt-0.5">
-            <span>Home</span>
-            <span>&gt;</span>
-            <span>Academics</span>
-            <span>&gt;</span>
-            <button
-              onClick={() => onNavigate?.("subjects")}
-              className="hover:text-emerald-600 transition-colors"
-            >
-              Subjects
-            </button>
-            <span>&gt;</span>
-            <span className="text-gray-600 font-medium">Add New Subject</span>
-          </nav>
-        </div>
-
-        {/* Global Search Bar */}
-        <div className="hidden md:flex items-center gap-2 bg-gray-100/80 px-3.5 py-1.5 rounded-xl border border-gray-200/60 w-72 text-xs">
-          <Search size={14} className="text-gray-400" />
-          <input
-            type="text"
-            placeholder="Search students, courses..."
-            className="bg-transparent border-none outline-none text-gray-700 placeholder-gray-400 w-full"
-          />
-          <div className="flex items-center gap-0.5 text-[10px] text-gray-400 bg-white px-1.5 py-0.5 rounded border border-gray-200 shadow-2xs font-mono">
-            <Command size={10} /> K
+      <header className="h-[65px] bg-white border-b border-gray-100 px-6 flex items-center justify-between shrink-0 shadow-2xs">
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => {
+              if (onOpenSidebar) onOpenSidebar();
+              else window.dispatchEvent(new CustomEvent("toggle-mobile-sidebar"));
+            }}
+            className="h-10 w-10 rounded-xl bg-gray-100/80 hover:bg-gray-200 active:scale-95 flex items-center justify-center text-gray-700 lg:hidden cursor-pointer transition-all shrink-0"
+            aria-label="Open sidebar"
+          >
+            <Menu size={20} />
+          </button>
+          <div>
+            <h1 className="text-xl font-bold text-gray-800 tracking-tight">Add New Subject</h1>
+            <nav className="flex items-center gap-1.5 text-xs text-gray-400 mt-0.5">
+              <span className="hover:text-gray-600 cursor-pointer" onClick={() => onNavigate?.("subjects")}>Subjects</span>
+              <span>&gt;</span>
+              <span className="text-[#0da651] font-semibold">Add Subject</span>
+            </nav>
           </div>
         </div>
-
         <AdminProfile name="Admin User" role="Super Admin" avatar="A" onNavigate={onNavigate} />
       </header>
 

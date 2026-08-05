@@ -81,7 +81,7 @@ export default function AdminProfile({
   };
 
   return (
-    <div className="flex items-center gap-4 relative select-none" ref={containerRef}>
+    <div className="flex items-center gap-2 sm:gap-4 relative select-none shrink-0" ref={containerRef}>
       {/* 1. Notification Bell Icon with Red Badge 3 */}
       <div className="relative">
         <button
@@ -90,7 +90,7 @@ export default function AdminProfile({
             setNotifOpen((prev) => !prev);
             setProfileOpen(false);
           }}
-          className="relative flex h-9 w-9 items-center justify-center rounded-xl text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-all cursor-pointer focus:outline-none"
+          className="relative flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-xl text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-all cursor-pointer focus:outline-none"
           title="Notifications"
         >
           <Bell size={18} />
@@ -103,7 +103,7 @@ export default function AdminProfile({
 
         {/* Notification Dropdown Menu */}
         {notifOpen && (
-          <div className="absolute right-0 top-full mt-2.5 w-80 rounded-2xl border border-gray-100 bg-white p-3 shadow-2xl z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+          <div className="absolute right-0 top-full mt-2.5 w-72 sm:w-80 rounded-2xl border border-gray-100 bg-white p-3 shadow-2xl z-50 animate-in fade-in slide-in-from-top-2 duration-150">
             <div className="flex items-center justify-between border-b border-gray-100 pb-2.5 px-1">
               <div className="flex items-center gap-2">
                 <h4 className="text-xs font-bold text-gray-800">Notifications</h4>
@@ -163,14 +163,14 @@ export default function AdminProfile({
       <button
         type="button"
         onClick={() => navigateTo("support")}
-        className="flex h-9 w-9 items-center justify-center rounded-xl text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-all cursor-pointer focus:outline-none"
+        className="hidden sm:flex h-9 w-9 items-center justify-center rounded-xl text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-all cursor-pointer focus:outline-none"
         title="Support Center"
       >
         <HelpCircle size={18} />
       </button>
 
       {/* Divider */}
-      <div className="h-5 w-[1px] bg-gray-200" />
+      <div className="hidden sm:block h-5 w-[1px] bg-gray-200" />
 
       {/* 3. Admin Profile with Dropdown */}
       <div className="relative">

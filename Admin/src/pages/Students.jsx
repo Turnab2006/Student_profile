@@ -82,7 +82,7 @@ function FilterDropdown({ value, onChange, options }) {
   );
 }
 
-export default function Students({ onNavigate }) {
+export default function Students({ onNavigate, onOpenSidebar }) {
   const [selected, setSelected] = useState([]);
   const [query, setQuery] = useState("");
   const [programFilter, setProgramFilter] = useState("all");
@@ -147,12 +147,20 @@ export default function Students({ onNavigate }) {
       {/* Topbar */}
       <header className="h-[65px] bg-white border-b border-gray-100 px-6 flex items-center justify-between shrink-0 shadow-2xs">
         <div className="flex items-center gap-3">
-          <button type="button" onClick={() => onNavigate?.("dashboard")} className="text-gray-500 hover:text-gray-700 transition-colors lg:hidden">
+          <button
+            type="button"
+            onClick={() => {
+              if (onOpenSidebar) onOpenSidebar();
+              else window.dispatchEvent(new CustomEvent("toggle-mobile-sidebar"));
+            }}
+            className="h-10 w-10 rounded-xl bg-gray-100/80 hover:bg-gray-200 active:scale-95 flex items-center justify-center text-gray-700 lg:hidden cursor-pointer transition-all shrink-0"
+            aria-label="Open sidebar"
+          >
             <Menu size={20} />
           </button>
-          <div>
-            <h1 className="text-xl font-bold text-gray-800 tracking-tight">Students</h1>
-            <p className="text-xs text-gray-400 mt-0.5">Manage student accounts and profiles</p>
+          <div className="min-w-0">
+            <h1 className="text-lg sm:text-xl font-bold text-gray-800 tracking-tight truncate">Students</h1>
+            <p className="text-xs text-gray-400 mt-0.5 truncate hidden sm:block">Manage student accounts and profiles</p>
           </div>
         </div>
         <AdminProfile name="Admin User" role="Super Admin" avatar="A" onNavigate={onNavigate} />
@@ -178,7 +186,7 @@ export default function Students({ onNavigate }) {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-6 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3 sm:gap-4">
           {stats.map((s) => (
             <div key={s.label} className="col-span-1 bg-white rounded-xl p-4 flex items-center gap-3 border border-gray-100 shadow-sm">
               <div className={`w-10 h-10 rounded-full ${s.bg} flex items-center justify-center shrink-0`}>
@@ -218,11 +226,11 @@ export default function Students({ onNavigate }) {
         {/* Table */}
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
           {/* Table meta row */}
-          <div className="flex items-center justify-between px-5 py-3 border-b border-gray-100">
-            <p className="text-xs text-gray-500">Showing {visibleStudents.length} of {students.length} students</p>
-            <div className="flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 px-4 sm:px-5 py-3 border-b border-gray-100">
+            <p className="text-xs text-gray-500 shrink-0">Showing {visibleStudents.length} of {students.length} students</p>
+            <div className="flex items-center gap-2 justify-between sm:justify-end w-full sm:w-auto">
               <FilterDropdown value={sortBy} onChange={setSortBy} options={[{ value: "name-asc", label: "Sort by: Name (A-Z)" }, { value: "name-desc", label: "Sort by: Name (Z-A)" }, { value: "roll-asc", label: "Sort by: Roll (A-Z)" }, { value: "roll-desc", label: "Sort by: Roll (Z-A)" }, { value: "year-asc", label: "Sort by: Year (Low-High)" }, { value: "year-desc", label: "Sort by: Year (High-Low)" }]} />
-              <button className="p-1.5 border border-gray-200 rounded-lg hover:bg-gray-50">
+              <button className="p-2 border border-gray-200 rounded-lg hover:bg-gray-50 shrink-0">
                 <SlidersHorizontal size={14} className="text-gray-500" />
               </button>
             </div>

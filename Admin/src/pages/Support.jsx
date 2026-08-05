@@ -55,7 +55,7 @@ const categories = [
   "System",
 ];
 
-export default function Support({ onNavigate }) {
+export default function Support({ onNavigate, onOpenSidebar }) {
   const [openFaq, setOpenFaq] = useState(0);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -82,8 +82,12 @@ export default function Support({ onNavigate }) {
         <div className="flex items-center gap-3 min-w-0 w-full sm:w-auto">
           <button
             type="button"
-            onClick={() => onNavigate?.("dashboard")}
-            className="h-9 w-9 rounded-full hover:bg-gray-50 flex items-center justify-center text-gray-500 lg:hidden"
+            onClick={() => {
+              if (onOpenSidebar) onOpenSidebar();
+              else window.dispatchEvent(new CustomEvent("toggle-mobile-sidebar"));
+            }}
+            className="h-10 w-10 rounded-xl bg-gray-100/80 hover:bg-gray-200 active:scale-95 flex items-center justify-center text-gray-700 lg:hidden cursor-pointer transition-all shrink-0"
+            aria-label="Open sidebar"
           >
             <Menu size={20} />
           </button>

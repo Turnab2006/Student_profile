@@ -23,6 +23,7 @@ import {
   X,
   CheckCircle2,
   CalendarCheck,
+  Menu,
   Building2,
   BookOpen,
   GraduationCap
@@ -206,7 +207,7 @@ const progressColors = {
   "At Risk": "bg-rose-500",
 };
 
-export default function Attendances({ onNavigate }) {
+export default function Attendances({ onNavigate, onOpenSidebar }) {
   const [selectedDept, setSelectedDept] = useState("All Departments");
   const [selectedProgram, setSelectedProgram] = useState("All Programs");
   const [selectedSem, setSelectedSem] = useState("All Semesters");
@@ -284,9 +285,22 @@ export default function Attendances({ onNavigate }) {
 
       {/* Top Header */}
       <header className="h-[65px] bg-white border-b border-gray-100 px-6 flex items-center justify-between shrink-0 shadow-2xs">
-        <div>
-          <h1 className="text-xl font-bold text-gray-800 tracking-tight">Student Attendance</h1>
-          <p className="text-xs text-gray-400 mt-0.5">Track daily student attendance, metrics, and risk alerts</p>
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => {
+              if (onOpenSidebar) onOpenSidebar();
+              else window.dispatchEvent(new CustomEvent("toggle-mobile-sidebar"));
+            }}
+            className="h-10 w-10 rounded-xl bg-gray-100/80 hover:bg-gray-200 active:scale-95 flex items-center justify-center text-gray-700 lg:hidden cursor-pointer transition-all shrink-0"
+            aria-label="Open sidebar"
+          >
+            <Menu size={20} />
+          </button>
+          <div className="min-w-0 pr-2">
+            <h1 className="text-lg sm:text-xl font-bold text-gray-800 tracking-tight truncate">Student Attendance</h1>
+            <p className="text-xs text-gray-400 mt-0.5 truncate hidden sm:block">Track daily student attendance, metrics, and risk alerts</p>
+          </div>
         </div>
 
         <AdminProfile name="Admin User" role="Super Admin" avatar="A" onNavigate={onNavigate} />

@@ -17,7 +17,8 @@ import {
   HelpCircle,
   Search,
   CheckCircle2,
-  X
+  X,
+  Menu,
 } from "lucide-react";
 import AdminProfile from "../components/AdminProfile";
 
@@ -101,7 +102,7 @@ const programBadges = {
   MCA: "bg-teal-100 text-teal-600 border-teal-200",
 };
 
-export default function Subjects({ onNavigate, subjectsList = [], setSubjectsList }) {
+export default function Subjects({ onNavigate, subjectsList = [], setSubjectsList, onOpenSidebar }) {
   const list = subjectsList && subjectsList.length > 0 ? subjectsList : defaultSubjects;
 
   const [selectedProgram, setSelectedProgram] = useState("All Programs");
@@ -164,9 +165,22 @@ export default function Subjects({ onNavigate, subjectsList = [], setSubjectsLis
     <div className="flex-1 h-full flex flex-col overflow-hidden bg-[#f8fafc]">
       {/* Top Header */}
       <header className="h-[65px] bg-white border-b border-gray-100 px-6 flex items-center justify-between shrink-0 shadow-2xs">
-        <div>
-          <h1 className="text-xl font-bold text-gray-800 tracking-tight">Subjects</h1>
-          <p className="text-xs text-gray-400 mt-0.5">Manage subject details, course codes, and academic curriculums</p>
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => {
+              if (onOpenSidebar) onOpenSidebar();
+              else window.dispatchEvent(new CustomEvent("toggle-mobile-sidebar"));
+            }}
+            className="h-10 w-10 rounded-xl bg-gray-100/80 hover:bg-gray-200 active:scale-95 flex items-center justify-center text-gray-700 lg:hidden cursor-pointer transition-all shrink-0"
+            aria-label="Open sidebar"
+          >
+            <Menu size={20} />
+          </button>
+          <div className="min-w-0">
+            <h1 className="text-lg sm:text-xl font-bold text-gray-800 tracking-tight truncate">Subjects</h1>
+            <p className="text-xs text-gray-400 mt-0.5 truncate hidden sm:block">Manage subject details, course codes, and academic curriculums</p>
+          </div>
         </div>
 
         <AdminProfile name="Admin User" role="Super Admin" avatar="A" onNavigate={onNavigate} />

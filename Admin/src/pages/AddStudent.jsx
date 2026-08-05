@@ -143,7 +143,7 @@ const reviewChecklist = [
   "Address information added",
 ];
 
-export default function AddStudent({ onNavigate }) {
+export default function AddStudent({ onNavigate, onOpenSidebar }) {
   const [dragOver, setDragOver] = useState(false);
   const [step, setStep] = useState(1);
   const [form, setForm] = useState({
@@ -226,9 +226,17 @@ export default function AddStudent({ onNavigate }) {
       <div className="flex-1 h-full flex flex-col overflow-hidden bg-gray-50">
         <header className="h-[65px] bg-white border-b border-gray-100 px-6 flex items-center justify-between shrink-0 shadow-2xs">
           <div className="flex items-center gap-3">
-            <button type="button" onClick={() => onNavigate?.("students")} className="text-gray-500 hover:text-gray-700 transition-colors lg:hidden">
-              <Menu size={20} />
-            </button>
+          <button
+            type="button"
+            onClick={() => {
+              if (onOpenSidebar) onOpenSidebar();
+              else window.dispatchEvent(new CustomEvent("toggle-mobile-sidebar"));
+            }}
+            className="h-10 w-10 rounded-xl bg-gray-100/80 hover:bg-gray-200 active:scale-95 flex items-center justify-center text-gray-700 lg:hidden cursor-pointer transition-all shrink-0"
+            aria-label="Open sidebar"
+          >
+            <Menu size={20} />
+          </button>
             <div>
               <h1 className="text-xl font-bold text-gray-800 tracking-tight">Add Student</h1>
               <nav className="flex items-center gap-1.5 text-xs text-gray-400 mt-0.5">
@@ -420,11 +428,11 @@ export default function AddStudent({ onNavigate }) {
               </section>
             </div>
 
-            <section className="bg-white rounded-xl border border-gray-200 shadow-sm px-5 py-4 flex items-center justify-between">
+            <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 sm:px-5 sm:py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <button
                 type="button"
                 onClick={() => setStep(1)}
-                className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                className="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors w-full sm:w-auto"
               >
                 <ArrowLeft size={15} />
                 Previous
@@ -432,7 +440,7 @@ export default function AddStudent({ onNavigate }) {
               <button
                 type="button"
                 onClick={() => setStep(3)}
-                className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-green-600 transition-colors"
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white hover:bg-green-600 transition-colors w-full sm:w-auto"
               >
                 Review &amp; Submit
                 <ArrowRight size={15} />
@@ -449,9 +457,17 @@ export default function AddStudent({ onNavigate }) {
       <div className="flex-1 h-full flex flex-col overflow-hidden bg-gray-50">
         <header className="h-[65px] bg-white border-b border-gray-100 px-6 flex items-center justify-between shrink-0 shadow-2xs">
           <div className="flex items-center gap-3">
-            <button type="button" onClick={() => onNavigate?.("students")} className="text-gray-500 hover:text-gray-700 transition-colors lg:hidden">
-              <Menu size={20} />
-            </button>
+          <button
+            type="button"
+            onClick={() => {
+              if (onOpenSidebar) onOpenSidebar();
+              else window.dispatchEvent(new CustomEvent("toggle-mobile-sidebar"));
+            }}
+            className="h-10 w-10 rounded-xl bg-gray-100/80 hover:bg-gray-200 active:scale-95 flex items-center justify-center text-gray-700 lg:hidden cursor-pointer transition-all shrink-0"
+            aria-label="Open sidebar"
+          >
+            <Menu size={20} />
+          </button>
             <div>
               <h1 className="text-xl font-bold text-gray-800 tracking-tight">Add Student</h1>
               <nav className="flex items-center gap-1.5 text-xs text-gray-400 mt-0.5">
@@ -624,17 +640,17 @@ export default function AddStudent({ onNavigate }) {
                   </div>
                 </section>
 
-                <section className="bg-white rounded-xl border border-gray-200 shadow-sm px-5 py-4 flex items-center justify-between">
-                  <button type="button" onClick={() => setStep(2)} className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 sm:px-5 sm:py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <button type="button" onClick={() => setStep(2)} className="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors w-full sm:w-auto">
                     <ArrowLeft size={15} />
                     Previous
                   </button>
 
-                  <div className="flex items-end gap-3">
-                    <button type="button" onClick={() => onNavigate?.("students")} className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors">
+                  <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-end">
+                    <button type="button" onClick={() => onNavigate?.("students")} className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors">
                       Cancel
                     </button>
-                    <button type="button" onClick={() => onNavigate?.("students")} className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-green-600 transition-colors">
+                    <button type="button" onClick={() => onNavigate?.("students")} className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white hover:bg-green-600 transition-colors whitespace-nowrap">
                       Submit Student
                       <ArrowRight size={15} />
                     </button>
@@ -715,7 +731,15 @@ export default function AddStudent({ onNavigate }) {
     <div className="flex-1 h-full flex flex-col overflow-hidden">
       <header className="h-[65px] bg-white border-b border-gray-100 px-6 flex items-center justify-between shrink-0 shadow-2xs">
         <div className="flex items-center gap-3">
-          <button type="button" onClick={() => onNavigate?.("students")} className="text-gray-500 hover:text-gray-700 transition-colors lg:hidden">
+          <button
+            type="button"
+            onClick={() => {
+              if (onOpenSidebar) onOpenSidebar();
+              else window.dispatchEvent(new CustomEvent("toggle-mobile-sidebar"));
+            }}
+            className="h-10 w-10 rounded-xl bg-gray-100/80 hover:bg-gray-200 active:scale-95 flex items-center justify-center text-gray-700 lg:hidden cursor-pointer transition-all shrink-0"
+            aria-label="Open sidebar"
+          >
             <Menu size={20} />
           </button>
           <div>

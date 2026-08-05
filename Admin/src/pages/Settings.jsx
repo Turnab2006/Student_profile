@@ -117,7 +117,7 @@ function StatChip({ icon: Icon, label, value, accent = "green" }) {
   );
 }
 
-export default function Settings({ onNavigate }) {
+export default function Settings({ onNavigate, onOpenSidebar }) {
   const [maintenanceEnabled, setMaintenanceEnabled] = useState(true);
   const [autoUpdate, setAutoUpdate] = useState(true);
   const [attendanceTracking, setAttendanceTracking] = useState(true);
@@ -127,7 +127,15 @@ export default function Settings({ onNavigate }) {
     <div className="flex-1 h-full flex flex-col overflow-hidden bg-[#f6f8fb]">
       <header className="h-[65px] bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-2xs">
         <div className="flex items-center gap-3 min-w-0 w-full sm:w-auto">
-          <button type="button" onClick={() => onNavigate?.("dashboard")} className="h-9 w-9 rounded-full hover:bg-gray-50 flex items-center justify-center text-gray-500 lg:hidden">
+          <button
+            type="button"
+            onClick={() => {
+              if (onOpenSidebar) onOpenSidebar();
+              else window.dispatchEvent(new CustomEvent("toggle-mobile-sidebar"));
+            }}
+            className="h-10 w-10 rounded-xl bg-gray-100/80 hover:bg-gray-200 active:scale-95 flex items-center justify-center text-gray-700 lg:hidden cursor-pointer transition-all shrink-0"
+            aria-label="Open sidebar"
+          >
             <Menu size={20} />
           </button>
           <div className="min-w-0">

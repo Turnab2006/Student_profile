@@ -61,7 +61,7 @@ function FilterDropdown({ value, onChange, options }) {
   );
 }
 
-export default function Activities({ onNavigate }) {
+export default function Activities({ onNavigate, onOpenSidebar }) {
   const [selected, setSelected] = useState([]);
   const [view, setView] = useState("grid"); // 'grid' or 'list'
   const [query, setQuery] = useState("");
@@ -116,12 +116,20 @@ export default function Activities({ onNavigate }) {
     <div className="flex-1 h-full flex flex-col overflow-hidden">
       <header className="h-[65px] bg-white border-b border-gray-100 px-6 flex items-center justify-between shrink-0 shadow-2xs">
         <div className="flex items-center gap-3">
-          <button type="button" onClick={() => onNavigate?.("dashboard")} className="text-gray-500 hover:text-gray-700 transition-colors lg:hidden">
+          <button
+            type="button"
+            onClick={() => {
+              if (onOpenSidebar) onOpenSidebar();
+              else window.dispatchEvent(new CustomEvent("toggle-mobile-sidebar"));
+            }}
+            className="h-10 w-10 rounded-xl bg-gray-100/80 hover:bg-gray-200 active:scale-95 flex items-center justify-center text-gray-700 lg:hidden cursor-pointer transition-all shrink-0"
+            aria-label="Open sidebar"
+          >
             <Menu size={20} />
           </button>
-          <div>
-            <h1 className="text-xl font-bold text-gray-800 tracking-tight">Activities</h1>
-            <p className="text-xs text-gray-400 mt-0.5">Manage campus activities and events</p>
+          <div className="min-w-0 pr-2">
+            <h1 className="text-lg sm:text-xl font-bold text-gray-800 tracking-tight truncate">Activities</h1>
+            <p className="text-xs text-gray-400 mt-0.5 truncate hidden sm:block">Manage campus activities and events</p>
           </div>
         </div>
         <AdminProfile name="Admin User" role="Super Admin" avatar="A" onNavigate={onNavigate} />
