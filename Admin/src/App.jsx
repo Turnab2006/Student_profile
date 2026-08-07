@@ -1,32 +1,50 @@
 import { useState, useEffect } from "react";
-import Sidebar from "./components/Sidebar";
-import Dashboard from "./pages/Dashboard";
-import Students from "./pages/Students";
-import AddStudent from "./pages/AddStudent";
-import Mentors from "./pages/Mentors";
-import MentorDetails from "./pages/MentorDetails";
-import AddMentor from "./pages/AddMentor";
-import Notices from "./pages/Notices";
-import AddNotice from "./pages/AddNotice";
-import Activities from "./pages/Activities";
-import AddActivity from "./pages/AddActivity";
-import Settings from "./pages/Settings";
-import Support from "./pages/Support";
-import Semesters from "./pages/Semesters";
-import Subjects from "./pages/Subjects";
-import AddSubject from "./pages/AddSubject";
-import Attendances from "./pages/Attendances";
+
+// Landing & Auth
+import LandingPage from "./pages/landing/LandingPage";
+import LoginPage from "./pages/auth/LoginPage";
+
+// Admin Site
+import Sidebar from "./components/admin/Sidebar";
+import Dashboard from "./pages/admin/Dashboard";
+import Students from "./pages/admin/Students";
+import AddStudent from "./pages/admin/AddStudent";
+import Mentors from "./pages/admin/Mentors";
+import MentorDetails from "./pages/admin/MentorDetails";
+import AddMentor from "./pages/admin/AddMentor";
+import Notices from "./pages/admin/Notices";
+import AddNotice from "./pages/admin/AddNotice";
+import Activities from "./pages/admin/Activities";
+import AddActivity from "./pages/admin/AddActivity";
+import Settings from "./pages/admin/Settings";
+import Support from "./pages/admin/Support";
+import Semesters from "./pages/admin/Semesters";
+import Subjects from "./pages/admin/Subjects";
+import AddSubject from "./pages/admin/AddSubject";
+import Attendances from "./pages/admin/Attendances";
+
+// Mentor Site
+import MentorDashboard from "./pages/mentor/MentorDashboard";
+
+// Student Site
+import StudentDashboard from "./pages/student/StudentDashboard";
+
 import "./index.css";
 
 export default function App() {
-  const [activePage, setActivePage] = useState("dashboard");
+  // Navigation state: 'landing' | 'login' | 'admin' | 'mentor' | 'student'
+  const [currentView, setCurrentView] = useState("landing");
+  const [loginRole, setLoginRole] = useState("mentor");
+
+  // Admin internal page state
+  const [adminActivePage, setAdminActivePage] = useState("dashboard");
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [subjectsList, setSubjectsList] = useState([]);
 
   useEffect(() => {
     function handleGlobalNav(e) {
       if (e.detail) {
-        setActivePage(e.detail);
+        setAdminActivePage(e.detail);
       }
     }
     function handleToggleSidebar() {
@@ -40,55 +58,113 @@ export default function App() {
     };
   }, []);
 
-  function renderPage() {
-    const handleOpenSidebar = () => setMobileSidebarOpen(true);
-    switch (activePage) {
-      case "dashboard":    return <Dashboard onNavigate={setActivePage} onOpenSidebar={handleOpenSidebar} />;
-      case "students":     return <Students onNavigate={setActivePage} onOpenSidebar={handleOpenSidebar} />;
-      case "add-student":  return <AddStudent onNavigate={setActivePage} onOpenSidebar={handleOpenSidebar} />;
-      case "mentors":      return <Mentors onNavigate={setActivePage} onOpenSidebar={handleOpenSidebar} />;
-      case "mentor-details": return <MentorDetails mentor={activePage?.mentor} onNavigate={setActivePage} onOpenSidebar={handleOpenSidebar} />;
-      case "add-mentor":   return <AddMentor onNavigate={setActivePage} onOpenSidebar={handleOpenSidebar} />;
-      case "notices":      return <Notices onNavigate={setActivePage} onOpenSidebar={handleOpenSidebar} />;
-      case "add-notice":   return <AddNotice onNavigate={setActivePage} onOpenSidebar={handleOpenSidebar} />;
-      case "activities":   return <Activities onNavigate={setActivePage} onOpenSidebar={handleOpenSidebar} />;
-      case "add-activity": return <AddActivity onNavigate={setActivePage} onOpenSidebar={handleOpenSidebar} />;
-      case "semesters":    return <Semesters onNavigate={setActivePage} onOpenSidebar={handleOpenSidebar} />;
-      case "subjects":     return <Subjects onNavigate={setActivePage} subjectsList={subjectsList} setSubjectsList={setSubjectsList} onOpenSidebar={handleOpenSidebar} />;
-      case "add-subject":  return <AddSubject onNavigate={setActivePage} subjectsList={subjectsList} setSubjectsList={setSubjectsList} onOpenSidebar={handleOpenSidebar} />;
-      case "attendances":  return <Attendances onNavigate={setActivePage} onOpenSidebar={handleOpenSidebar} />;
-      case "settings":     return <Settings onNavigate={setActivePage} onOpenSidebar={handleOpenSidebar} />;
-      case "support":      return <Support onNavigate={setActivePage} onOpenSidebar={handleOpenSidebar} />;
-      default:
-        return (
-          <div className="flex-1 flex items-center justify-center text-gray-400 text-sm">
-            Page coming soon
-          </div>
-        );
+  function handleNavigateToLogin(targetView = 'login', initialRole = 'mentor') {
+    if (targetView === 'login') {
+      setLoginRole(initialRole);
+      setCurrentView('login');
+    } else {
+      setCurrentView(targetView);
     }
   }
 
-  return (
-    <div className="relative flex h-full w-full bg-gray-50 overflow-hidden">
-      {mobileSidebarOpen ? (
-        <button
-          type="button"
-          aria-label="Close navigation overlay"
-          onClick={() => setMobileSidebarOpen(false)}
-          className="fixed inset-0 z-40 bg-black/40 backdrop-blur-[1px] lg:hidden"
-        />
-      ) : null}
+  function handleLoginSuccess(selectedRole) {
+    if (selectedRole === 'admin') {
+      setCurrentView('admin');
+      setAdminActivePage('dashboard');
+    } else if (selectedRole === 'mentor') {
+      setCurrentView('mentor');
+    } else if (selectedRole === 'student') {
+      setCurrentView('student');
+    }
+  }
 
-      <Sidebar
-        activePage={activePage}
-        onNavigate={(page) => {
-          setActivePage(page);
-          setMobileSidebarOpen(false);
-        }}
-        open={mobileSidebarOpen}
-        onClose={() => setMobileSidebarOpen(false)}
+  function handleLogout() {
+    setCurrentView('landing');
+  }
+
+  // Render Admin Site Pages
+  function renderAdminPage() {
+    const handleOpenSidebar = () => setMobileSidebarOpen(true);
+    switch (adminActivePage) {
+      case "dashboard":     return <Dashboard onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
+      case "students":      return <Students onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
+      case "add-student":   return <AddStudent onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
+      case "mentors":       return <Mentors onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
+      case "mentor-details":return <MentorDetails mentor={adminActivePage?.mentor} onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
+      case "add-mentor":    return <AddMentor onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
+      case "notices":       return <Notices onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
+      case "add-notice":    return <AddNotice onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
+      case "activities":    return <Activities onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
+      case "add-activity":  return <AddActivity onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
+      case "semesters":     return <Semesters onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
+      case "subjects":      return <Subjects onNavigate={setAdminActivePage} subjectsList={subjectsList} setSubjectsList={setSubjectsList} onOpenSidebar={handleOpenSidebar} />;
+      case "add-subject":   return <AddSubject onNavigate={setAdminActivePage} subjectsList={subjectsList} setSubjectsList={setSubjectsList} onOpenSidebar={handleOpenSidebar} />;
+      case "attendances":   return <Attendances onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
+      case "settings":      return <Settings onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
+      case "support":       return <Support onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
+      default:
+        return <Dashboard onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
+    }
+  }
+
+  // 1. PUBLIC LANDING PAGE
+  if (currentView === "landing") {
+    return <LandingPage onNavigateLogin={handleNavigateToLogin} />;
+  }
+
+  // 2. UNIFIED LOGIN PAGE
+  if (currentView === "login") {
+    return (
+      <LoginPage
+        initialRole={loginRole}
+        onLoginSuccess={handleLoginSuccess}
+        onBackToLanding={() => setCurrentView("landing")}
       />
-      {renderPage()}
-    </div>
-  );
+    );
+  }
+
+  // 3. SITE 1: ADMIN SITE
+  if (currentView === "admin") {
+    return (
+      <div className="relative flex h-full w-full bg-gray-50 overflow-hidden min-h-screen">
+        {mobileSidebarOpen ? (
+          <button
+            type="button"
+            aria-label="Close navigation overlay"
+            onClick={() => setMobileSidebarOpen(false)}
+            className="fixed inset-0 z-40 bg-black/40 backdrop-blur-[1px] lg:hidden"
+          />
+        ) : null}
+
+        <Sidebar
+          activePage={adminActivePage}
+          onNavigate={(page) => {
+            if (page === "logout") {
+              handleLogout();
+            } else {
+              setAdminActivePage(page);
+              setMobileSidebarOpen(false);
+            }
+          }}
+          open={mobileSidebarOpen}
+          onClose={() => setMobileSidebarOpen(false)}
+        />
+        <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+          {renderAdminPage()}
+        </div>
+      </div>
+    );
+  }
+
+  // 4. SITE 2: MENTOR SITE
+  if (currentView === "mentor") {
+    return <MentorDashboard onLogout={handleLogout} />;
+  }
+
+  // 5. SITE 3: STUDENT SITE
+  if (currentView === "student") {
+    return <StudentDashboard onLogout={handleLogout} />;
+  }
+
+  return <LandingPage onNavigateLogin={handleNavigateToLogin} />;
 }
