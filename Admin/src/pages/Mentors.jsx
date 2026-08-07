@@ -60,7 +60,7 @@ function FilterDropdown({ value, onChange, options }) {
   );
 }
 
-export default function Mentors({ onNavigate }) {
+export default function Mentors({ onNavigate, onOpenSidebar }) {
   const [selected, setSelected] = useState([]);
   const [query, setQuery] = useState("");
   const [deptFilter, setDeptFilter] = useState("all");
@@ -117,18 +117,30 @@ export default function Mentors({ onNavigate }) {
       prev.includes(id) ? prev.filter((r) => r !== id) : [...prev, id]
     );
 
+  const openMentorDetails = (mentor) => onNavigate?.("mentor-details", mentor);
+
   return (
     <div className="flex-1 h-full flex flex-col overflow-hidden">
       {/* Topbar */}
-      <header className="bg-white border-b border-gray-100 px-6 py-3 flex items-center justify-between shrink-0">
+      <header className="h-[65px] bg-white border-b border-gray-100 px-6 flex items-center justify-between shrink-0 shadow-2xs">
         <div className="flex items-center gap-3">
-          <Menu size={20} className="text-gray-500" />
-          <div>
-            <h1 className="text-base font-semibold text-gray-800">Mentors</h1>
-            <p className="text-xs text-gray-400">Manage mentor accounts and profiles</p>
+          <button
+            type="button"
+            onClick={() => {
+              if (onOpenSidebar) onOpenSidebar();
+              else window.dispatchEvent(new CustomEvent("toggle-mobile-sidebar"));
+            }}
+            className="h-10 w-10 rounded-xl bg-gray-100/80 hover:bg-gray-200 active:scale-95 flex items-center justify-center text-gray-700 lg:hidden cursor-pointer transition-all shrink-0"
+            aria-label="Open sidebar"
+          >
+            <Menu size={20} />
+          </button>
+          <div className="min-w-0">
+            <h1 className="text-lg sm:text-xl font-bold text-gray-800 tracking-tight truncate">Mentors</h1>
+            <p className="text-xs text-gray-400 mt-0.5 truncate hidden sm:block">Manage mentor accounts and profiles</p>
           </div>
         </div>
-        <AdminProfile />
+        <AdminProfile name="Admin User" role="Super Admin" avatar="A" onNavigate={onNavigate} />
       </header>
 
       <main className="flex-1 overflow-y-auto p-6 space-y-4">
@@ -151,7 +163,7 @@ export default function Mentors({ onNavigate }) {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {stats.map((s) => (
             <div key={s.label} className="bg-white rounded-xl p-4 flex items-center gap-3 border border-gray-100 shadow-sm">
               <div className={`w-10 h-10 rounded-full ${s.bg} flex items-center justify-center shrink-0`}>{s.icon}</div>
@@ -166,11 +178,11 @@ export default function Mentors({ onNavigate }) {
 
         {/* Table */}
         <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
-          <div className="flex items-center justify-between px-5 py-3 border-b border-gray-100">
-            <p className="text-xs text-gray-500">Showing {visibleMentors.length} of {mentors.length} mentors</p>
-            <div className="flex items-center gap-2">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 px-4 sm:px-5 py-3 border-b border-gray-100">
+            <p className="text-xs text-gray-500 shrink-0">Showing {visibleMentors.length} of {mentors.length} mentors</p>
+            <div className="flex items-center gap-2 justify-between sm:justify-end w-full sm:w-auto">
               <FilterDropdown value={sortBy} onChange={setSortBy} options={[{ value: "name-asc", label: "Sort by: Name (A-Z)" }, { value: "name-desc", label: "Sort by: Name (Z-A)" }, { value: "students-desc", label: "Sort by: Students (High-Low)" }, { value: "students-asc", label: "Sort by: Students (Low-High)" }, { value: "dept-asc", label: "Sort by: Department (A-Z)" }, { value: "dept-desc", label: "Sort by: Department (Z-A)" }]} />
-              <button className="p-1.5 border border-gray-200 rounded-lg hover:bg-gray-50">
+              <button className="p-2 border border-gray-200 rounded-lg hover:bg-gray-50 shrink-0">
                 <SlidersHorizontal size={14} className="text-gray-500" />
               </button>
             </div>
@@ -211,7 +223,12 @@ export default function Mentors({ onNavigate }) {
                     </td>
                     <td className="px-3 py-3">
                       <div className="flex items-center gap-2">
-                        <button className="text-[11px] font-semibold text-green-600 bg-green-50 hover:bg-green-100 px-3 py-1 rounded-full transition-colors">View</button>
+                        <button
+                          onClick={() => openMentorDetails(m)}
+                          className="text-[11px] font-semibold text-green-600 bg-green-50 hover:bg-green-100 px-3 py-1 rounded-full transition-colors"
+                        >
+                          View
+                        </button>
                         <button className="p-1 hover:bg-gray-100 rounded-full transition-colors">
                           <MoreHorizontal size={14} className="text-gray-400" />
                         </button>

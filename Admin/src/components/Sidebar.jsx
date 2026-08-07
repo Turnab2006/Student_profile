@@ -48,10 +48,12 @@ const navSections = [
 export default function Sidebar({ activePage = "dashboard", onNavigate, open = false, onClose }) {
   return (
     <aside
-      className={`fixed inset-y-0 left-0 z-40 flex h-full w-72 -translate-x-full flex-col border-r border-gray-100 bg-white shadow-2xl transition-transform duration-200 lg:static lg:z-auto lg:w-64 lg:translate-x-0 lg:shadow-none ${open ? "translate-x-0" : ""}`}
+      className={`fixed inset-y-0 left-0 z-50 flex h-full w-72 flex-col border-r border-gray-100 bg-white shadow-2xl transition-transform duration-300 ease-in-out lg:static lg:z-auto lg:w-64 lg:translate-x-0 lg:shadow-none ${
+        open ? "translate-x-0" : "-translate-x-full"
+      }`}
     >
       {/* Logo */}
-      <div className="flex items-center justify-between gap-3 border-b border-gray-100 px-5 py-4">
+      <div className="h-[65px] flex items-center justify-between gap-3 border-b border-gray-100 px-5 shrink-0">
         <span className="block text-lg font-bold tracking-wide text-gray-800">LOGO</span>
         <button
           type="button"

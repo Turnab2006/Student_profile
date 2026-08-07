@@ -27,7 +27,7 @@ function Label({ children, required }) {
   );
 }
 
-export default function AddActivity({ onNavigate }) {
+export default function AddActivity({ onNavigate, onOpenSidebar }) {
   const [dragOver, setDragOver] = useState(false);
   const [files, setFiles] = useState([]);
   const [form, setForm] = useState({
@@ -51,14 +51,29 @@ export default function AddActivity({ onNavigate }) {
 
   return (
     <div className="flex-1 h-full flex flex-col overflow-hidden">
-      <header className="bg-white border-b border-gray-100 px-6 py-3 flex items-center justify-between shrink-0">
+      <header className="h-[65px] bg-white border-b border-gray-100 px-6 flex items-center justify-between shrink-0 shadow-2xs">
         <div className="flex items-center gap-3">
-          <button onClick={() => onNavigate?.("activities")}>
-            <Menu size={20} className="text-gray-500" />
+          <button
+            type="button"
+            onClick={() => {
+              if (onOpenSidebar) onOpenSidebar();
+              else window.dispatchEvent(new CustomEvent("toggle-mobile-sidebar"));
+            }}
+            className="h-10 w-10 rounded-xl bg-gray-100/80 hover:bg-gray-200 active:scale-95 flex items-center justify-center text-gray-700 lg:hidden cursor-pointer transition-all shrink-0"
+            aria-label="Open sidebar"
+          >
+            <Menu size={20} />
           </button>
-          <h1 className="text-base font-semibold text-gray-800">Create Activity</h1>
+          <div>
+            <h1 className="text-xl font-bold text-gray-800 tracking-tight">Create Activity</h1>
+            <nav className="flex items-center gap-1.5 text-xs text-gray-400 mt-0.5">
+              <span className="hover:text-gray-600 cursor-pointer" onClick={() => onNavigate?.("activities")}>Activities</span>
+              <span>&gt;</span>
+              <span className="text-[#0da651] font-semibold">Create Activity</span>
+            </nav>
+          </div>
         </div>
-        <AdminProfile />
+        <AdminProfile name="Admin User" role="Super Admin" avatar="A" onNavigate={onNavigate} />
       </header>
 
       <main className="flex-1 overflow-y-auto p-6">
