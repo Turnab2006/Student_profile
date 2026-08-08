@@ -30,7 +30,7 @@ export default function MentorAttendance() {
         <div className="flex items-center gap-4 mb-6 pb-4 border-b border-slate-100">
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Date</label>
-            <input type="date" defaultValue="2026-08-07" className="px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none" />
+            <input type="date" defaultValue={new Date().toISOString().split('T')[0]} className="px-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none" />
           </div>
           <div>
             <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Session Type</label>

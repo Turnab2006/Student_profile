@@ -189,17 +189,17 @@ select {
 /* --- MAIN LAYOUT --- */
 .mentor-dashboard-main {
   flex: 1;
-  padding: 24px 32px 32px;
+  padding: 16px 24px 20px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 16px;
   min-width: 0;
 }
 
 .mentor-dashboard-content {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 16px;
 }
 
 /* --- NAVBAR --- */
@@ -212,16 +212,16 @@ select {
 
 .mentor-navbar-copy h1 {
   margin: 0;
-  font-size: 26px;
+  font-size: 22px;
   font-weight: 800;
   color: #0f172a;
   letter-spacing: -0.03em;
 }
 
 .mentor-navbar-copy p {
-  margin: 4px 0 0;
+  margin: 2px 0 0;
   color: var(--mentor-muted);
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .mentor-navbar-actions {
@@ -232,8 +232,8 @@ select {
 
 .mentor-icon-btn {
   position: relative;
-  width: 42px;
-  height: 42px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   border: 1px solid #e2e8f0;
   background: #ffffff;
@@ -285,8 +285,8 @@ select {
 }
 
 .mentor-navbar-avatar {
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   object-fit: cover;
 }
@@ -299,13 +299,13 @@ select {
 .mentor-profile-card {
   position: relative;
   background: linear-gradient(135deg, #6046e8 0%, #7656f4 50%, #8762f9 100%);
-  border-radius: 20px;
-  padding: 28px 32px;
+  border-radius: 16px;
+  padding: 18px 24px;
   color: #ffffff;
   display: flex;
   align-items: center;
-  gap: 28px;
-  box-shadow: 0 16px 36px rgba(118, 86, 244, 0.22);
+  gap: 20px;
+  box-shadow: 0 10px 28px rgba(118, 86, 244, 0.18);
   overflow: hidden;
 }
 
@@ -325,12 +325,12 @@ select {
 }
 
 .mentor-profile-photo {
-  width: 110px;
-  height: 110px;
-  border-radius: 16px;
+  width: 85px;
+  height: 85px;
+  border-radius: 14px;
   object-fit: cover;
   border: 3px solid rgba(255, 255, 255, 0.9);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
 .mentor-profile-content {
@@ -350,9 +350,9 @@ select {
 
 .mentor-profile-heading h2 {
   margin: 0;
-  font-size: 24px;
+  font-size: 21px;
   font-weight: 800;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
   color: #ffffff;
 }
 
@@ -360,8 +360,8 @@ select {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background: #ffffff;
   color: var(--mentor-primary);
@@ -376,8 +376,8 @@ select {
 }
 
 .mentor-profile-dept {
-  margin: 6px 0 0;
-  font-size: 14px;
+  margin: 3px 0 0;
+  font-size: 13px;
   color: rgba(255, 255, 255, 0.88);
   font-weight: 400;
 }
@@ -385,23 +385,23 @@ select {
 .mentor-profile-meta {
   display: flex;
   align-items: center;
-  gap: 14px;
-  margin-top: 20px;
+  gap: 10px;
+  margin-top: 12px;
   flex-wrap: wrap;
 }
 
 .mentor-meta-pill {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  height: 38px;
-  padding: 0 16px;
-  border-radius: 10px;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 8px;
   background: rgba(0, 0, 0, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(8px);
   color: #ffffff;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
 }
 
@@ -424,7 +424,7 @@ select {
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 16px 24px;
+  padding: 14px 24px;
   position: relative;
 }
 
@@ -487,15 +487,15 @@ select {
 /* --- LOWER GRID (3 PANELS) --- */
 .mentor-lower-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1.35fr;
-  gap: 24px;
+  grid-template-columns: 0.95fr 1.35fr 1.2fr;
+  gap: 16px;
   align-items: stretch;
 }
 
 .mentor-panel {
   background: #ffffff;
-  border-radius: 18px;
-  padding: 20px 22px;
+  border-radius: 16px;
+  padding: 14px 16px;
   box-shadow: var(--mentor-shadow);
   border: 1px solid var(--mentor-border);
   display: flex;
@@ -506,20 +506,20 @@ select {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 20px;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 
 .mentor-panel-title-wrap {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .mentor-panel-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 10px;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
   background: var(--mentor-primary-soft);
   color: var(--mentor-primary);
   display: grid;
@@ -528,7 +528,7 @@ select {
 
 .mentor-panel-header h3 {
   margin: 0;
-  font-size: 16px;
+  font-size: 14.5px;
   font-weight: 700;
   color: #0f172a;
 }
@@ -554,12 +554,12 @@ select {
   flex: 1;
   display: grid;
   place-items: center;
-  padding: 12px 0 20px;
+  padding: 8px 0 12px;
 }
 
 .mentor-donut {
-  width: 140px;
-  height: 140px;
+  width: 138px;
+  height: 138px;
   border-radius: 50%;
   background: conic-gradient(var(--mentor-primary) 0% 80%, #e2d9fd 80% 100%);
   display: grid;
@@ -570,10 +570,10 @@ select {
 .mentor-donut::before {
   content: '';
   position: absolute;
-  inset: 18px;
+  inset: 17px;
   border-radius: 50%;
   background: #ffffff;
-  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.04);
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.04);
 }
 
 .mentor-donut-inner {
@@ -603,14 +603,14 @@ select {
   align-items: center;
   justify-content: space-around;
   border-top: 1px solid #f1f5f9;
-  padding-top: 14px;
+  padding-top: 8px;
 }
 
 .mentor-legend-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 13px;
+  gap: 6px;
+  font-size: 12px;
   color: var(--mentor-muted);
 }
 
@@ -637,15 +637,15 @@ select {
 .mentor-actions-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  gap: 14px;
   flex: 1;
 }
 
 .mentor-action-card {
   border: 1px solid #f1f5f9;
-  border-radius: 14px;
+  border-radius: 16px;
   background: #ffffff;
-  padding: 16px 12px;
+  padding: 18px 12px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -653,29 +653,29 @@ select {
   gap: 10px;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
 }
 
 .mentor-action-card:hover {
-  border-color: rgba(118, 86, 244, 0.3);
+  border-color: rgba(118, 86, 244, 0.35);
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(118, 86, 244, 0.1);
 }
 
 .mentor-action-icon {
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  background: var(--mentor-primary-soft);
-  color: var(--mentor-primary);
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: #f0ebff;
+  color: #7656f4;
   display: grid;
   place-items: center;
 }
 
 .mentor-action-card span:last-child {
   font-size: 12px;
-  font-weight: 600;
-  color: #1e293b;
+  font-weight: 700;
+  color: #0f172a;
   text-align: center;
 }
 
@@ -683,9 +683,9 @@ select {
 .mentor-month-switcher {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 3px 8px;
-  border-radius: 8px;
+  gap: 4px;
+  padding: 2px 6px;
+  border-radius: 6px;
   background: #f8fafc;
   border: 1px solid #f1f5f9;
 }
@@ -694,9 +694,9 @@ select {
   border: 0;
   background: #ffffff;
   color: #64748b;
-  width: 22px;
-  height: 22px;
-  border-radius: 6px;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
   cursor: pointer;
   display: grid;
   place-items: center;
@@ -709,26 +709,26 @@ select {
 }
 
 .mentor-month-switcher span {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   color: #0f172a;
-  min-width: 90px;
+  min-width: 80px;
   text-align: center;
 }
 
 .mentor-calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 6px;
-  margin-top: 10px;
+  gap: 2px;
+  margin-top: 4px;
 }
 
 .mentor-weekday {
   text-align: center;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   color: #94a3b8;
-  padding: 4px 0;
+  padding: 2px 0;
 }
 
 .mentor-weekday.weekend {
@@ -740,10 +740,10 @@ select {
   aspect-ratio: 1;
   display: grid;
   place-items: center;
-  font-size: 13px;
+  font-size: 11.5px;
   font-weight: 500;
   color: #334155;
-  border-radius: 50%;
+  border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -756,7 +756,13 @@ select {
   background: var(--mentor-primary);
   color: #ffffff;
   font-weight: 700;
-  box-shadow: 0 6px 16px rgba(118, 86, 244, 0.35);
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(118, 86, 244, 0.35);
+}
+
+.mentor-calendar-day:not(.selected):hover {
+  background: var(--mentor-primary-soft);
+  color: var(--mentor-primary);
 }
 
 .mentor-calendar-day:not(.selected):hover {

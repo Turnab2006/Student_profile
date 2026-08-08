@@ -7,7 +7,7 @@ import {
   CalendarCheck,
   Star,
   Megaphone,
-  Activity,
+  Bell,
   Settings,
   Headphones,
   LogOut,
@@ -35,7 +35,7 @@ const menuGroups = [
     title: 'ANNOUNCEMENT',
     items: [
       { id: 'notices', label: 'Notice', icon: Megaphone },
-      { id: 'activities', label: 'Activity', icon: Activity },
+      { id: 'activities', label: 'Activity', icon: Bell },
     ],
   },
   {
@@ -51,12 +51,6 @@ export default function MentorSidebar({ activeTab = 'dashboard', onSelectTab, on
   return (
     <aside className="mentor-sidebar">
       <div className="mentor-brand" onClick={() => onSelectTab && onSelectTab('dashboard')} style={{ cursor: 'pointer' }}>
-        <div className="mentor-brand-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="12" cy="12" r="10" stroke="#7656F4" strokeWidth="3" />
-            <circle cx="12" cy="12" r="4" fill="#7656F4" />
-          </svg>
-        </div>
         <span className="mentor-brand-track">TRACK</span>
         <span className="mentor-brand-academy">ADEMY</span>
       </div>

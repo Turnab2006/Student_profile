@@ -33,7 +33,7 @@ export default function MentorQuickActions({ onNavigate }) {
               onClick={() => onNavigate && onNavigate(action.tab)}
             >
               <span className="mentor-action-icon">
-                <Icon size={18} />
+                <Icon size={22} strokeWidth={2.2} />
               </span>
               <span>{action.title}</span>
             </button>

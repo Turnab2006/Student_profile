@@ -4,10 +4,16 @@ export default function MentorProfileCard() {
   return (
     <article className="mentor-profile-card">
       <div className="mentor-profile-bg-pattern">
-        <svg width="240" height="150" viewBox="0 0 240 150" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <polygon points="120,0 240,0 240,120" fill="rgba(255, 255, 255, 0.08)" />
-          <polygon points="160,0 240,0 240,80" fill="rgba(255, 255, 255, 0.06)" />
-          <polygon points="80,150 240,30 240,150" fill="rgba(255, 255, 255, 0.05)" />
+        <svg width="320" height="180" viewBox="0 0 320 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="mentor-dot-pattern" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
+              <circle cx="2" cy="2" r="1.2" fill="rgba(255, 255, 255, 0.25)" />
+            </pattern>
+          </defs>
+          <polygon points="160,0 320,0 320,160" fill="rgba(255, 255, 255, 0.08)" />
+          <polygon points="210,0 320,0 320,110" fill="rgba(255, 255, 255, 0.06)" />
+          <polygon points="120,180 320,40 320,180" fill="rgba(255, 255, 255, 0.05)" />
+          <rect x="220" y="20" width="80" height="130" fill="url(#mentor-dot-pattern)" />
         </svg>
       </div>
 
