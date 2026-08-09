@@ -56,24 +56,25 @@ select {
   width: 240px;
   background: #ffffff;
   border-right: 1px solid #f1f5f9;
-  padding: 24px 16px 20px;
+  padding: 20px 16px 18px;
   display: flex;
   flex-direction: column;
   height: 100vh;
   position: sticky;
   top: 0;
-  overflow-y: auto;
+  overflow: hidden;
 }
 
 .mentor-brand {
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  gap: 0;
   font-size: 20px;
   font-weight: 800;
   letter-spacing: -0.03em;
-  margin-bottom: 28px;
-  padding-left: 4px;
+  margin-bottom: 14px;
+  width: 100%;
 }
 
 .mentor-brand-icon {
@@ -93,18 +94,25 @@ select {
 .mentor-sidebar-nav {
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 12px;
   flex: 1;
+  overflow: hidden;
+  margin-bottom: 12px;
 }
 
 .mentor-nav-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
+}
+
+.mentor-nav-group:not(:last-child) {
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 10px;
 }
 
 .mentor-group-title {
-  margin: 0 10px 4px;
+  margin: 0 10px 2px;
   font-size: 11px;
   font-weight: 700;
   color: #94a3b8;
@@ -115,7 +123,7 @@ select {
 .mentor-group-items {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
 }
 
 .mentor-nav-item {
@@ -126,17 +134,17 @@ select {
   align-items: center;
   gap: 12px;
   width: 100%;
-  padding: 10px 12px;
+  padding: 8px 12px;
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.2s ease;
   text-align: left;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .mentor-nav-icon {
-  color: #64748b;
+  color: #5B5F7A;
   transition: color 0.2s ease;
 }
 
@@ -152,7 +160,7 @@ select {
 .mentor-nav-item.active {
   background: var(--mentor-primary-soft);
   color: var(--mentor-primary);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .mentor-nav-item.active .mentor-nav-icon {
@@ -161,7 +169,7 @@ select {
 
 .mentor-logout-btn {
   border: 0;
-  margin-top: 24px;
+  margin-top: auto;
   background: #fff0f3;
   color: #ff4d4d;
   display: flex;
@@ -169,11 +177,11 @@ select {
   justify-content: center;
   gap: 10px;
   width: 100%;
-  padding: 12px;
+  padding: 10px;
   border-radius: 12px;
   cursor: pointer;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 13px;
   transition: all 0.2s ease;
 }
 
@@ -227,68 +235,59 @@ select {
 .mentor-navbar-actions {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 18px;
 }
 
-.mentor-icon-btn {
+.mentor-bell-btn {
   position: relative;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 1px solid #e2e8f0;
-  background: #ffffff;
-  color: #475569;
-  display: grid;
-  place-items: center;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  margin: 0;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-}
-
-.mentor-icon-btn:hover {
-  border-color: var(--mentor-primary);
-  color: var(--mentor-primary);
-  transform: translateY(-1px);
-}
-
-.mentor-badge {
-  position: absolute;
-  top: -2px;
-  right: -2px;
-  min-width: 18px;
-  height: 18px;
-  border-radius: 999px;
-  background: var(--mentor-primary);
-  color: #ffffff;
-  font-size: 11px;
-  font-weight: 700;
-  display: grid;
-  place-items: center;
-  padding: 0 4px;
-  border: 2px solid #ffffff;
-}
-
-.mentor-avatar-wrap {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 3px 8px 3px 3px;
-  background: #ffffff;
-  border-radius: 999px;
-  border: 1px solid #e2e8f0;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  justify-content: center;
 }
 
-.mentor-avatar-wrap:hover {
-  border-color: var(--mentor-primary);
+.mentor-bell-icon {
+  color: #4B4B6A;
+}
+
+.mentor-bell-badge {
+  position: absolute;
+  top: -4px;
+  right: -5px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #6C4CF5;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 600;
+  display: grid;
+  place-items: center;
+  border: 2px solid #ffffff;
+  box-sizing: border-box;
+  line-height: 1;
+}
+
+.mentor-profile-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
 }
 
 .mentor-navbar-avatar {
-  width: 32px;
-  height: 32px;
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
   object-fit: cover;
+}
+
+.mentor-navbar-chevron {
+  color: #5C5C7A;
 }
 
 .mentor-chevron {
@@ -325,8 +324,8 @@ select {
 }
 
 .mentor-profile-photo {
-  width: 85px;
-  height: 85px;
+  width: 100px;
+  height: 100px;
   border-radius: 14px;
   object-fit: cover;
   border: 3px solid rgba(255, 255, 255, 0.9);
@@ -362,17 +361,8 @@ select {
   justify-content: center;
   width: 20px;
   height: 20px;
-  border-radius: 50%;
-  background: #ffffff;
-  color: var(--mentor-primary);
   flex-shrink: 0;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-}
-
-.mentor-verified-icon {
-  display: grid;
-  place-items: center;
-  color: var(--mentor-primary);
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.16));
 }
 
 .mentor-profile-dept {
@@ -437,31 +427,31 @@ select {
 }
 
 .mentor-stat-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 14px;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
   display: grid;
   place-items: center;
 }
 
 .accent-purple .mentor-stat-icon {
-  background: var(--mentor-primary-soft);
-  color: var(--mentor-primary);
+  background: #F3EEFF;
+  color: #6C4CF5;
 }
 
 .accent-green .mentor-stat-icon {
-  background: var(--mentor-green-soft);
-  color: var(--mentor-green);
+  background: #EAFBF1;
+  color: #22C55E;
 }
 
 .accent-orange .mentor-stat-icon {
-  background: var(--mentor-orange-soft);
-  color: var(--mentor-orange);
+  background: #FFF5E8;
+  color: #F59E0B;
 }
 
 .accent-blue .mentor-stat-icon {
-  background: var(--mentor-blue-soft);
-  color: var(--mentor-blue);
+  background: #EEF5FF;
+  color: #4F8DFD;
 }
 
 .mentor-stat-copy {
@@ -495,7 +485,7 @@ select {
 .mentor-panel {
   background: #ffffff;
   border-radius: 16px;
-  padding: 14px 16px;
+  padding: 17.5px 16px;
   box-shadow: var(--mentor-shadow);
   border: 1px solid var(--mentor-border);
   display: flex;
@@ -507,7 +497,7 @@ select {
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .mentor-panel-title-wrap {
@@ -554,7 +544,7 @@ select {
   flex: 1;
   display: grid;
   place-items: center;
-  padding: 8px 0 12px;
+  padding: 7px 0 9px;
 }
 
 .mentor-donut {
@@ -594,7 +584,7 @@ select {
 .mentor-donut-inner span {
   color: var(--mentor-muted);
   font-size: 12px;
-  margin-top: 2px;
+  margin-top: 1px;
   font-weight: 500;
 }
 
@@ -603,7 +593,7 @@ select {
   align-items: center;
   justify-content: space-around;
   border-top: 1px solid #f1f5f9;
-  padding-top: 8px;
+  padding-top: 6px;
 }
 
 .mentor-legend-item {
@@ -637,15 +627,15 @@ select {
 .mentor-actions-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 14px;
+  gap: 12px;
   flex: 1;
 }
 
 .mentor-action-card {
   border: 1px solid #f1f5f9;
-  border-radius: 16px;
+  border-radius: 14px;
   background: #ffffff;
-  padding: 18px 12px;
+  padding: 17px 8px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -654,6 +644,8 @@ select {
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  width: calc(100% - 4px);
+  justify-self: center;
 }
 
 .mentor-action-card:hover {
@@ -719,16 +711,16 @@ select {
 .mentor-calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 2px;
-  margin-top: 4px;
+  gap: 1px;
+  margin-top: 2px;
 }
 
 .mentor-weekday {
   text-align: center;
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 600;
   color: #94a3b8;
-  padding: 2px 0;
+  padding: 1px 0;
 }
 
 .mentor-weekday.weekend {
@@ -737,13 +729,13 @@ select {
 }
 
 .mentor-calendar-day {
-  aspect-ratio: 1;
+  min-height: 29px;
   display: grid;
   place-items: center;
-  font-size: 11.5px;
+  font-size: 11px;
   font-weight: 500;
   color: #334155;
-  border-radius: 6px;
+  border-radius: 5px;
   cursor: pointer;
   transition: all 0.2s ease;
 }

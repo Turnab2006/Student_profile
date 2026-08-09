@@ -1,6 +1,6 @@
 import { Bell, ChevronDown } from 'lucide-react';
 
-export default function MentorNavbar({ onSelectTab, onLogout }) {
+export default function MentorNavbar({ onSelectTab }) {
   return (
     <header className="mentor-navbar">
       <div className="mentor-navbar-copy">
@@ -11,24 +11,24 @@ export default function MentorNavbar({ onSelectTab, onLogout }) {
       <div className="mentor-navbar-actions">
         <button
           type="button"
-          className="mentor-icon-btn"
+          className="mentor-bell-btn"
           aria-label="Notifications"
           onClick={() => onSelectTab && onSelectTab('notices')}
         >
-          <Bell size={18} />
-          <span className="mentor-badge">3</span>
+          <Bell size={25} className="mentor-bell-icon" />
+          <span className="mentor-bell-badge">3</span>
         </button>
 
         <div
-          className="mentor-avatar-wrap"
+          className="mentor-profile-trigger"
           onClick={() => onSelectTab && onSelectTab('profile')}
         >
           <img
-            src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=160&q=80"
+            src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=320&q=80"
             alt="Mentor profile"
             className="mentor-navbar-avatar"
           />
-          <ChevronDown size={16} className="mentor-chevron" />
+          <ChevronDown size={19} className="mentor-navbar-chevron" />
         </div>
       </div>
     </header>
