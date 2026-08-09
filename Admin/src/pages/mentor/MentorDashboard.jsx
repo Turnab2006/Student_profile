@@ -8,6 +8,7 @@ import MentorStats from '../../components/mentor/MentorStats';
 import MentorQuickActions from '../../components/mentor/MentorQuickActions';
 import MentorCalendar from '../../components/mentor/MentorCalendar';
 import MentorMenteeChart from '../../components/mentor/MentorMenteeChart';
+import MentorProfilePage from '../../components/mentor/MentorProfilePage';
 
 const stats = [
   {
@@ -81,6 +82,9 @@ export default function MentorDashboard({ onLogout }) {
 
   function renderView() {
     if (activeTab !== 'dashboard') {
+      if (activeTab === 'profile' || activeTab === 'settings') {
+        return <MentorProfilePage />;
+      }
       const title = tabTitles[activeTab] || 'This Page';
       return (
         <MentorComingSoon
@@ -118,7 +122,9 @@ export default function MentorDashboard({ onLogout }) {
       />
 
       <main className="mentor-dashboard-main">
-        <MentorNavbar onSelectTab={setActiveTab} onLogout={onLogout} />
+        {activeTab === 'dashboard' && (
+          <MentorNavbar onSelectTab={setActiveTab} onLogout={onLogout} />
+        )}
         <div className="mentor-dashboard-content">
           {renderView()}
         </div>
