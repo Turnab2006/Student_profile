@@ -105,7 +105,7 @@ export default function MentorCalendar() {
       <div className="mentor-panel-header mentor-calendar-header">
         <div className="mentor-panel-title-wrap">
           <span className="mentor-panel-icon">
-            <CalendarIcon size={16} />
+            <CalendarIcon size={19} />
           </span>
           <h3>Calendar</h3>
         </div>

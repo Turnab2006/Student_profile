@@ -13,7 +13,7 @@ export default function MentorQuickActions({ onNavigate }) {
       <div className="mentor-panel-header">
         <div className="mentor-panel-title-wrap">
           <span className="mentor-panel-icon">
-            <Zap size={16} />
+            <Zap size={19} />
           </span>
           <h3>Quick Actions</h3>
         </div>

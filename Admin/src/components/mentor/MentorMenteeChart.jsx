@@ -6,7 +6,7 @@ export default function MentorMenteeChart({ onNavigate }) {
       <div className="mentor-panel-header">
         <div className="mentor-panel-title-wrap">
           <span className="mentor-panel-icon">
-            <Users size={16} />
+            <Users size={19} />
           </span>
           <h3>Total Mentees</h3>
         </div>
