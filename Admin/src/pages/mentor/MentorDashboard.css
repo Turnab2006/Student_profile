@@ -420,7 +420,7 @@ select {
   position: relative;
 }
 
-.mentor-stat-item + .mentor-stat-item {
+.mentor-stat-item+.mentor-stat-item {
   border-left: 1px solid #f1f5f9;
 }
 
@@ -694,7 +694,7 @@ select {
   cursor: pointer;
   display: grid;
   place-items: center;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   transition: all 0.2s ease;
 }
 

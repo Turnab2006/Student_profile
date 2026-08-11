@@ -1,4 +1,4 @@
-import { Check, CreditCard, Phone, Mail } from 'lucide-react';
+import { Check, CreditCard, PhoneCall, Mail } from 'lucide-react';
 
 export default function MentorProfileCard() {
   return (
@@ -53,7 +53,7 @@ export default function MentorProfileCard() {
             <span>EPM202001</span>
           </div>
           <div className="mentor-meta-pill">
-            <Phone size={15} />
+            <PhoneCall size={15} />
             <span>+91 9163926383</span>
           </div>
           <div className="mentor-meta-pill">

@@ -1,4 +1,4 @@
-import { Check, Mail, Phone, MapPin, Award, BookOpen, Calendar } from 'lucide-react';
+import { Check, Mail, PhoneCall, MapPin, Award, BookOpen, Calendar } from 'lucide-react';
 
 export default function MentorProfile() {
   return (
@@ -20,7 +20,7 @@ export default function MentorProfile() {
             <p className="text-slate-500 font-medium mt-1">Assistant Professor, Dept. of Computer Science & Engineering</p>
             <div className="flex items-center gap-4 mt-3 text-xs text-slate-500">
               <span className="flex items-center gap-1.5"><Mail size={14} className="text-purple-600" /> kaushikchatterjee123@gmail.com</span>
-              <span className="flex items-center gap-1.5"><Phone size={14} className="text-purple-600" /> +91 9163926383</span>
+              <span className="flex items-center gap-1.5"><PhoneCall size={14} className="text-purple-600" /> +91 9163926383</span>
               <span className="flex items-center gap-1.5"><MapPin size={14} className="text-purple-600" /> Kolkata, West Bengal</span>
             </div>
           </div>

@@ -9,6 +9,7 @@ import MentorQuickActions from '../../components/mentor/MentorQuickActions';
 import MentorCalendar from '../../components/mentor/MentorCalendar';
 import MentorMenteeChart from '../../components/mentor/MentorMenteeChart';
 import MentorProfilePage from '../../components/mentor/MentorProfilePage';
+import MentorMentees from './MentorMentees';
 
 const stats = [
   {
@@ -84,6 +85,9 @@ export default function MentorDashboard({ onLogout }) {
     if (activeTab !== 'dashboard') {
       if (activeTab === 'profile' || activeTab === 'settings') {
         return <MentorProfilePage />;
+      }
+      if (activeTab === 'mentees') {
+        return <MentorMentees />;
       }
       const title = tabTitles[activeTab] || 'This Page';
       return (
