@@ -110,9 +110,10 @@ const menuGroups = [
 export default function MentorSidebar({ activeTab = 'dashboard', onSelectTab, onLogout }) {
   return (
     <aside className="mentor-sidebar">
-      <div className="mentor-brand" onClick={() => onSelectTab && onSelectTab('dashboard')} style={{ cursor: 'pointer' }}>
-        <span className="mentor-brand-track">TRACK</span>
-        <span className="mentor-brand-academy">ADEMY</span>
+      <div className="h-[65px] flex items-center justify-between border-b border-gray-100 px-5 shrink-0 cursor-pointer select-none" onClick={() => onSelectTab && onSelectTab('dashboard')}>
+        <span className="block text-lg font-extrabold tracking-wide text-gray-800">
+          TRACK<span className="text-blue-600">ADEMY</span>
+        </span>
       </div>
 
       <nav className="mentor-sidebar-nav">
@@ -140,10 +141,12 @@ export default function MentorSidebar({ activeTab = 'dashboard', onSelectTab, on
         ))}
       </nav>
 
-      <button type="button" className="mentor-logout-btn" onClick={onLogout}>
-        <LogOut className="mentor-logout-icon" size={20} strokeWidth={2} />
-        <span>Logout</span>
-      </button>
+      <div className="border-t border-gray-100 p-3 mt-auto">
+        <button type="button" className="mentor-logout-btn" onClick={onLogout}>
+          <LogOut className="mentor-logout-icon" size={20} strokeWidth={2} />
+          <span>Logout</span>
+        </button>
+      </div>
     </aside>
   );
 }

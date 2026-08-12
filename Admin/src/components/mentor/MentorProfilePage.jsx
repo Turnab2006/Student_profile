@@ -141,11 +141,34 @@ export default function MentorProfilePage() {
 
   return (
     <div className="mentor-profile-view">
-      {/* Page Title Header */}
-      <div className="mentor-profile-header-bar">
-        <div>
-          <h1 className="mentor-profile-main-title">Profile</h1>
-          <p className="mentor-profile-sub-title">View and manage your personal information.</p>
+      {/* Success Notification Alert */}
+      {saveMessage && (
+        <div className="mentor-profile-alert">
+          <CheckCircle2 size={18} />
+          <span>{saveMessage}</span>
+        </div>
+      )}
+
+      {/* Navigation Tab Pills Bar & Edit Profile Action in SAME ROW */}
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div className="mentor-profile-tab-bar">
+          <button
+            type="button"
+            className={`mentor-profile-tab personal-tab ${activeTab === 'personal' ? 'active' : ''}`}
+            onClick={() => setActiveTab('personal')}
+          >
+            <User size={16} fill={activeTab === 'personal' ? '#7656f4' : 'none'} color={activeTab === 'personal' ? '#7656f4' : 'currentColor'} />
+            <span>Personal Details</span>
+          </button>
+
+          <button
+            type="button"
+            className={`mentor-profile-tab ${activeTab === 'security' ? 'active' : ''}`}
+            onClick={() => setActiveTab('security')}
+          >
+            <Shield size={17} />
+            <span>Security Update</span>
+          </button>
         </div>
 
         <button
@@ -164,35 +187,6 @@ export default function MentorProfilePage() {
               <span>Edit Profile</span>
             </>
           )}
-        </button>
-      </div>
-
-      {/* Success Notification Alert */}
-      {saveMessage && (
-        <div className="mentor-profile-alert">
-          <CheckCircle2 size={18} />
-          <span>{saveMessage}</span>
-        </div>
-      )}
-
-      {/* Navigation Tab Pills Bar */}
-      <div className="mentor-profile-tab-bar">
-        <button
-          type="button"
-          className={`mentor-profile-tab personal-tab ${activeTab === 'personal' ? 'active' : ''}`}
-          onClick={() => setActiveTab('personal')}
-        >
-          <User size={16} fill={activeTab === 'personal' ? '#7656f4' : 'none'} color={activeTab === 'personal' ? '#7656f4' : 'currentColor'} />
-          <span>Personal Details</span>
-        </button>
-
-        <button
-          type="button"
-          className={`mentor-profile-tab ${activeTab === 'security' ? 'active' : ''}`}
-          onClick={() => setActiveTab('security')}
-        >
-          <Shield size={17} />
-          <span>Security Update</span>
         </button>
       </div>
 

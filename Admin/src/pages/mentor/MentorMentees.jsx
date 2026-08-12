@@ -1609,7 +1609,9 @@ const DEPARTMENTS = [
 export default function MentorMentees() {
   const [mentees, setMentees] = useState(initialMentees);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedDepartment, setSelectedDepartment] = useState('All Departments');
+  const [selectedDepartment, setSelectedDepartment] = useState('all');
+  const [selectedProgram, setSelectedProgram] = useState('all');
+  const [selectedYear, setSelectedYear] = useState('all');
   const [selectedMentor, setSelectedMentor] = useState('All Mentors');
   const [sortBy, setSortBy] = useState('Name (A-Z)');
   const [viewMode, setViewMode] = useState('list'); // 'list' | 'grid'
@@ -1629,8 +1631,10 @@ export default function MentorMentees() {
   const [newMentee, setNewMentee] = useState({
     name: '',
     rollNo: '',
+    program: 'B.Tech',
     department: 'Computer Science & Engineering',
-    mentorEmail: 'arindam.roy@trackademy.in',
+    year: '1st Year',
+    mentorEmail: 'kaushik.c@trackademy.edu',
     phone: '',
     studentEmail: '',
   });
@@ -1648,23 +1652,37 @@ export default function MentorMentees() {
   // Filter & Sort Logic
   const filteredMentees = useMemo(() => {
     return mentees.filter((m) => {
+      const text = searchTerm.trim().toLowerCase();
       const matchesSearch =
-        m.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        m.rollNo.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        m.studentEmail.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        m.phone.includes(searchTerm);
+        !text ||
+        m.name.toLowerCase().includes(text) ||
+        m.rollNo.toLowerCase().includes(text) ||
+        m.studentEmail.toLowerCase().includes(text) ||
+        m.phone.includes(text);
       
       const matchesDept =
-        selectedDepartment === 'All Departments' || m.department === selectedDepartment;
+        selectedDepartment === 'all' ||
+        selectedDepartment === 'All Departments' ||
+        m.department === selectedDepartment;
 
-      return matchesSearch && matchesDept;
+      const matchesProgram =
+        selectedProgram === 'all' ||
+        selectedProgram === 'All Programs' ||
+        m.program === selectedProgram;
+
+      const matchesYear =
+        selectedYear === 'all' ||
+        selectedYear === 'All Years' ||
+        m.year === selectedYear;
+
+      return matchesSearch && matchesDept && matchesProgram && matchesYear;
     }).sort((a, b) => {
       if (sortBy === 'Name (A-Z)') return a.name.localeCompare(b.name);
       if (sortBy === 'Name (Z-A)') return b.name.localeCompare(a.name);
       if (sortBy === 'Roll No') return a.rollNo.localeCompare(b.rollNo);
       return 0;
     });
-  }, [mentees, searchTerm, selectedDepartment, sortBy]);
+  }, [mentees, searchTerm, selectedDepartment, selectedProgram, selectedYear, sortBy]);
 
   // Pagination calculations
   const totalPages = Math.ceil(filteredMentees.length / rowsPerPage) || 1;
@@ -1684,16 +1702,17 @@ export default function MentorMentees() {
       id: `MNT-${Date.now()}`,
       name: newMentee.name,
       rollNo: newMentee.rollNo,
+      program: newMentee.program || 'B.Tech',
       department: newMentee.department,
-      mentorEmail: newMentee.mentorEmail || 'arindam.roy@trackademy.in',
-      phone: newMentee.phone || '+91 9123930828',
-      studentEmail: newMentee.studentEmail || `${newMentee.rollNo.toLowerCase()}@recruit.org.in`,
+      year: newMentee.year || '1st Year',
+      mentorEmail: newMentee.mentorEmail || 'kaushik.c@trackademy.edu',
+      phone: newMentee.phone || '+91 9123456789',
+      studentEmail: newMentee.studentEmail || `${newMentee.rollNo.toLowerCase()}@student.edu`,
       avatar: `https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80`,
       isOnline: true,
       attendance: '95%',
       credits: 100,
       status: 'Active',
-      year: '1st Year'
     };
 
     setMentees((prev) => [createdMentee, ...prev]);
@@ -1701,8 +1720,10 @@ export default function MentorMentees() {
     setNewMentee({
       name: '',
       rollNo: '',
+      program: 'B.Tech',
       department: 'Computer Science & Engineering',
-      mentorEmail: 'arindam.roy@trackademy.in',
+      year: '1st Year',
+      mentorEmail: 'kaushik.c@trackademy.edu',
       phone: '',
       studentEmail: '',
     });
@@ -1736,7 +1757,7 @@ export default function MentorMentees() {
   }
 
   return (
-    <div className="flex flex-col gap-5 pb-12 w-full text-slate-800 font-sans">
+    <div className="flex flex-col gap-5 text-slate-800 font-sans pb-10">
       {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-slate-900 text-white px-5 py-3 rounded-xl shadow-2xl animate-fade-in border border-slate-700">
@@ -1745,34 +1766,11 @@ export default function MentorMentees() {
         </div>
       )}
 
-      {/* TOP PAGE HEADER */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-semibold text-[#1e1548] tracking-tight">
-            Mentees
-          </h1>
-          <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
-            Manage mentee profiles and their assignments
-          </p>
-        </div>
-
-        <button
-          onClick={() => setShowAddModal(true)}
-          className="inline-flex items-center justify-center text-center gap-2.5 px-7 py-2.5 min-w-[160px] bg-[#7656f4] hover:bg-[#5b3be8] active:scale-95 text-white font-semibold text-[14px] rounded-xl shadow-md shadow-[#7656f4]/20 transition-all cursor-pointer"
-        >
-          <Plus size={17} strokeWidth={2.5} />
-          <span>Add Mentee</span>
-        </button>
-      </div>
-
-      {/* SEARCH AND FILTER BAR CARD */}
-      <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm p-3.5 flex flex-col lg:flex-row items-center gap-3.5">
-        {/* Search Input */}
-        <div className="relative flex-1 w-full">
-          <Search
-            className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
-            size={18}
-          />
+      {/* SEARCH AND FILTERS BAR (EXACTLY MATCHING USER SCREENSHOT) */}
+      <div className="flex items-center gap-3 flex-wrap bg-white p-3.5 rounded-2xl border border-slate-200/80 shadow-2xs">
+        {/* Search input */}
+        <div className="relative flex-1 min-w-[240px]">
+          <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <input
             type="text"
             value={searchTerm}
@@ -1780,73 +1778,86 @@ export default function MentorMentees() {
               setSearchTerm(e.target.value);
               setCurrentPage(1);
             }}
-            placeholder="Search by Name, College Roll Number, Email or Phone"
-            className="w-full pl-10 pr-9 py-2.5 bg-slate-50/50 hover:bg-slate-50 focus:bg-white border border-slate-200/90 focus:border-[#7656f4] rounded-xl text-[13px] outline-none transition-all placeholder:text-slate-400 text-slate-800"
+            placeholder="Search students by name, ID or email..."
+            className="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-emerald-300 text-gray-800"
           />
           {searchTerm && (
             <button
               onClick={() => setSearchTerm('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
             >
               <X size={14} />
             </button>
           )}
         </div>
 
-        {/* Department Filter Dropdown */}
-        <div className="relative w-full lg:w-64">
-          <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none flex items-center gap-1.5">
-            <TwoBuildingsIcon size={18} className="text-slate-600" />
-          </div>
+        {/* All Programs Dropdown */}
+        <div className="relative">
+          <select
+            value={selectedProgram}
+            onChange={(e) => {
+              setSelectedProgram(e.target.value);
+              setCurrentPage(1);
+            }}
+            className="appearance-none min-w-[140px] px-3 py-2 pr-8 border border-gray-200 rounded-lg text-sm text-gray-600 bg-white hover:bg-gray-50 transition-colors whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-emerald-300 cursor-pointer"
+          >
+            <option value="all">All Programs</option>
+            <option value="B.Tech">B.Tech</option>
+            <option value="B.Tech Lateral">B.Tech Lateral</option>
+            <option value="M.Tech">M.Tech</option>
+            <option value="BCA">BCA</option>
+            <option value="MCA">MCA</option>
+          </select>
+          <ChevronDown size={14} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-500" />
+        </div>
+
+        {/* All Years Dropdown */}
+        <div className="relative">
+          <select
+            value={selectedYear}
+            onChange={(e) => {
+              setSelectedYear(e.target.value);
+              setCurrentPage(1);
+            }}
+            className="appearance-none min-w-[120px] px-3 py-2 pr-8 border border-gray-200 rounded-lg text-sm text-gray-600 bg-white hover:bg-gray-50 transition-colors whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-emerald-300 cursor-pointer"
+          >
+            <option value="all">All Years</option>
+            <option value="1st">1st Year</option>
+            <option value="2nd">2nd Year</option>
+            <option value="3rd">3rd Year</option>
+            <option value="4th">4th Year</option>
+          </select>
+          <ChevronDown size={14} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-500" />
+        </div>
+
+        {/* All Departments Dropdown */}
+        <div className="relative">
           <select
             value={selectedDepartment}
             onChange={(e) => {
               setSelectedDepartment(e.target.value);
               setCurrentPage(1);
             }}
-            className="w-full appearance-none pl-10 pr-9 py-2.5 bg-white border border-slate-200/90 hover:border-slate-300 focus:border-[#7656f4] rounded-xl text-[13px] font-medium text-slate-700 outline-none cursor-pointer transition-all"
+            className="appearance-none min-w-[150px] px-3 py-2 pr-8 border border-gray-200 rounded-lg text-sm text-gray-600 bg-white hover:bg-gray-50 transition-colors whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-emerald-300 cursor-pointer"
           >
-            {DEPARTMENTS.map((dept) => (
-              <option key={dept} value={dept}>
-                {dept}
-              </option>
-            ))}
+            <option value="all">All Departments</option>
+            <option value="Computer Science & Engineering">CSE</option>
+            <option value="Electrical Engineering">EE</option>
+            <option value="Electronics & Comm. Engineering">ECE</option>
+            <option value="Information Technology">IT</option>
+            <option value="Mechanical Engineering">ME</option>
           </select>
-          <ChevronDown
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
-            size={16}
-          />
+          <ChevronDown size={14} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-500" />
         </div>
 
-        {/* All Mentors Filter Dropdown */}
-        <div className="relative w-full lg:w-52">
-          <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none flex items-center gap-1.5">
-            <User size={18} className="text-slate-600" />
-          </div>
-          <select
-            value={selectedMentor}
-            onChange={(e) => {
-              setSelectedMentor(e.target.value);
-              setCurrentPage(1);
-            }}
-            className="w-full appearance-none pl-10 pr-9 py-2.5 bg-white border border-slate-200/90 hover:border-slate-300 focus:border-[#7656f4] rounded-xl text-[13px] font-medium text-slate-700 outline-none cursor-pointer transition-all"
-          >
-            <option value="All Mentors">All Mentors</option>
-            <option value="arindam.roy@trackademy.in">Dr. Arindam Roy</option>
-          </select>
-          <ChevronDown
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
-            size={16}
-          />
-        </div>
-
-        {/* Filters Button */}
+        {/* Add Student / Add Mentee Button */}
         <button
-          onClick={() => setShowFilterDrawer(true)}
-          className="w-full lg:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl text-[13px] font-medium text-slate-700 transition-all cursor-pointer active:scale-95"
+          type="button"
+          onClick={() => setShowAddModal(true)}
+          className="flex items-center gap-2 px-4 py-2 bg-[#0da651] hover:bg-[#0b8a43] text-white rounded-lg text-sm font-medium transition-colors whitespace-nowrap cursor-pointer shadow-2xs active:scale-95 ml-auto"
         >
-          <Filter size={17} className="text-slate-600" />
-          <span>Filters</span>
+          <Plus size={15} />
+          <span>Add Mentee</span>
         </button>
       </div>
 
@@ -2302,9 +2313,9 @@ export default function MentorMentees() {
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2.5 bg-[#7656f4] text-white rounded-xl text-sm font-semibold hover:bg-[#5b3be8] shadow-md shadow-[#7656f4]/20"
+                  className="px-5 py-2.5 bg-[#0da651] hover:bg-[#0b8a43] text-white rounded-xl text-sm font-semibold shadow-md shadow-emerald-600/20 cursor-pointer"
                 >
-                  Confirm & Add
+                  Confirm & Add Mentee
                 </button>
               </div>
             </form>

@@ -78,7 +78,7 @@ function MentorComingSoon({ title, onBack }) {
   );
 }
 
-export default function MentorDashboard({ onLogout }) {
+export default function MentorDashboard({ user, onLogout }) {
   const [activeTab, setActiveTab] = useState('dashboard');
 
   function renderView() {
@@ -126,9 +126,12 @@ export default function MentorDashboard({ onLogout }) {
       />
 
       <main className="mentor-dashboard-main">
-        {activeTab === 'dashboard' && (
-          <MentorNavbar onSelectTab={setActiveTab} onLogout={onLogout} />
-        )}
+        <MentorNavbar
+          activeTab={activeTab}
+          user={user}
+          onSelectTab={setActiveTab}
+          onLogout={onLogout}
+        />
         <div className="mentor-dashboard-content">
           {renderView()}
         </div>
