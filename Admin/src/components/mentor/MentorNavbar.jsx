@@ -45,8 +45,8 @@ export default function MentorNavbar({
       subtitle: 'Chat and communicate with your mentees.',
     },
     results: {
-      title: 'Result',
-      subtitle: 'Publish and manage student academic results.',
+      title: 'Results',
+      subtitle: "Manage and upload mentees' academic results",
     },
     attendance: {
       title: 'Attendance',

@@ -86,7 +86,7 @@ const menuGroups = [
   {
     title: 'MANAGEMENT',
     items: [
-      { id: 'results', label: 'Result', icon: ResultsClipboardIcon },
+      { id: 'results', label: 'Results', icon: ResultsClipboardIcon },
       { id: 'attendance', label: 'Attendance', icon: CalendarCheck },
       { id: 'credit-points', label: 'Credit Point', icon: Star },
     ],
@@ -110,7 +110,7 @@ const menuGroups = [
 export default function MentorSidebar({ activeTab = 'dashboard', onSelectTab, onLogout }) {
   return (
     <aside className="mentor-sidebar">
-      <div className="h-[65px] flex items-center justify-between border-b border-gray-100 px-5 shrink-0 cursor-pointer select-none" onClick={() => onSelectTab && onSelectTab('dashboard')}>
+      <div className="h-[60px] flex items-center justify-between border-b border-gray-100 px-5 shrink-0 cursor-pointer select-none" onClick={() => onSelectTab && onSelectTab('dashboard')}>
         <span className="block text-lg font-extrabold tracking-wide text-gray-800">
           TRACK<span className="text-blue-600">ADEMY</span>
         </span>

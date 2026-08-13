@@ -11,6 +11,7 @@ import MentorMenteeChart from '../../components/mentor/MentorMenteeChart';
 import MentorProfilePage from '../../components/mentor/MentorProfilePage';
 import MentorMentees from './MentorMentees';
 import MentorAttendance from './MentorAttendance';
+import MentorResults from './MentorResults';
 
 const stats = [
   {
@@ -98,6 +99,9 @@ export default function MentorDashboard({ user, onLogout }) {
       }
       if (activeTab === 'attendance') {
         return <MentorAttendance initialUpload={startWithUpload} />;
+      }
+      if (activeTab === 'results') {
+        return <MentorResults initialUpload={startWithUpload} />;
       }
       const title = tabTitles[activeTab] || 'This Page';
       return (
