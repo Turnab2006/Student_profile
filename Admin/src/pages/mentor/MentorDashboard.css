@@ -45,9 +45,10 @@ select {
 }
 
 .mentor-dashboard-shell {
-  display: grid;
-  grid-template-columns: 240px minmax(0, 1fr);
-  min-height: 100vh;
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
   background: #f8fafc;
 }
 
@@ -56,7 +57,7 @@ select {
   width: 240px;
   background: #ffffff;
   border-right: 1px solid #f1f5f9;
-  padding: 20px 16px 18px;
+  padding: 0;
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -66,21 +67,15 @@ select {
 }
 
 .mentor-brand {
+  height: 65px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 0;
-  font-size: 20px;
+  padding: 0 20px;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 18px;
   font-weight: 800;
   letter-spacing: -0.03em;
-  margin-bottom: 14px;
   width: 100%;
-}
-
-.mentor-brand-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .mentor-brand-track {
@@ -96,8 +91,9 @@ select {
   flex-direction: column;
   gap: 12px;
   flex: 1;
-  overflow: hidden;
-  margin-bottom: 12px;
+  overflow-y: auto;
+  padding: 16px 12px;
+  margin-bottom: 0;
 }
 
 .mentor-nav-group {
@@ -169,7 +165,6 @@ select {
 
 .mentor-logout-btn {
   border: 0;
-  margin-top: auto;
   background: #fff0f3;
   color: #ff4d4d;
   display: flex;
@@ -197,19 +192,20 @@ select {
 /* --- MAIN LAYOUT --- */
 .mentor-dashboard-main {
   flex: 1;
-  padding: 16px 24px 20px;
+  height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: 16px;
   min-width: 0;
-  overflow-y: auto;
-  max-height: 100vh;
+  overflow: hidden;
 }
 
 .mentor-dashboard-content {
+  padding: 24px;
   display: flex;
   flex-direction: column;
   gap: 16px;
+  flex: 1;
+  overflow-y: auto;
 }
 
 /* --- NAVBAR --- */
