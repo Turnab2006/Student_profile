@@ -489,14 +489,102 @@ export default function MentorAttendance({ initialUpload = false }) {
   };
 
   const semesterRecords = useMemo(() => [
-    { id: 1, sem: 'Semester 1', year: 'Year 1', yearColor: 'bg-[#e0f2fe] text-[#0284c7]', percentage: '89.5%', rawPct: 89.5, fraction: '(57/60)', status: 'Excellent' },
-    { id: 2, sem: 'Semester 2', year: 'Year 1', yearColor: 'bg-[#e0f2fe] text-[#0284c7]', percentage: '89.5%', rawPct: 89.5, fraction: '(57/60)', status: 'Excellent' },
-    { id: 3, sem: 'Semester 3', year: 'Year 2', yearColor: 'bg-[#dcfce7] text-[#16a34a]', percentage: '89.5%', rawPct: 89.5, fraction: '(57/60)', status: 'Excellent' },
-    { id: 4, sem: 'Semester 4', year: 'Year 2', yearColor: 'bg-[#dcfce7] text-[#16a34a]', percentage: '89.5%', rawPct: 89.5, fraction: '(57/60)', status: 'Excellent' },
-    { id: 5, sem: 'Semester 5', year: 'Year 3', yearColor: 'bg-[#fef3c7] text-[#d97706]', percentage: '89.5%', rawPct: 89.5, fraction: '(57/60)', status: 'Excellent' },
-    { id: 6, sem: 'Semester 6', year: 'Year 3', yearColor: 'bg-[#fef3c7] text-[#d97706]', percentage: '89.5%', rawPct: 89.5, fraction: '(57/60)', status: 'Excellent' },
-    { id: 7, sem: 'Semester 7', year: 'Year 4', yearColor: 'bg-[#f3e8ff] text-[#9333ea]', percentage: '89.5%', rawPct: 89.5, fraction: '(57/60)', status: 'Excellent' },
-    { id: 8, sem: 'Semester 8', year: 'Year 4', yearColor: 'bg-[#f3e8ff] text-[#9333ea]', percentage: '89.5%', rawPct: 89.5, fraction: '(57/60)', status: 'Excellent' },
+    {
+      id: 1,
+      sem: 'Semester 1',
+      year: 'Year 1',
+      yearColor: 'bg-[#e0f2fe] text-[#0284c7]',
+      percentage: '91.6%',
+      rawPct: 91.6,
+      fraction: '(55/60)',
+      status: 'Excellent',
+      statusBadge: 'bg-emerald-50 text-emerald-600 border border-emerald-200/60',
+      barColor: 'bg-emerald-500'
+    },
+    {
+      id: 2,
+      sem: 'Semester 2',
+      year: 'Year 1',
+      yearColor: 'bg-[#e0f2fe] text-[#0284c7]',
+      percentage: '86.6%',
+      rawPct: 86.6,
+      fraction: '(52/60)',
+      status: 'Excellent',
+      statusBadge: 'bg-emerald-50 text-emerald-600 border border-emerald-200/60',
+      barColor: 'bg-emerald-500'
+    },
+    {
+      id: 3,
+      sem: 'Semester 3',
+      year: 'Year 2',
+      yearColor: 'bg-[#dcfce7] text-[#16a34a]',
+      percentage: '78.3%',
+      rawPct: 78.3,
+      fraction: '(47/60)',
+      status: 'Good',
+      statusBadge: 'bg-blue-50 text-blue-600 border border-blue-200/60',
+      barColor: 'bg-blue-500'
+    },
+    {
+      id: 4,
+      sem: 'Semester 4',
+      year: 'Year 2',
+      yearColor: 'bg-[#dcfce7] text-[#16a34a]',
+      percentage: '83.3%',
+      rawPct: 83.3,
+      fraction: '(50/60)',
+      status: 'Very Good',
+      statusBadge: 'bg-purple-50 text-[#7656f4] border border-purple-200/60',
+      barColor: 'bg-[#7656f4]'
+    },
+    {
+      id: 5,
+      sem: 'Semester 5',
+      year: 'Year 3',
+      yearColor: 'bg-[#fef3c7] text-[#d97706]',
+      percentage: '63.3%',
+      rawPct: 63.3,
+      fraction: '(38/60)',
+      status: 'At Risk',
+      statusBadge: 'bg-rose-50 text-rose-600 border border-rose-200/60',
+      barColor: 'bg-rose-500'
+    },
+    {
+      id: 6,
+      sem: 'Semester 6',
+      year: 'Year 3',
+      yearColor: 'bg-[#fef3c7] text-[#d97706]',
+      percentage: '88.3%',
+      rawPct: 88.3,
+      fraction: '(53/60)',
+      status: 'Excellent',
+      statusBadge: 'bg-emerald-50 text-emerald-600 border border-emerald-200/60',
+      barColor: 'bg-emerald-500'
+    },
+    {
+      id: 7,
+      sem: 'Semester 7',
+      year: 'Year 4',
+      yearColor: 'bg-[#f3e8ff] text-[#9333ea]',
+      percentage: '95.0%',
+      rawPct: 95.0,
+      fraction: '(57/60)',
+      status: 'Outstanding',
+      statusBadge: 'bg-emerald-100 text-emerald-700 border border-emerald-300',
+      barColor: 'bg-emerald-600'
+    },
+    {
+      id: 8,
+      sem: 'Semester 8',
+      year: 'Year 4',
+      yearColor: 'bg-[#f3e8ff] text-[#9333ea]',
+      percentage: '73.3%',
+      rawPct: 73.3,
+      fraction: '(44/60)',
+      status: 'Average',
+      statusBadge: 'bg-amber-50 text-amber-600 border border-amber-200/60',
+      barColor: 'bg-amber-500'
+    },
   ], []);
 
   const filteredSemesters = useMemo(() => {
@@ -538,29 +626,21 @@ export default function MentorAttendance({ initialUpload = false }) {
           </div>
         )}
 
-        {/* TOP TITLE, SUBTITLE & TOP-RIGHT EXPORT EXCEL BUTTON */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <button
-              type="button"
-              onClick={() => setSelectedMenteeSemesterView(null)}
-              className="inline-flex items-center gap-2 text-xs font-bold text-[#7656f4] bg-[#f0eaff] hover:bg-[#e4d8ff] px-3.5 py-1.5 rounded-xl transition-all mb-2 cursor-pointer active:scale-95 shadow-2xs"
-            >
-              <ArrowLeft size={15} />
-              <span>Back to Attendance Roster</span>
-            </button>
-            <h1 className="text-2xl sm:text-[28px] font-semibold text-[#1e1548] tracking-tight">
-              Attendance
-            </h1>
-            <p className="text-sm text-slate-500 font-medium mt-0.5">
-              An overview of your academic performance and outcomes
-            </p>
-          </div>
+        {/* TOP BAR: BACK BUTTON & EXPORT EXCEL BUTTON */}
+        <div className="flex items-center justify-between gap-4">
+          <button
+            type="button"
+            onClick={() => setSelectedMenteeSemesterView(null)}
+            className="w-10 h-10 rounded-xl border border-slate-200/80 bg-white hover:bg-[#f0eaff] text-[#7656f4] flex items-center justify-center transition-all cursor-pointer shadow-2xs active:scale-95"
+            title="Back to Attendance Roster"
+          >
+            <ArrowLeft size={20} />
+          </button>
 
           <button
             type="button"
             onClick={() => handleExportExcel(selectedMenteeSemesterView.name)}
-            className="self-start sm:self-auto bg-white border border-[#7656f4]/40 hover:border-[#7656f4] text-[#7656f4] hover:bg-[#f0eaff]/40 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all cursor-pointer shadow-2xs active:scale-98"
+            className="bg-white border border-[#7656f4]/40 hover:border-[#7656f4] text-[#7656f4] hover:bg-[#f0eaff]/40 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all cursor-pointer shadow-2xs active:scale-98"
           >
             <Download size={16} />
             <span>Export Excel</span>
@@ -673,7 +753,7 @@ export default function MentorAttendance({ initialUpload = false }) {
                           <span className="text-sm font-extrabold text-[#1e1548] min-w-[45px]">{sem.percentage}</span>
                           <div className="w-24 sm:w-28 bg-slate-100 h-2 rounded-full overflow-hidden flex-shrink-0">
                             <div
-                              className="bg-[#0da651] h-full rounded-full transition-all"
+                              className={`${sem.barColor || 'bg-emerald-500'} h-full rounded-full transition-all`}
                               style={{ width: `${sem.rawPct}%` }}
                             />
                           </div>
@@ -683,21 +763,21 @@ export default function MentorAttendance({ initialUpload = false }) {
 
                       {/* STATUS */}
                       <td className="py-4 px-5">
-                        <span className="inline-block px-3 py-1 rounded-lg text-xs font-bold bg-emerald-50 text-emerald-600 border border-emerald-200/60">
+                        <span className={`inline-block px-3 py-1 rounded-lg text-xs font-bold ${sem.statusBadge || 'bg-emerald-50 text-emerald-600 border border-emerald-200/60'}`}>
                           {sem.status}
                         </span>
                       </td>
 
                       {/* ACTION */}
                       <td className="py-4 px-6 text-right">
-                        <div className="flex items-center justify-end gap-3 relative">
+                        <div className="flex items-center justify-end gap-2.5 relative">
                           {/* View Details Button */}
                           <button
                             type="button"
                             onClick={() => setSemesterDetailSubjectModal(sem)}
-                            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#7656f4] hover:bg-[#f0eaff] px-2.5 py-1.5 rounded-lg transition-colors cursor-pointer"
+                            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#7656f4] border border-[#7656f4]/30 bg-[#f6f2fe] hover:bg-[#f0eaff] px-3.5 py-2 rounded-xl transition-all cursor-pointer shadow-2xs active:scale-95"
                           >
-                            <Eye size={15} />
+                            <Eye size={14} className="text-[#7656f4]" />
                             <span>View Details</span>
                           </button>
 
@@ -705,9 +785,9 @@ export default function MentorAttendance({ initialUpload = false }) {
                           <button
                             type="button"
                             onClick={() => handleDownloadSingleSem(sem.sem)}
-                            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#7656f4] hover:bg-[#f0eaff] px-2.5 py-1.5 rounded-lg transition-colors cursor-pointer"
+                            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#7656f4] border border-[#7656f4]/30 bg-[#f6f2fe] hover:bg-[#f0eaff] px-3.5 py-2 rounded-xl transition-all cursor-pointer shadow-2xs active:scale-95"
                           >
-                            <Download size={15} />
+                            <Download size={14} className="text-[#7656f4]" />
                             <span>Download</span>
                           </button>
 
@@ -783,59 +863,176 @@ export default function MentorAttendance({ initialUpload = false }) {
           </div>
         </div>
 
-        {/* MODAL: SEMESTER SUBJECT BREAKDOWN */}
+        {/* MODAL: VIEW ATTENDANCE (SEMESTER SUBJECT BREAKDOWN) */}
         {semesterDetailSubjectModal && (
-          <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
-            <div className="bg-white rounded-3xl border border-slate-100 shadow-2xl max-w-lg w-full p-6 animate-scale-up">
-              <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-[#f0eaff] text-[#7656f4] flex items-center justify-center font-bold">
-                    <BookOpen size={18} />
+          <div className="fixed inset-0 z-50 bg-slate-900/30 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6 animate-fade-in">
+            <div className="bg-white rounded-3xl border border-slate-100 shadow-2xl max-w-4xl w-full p-6 sm:p-8 animate-scale-up flex flex-col gap-6 max-h-[90vh] overflow-y-auto">
+              {/* MODAL TOP HEADER */}
+              <div className="flex items-center justify-between gap-4 pb-2">
+                <div className="flex items-center gap-3.5">
+                  <div className="w-10 h-10 rounded-full bg-[#f0eaff] text-[#7656f4] flex items-center justify-center font-bold flex-shrink-0 shadow-2xs">
+                    <Eye size={20} />
                   </div>
                   <div>
-                    <h3 className="text-base font-bold text-[#1e1548]">
-                      {semesterDetailSubjectModal.sem} Subject Breakdown
-                    </h3>
-                    <p className="text-xs text-slate-400">
-                      {selectedMenteeSemesterView.name} • {semesterDetailSubjectModal.year}
+                    <h2 className="text-xl font-bold text-[#1e1548]">View Attendance</h2>
+                    <p className="text-xs text-slate-400 font-medium mt-0.5">
+                      Detailed attendance record for the selected semester
                     </p>
                   </div>
                 </div>
+
                 <button
+                  type="button"
                   onClick={() => setSemesterDetailSubjectModal(null)}
-                  className="p-1.5 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100"
+                  className="w-8 h-8 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-600 flex items-center justify-center transition-colors cursor-pointer"
+                  title="Close"
                 >
                   <X size={20} />
                 </button>
               </div>
 
-              <div className="my-4 space-y-3">
-                {[
-                  { code: 'CS301', name: 'Data Structures & Algorithms', attended: 28, total: 30, pct: '93.3%' },
-                  { code: 'CS302', name: 'Digital Electronics & Logic Design', attended: 27, total: 30, pct: '90.0%' },
-                  { code: 'CS303', name: 'Object-Oriented Programming', attended: 29, total: 30, pct: '96.6%' },
-                  { code: 'CS304', name: 'Discrete Mathematics', attended: 26, total: 30, pct: '86.6%' },
-                  { code: 'HU301', name: 'Values & Ethics in Profession', attended: 30, total: 30, pct: '100.0%' },
-                ].map((subj) => (
-                  <div key={subj.code} className="p-3.5 bg-[#fbfafd] rounded-2xl border border-slate-100 flex items-center justify-between text-xs">
-                    <div>
-                      <span className="font-bold text-[#1e1548] block">{subj.name}</span>
-                      <span className="text-[11px] text-slate-400 font-medium">{subj.code}</span>
-                    </div>
-                    <div className="text-right">
-                      <span className="font-extrabold text-[#7656f4] block">{subj.pct}</span>
-                      <span className="text-[11px] text-slate-400">({subj.attended}/{subj.total})</span>
+              {/* BOX 1: MENTEE PROFILE & TOTAL ATTENDANCE HEADER */}
+              <div className="bg-[#fcfbfe] border border-slate-200/80 rounded-2xl p-5 sm:p-6 shadow-2xs flex flex-col md:flex-row items-center justify-between gap-6">
+                <div className="flex flex-col sm:flex-row items-center gap-5 w-full md:w-auto">
+                  <img
+                    src={selectedMenteeSemesterView?.avatar || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=300'}
+                    alt={selectedMenteeSemesterView?.name || 'Student'}
+                    className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl object-cover flex-shrink-0 shadow-sm border border-slate-200/60"
+                  />
+                  <div className="flex flex-col gap-2 text-center sm:text-left">
+                    <h3 className="text-xl font-extrabold text-[#7656f4]">
+                      {selectedMenteeSemesterView?.name || 'Arjun Mukherjee'}
+                    </h3>
+                    <div className="flex flex-col gap-2 text-xs font-semibold">
+                      <div className="flex items-center justify-center sm:justify-start gap-3">
+                        <FileText size={15} className="text-[#7656f4] flex-shrink-0" />
+                        <span className="text-[#7656f4] font-bold min-w-[130px]">College Roll No.</span>
+                        <span className="font-bold text-slate-900 ml-2">{selectedMenteeSemesterView?.rollNo || 'CSE2024031'}</span>
+                      </div>
+                      <div className="flex items-center justify-center sm:justify-start gap-3">
+                        <Calendar size={15} className="text-[#7656f4] flex-shrink-0" />
+                        <span className="text-[#7656f4] font-bold min-w-[130px]">Academic Year</span>
+                        <span className="font-bold text-slate-900 ml-2">
+                          {semesterDetailSubjectModal?.year === 'Year 1'
+                            ? '1st Year'
+                            : semesterDetailSubjectModal?.year === 'Year 2'
+                            ? '2nd Year'
+                            : semesterDetailSubjectModal?.year === 'Year 3'
+                            ? '3rd Year'
+                            : semesterDetailSubjectModal?.year === 'Year 4'
+                            ? '4th Year'
+                            : '1st Year'}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-center sm:justify-start gap-3">
+                        <BookOpen size={15} className="text-[#7656f4] flex-shrink-0" />
+                        <span className="text-[#7656f4] font-bold min-w-[130px]">Semester</span>
+                        <span className="font-bold text-slate-900 ml-2">{semesterDetailSubjectModal?.sem || 'Semester 1'}</span>
+                      </div>
                     </div>
                   </div>
-                ))}
+                </div>
+
+                <div className="hidden md:block w-px h-24 bg-slate-200/80" />
+
+                <div className="flex flex-col items-center justify-center w-full md:w-auto">
+                  <span className="text-xs font-bold text-slate-500 mb-1">Total Attendance</span>
+                  <span className="text-3xl sm:text-4xl font-extrabold text-[#7656f4] mb-2">
+                    {semesterDetailSubjectModal?.percentage || '91.6%'}
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 bg-[#dcfce7] text-[#16a34a] border border-emerald-200/80 text-xs font-bold px-3 py-1 rounded-full shadow-2xs">
+                    <CheckCircle2 size={14} />
+                    <span>{semesterDetailSubjectModal?.status || 'Good'}</span>
+                  </span>
+                </div>
               </div>
 
-              <div className="pt-2">
+              {/* BOX 2: SUBJECTS / PAPERS TABLE */}
+              <div className="bg-[#fcfbfe] border border-slate-200/80 rounded-2xl p-5 sm:p-6 shadow-2xs flex flex-col gap-4">
+                <div className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-2xs">
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left border-collapse">
+                      <thead>
+                        <tr className="bg-[#f8f6fe] border-b border-slate-200/80 text-[12px] font-bold text-[#7656f4] uppercase tracking-wider">
+                          <th className="py-3.5 px-4 text-center w-12">
+                            <div className="flex items-center justify-center gap-1">
+                              <BookOpen size={15} className="text-[#7656f4]" />
+                              <span>#</span>
+                            </div>
+                          </th>
+                          <th className="py-3.5 px-5">Paper Code</th>
+                          <th className="py-3.5 px-5">Paper Name</th>
+                          <th className="py-3.5 px-4 text-center">Total Lectures</th>
+                          <th className="py-3.5 px-4 text-center">Total Attended</th>
+                          <th className="py-3.5 px-4 text-center">Attendance (%)</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100 text-xs">
+                        {[
+                          { code: 'RCC-PCC-CSE-301', name: 'Data Structure & Algorithms', total: 30, attended: 19, pct: '63.33%' },
+                          { code: 'RCC-PCC-CSE-301', name: 'Data Structure & Algorithms', total: 30, attended: 19, pct: '63.33%' },
+                          { code: 'RCC-PCC-CSE-301', name: 'Data Structure & Algorithms', total: 30, attended: 19, pct: '63.33%' },
+                          { code: 'RCC-PCC-CSE-301', name: 'Data Structure & Algorithms', total: 30, attended: 19, pct: '63.33%' },
+                          { code: 'RCC-PCC-CSE-301', name: 'Data Structure & Algorithms', total: 30, attended: 19, pct: '63.33%' },
+                          { code: 'RCC-PCC-CSE-301', name: 'Data Structure & Algorithms', total: 30, attended: 19, pct: '63.33%' },
+                        ].map((paper, idx) => (
+                          <tr key={idx} className="hover:bg-[#fbfafd] transition-colors">
+                            <td className="py-3.5 px-4 text-center">
+                              <span className="w-6 h-6 rounded-md bg-slate-100 text-slate-700 font-bold inline-flex items-center justify-center text-xs">
+                                {idx + 1}.
+                              </span>
+                            </td>
+                            <td className="py-3.5 px-5 font-extrabold text-slate-900">{paper.code}</td>
+                            <td className="py-3.5 px-5 font-semibold text-slate-800 text-sm">{paper.name}</td>
+                            <td className="py-3.5 px-4 text-center font-bold text-slate-700">{paper.total}</td>
+                            <td className="py-3.5 px-4 text-center font-bold text-slate-700">{paper.attended}</td>
+                            <td className="py-3.5 px-4 text-center">
+                              <span className="inline-block px-3 py-1 rounded-full bg-[#f0eaff] text-[#7656f4] font-extrabold text-xs">
+                                {paper.pct}
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                {/* BOX 3: OVERALL SUMMARY FOOTER */}
+                <div className="bg-[#f8f6fe] border border-slate-200/80 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-2xs">
+                  <div className="flex items-center gap-2">
+                    <BarChart2 size={18} className="text-[#7656f4]" />
+                    <span className="text-xs font-bold text-[#7656f4]">Overall Summary</span>
+                  </div>
+
+                  <div className="flex items-center gap-8 text-xs">
+                    <div className="flex flex-col items-center">
+                      <span className="text-[11px] font-semibold text-slate-500">Total Lectures</span>
+                      <span className="text-sm font-extrabold text-[#1e1548]">180</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <span className="text-[11px] font-semibold text-slate-500">Total Attended</span>
+                      <span className="text-sm font-extrabold text-[#1e1548]">114</span>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col items-center">
+                    <span className="text-[11px] font-semibold text-slate-500 mb-0.5">Overall Attendance</span>
+                    <span className="inline-block px-4 py-1.5 rounded-lg bg-[#7656f4] text-white font-extrabold text-xs shadow-2xs">
+                      63.33%
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* MODAL FOOTER BUTTON */}
+              <div className="flex items-center justify-end pt-1">
                 <button
+                  type="button"
                   onClick={() => setSemesterDetailSubjectModal(null)}
-                  className="w-full py-2.5 bg-[#7656f4] hover:bg-[#6242e2] text-white font-bold text-xs rounded-xl transition-all shadow-xs cursor-pointer"
+                  className="px-6 py-2 rounded-xl border border-[#7656f4] text-[#7656f4] bg-white hover:bg-[#f0eaff]/40 text-sm font-bold shadow-2xs cursor-pointer active:scale-95 transition-all"
                 >
-                  Close Breakdown
+                  Close
                 </button>
               </div>
             </div>
@@ -1477,17 +1674,7 @@ export default function MentorAttendance({ initialUpload = false }) {
         </div>
       )}
 
-      {/* TOP PAGE TITLE & SUBTITLE */}
-      <div className="flex items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl sm:text-[28px] font-semibold text-[#1e1548] tracking-tight">
-            Attendance
-          </h1>
-          <p className="text-sm text-slate-500 font-medium mt-1">
-            An overview of your academic performance and outcomes
-          </p>
-        </div>
-      </div>
+
 
       {/* FILTER & SEARCH CONTROL BAR */}
       <div className="bg-white rounded-2xl p-3 sm:p-4 border border-slate-200/80 shadow-2xs flex flex-col md:flex-row items-center justify-between gap-3">
@@ -1651,10 +1838,10 @@ export default function MentorAttendance({ initialUpload = false }) {
       {viewMode === 'list' ? (
         /* DETAILED TABLE (FIGMA LIST VIEW) */
         <div className="bg-white rounded-2xl border border-slate-200/80 shadow-2xs overflow-hidden">
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto max-h-[calc(100vh-280px)] overflow-y-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-[#f8f6fe] border-b border-slate-200/80 text-[13px] font-bold text-[#7656f4] uppercase tracking-wider">
+                <tr className="bg-[#f8f6fe] border-b border-slate-200/80 text-[13px] font-bold text-[#7656f4] uppercase tracking-wider sticky top-0 z-10">
                   <th className="py-3.5 px-5">
                     <div className="flex items-center gap-1 cursor-pointer">
                       <span>STUDENT</span>
@@ -1779,16 +1966,6 @@ export default function MentorAttendance({ initialUpload = false }) {
                           <Eye size={16} className="text-[#7656f4]" />
                         </button>
 
-                        {/* Upload Square Icon Button */}
-                        <button
-                          type="button"
-                          onClick={() => startUploadFlow(mentee)}
-                          className="w-8 h-8 rounded-lg border border-slate-200 bg-white hover:bg-[#f0eaff]/50 text-[#7656f4] flex items-center justify-center transition-all cursor-pointer shadow-2xs"
-                          title="Upload Attendance"
-                        >
-                          <UploadCloud size={16} className="text-[#7656f4]" />
-                        </button>
-
                         {/* More Options Dropdown Button */}
                         <button
                           type="button"
@@ -1889,7 +2066,7 @@ export default function MentorAttendance({ initialUpload = false }) {
                           <button
                             type="button"
                             onClick={() => {
-                              setViewMenteeModal(mentee);
+                              setSelectedMenteeSemesterView(mentee);
                               setActiveActionMenuId(null);
                             }}
                             className="w-full px-3.5 py-2 text-xs font-semibold text-slate-700 hover:bg-[#f0eaff]/50 hover:text-[#7656f4] flex items-center gap-2 transition-colors cursor-pointer"
