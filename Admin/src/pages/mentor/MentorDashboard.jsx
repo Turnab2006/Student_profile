@@ -10,6 +10,7 @@ import MentorCalendar from '../../components/mentor/MentorCalendar';
 import MentorMenteeChart from '../../components/mentor/MentorMenteeChart';
 import MentorProfilePage from '../../components/mentor/MentorProfilePage';
 import MentorMentees from './MentorMentees';
+import MentorAttendance from './MentorAttendance';
 
 const stats = [
   {
@@ -80,6 +81,12 @@ function MentorComingSoon({ title, onBack }) {
 
 export default function MentorDashboard({ onLogout }) {
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [startWithUpload, setStartWithUpload] = useState(false);
+
+  const handleNavigate = (tab, isUpload = false) => {
+    setActiveTab(tab);
+    setStartWithUpload(Boolean(isUpload));
+  };
 
   function renderView() {
     if (activeTab !== 'dashboard') {
@@ -89,11 +96,14 @@ export default function MentorDashboard({ onLogout }) {
       if (activeTab === 'mentees') {
         return <MentorMentees />;
       }
+      if (activeTab === 'attendance') {
+        return <MentorAttendance initialUpload={startWithUpload} />;
+      }
       const title = tabTitles[activeTab] || 'This Page';
       return (
         <MentorComingSoon
           title={title}
-          onBack={() => setActiveTab('dashboard')}
+          onBack={() => handleNavigate('dashboard')}
         />
       );
     }
@@ -109,8 +119,8 @@ export default function MentorDashboard({ onLogout }) {
         </section>
 
         <section className="mentor-grid mentor-lower-grid mentor-bottom-row">
-          <MentorMenteeChart onNavigate={setActiveTab} />
-          <MentorQuickActions onNavigate={setActiveTab} />
+          <MentorMenteeChart onNavigate={handleNavigate} />
+          <MentorQuickActions onNavigate={handleNavigate} />
           <MentorCalendar />
         </section>
       </>

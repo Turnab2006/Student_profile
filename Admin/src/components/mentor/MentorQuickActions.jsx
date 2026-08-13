@@ -30,7 +30,7 @@ export default function MentorQuickActions({ onNavigate }) {
               key={action.title}
               type="button"
               className="mentor-action-card"
-              onClick={() => onNavigate && onNavigate(action.tab)}
+              onClick={() => onNavigate && onNavigate(action.tab, action.tab === 'attendance')}
             >
               <span className="mentor-action-icon">
                 <Icon size={22} strokeWidth={2.2} />

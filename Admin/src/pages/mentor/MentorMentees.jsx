@@ -487,7 +487,7 @@ function ViewMenteeDetail({ mentee, onClose, onSendMessage }) {
         {activeTab === 'personal' && (
           <div className="flex flex-col gap-6">
             {/* MENTEE PROFILE CARD (HERO BANNER) */}
-            <div className="bg-gradient-to-r from-[#fbfafd] via-[#f7f3fe] to-[#f2eafe] rounded-3xl border border-[#e8ddfd] p-5 sm:p-6 shadow-2xs flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
+            <div className="bg-gradient-to-r from-[#fbfafd] via-[#f7f3fe] to-[#f2eafe] rounded-3xl border border-[#e8ddfd] py-[17.5px] px-5 sm:py-[21.5px] sm:px-6 shadow-2xs flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
               <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5 text-center sm:text-left z-10">
                 {/* Profile Avatar with Camera Button */}
                 <div className="relative flex-shrink-0">
@@ -506,7 +506,7 @@ function ViewMenteeDetail({ mentee, onClose, onSendMessage }) {
 
                 {/* Profile Info */}
                 <div className="flex flex-col gap-1.5 pt-1">
-                  <h2 className="text-[22px] sm:text-[24px] font-bold text-[#1e1548]">
+                  <h2 className="text-[22px] sm:text-[24px] font-bold text-[#7656f4]">
                     {mentee.name || "Tanuka Saha"}
                   </h2>
                   
