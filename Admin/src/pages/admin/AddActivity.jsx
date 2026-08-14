@@ -17,6 +17,7 @@ import {
   Users,
 } from "lucide-react";
 import AdminProfile from "../../components/admin/AdminProfile";
+import { getStoredActivities, saveStoredActivities } from "../../data/activitiesData";
 
 function Label({ children, required }) {
   return (
@@ -27,7 +28,7 @@ function Label({ children, required }) {
   );
 }
 
-export default function AddActivity({ onNavigate, onOpenSidebar }) {
+export default function AddActivity({ onNavigate, onOpenSidebar, isMentor = false, user = null }) {
   const [dragOver, setDragOver] = useState(false);
   const [files, setFiles] = useState([]);
   const [form, setForm] = useState({
@@ -35,13 +36,13 @@ export default function AddActivity({ onNavigate, onOpenSidebar }) {
     type: "",
     description: "",
     location: "",
-    startDate: "",
+    startDate: new Date().toISOString().split("T")[0],
     endDate: "",
     startTime: "",
     endTime: "",
     capacity: "",
     registrationFee: "",
-    status: "Draft",
+    status: "Upcoming",
   });
 
   const upd = (key) => (e) => setForm((prev) => ({ ...prev, [key]: e.target.value }));
@@ -49,60 +50,109 @@ export default function AddActivity({ onNavigate, onOpenSidebar }) {
 
   const canSubmit = form.title && form.type && form.startDate;
 
-  return (
-    <div className="flex-1 h-full flex flex-col overflow-hidden">
-      <header className="h-[65px] bg-white border-b border-gray-100 px-6 flex items-center justify-between shrink-0 shadow-2xs">
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => {
-              if (onOpenSidebar) onOpenSidebar();
-              else window.dispatchEvent(new CustomEvent("toggle-mobile-sidebar"));
-            }}
-            className="h-10 w-10 rounded-xl bg-gray-100/80 hover:bg-gray-200 active:scale-95 flex items-center justify-center text-gray-700 lg:hidden cursor-pointer transition-all shrink-0"
-            aria-label="Open sidebar"
-          >
-            <Menu size={20} />
-          </button>
-          <div>
-            <h1 className="text-xl font-bold text-gray-800 tracking-tight">Create Activity</h1>
-            <nav className="flex items-center gap-1.5 text-xs text-gray-400 mt-0.5">
-              <span className="hover:text-gray-600 cursor-pointer" onClick={() => onNavigate?.("activities")}>Activities</span>
-              <span>&gt;</span>
-              <span className="text-[#0da651] font-semibold">Create Activity</span>
-            </nav>
-          </div>
-        </div>
-        <AdminProfile name="Admin User" role="Super Admin" avatar="A" onNavigate={onNavigate} />
-      </header>
+  const handleSubmit = (statusOverride) => {
+    if (!canSubmit) return;
+    const currentActivities = getStoredActivities();
+    const nextNum = currentActivities.length + 1;
+    const newId = `ACT${String(nextNum).padStart(3, "0")}`;
 
-      <main className="flex-1 overflow-y-auto p-6">
+    const finalActivity = {
+      id: newId,
+      title: form.title,
+      type: form.type,
+      date: form.startDate,
+      time: form.startTime || "09:00 AM",
+      venue: form.location || "RCCIIT Campus",
+      status: statusOverride || form.status || "Upcoming",
+      registered: 0,
+      badgeColor: "bg-purple-100 text-purple-600",
+      image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=300&auto=format&fit=crop&q=80",
+      description: form.description || "No detailed description provided.",
+    };
+
+    saveStoredActivities([finalActivity, ...currentActivities]);
+    if (onNavigate) {
+      onNavigate("activities");
+    }
+  };
+
+  return (
+    <div className="flex-1 h-full flex flex-col overflow-hidden bg-gray-50/50">
+      {!isMentor && (
+        <header className="h-[65px] bg-white border-b border-gray-100 px-6 flex items-center justify-between shrink-0 shadow-2xs">
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => {
+                if (onOpenSidebar) onOpenSidebar();
+                else window.dispatchEvent(new CustomEvent("toggle-mobile-sidebar"));
+              }}
+              className="h-10 w-10 rounded-xl bg-gray-100/80 hover:bg-gray-200 active:scale-95 flex items-center justify-center text-gray-700 lg:hidden cursor-pointer transition-all shrink-0"
+              aria-label="Open sidebar"
+            >
+              <Menu size={20} />
+            </button>
+            <div>
+              <h1 className="text-xl font-bold text-gray-800 tracking-tight">Create Activity</h1>
+              <nav className="flex items-center gap-1.5 text-xs text-gray-400 mt-0.5">
+                <span className="hover:text-gray-600 cursor-pointer" onClick={() => onNavigate?.("activities")}>Activities</span>
+                <span>&gt;</span>
+                <span className="text-[#0da651] font-semibold">Create Activity</span>
+              </nav>
+            </div>
+          </div>
+          <AdminProfile name="Admin User" role="Super Admin" avatar="A" onNavigate={onNavigate} />
+        </header>
+      )}
+
+      <main className="flex-1 overflow-y-auto p-4 sm:p-6">
         <div className="max-w-4xl mx-auto">
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-            <h2 className="text-sm font-semibold text-gray-800 mb-5">Activity Details</h2>
+            <div className="flex items-center justify-between mb-5 border-b border-gray-100 pb-3">
+              <h2 className="text-sm font-semibold text-gray-800">Activity Details</h2>
+              {isMentor && (
+                <button
+                  type="button"
+                  onClick={() => onNavigate?.("activities")}
+                  className="text-xs text-gray-500 hover:text-gray-700 underline font-medium cursor-pointer"
+                >
+                  &larr; Back to Activities
+                </button>
+              )}
+            </div>
 
             {/* Title */}
             <div className="mb-4">
               <Label required>Activity Title</Label>
               <div className="relative">
                 <Type size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-                <input type="text" placeholder="Enter activity title" value={form.title} onChange={upd("title")}
-                  className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-green-300" />
+                <input
+                  type="text"
+                  placeholder="Enter activity title"
+                  value={form.title}
+                  onChange={upd("title")}
+                  className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-green-300"
+                />
               </div>
             </div>
 
             {/* Type + Location */}
-            <div className="grid grid-cols-2 gap-4 mb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <div>
                 <Label required>Activity Type</Label>
                 <div className="relative">
                   <BookOpen size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-                  <select value={form.type} onChange={upd("type")}
-                    className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-600 bg-white focus:outline-none focus:ring-2 focus:ring-green-300 appearance-none">
+                  <select
+                    value={form.type}
+                    onChange={upd("type")}
+                    className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-600 bg-white focus:outline-none focus:ring-2 focus:ring-green-300 appearance-none cursor-pointer"
+                  >
                     <option value="">Select type</option>
-                    <option>Event</option>
-                    <option>Seminar</option>
-                    <option>Workshop</option>
+                    <option>Technical</option>
+                    <option>Career</option>
+                    <option>Sports</option>
+                    <option>Cultural</option>
+                    <option>Academics</option>
                     <option>Campaign</option>
                     <option>Trip</option>
                     <option>Competition</option>
@@ -114,62 +164,93 @@ export default function AddActivity({ onNavigate, onOpenSidebar }) {
                 <Label>Location / Venue</Label>
                 <div className="relative">
                   <MapPin size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-                  <input type="text" placeholder="Enter venue" value={form.location} onChange={upd("location")}
-                    className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-green-300" />
+                  <input
+                    type="text"
+                    placeholder="Enter venue"
+                    value={form.location}
+                    onChange={upd("location")}
+                    className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-green-300"
+                  />
                 </div>
               </div>
             </div>
 
             {/* Start Date + End Date */}
-            <div className="grid grid-cols-2 gap-4 mb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <div>
                 <Label required>Start Date</Label>
-                <input type="date" value={form.startDate} onChange={upd("startDate")}
-                  className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-green-300" />
+                <input
+                  type="date"
+                  value={form.startDate}
+                  onChange={upd("startDate")}
+                  className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-600 bg-white focus:outline-none focus:ring-2 focus:ring-green-300"
+                />
               </div>
               <div>
                 <Label>End Date</Label>
-                <input type="date" value={form.endDate} onChange={upd("endDate")}
-                  className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-green-300" />
+                <input
+                  type="date"
+                  value={form.endDate}
+                  onChange={upd("endDate")}
+                  className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-600 bg-white focus:outline-none focus:ring-2 focus:ring-green-300"
+                />
               </div>
             </div>
 
             {/* Start Time + End Time */}
-            <div className="grid grid-cols-2 gap-4 mb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <div>
                 <Label>Start Time</Label>
                 <div className="relative">
                   <Clock size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-                  <input type="time" value={form.startTime} onChange={upd("startTime")}
-                    className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-green-300" />
+                  <input
+                    type="time"
+                    value={form.startTime}
+                    onChange={upd("startTime")}
+                    className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-green-300"
+                  />
                 </div>
               </div>
               <div>
                 <Label>End Time</Label>
                 <div className="relative">
                   <Clock size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-                  <input type="time" value={form.endTime} onChange={upd("endTime")}
-                    className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-green-300" />
+                  <input
+                    type="time"
+                    value={form.endTime}
+                    onChange={upd("endTime")}
+                    className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-green-300"
+                  />
                 </div>
               </div>
             </div>
 
             {/* Capacity + Registration Fee */}
-            <div className="grid grid-cols-2 gap-4 mb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <div>
                 <Label>Max Capacity</Label>
                 <div className="relative">
                   <Users size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-                  <input type="number" placeholder="Enter max participants" value={form.capacity} onChange={upd("capacity")}
-                    className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-green-300" />
+                  <input
+                    type="number"
+                    placeholder="Enter max participants"
+                    value={form.capacity}
+                    onChange={upd("capacity")}
+                    className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-green-300"
+                  />
                 </div>
               </div>
               <div>
-                <Label>Registration Fee</Label>
+                <Label>Registration Fee (₹)</Label>
                 <div className="relative">
                   <DollarSign size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-                  <input type="number" placeholder="Enter fee (0 for free)" value={form.registrationFee} onChange={upd("registrationFee")}
-                    className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-green-300" />
+                  <input
+                    type="number"
+                    placeholder="Enter fee (0 for free)"
+                    value={form.registrationFee}
+                    onChange={upd("registrationFee")}
+                    className="w-full pl-9 pr-3 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-green-300"
+                  />
                 </div>
               </div>
             </div>
@@ -177,16 +258,23 @@ export default function AddActivity({ onNavigate, onOpenSidebar }) {
             {/* Status */}
             <div className="mb-4">
               <Label required>Status</Label>
-              <div className="flex gap-4">
-                {["Draft", "Active"].map((s) => (
-                  <label key={s} className={`flex items-center gap-2 px-4 py-2.5 border rounded-lg text-sm font-medium cursor-pointer transition-colors ${
-                    form.status === s ? "border-primary bg-green-50 text-primary" : "border-gray-200 text-gray-500 hover:bg-gray-50"
-                  }`}>
+              <div className="flex flex-wrap gap-4">
+                {["Upcoming", "Ongoing", "Completed"].map((s) => (
+                  <label
+                    key={s}
+                    className={`flex items-center gap-2 px-4 py-2.5 border rounded-lg text-sm font-medium cursor-pointer transition-colors ${
+                      form.status === s ? "border-primary bg-green-50 text-primary" : "border-gray-200 text-gray-500 hover:bg-gray-50"
+                    }`}
+                  >
                     <input type="radio" name="status" value={s} checked={form.status === s} onChange={upd("status")} className="hidden" />
-                    <span className={`w-3 h-3 rounded-full border-2 flex items-center justify-center ${form.status === s ? "border-primary" : "border-gray-300"}`}>
+                    <span
+                      className={`w-3 h-3 rounded-full border-2 flex items-center justify-center ${
+                        form.status === s ? "border-primary" : "border-gray-300"
+                      }`}
+                    >
                       {form.status === s && <span className="w-1.5 h-1.5 rounded-full bg-primary" />}
                     </span>
-                    {s === "Active" ? "Published" : s}
+                    {s}
                   </label>
                 ))}
               </div>
@@ -195,17 +283,29 @@ export default function AddActivity({ onNavigate, onOpenSidebar }) {
             {/* Description */}
             <div className="mb-4">
               <Label required>Description</Label>
-              <textarea placeholder="Write a detailed description of the activity..." value={form.description} onChange={upd("description")} rows={6}
-                className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-green-300 resize-y min-h-[140px]" />
+              <textarea
+                placeholder="Write a detailed description of the activity..."
+                value={form.description}
+                onChange={upd("description")}
+                rows={6}
+                className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-green-300 resize-y min-h-[140px]"
+              />
             </div>
 
             {/* Attachments */}
             <div className="mb-6">
-              <Label>Attachments (optional)</Label>
+              <Label>Attachments / Banners (optional)</Label>
               <div
-                onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  setDragOver(true);
+                }}
                 onDragLeave={() => setDragOver(false)}
-                onDrop={(e) => { e.preventDefault(); setDragOver(false); setFiles((prev) => [...prev, ...Array.from(e.dataTransfer.files).map((f) => f.name)]); }}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  setDragOver(false);
+                  setFiles((prev) => [...prev, ...Array.from(e.dataTransfer.files).map((f) => f.name)]);
+                }}
                 className={`border-2 border-dashed rounded-xl p-6 flex flex-col items-center gap-2 transition-colors ${
                   dragOver ? "border-primary bg-green-50" : "border-gray-200 bg-gray-50/50"
                 }`}
@@ -220,7 +320,7 @@ export default function AddActivity({ onNavigate, onOpenSidebar }) {
                   Browse Files
                   <input type="file" multiple className="hidden" onChange={(e) => setFiles((prev) => [...prev, ...Array.from(e.target.files).map((f) => f.name)])} />
                 </label>
-                <p className="text-[11px] text-gray-400">PDF, DOC, DOCX, PNG, JPG. Max 5MB each</p>
+                <p className="text-[11px] text-gray-400">PDF, DOC, PNG, JPG. Max 5MB each</p>
               </div>
 
               {files.length > 0 && (
@@ -242,22 +342,33 @@ export default function AddActivity({ onNavigate, onOpenSidebar }) {
 
             {/* Actions */}
             <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-              <button onClick={() => onNavigate?.("activities")}
-                className="text-sm font-medium text-gray-500 border border-gray-200 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">
+              <button
+                type="button"
+                onClick={() => onNavigate?.("activities")}
+                className="text-sm font-medium text-gray-500 border border-gray-200 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+              >
                 Cancel
               </button>
               <div className="flex items-center gap-3">
-                <button disabled={!canSubmit}
-                  className={`flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-lg transition-colors ${
-                    canSubmit ? "border border-primary text-primary hover:bg-green-50" : "border border-gray-200 text-gray-400 cursor-not-allowed"
-                  }`}>
+                <button
+                  type="button"
+                  disabled={!canSubmit}
+                  onClick={() => handleSubmit("Draft")}
+                  className={`flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-lg transition-colors cursor-pointer ${
+                    canSubmit ? "border border-[#0da651] text-[#0da651] hover:bg-green-50" : "border border-gray-200 text-gray-400 cursor-not-allowed"
+                  }`}
+                >
                   <Save size={14} />
                   Save as Draft
                 </button>
-                <button disabled={!canSubmit}
-                  className={`flex items-center gap-2 text-sm font-medium px-5 py-2 rounded-lg transition-colors ${
-                    canSubmit ? "bg-primary text-white hover:bg-green-600" : "bg-gray-100 text-gray-400 cursor-not-allowed"
-                  }`}>
+                <button
+                  type="button"
+                  disabled={!canSubmit}
+                  onClick={() => handleSubmit("Upcoming")}
+                  className={`flex items-center gap-2 text-sm font-medium px-5 py-2 rounded-lg transition-colors cursor-pointer ${
+                    canSubmit ? "bg-[#0da651] text-white hover:bg-green-600 shadow-sm" : "bg-gray-100 text-gray-400 cursor-not-allowed"
+                  }`}
+                >
                   <Send size={14} />
                   Publish Activity
                 </button>

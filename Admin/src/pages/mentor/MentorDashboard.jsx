@@ -12,6 +12,9 @@ import MentorProfilePage from '../../components/mentor/MentorProfilePage';
 import MentorMentees from './MentorMentees';
 import MentorAttendance from './MentorAttendance';
 import MentorResults from './MentorResults';
+import MentorNotices from './MentorNotices';
+import MentorActivities from './MentorActivities';
+import MentorSupport from './MentorSupport';
 
 const stats = [
   {
@@ -102,6 +105,15 @@ export default function MentorDashboard({ user, onLogout }) {
       }
       if (activeTab === 'results') {
         return <MentorResults initialUpload={startWithUpload} />;
+      }
+      if (activeTab === 'notices') {
+        return <MentorNotices user={user} />;
+      }
+      if (activeTab === 'activities') {
+        return <MentorActivities user={user} />;
+      }
+      if (activeTab === 'support') {
+        return <MentorSupport onNavigate={handleNavigate} />;
       }
       const title = tabTitles[activeTab] || 'This Page';
       return (
