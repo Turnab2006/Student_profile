@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   ArrowUpRight,
   Award,
@@ -20,17 +20,21 @@ import {
   NotebookPen,
   Phone,
   School,
+  Settings,
+  ShieldCheck,
   Star,
   Trophy,
+  User,
   UserRound,
   XCircle,
 } from "lucide-react";
+import StudentProfile from "./StudentProfile";
 
 const navSections = [
   {
     label: "MAIN",
     items: [
-      { label: "Dashboard", icon: LayoutGrid, active: true },
+      { label: "Dashboard", icon: LayoutGrid },
       { label: "Profile", icon: UserRound },
     ],
   },
@@ -117,8 +121,28 @@ function InfoRow({ icon: Icon, text }) {
 }
 
 export default function StudentDashboard({ onLogout }) {
+  const [currentPage, setCurrentPage] = useState("dashboard");
   const [currentMonth, setCurrentMonth] = useState(new Date(2026, 4, 1));
   const [selectedDate, setSelectedDate] = useState(new Date(2026, 4, 25));
+  const [profileOpen, setProfileOpen] = useState(false);
+  const containerRef = useRef(null);
+
+  console.log("StudentDashboard currentPage:", currentPage);
+
+  if (currentPage === "profile") {
+    console.log("Rendering StudentProfile");
+    return <StudentProfile onBack={() => setCurrentPage("dashboard")} />;
+  }
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (containerRef.current && !containerRef.current.contains(event.target)) {
+        setProfileOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const monthTitle = currentMonth.toLocaleString("en-US", { month: "long", year: "numeric" });
 
@@ -168,20 +192,30 @@ export default function StudentDashboard({ onLogout }) {
                 </p>
 
                 <div className="space-y-1">
-                  {section.items.map(({ label, icon: Icon, active }) => (
-                    <button
-                      key={label}
-                      type="button"
-                      className={`flex w-full items-center gap-2.5 rounded-lg px-3 py-1.5 text-left text-sm font-medium transition-colors ${
-                        active
-                          ? "bg-blue-50 text-blue-600 font-semibold"
-                          : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                      }`}
-                    >
-                      <Icon size={16} className={active ? "text-blue-600" : "text-gray-500"} />
-                      <span>{label}</span>
-                    </button>
-                  ))}
+                  {section.items.map(({ label, icon: Icon }) => {
+                    const isActive = 
+                      (label === "Dashboard" && currentPage === "dashboard") ||
+                      (label === "Profile" && currentPage === "profile");
+                    
+                    return (
+                      <button
+                        key={label}
+                        type="button"
+                        onClick={() => {
+                          if (label === "Dashboard") setCurrentPage("dashboard");
+                          if (label === "Profile") setCurrentPage("profile");
+                        }}
+                        className={`flex w-full items-center gap-2.5 rounded-lg px-3 py-1.5 text-left text-sm font-medium transition-colors ${
+                          isActive
+                            ? "bg-blue-50 text-blue-600 font-semibold"
+                            : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                        }`}
+                      >
+                        <Icon size={16} className={isActive ? "text-blue-600" : "text-gray-500"} />
+                        <span>{label}</span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             ))}
@@ -230,20 +264,86 @@ export default function StudentDashboard({ onLogout }) {
 
               <div className="hidden h-5 w-px bg-slate-200 sm:block" />
 
-              <div className="flex items-center gap-3 rounded-xl p-1.5 hover:bg-slate-100/80 transition-colors">
-                <div className="hidden text-right sm:block">
-                  <p className="text-sm font-semibold text-slate-700">Tuhina Banerjee</p>
-                  <p className="text-[11px] text-slate-400">Student</p>
-                </div>
-
-                <div className="relative">
-                  <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-[#5b8def] to-[#1d4ed8] text-xs font-bold text-white ring-2 ring-blue-100">
-                    TB
+              <div className="relative" ref={containerRef}>
+                <button
+                  type="button"
+                  onClick={() => setProfileOpen((prev) => !prev)}
+                  className="flex items-center gap-3 rounded-xl p-1.5 hover:bg-slate-100/80 transition-colors cursor-pointer focus:outline-none group"
+                >
+                  <div className="hidden text-right sm:block">
+                    <p className="text-sm font-semibold text-slate-700 group-hover:text-emerald-700 transition-colors">
+                      Tuhina Banerjee
+                    </p>
+                    <p className="text-[11px] text-slate-400 capitalize">Student</p>
                   </div>
-                  <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full bg-green-500 ring-2 ring-white" />
-                </div>
 
-                <ChevronDown size={14} className="text-slate-400" />
+                  <div className="relative">
+                    <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-[#5b8def] to-[#1d4ed8] text-xs font-bold text-white ring-2 ring-blue-100">
+                      TB
+                    </div>
+                    <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full bg-green-500 ring-2 ring-white" />
+                  </div>
+
+                  <ChevronDown
+                    size={14}
+                    className={`text-slate-400 transition-transform duration-200 ${
+                      profileOpen ? "rotate-180 text-emerald-600" : "group-hover:text-slate-600"
+                    }`}
+                  />
+                </button>
+
+                {profileOpen && (
+                  <div className="absolute right-0 top-full mt-2.5 w-56 rounded-2xl border border-gray-100 bg-white p-2 shadow-2xl z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                    <div className="px-3 py-2.5 border-b border-gray-100 bg-gray-50/50 rounded-xl mb-1">
+                      <div className="flex items-center gap-2">
+                        <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 font-bold text-xs">
+                          TB
+                        </div>
+                        <div className="overflow-hidden">
+                          <p className="text-xs font-bold text-gray-800 truncate">Tuhina Banerjee</p>
+                          <p className="text-[10px] text-emerald-600 font-medium flex items-center gap-1">
+                            <ShieldCheck size={10} /> Student
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-0.5">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setProfileOpen(false);
+                          setCurrentPage("profile");
+                        }}
+                        className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-gray-700 rounded-xl hover:bg-emerald-50 hover:text-[#0da651] transition-colors cursor-pointer"
+                      >
+                        <User size={15} className="text-gray-400" />
+                        <span>View Profile</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setProfileOpen(false)}
+                        className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-gray-700 rounded-xl hover:bg-emerald-50 hover:text-[#0da651] transition-colors cursor-pointer"
+                      >
+                        <Settings size={15} className="text-gray-400" />
+                        <span>Settings</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setProfileOpen(false);
+                          if (onLogout) onLogout();
+                        }}
+                        className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-rose-600 rounded-xl hover:bg-rose-50 transition-colors cursor-pointer"
+                      >
+                        <LogOut size={15} className="text-rose-500" />
+                        <span>Logout</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </header>
@@ -344,12 +444,12 @@ export default function StudentDashboard({ onLogout }) {
 
                 <div className="flex flex-col items-center justify-center gap-4">
                   <div className="relative flex h-44 w-44 items-center justify-center rounded-full bg-[conic-gradient(#2563eb_0_93%,#e6ebf3_93%_100%)] p-3">
-                    <div className="flex h-full w-full items-center justify-center rounded-full bg-white text-center" />
-                  </div>
-
-                  <div className="text-center">
-                    <div className="text-[46px] font-bold leading-none text-slate-800">93%</div>
-                    <div className="mt-2 text-[12px] uppercase tracking-[0.14em] text-slate-400">Overall Attendance</div>
+                    <div className="flex h-full w-full items-center justify-center rounded-full bg-white text-center">
+                      <div>
+                        <div className="text-[46px] font-bold leading-none text-slate-800">93%</div>
+                        <div className="mt-2 text-[12px] uppercase tracking-[0.14em] text-slate-400">Overall Attendance</div>
+                      </div>
+                    </div>
                   </div>
 
                   <div className="w-full max-w-[260px] space-y-3">
