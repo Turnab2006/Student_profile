@@ -274,11 +274,14 @@ export default function Students({ onNavigate, onOpenSidebar }) {
                       />
                     </td>
                     <td className="px-3 py-3">
-                      <div className="flex items-center gap-2.5">
-                        <div className={`w-8 h-8 rounded-full ${s.avatarBg} ${s.avatarText} text-xs font-bold flex items-center justify-center shrink-0`}>
+                      <div
+                        onClick={() => onNavigate?.("student-profile")}
+                        className="flex items-center gap-2.5 cursor-pointer group"
+                      >
+                        <div className={`w-8 h-8 rounded-full ${s.avatarBg} ${s.avatarText} text-xs font-bold flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform`}>
                           {s.initials}
                         </div>
-                        <span className="font-medium text-primary text-xs">{s.name}</span>
+                        <span className="font-medium text-primary text-xs group-hover:underline">{s.name}</span>
                       </div>
                     </td>
                     <td className="px-3 py-3 text-xs text-gray-600">{s.roll}</td>
@@ -293,7 +296,12 @@ export default function Students({ onNavigate, onOpenSidebar }) {
                     <td className="px-3 py-3 text-xs text-gray-600">{s.mentor}</td>
                     <td className="px-3 py-3">
                       <div className="flex items-center gap-2">
-                        <button className="text-[11px] font-semibold text-green-600 bg-green-50 hover:bg-green-100 px-3 py-1 rounded-full transition-colors">View</button>
+                        <button
+                          onClick={() => onNavigate?.("student-profile")}
+                          className="text-[11px] font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 px-3 py-1 rounded-full transition-colors cursor-pointer"
+                        >
+                          View
+                        </button>
                         <button className="p-1 hover:bg-gray-100 rounded-full transition-colors">
                           <MoreHorizontal size={14} className="text-gray-400" />
                         </button>

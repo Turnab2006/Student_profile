@@ -27,38 +27,42 @@ import {
   User,
   UserRound,
   XCircle,
+  Users
 } from "lucide-react";
 import StudentProfile from "./StudentProfile";
+import StudentResults from "./StudentResults";
+import StudentAttendance from "./StudentAttendance";
+import { tuhinaStudentData } from "../../data/studentProfileData";
 
 const navSections = [
   {
     label: "MAIN",
     items: [
-      { label: "Dashboard", icon: LayoutGrid },
-      { label: "Profile", icon: UserRound },
+      { label: "Dashboard", icon: LayoutGrid, pageKey: "dashboard" },
+      { label: "Profile", icon: UserRound, pageKey: "profile" },
     ],
   },
   {
     label: "ACADEMICS",
     items: [
-      { label: "Semesters", icon: GraduationCap },
-      { label: "Subjects", icon: BookOpen },
-      { label: "Attendances", icon: CalendarDays },
-      { label: "Credit Points", icon: Trophy },
+      { label: "Experiences", icon: GraduationCap, pageKey: "experiences" },
+      { label: "Results", icon: FileText, pageKey: "results" },
+      { label: "Attendance", icon: Users, pageKey: "attendances" },
+      { label: "Credit Points", icon: Trophy, pageKey: "credit-points" },
     ],
   },
   {
     label: "COMMUNICATION",
     items: [
-      { label: "Activities", icon: NotebookPen },
-      { label: "Notices", icon: Bell },
+      { label: "Activities", icon: NotebookPen, pageKey: "activities" },
+      { label: "Notices", icon: Bell, pageKey: "notices" },
     ],
   },
   {
     label: "SYSTEM",
     items: [
-      { label: "Profile & Settings", icon: School },
-      { label: "Support Center", icon: FileText },
+      { label: "Profile & Settings", icon: School, pageKey: "profile" },
+      { label: "Support Center", icon: FileText, pageKey: "support" },
     ],
   },
 ];
@@ -72,6 +76,7 @@ const statCards = [
     cardClass: "bg-white text-slate-800 border border-slate-200 border-l-4 border-l-red-500",
     valueClass: "text-slate-900",
     iconWrap: "bg-[#fff1f1] text-red-500",
+    pageKey: "attendances",
   },
   {
     label: "Active Events",
@@ -81,6 +86,7 @@ const statCards = [
     cardClass: "bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#2d6df6]",
     valueClass: "text-[#111827]",
     iconWrap: "bg-[#ecf3ff] text-[#2d6df6]",
+    pageKey: "events",
   },
   {
     label: "Active Notices",
@@ -90,6 +96,7 @@ const statCards = [
     cardClass: "bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#f59e0b]",
     valueClass: "text-[#111827]",
     iconWrap: "bg-[#fff1dc] text-[#f59e0b]",
+    pageKey: "notices",
   },
   {
     label: "Credit Points",
@@ -99,14 +106,15 @@ const statCards = [
     cardClass: "bg-white text-emerald-700 border border-emerald-200 border-l-4 border-l-emerald-500",
     valueClass: "text-[#111827]",
     iconWrap: "bg-[#e7f7ec] text-emerald-600",
+    pageKey: "results",
   },
 ];
 
 const quickActions = [
-  { label: "View Results", icon: BookText, tone: "bg-[#F5F7FF] text-[#2b6df7]" },
-  { label: "View Notices", icon: Bell, tone: "bg-[#fff1d9] text-[#f59e0b]" },
-  { label: "View Events", icon: CalendarDays, tone: "bg-[#f3eaff] text-[#8b5cf6]" },
-  { label: "View Credit Point", icon: Trophy, tone: "bg-[#eafaf2] text-[#16a34a]" },
+  { label: "View Results", icon: BookText, tone: "bg-[#F5F7FF] text-[#2b6df7]", pageKey: "results" },
+  { label: "View Notices", icon: Bell, tone: "bg-[#fff1d9] text-[#f59e0b]", pageKey: "notices" },
+  { label: "View Events", icon: CalendarDays, tone: "bg-[#f3eaff] text-[#8b5cf6]", pageKey: "events" },
+  { label: "View Credit Point", icon: Trophy, tone: "bg-[#eafaf2] text-[#16a34a]", pageKey: "results" },
 ];
 
 function InfoRow({ icon: Icon, text }) {
@@ -121,18 +129,12 @@ function InfoRow({ icon: Icon, text }) {
 }
 
 export default function StudentDashboard({ onLogout }) {
-  const [currentPage, setCurrentPage] = useState("dashboard");
+  const [currentPage, setCurrentPage] = useState("dashboard"); // "dashboard" | "profile" | "results" | "attendances"
+  const [profileTab, setProfileTab] = useState("parents");
   const [currentMonth, setCurrentMonth] = useState(new Date(2026, 4, 1));
   const [selectedDate, setSelectedDate] = useState(new Date(2026, 4, 25));
   const [profileOpen, setProfileOpen] = useState(false);
   const containerRef = useRef(null);
-
-  console.log("StudentDashboard currentPage:", currentPage);
-
-  if (currentPage === "profile") {
-    console.log("Rendering StudentProfile");
-    return <StudentProfile onBack={() => setCurrentPage("dashboard")} />;
-  }
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -174,13 +176,30 @@ export default function StudentDashboard({ onLogout }) {
     setCurrentMonth((prev) => new Date(prev.getFullYear(), prev.getMonth() + 1, 1));
   };
 
+  function handleNavClick(pageKey, label) {
+    if (pageKey === "dashboard") {
+      setCurrentPage("dashboard");
+    } else if (pageKey === "results" || label === "Results" || label === "Credit Points") {
+      setCurrentPage("results");
+    } else if (pageKey === "attendances" || label === "Attendance" || label === "Attendances") {
+      setCurrentPage("attendances");
+    } else if (pageKey === "profile" || label === "Profile" || label === "Profile & Settings") {
+      setProfileTab("parents");
+      setCurrentPage("profile");
+    } else if (pageKey === "experiences" || label === "Semesters" || label === "Subjects") {
+      setProfileTab("academic");
+      setCurrentPage("profile");
+    }
+  }
+
   return (
     <div className="h-screen overflow-x-hidden overflow-y-auto bg-[#edf1f5]">
       <div className="flex min-h-screen border border-slate-200 bg-[#f4f6f8] shadow-[0_18px_45px_rgba(15,23,42,0.13)] ring-1 ring-slate-200/80">
-        <aside className="sticky top-0 flex h-screen w-[250px] shrink-0 flex-col border-r border-gray-100 bg-white shadow-sm">
+        {/* Left Sidebar */}
+        <aside className="sticky top-0 flex h-screen w-[250px] shrink-0 flex-col border-r border-gray-100 bg-white shadow-sm z-10">
           <div className="flex h-[60px] shrink-0 items-center justify-between gap-3 border-b border-gray-100 px-5">
             <span className="block text-lg font-extrabold tracking-wide text-gray-800">
-              TRACK<span className="text-blue-600">ADEMY</span>
+              TRACK<span className="text-blue-600">/</span><span className="text-gray-800">ADEMY</span>
             </span>
           </div>
 
@@ -192,29 +211,20 @@ export default function StudentDashboard({ onLogout }) {
                 </p>
 
                 <div className="space-y-1">
-                  {section.items.map(({ label, icon: Icon }) => {
+                  {section.items.map(({ label, icon: Icon, pageKey }) => {
                     const isActive = 
-                      (label === "Dashboard" && currentPage === "dashboard") ||
-                      (label === "Profile" && currentPage === "profile");
-                    
-                    const handleClick = () => {
-                      console.log("Sidebar button clicked:", label);
-                      if (label === "Dashboard") {
-                        console.log("Setting page to dashboard");
-                        setCurrentPage("dashboard");
-                      }
-                      if (label === "Profile") {
-                        console.log("Setting page to profile");
-                        setCurrentPage("profile");
-                      }
-                    };
+                      (pageKey === "dashboard" && currentPage === "dashboard") ||
+                      (pageKey === "results" && currentPage === "results") ||
+                      (pageKey === "attendances" && currentPage === "attendances") ||
+                      (pageKey === "profile" && currentPage === "profile" && profileTab === "parents") ||
+                      (pageKey === "experiences" && currentPage === "profile" && profileTab === "academic");
                     
                     return (
                       <button
                         key={label}
                         type="button"
-                        onClick={handleClick}
-                        className={`flex w-full items-center gap-2.5 rounded-lg px-3 py-1.5 text-left text-sm font-medium transition-colors ${
+                        onClick={() => handleNavClick(pageKey, label)}
+                        className={`flex w-full items-center gap-2.5 rounded-lg px-3 py-1.5 text-left text-sm font-medium transition-colors cursor-pointer ${
                           isActive
                             ? "bg-blue-50 text-blue-600 font-semibold"
                             : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
@@ -230,19 +240,41 @@ export default function StudentDashboard({ onLogout }) {
             ))}
           </nav>
 
-          <div className="mt-auto border-t border-gray-100 px-3 py-3">
+          <div className="mt-auto border-t border-gray-100 px-4 py-3 space-y-2">
             <button
               type="button"
               onClick={onLogout}
-              className="flex w-full items-center gap-3 rounded-lg bg-red-50/80 px-3 py-2 text-sm font-semibold text-red-500 transition-colors hover:bg-red-50"
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-rose-50 px-3 py-2 text-sm font-semibold text-rose-500 transition-colors hover:bg-rose-100 cursor-pointer"
             >
               <LogOut size={16} />
               <span>Logout</span>
             </button>
+            <p className="text-[10px] text-gray-400 text-center font-medium">
+              &copy; 2024 Trackademy. All rights reserved.
+            </p>
           </div>
         </aside>
 
-        <div className="flex-1 overflow-y-auto bg-[#f6f7fb]">
+        {/* Right Main Content Pane */}
+        {currentPage === "results" ? (
+          <div className="flex-1 h-screen overflow-hidden flex flex-col min-w-0">
+            <StudentResults />
+          </div>
+        ) : currentPage === "attendances" ? (
+          <div className="flex-1 h-screen overflow-hidden flex flex-col min-w-0">
+            <StudentAttendance />
+          </div>
+        ) : currentPage === "profile" ? (
+          <div className="flex-1 h-screen overflow-hidden flex flex-col min-w-0">
+            <StudentProfile
+              studentData={tuhinaStudentData}
+              onBack={() => setCurrentPage("dashboard")}
+              userRole="student"
+              defaultTab={profileTab}
+            />
+          </div>
+        ) : (
+          <div className="flex-1 overflow-y-auto bg-[#f6f7fb] min-w-0">
           <header className="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white/80 px-6 py-3 backdrop-blur-sm">
             <div>
               <h1 className="text-[28px] font-bold tracking-tight text-slate-800">Welcome back, Tuhina!</h1>
@@ -359,14 +391,48 @@ export default function StudentDashboard({ onLogout }) {
 
           <main className="space-y-3 p-4">
             <section className="grid gap-3 xl:grid-cols-[1.7fr_0.8fr]">
-              <div className="rounded-[22px] border border-slate-200 bg-white p-4 shadow-sm">
+              <div
+                onClick={() => {
+                  setProfileTab("parents");
+                  setCurrentPage("profile");
+                }}
+                className="rounded-[22px] border border-slate-200 bg-white p-4 shadow-sm hover:border-blue-300 hover:shadow-md transition-all cursor-pointer group"
+              >
                 <div className="flex items-center gap-4">
-                  <div className="flex h-[120px] w-[120px] items-center justify-center rounded-[26px] bg-gradient-to-br from-[#f7d6d8] via-[#f5e5d7] to-[#dbeafe] text-[52px] font-bold text-slate-700 shadow-inner">
-                    TB
+                  <div className="relative group/avatar">
+                    <div className="flex h-[120px] w-[120px] items-center justify-center rounded-[26px] bg-gradient-to-br from-[#f7d6d8] via-[#f5e5d7] to-[#dbeafe] text-[52px] font-bold text-slate-700 shadow-inner group-hover:scale-105 transition-transform overflow-hidden">
+                      <img
+                        src="/tuhina_avatar.jpg"
+                        alt="Tuhina Banerjee"
+                        className="h-full w-full object-cover"
+                        onError={(e) => {
+                          e.target.style.display = 'none';
+                        }}
+                      />
+                      <span className="absolute inset-0 flex items-center justify-center text-[52px] font-bold text-slate-700 pointer-events-none">
+                        TB
+                      </span>
+                    </div>
                   </div>
 
                   <div className="flex-1">
-                    <h2 className="text-[26px] font-bold tracking-tight text-slate-800">Tuhina Banerjee</h2>
+                    <div className="flex items-center justify-between">
+                      <h2 className="text-[26px] font-bold tracking-tight text-slate-800 group-hover:text-blue-600 transition-colors">
+                        Tuhina Banerjee
+                      </h2>
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setProfileTab("parents");
+                          setCurrentPage("profile");
+                        }}
+                        className="px-3.5 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-xl text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer"
+                      >
+                        <UserRound size={14} />
+                        View Full Profile
+                      </button>
+                    </div>
 
                     <div className="mt-4 grid gap-2.5 sm:grid-cols-2">
                       <InfoRow icon={Mail} text="tuhinabanerjee134@gmail.com" />
@@ -423,8 +489,16 @@ export default function StudentDashboard({ onLogout }) {
             </section>
 
             <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-              {statCards.map(({ label, value, note, icon: Icon, cardClass, valueClass, iconWrap }) => (
-                <div key={label} className={`rounded-[20px] border px-4 py-2.5 shadow-sm ${cardClass}`}>
+              {statCards.map(({ label, value, note, icon: Icon, cardClass, valueClass, iconWrap, pageKey }) => (
+                <div
+                  key={label}
+                  onClick={() => {
+                    if (pageKey) handleNavClick(pageKey, label);
+                  }}
+                  className={`rounded-[20px] border px-4 py-2.5 shadow-sm ${cardClass} ${
+                    pageKey ? "cursor-pointer hover:shadow-md hover:scale-[1.01] transition-all" : ""
+                  }`}
+                >
                   <div className="flex items-start gap-3">
                     <div className={`mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-full ${iconWrap}`}>
                       <Icon size={16} />
@@ -443,10 +517,22 @@ export default function StudentDashboard({ onLogout }) {
             </section>
 
             <section className="grid gap-5 xl:grid-cols-[1.25fr_1fr_1fr]">
-              <div className="rounded-[20px] border border-slate-200 bg-white p-5 shadow-sm">
+              <div
+                onClick={() => setCurrentPage("attendances")}
+                className="rounded-[20px] border border-slate-200 bg-white p-5 shadow-sm hover:border-blue-300 hover:shadow-md transition-all cursor-pointer group"
+              >
                 <div className="mb-5 flex items-center justify-between">
-                  <h3 className="text-xl font-bold text-slate-800">Attendance Overview</h3>
-                  <button className="rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-xs font-medium text-slate-600">
+                  <h3 className="text-xl font-bold text-slate-800 group-hover:text-blue-600 transition-colors">
+                    Attendance Overview
+                  </h3>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setCurrentPage("attendances");
+                    }}
+                    className="rounded-lg border border-slate-200 bg-slate-50 hover:bg-blue-50 hover:text-blue-600 px-2.5 py-1.5 text-xs font-medium text-slate-600 transition-colors cursor-pointer"
+                  >
                     Semester 4
                   </button>
                 </div>
@@ -492,11 +578,18 @@ export default function StudentDashboard({ onLogout }) {
                 <h3 className="mb-5 text-xl font-bold text-slate-800">Quick Actions</h3>
 
                 <div className="grid gap-4 sm:grid-cols-2">
-                  {quickActions.map(({ label, icon: Icon, tone }) => (
+                  {quickActions.map(({ label, icon: Icon, tone, pageKey }) => (
                     <button
                       key={label}
                       type="button"
-                      className={`flex min-h-[130px] flex-col items-center justify-center gap-3 rounded-[20px] border border-slate-200 ${tone} px-4 py-4 font-semibold shadow-sm transition-transform hover:-translate-y-0.5`}
+                      onClick={() => {
+                        if (pageKey === "results") {
+                          setCurrentPage("results");
+                        } else if (pageKey) {
+                          handleNavClick(pageKey, label);
+                        }
+                      }}
+                      className={`flex min-h-[130px] flex-col items-center justify-center gap-3 rounded-[20px] border border-slate-200 ${tone} px-4 py-4 font-semibold shadow-sm transition-transform hover:-translate-y-0.5 cursor-pointer`}
                     >
                       <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/50">
                         <Icon size={20} />
@@ -575,6 +668,7 @@ export default function StudentDashboard({ onLogout }) {
             </section>
           </main>
         </div>
+        )}
       </div>
     </div>
   );

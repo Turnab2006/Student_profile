@@ -9,6 +9,7 @@ import Sidebar from "./components/admin/Sidebar";
 import Dashboard from "./pages/admin/Dashboard";
 import Students from "./pages/admin/Students";
 import AddStudent from "./pages/admin/AddStudent";
+import StudentProfile from "./pages/student/StudentProfile";
 import Mentors from "./pages/admin/Mentors";
 import MentorDetails from "./pages/admin/MentorDetails";
 import AddMentor from "./pages/admin/AddMentor";
@@ -86,22 +87,23 @@ export default function App() {
   function renderAdminPage() {
     const handleOpenSidebar = () => setMobileSidebarOpen(true);
     switch (adminActivePage) {
-      case "dashboard":     return <Dashboard onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
-      case "students":      return <Students onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
-      case "add-student":   return <AddStudent onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
-      case "mentors":       return <Mentors onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
-      case "mentor-details":return <MentorDetails mentor={adminActivePage?.mentor} onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
-      case "add-mentor":    return <AddMentor onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
-      case "notices":       return <Notices onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
-      case "add-notice":    return <AddNotice onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
-      case "activities":    return <Activities onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
-      case "add-activity":  return <AddActivity onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
-      case "semesters":     return <Semesters onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
-      case "subjects":      return <Subjects onNavigate={setAdminActivePage} subjectsList={subjectsList} setSubjectsList={setSubjectsList} onOpenSidebar={handleOpenSidebar} />;
-      case "add-subject":   return <AddSubject onNavigate={setAdminActivePage} subjectsList={subjectsList} setSubjectsList={setSubjectsList} onOpenSidebar={handleOpenSidebar} />;
-      case "attendances":   return <Attendances onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
-      case "settings":      return <Settings onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
-      case "support":       return <Support onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
+      case "dashboard":       return <Dashboard onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
+      case "students":        return <Students onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
+      case "student-profile": return <StudentProfile onBack={() => setAdminActivePage("students")} userRole="admin" />;
+      case "add-student":     return <AddStudent onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
+      case "mentors":         return <Mentors onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
+      case "mentor-details":  return <MentorDetails mentor={adminActivePage?.mentor} onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
+      case "add-mentor":      return <AddMentor onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
+      case "notices":         return <Notices onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
+      case "add-notice":      return <AddNotice onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
+      case "activities":      return <Activities onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
+      case "add-activity":    return <AddActivity onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
+      case "semesters":       return <Semesters onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
+      case "subjects":        return <Subjects onNavigate={setAdminActivePage} subjectsList={subjectsList} setSubjectsList={setSubjectsList} onOpenSidebar={handleOpenSidebar} />;
+      case "add-subject":     return <AddSubject onNavigate={setAdminActivePage} subjectsList={subjectsList} setSubjectsList={setSubjectsList} onOpenSidebar={handleOpenSidebar} />;
+      case "attendances":     return <Attendances onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
+      case "settings":        return <Settings onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
+      case "support":         return <Support onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
       default:
         return <Dashboard onNavigate={setAdminActivePage} onOpenSidebar={handleOpenSidebar} />;
     }
