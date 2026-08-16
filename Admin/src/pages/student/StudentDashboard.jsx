@@ -197,14 +197,23 @@ export default function StudentDashboard({ onLogout }) {
                       (label === "Dashboard" && currentPage === "dashboard") ||
                       (label === "Profile" && currentPage === "profile");
                     
+                    const handleClick = () => {
+                      console.log("Sidebar button clicked:", label);
+                      if (label === "Dashboard") {
+                        console.log("Setting page to dashboard");
+                        setCurrentPage("dashboard");
+                      }
+                      if (label === "Profile") {
+                        console.log("Setting page to profile");
+                        setCurrentPage("profile");
+                      }
+                    };
+                    
                     return (
                       <button
                         key={label}
                         type="button"
-                        onClick={() => {
-                          if (label === "Dashboard") setCurrentPage("dashboard");
-                          if (label === "Profile") setCurrentPage("profile");
-                        }}
+                        onClick={handleClick}
                         className={`flex w-full items-center gap-2.5 rounded-lg px-3 py-1.5 text-left text-sm font-medium transition-colors ${
                           isActive
                             ? "bg-blue-50 text-blue-600 font-semibold"
