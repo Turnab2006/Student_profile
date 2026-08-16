@@ -181,813 +181,805 @@ export default function StudentProfile({ onBack, studentData: propStudentData, u
 
           {/* Hero Profile Banner Card */}
           <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#eef5ff] via-[#f4f8ff] to-[#e8f1ff] border border-blue-200/70 p-6 sm:p-8 shadow-sm">
-          {/* Decorative Dot Matrix Pattern on Right */}
-          <div
-            className="absolute right-0 top-0 bottom-0 w-80 pointer-events-none opacity-40"
-            style={{
-              backgroundImage: `radial-gradient(#3b82f6 1px, transparent 1px)`,
-              backgroundSize: "14px 14px",
-            }}
-          />
+            {/* Decorative Dot Matrix Pattern on Right */}
+            <div
+              className="absolute right-0 top-0 bottom-0 w-80 pointer-events-none opacity-40"
+              style={{
+                backgroundImage: `radial-gradient(#3b82f6 1px, transparent 1px)`,
+                backgroundSize: "14px 14px",
+              }}
+            />
 
-          <div className="relative z-10 flex flex-col md:flex-row items-center md:items-start gap-6 lg:gap-8">
-            {/* Student Avatar with Crisp White Ring */}
-            <div className="relative group shrink-0">
-              <div className="h-32 w-32 sm:h-36 sm:w-36 rounded-full ring-4 ring-white shadow-xl overflow-hidden bg-white border border-blue-100 flex items-center justify-center">
-                <img
-                  src="/arjun_kumar_avatar.jpg"
-                  alt={student.name}
-                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  onError={(e) => {
-                    e.target.style.display = 'none';
-                    e.target.nextSibling.style.display = 'flex';
-                  }}
-                />
-                <div className="hidden h-full w-full bg-gradient-to-tr from-blue-500 to-indigo-600 text-white font-bold text-3xl items-center justify-center">
-                  {student.name.slice(0, 2).toUpperCase()}
+            <div className="relative z-10 flex flex-col md:flex-row items-center md:items-start gap-6 lg:gap-8">
+              {/* Student Avatar with Crisp White Ring */}
+              <div className="relative group shrink-0">
+                <div className="h-32 w-32 sm:h-36 sm:w-36 rounded-full ring-4 ring-white shadow-xl overflow-hidden bg-white border border-blue-100 flex items-center justify-center">
+                  <img
+                    src="/tuhina_avatar.jpg"
+                    alt={student.name}
+                    className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                      e.target.nextSibling.style.display = 'flex';
+                    }}
+                  />
+                  <div className="hidden h-full w-full bg-gradient-to-tr from-blue-500 to-indigo-600 text-white font-bold text-3xl items-center justify-center">
+                    {student.name.slice(0, 2).toUpperCase()}
+                  </div>
                 </div>
-              </div>
-              <span className="absolute bottom-1 right-2 p-1.5 bg-blue-600 text-white rounded-full ring-4 ring-white shadow-md">
-                <Sparkles size={14} />
-              </span>
-            </div>
-
-            {/* Student Details & 6 Grid Items */}
-            <div className="flex-1 w-full text-center md:text-left space-y-4">
-              {/* Name & Verified Badge */}
-              <div className="flex items-center justify-center md:justify-start gap-2.5">
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                  {student.name}
-                </h2>
-                {student.verified && (
-                  <span className="inline-flex items-center justify-center text-blue-600" title="Verified Student">
-                    <svg className="w-6 h-6 fill-blue-600 text-white" viewBox="0 0 24 24">
-                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-                    </svg>
-                  </span>
-                )}
+                <span className="absolute bottom-1 right-2 p-1.5 bg-blue-600 text-white rounded-full ring-4 ring-white shadow-md">
+                  <Sparkles size={14} />
+                </span>
               </div>
 
-              {/* 6 Quick Info Pills / Cards in a 3-column x 2-row grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 pt-2">
-                {/* 1. Email ID */}
-                <div className="flex items-center gap-3 bg-white/85 backdrop-blur-sm border border-blue-100/80 rounded-xl px-4 py-3 shadow-[0_1px_3px_rgba(0,0,0,0.03)] hover:bg-white hover:border-blue-300 transition-all">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
-                    <Mail size={17} />
-                  </div>
-                  <div className="text-left overflow-hidden">
-                    <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Email ID</p>
-                    <p className="text-xs sm:text-sm font-semibold text-slate-800 truncate" title={student.email}>
-                      {student.email}
-                    </p>
-                  </div>
+              {/* Student Details & 6 Grid Items */}
+              <div className="flex-1 w-full text-center md:text-left space-y-4">
+                {/* Name & Verified Badge */}
+                <div className="flex items-center justify-center md:justify-start gap-2.5">
+                  <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+                    {student.name}
+                  </h2>
+                  {student.verified && (
+                    <span className="inline-flex items-center justify-center text-blue-600" title="Verified Student">
+                      <svg className="w-6 h-6 fill-blue-600 text-white" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                      </svg>
+                    </span>
+                  )}
                 </div>
 
-                {/* 2. Phone Number */}
-                <div className="flex items-center gap-3 bg-white/85 backdrop-blur-sm border border-blue-100/80 rounded-xl px-4 py-3 shadow-[0_1px_3px_rgba(0,0,0,0.03)] hover:bg-white hover:border-blue-300 transition-all">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
-                    <Phone size={17} />
+                {/* 6 Quick Info Pills / Cards in a 3-column x 2-row grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 pt-2">
+                  {/* 1. Email ID */}
+                  <div className="flex items-center gap-3 bg-white/85 backdrop-blur-sm border border-blue-100/80 rounded-xl px-4 py-3 shadow-[0_1px_3px_rgba(0,0,0,0.03)] hover:bg-white hover:border-blue-300 transition-all">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                      <Mail size={17} />
+                    </div>
+                    <div className="text-left overflow-hidden">
+                      <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Email ID</p>
+                      <p className="text-xs sm:text-sm font-semibold text-slate-800 truncate" title={student.email}>
+                        {student.email}
+                      </p>
+                    </div>
                   </div>
-                  <div className="text-left overflow-hidden">
-                    <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Phone Number</p>
-                    <p className="text-xs sm:text-sm font-semibold text-slate-800 truncate">
-                      {student.phone}
-                    </p>
-                  </div>
-                </div>
 
-                {/* 3. Department */}
-                <div className="flex items-center gap-3 bg-white/85 backdrop-blur-sm border border-blue-100/80 rounded-xl px-4 py-3 shadow-[0_1px_3px_rgba(0,0,0,0.03)] hover:bg-white hover:border-blue-300 transition-all">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
-                    <Building size={17} />
+                  {/* 2. Phone Number */}
+                  <div className="flex items-center gap-3 bg-white/85 backdrop-blur-sm border border-blue-100/80 rounded-xl px-4 py-3 shadow-[0_1px_3px_rgba(0,0,0,0.03)] hover:bg-white hover:border-blue-300 transition-all">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                      <Phone size={17} />
+                    </div>
+                    <div className="text-left overflow-hidden">
+                      <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Phone Number</p>
+                      <p className="text-xs sm:text-sm font-semibold text-slate-800 truncate">
+                        {student.phone}
+                      </p>
+                    </div>
                   </div>
-                  <div className="text-left overflow-hidden">
-                    <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Department</p>
-                    <p className="text-xs sm:text-sm font-semibold text-slate-800 truncate" title={student.department}>
-                      {student.department}
-                    </p>
-                  </div>
-                </div>
 
-                {/* 4. Course */}
-                <div className="flex items-center gap-3 bg-white/85 backdrop-blur-sm border border-blue-100/80 rounded-xl px-4 py-3 shadow-[0_1px_3px_rgba(0,0,0,0.03)] hover:bg-white hover:border-blue-300 transition-all">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
-                    <GraduationCap size={17} />
+                  {/* 3. Department */}
+                  <div className="flex items-center gap-3 bg-white/85 backdrop-blur-sm border border-blue-100/80 rounded-xl px-4 py-3 shadow-[0_1px_3px_rgba(0,0,0,0.03)] hover:bg-white hover:border-blue-300 transition-all">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                      <Building size={17} />
+                    </div>
+                    <div className="text-left overflow-hidden">
+                      <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Department</p>
+                      <p className="text-xs sm:text-sm font-semibold text-slate-800 truncate" title={student.department}>
+                        {student.department}
+                      </p>
+                    </div>
                   </div>
-                  <div className="text-left overflow-hidden">
-                    <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Course</p>
-                    <p className="text-xs sm:text-sm font-semibold text-slate-800 truncate">
-                      {student.course}
-                    </p>
-                  </div>
-                </div>
 
-                {/* 5. Current Semester */}
-                <div className="flex items-center gap-3 bg-white/85 backdrop-blur-sm border border-blue-100/80 rounded-xl px-4 py-3 shadow-[0_1px_3px_rgba(0,0,0,0.03)] hover:bg-white hover:border-blue-300 transition-all">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
-                    <CalendarDays size={17} />
+                  {/* 4. Course */}
+                  <div className="flex items-center gap-3 bg-white/85 backdrop-blur-sm border border-blue-100/80 rounded-xl px-4 py-3 shadow-[0_1px_3px_rgba(0,0,0,0.03)] hover:bg-white hover:border-blue-300 transition-all">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                      <GraduationCap size={17} />
+                    </div>
+                    <div className="text-left overflow-hidden">
+                      <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Course</p>
+                      <p className="text-xs sm:text-sm font-semibold text-slate-800 truncate">
+                        {student.course}
+                      </p>
+                    </div>
                   </div>
-                  <div className="text-left overflow-hidden">
-                    <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Current Semester</p>
-                    <p className="text-xs sm:text-sm font-semibold text-slate-800 truncate">
-                      {student.semester}
-                    </p>
-                  </div>
-                </div>
 
-                {/* 6. Current Year */}
-                <div className="flex items-center gap-3 bg-white/85 backdrop-blur-sm border border-blue-100/80 rounded-xl px-4 py-3 shadow-[0_1px_3px_rgba(0,0,0,0.03)] hover:bg-white hover:border-blue-300 transition-all">
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
-                    <Award size={17} />
+                  {/* 5. Current Semester */}
+                  <div className="flex items-center gap-3 bg-white/85 backdrop-blur-sm border border-blue-100/80 rounded-xl px-4 py-3 shadow-[0_1px_3px_rgba(0,0,0,0.03)] hover:bg-white hover:border-blue-300 transition-all">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                      <CalendarDays size={17} />
+                    </div>
+                    <div className="text-left overflow-hidden">
+                      <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Current Semester</p>
+                      <p className="text-xs sm:text-sm font-semibold text-slate-800 truncate">
+                        {student.semester}
+                      </p>
+                    </div>
                   </div>
-                  <div className="text-left overflow-hidden">
-                    <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Current Year</p>
-                    <p className="text-xs sm:text-sm font-semibold text-slate-800 truncate">
-                      {student.year}
-                    </p>
+
+                  {/* 6. Current Year */}
+                  <div className="flex items-center gap-3 bg-white/85 backdrop-blur-sm border border-blue-100/80 rounded-xl px-4 py-3 shadow-[0_1px_3px_rgba(0,0,0,0.03)] hover:bg-white hover:border-blue-300 transition-all">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                      <Award size={17} />
+                    </div>
+                    <div className="text-left overflow-hidden">
+                      <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Current Year</p>
+                      <p className="text-xs sm:text-sm font-semibold text-slate-800 truncate">
+                        {student.year}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Tab Navigation Buttons */}
-        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-1.5 flex items-center justify-between sm:justify-start gap-1 sm:gap-4 overflow-x-auto">
-          {/* Academic Tab */}
-          <button
-            type="button"
-            onClick={() => setActiveTab("academic")}
-            className={`flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold transition-all relative ${
-              activeTab === "academic"
+          {/* Tab Navigation Buttons */}
+          <div className="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-1.5 flex items-center justify-between sm:justify-start gap-1 sm:gap-4 overflow-x-auto">
+            {/* Academic Tab */}
+            <button
+              type="button"
+              onClick={() => setActiveTab("academic")}
+              className={`flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold transition-all relative ${activeTab === "academic"
                 ? "text-blue-600 font-bold"
                 : "text-slate-500 hover:text-slate-800 hover:bg-slate-50"
-            }`}
-          >
-            <GraduationCap size={18} className={activeTab === "academic" ? "text-blue-600" : "text-slate-400"} />
-            <span>Academic</span>
-            {activeTab === "academic" && (
-              <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-blue-600 rounded-full" />
-            )}
-          </button>
+                }`}
+            >
+              <GraduationCap size={18} className={activeTab === "academic" ? "text-blue-600" : "text-slate-400"} />
+              <span>Academic</span>
+              {activeTab === "academic" && (
+                <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-blue-600 rounded-full" />
+              )}
+            </button>
 
-          {/* Parents Tab (Active by default matching screenshot) */}
-          <button
-            type="button"
-            onClick={() => setActiveTab("parents")}
-            className={`flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold transition-all relative ${
-              activeTab === "parents"
+            {/* Parents Tab (Active by default matching screenshot) */}
+            <button
+              type="button"
+              onClick={() => setActiveTab("parents")}
+              className={`flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold transition-all relative ${activeTab === "parents"
                 ? "text-blue-600 font-bold"
                 : "text-slate-500 hover:text-slate-800 hover:bg-slate-50"
-            }`}
-          >
-            <Users size={18} className={activeTab === "parents" ? "text-blue-600" : "text-slate-400"} />
-            <span>Parents</span>
-            {activeTab === "parents" && (
-              <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-blue-600 rounded-full" />
-            )}
-          </button>
+                }`}
+            >
+              <Users size={18} className={activeTab === "parents" ? "text-blue-600" : "text-slate-400"} />
+              <span>Parents</span>
+              {activeTab === "parents" && (
+                <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-blue-600 rounded-full" />
+              )}
+            </button>
 
-          {/* Result Tab */}
-          <button
-            type="button"
-            onClick={() => setActiveTab("result")}
-            className={`flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold transition-all relative ${
-              activeTab === "result"
+            {/* Result Tab */}
+            <button
+              type="button"
+              onClick={() => setActiveTab("result")}
+              className={`flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold transition-all relative ${activeTab === "result"
                 ? "text-blue-600 font-bold"
                 : "text-slate-500 hover:text-slate-800 hover:bg-slate-50"
-            }`}
-          >
-            <Clock size={18} className={activeTab === "result" ? "text-blue-600" : "text-slate-400"} />
-            <span>Result</span>
-            {activeTab === "result" && (
-              <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-blue-600 rounded-full" />
-            )}
-          </button>
+                }`}
+            >
+              <Clock size={18} className={activeTab === "result" ? "text-blue-600" : "text-slate-400"} />
+              <span>Result</span>
+              {activeTab === "result" && (
+                <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-blue-600 rounded-full" />
+              )}
+            </button>
 
-          {/* Attendance Tab */}
-          <button
-            type="button"
-            onClick={() => setActiveTab("attendance")}
-            className={`flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold transition-all relative ${
-              activeTab === "attendance"
+            {/* Attendance Tab */}
+            <button
+              type="button"
+              onClick={() => setActiveTab("attendance")}
+              className={`flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold transition-all relative ${activeTab === "attendance"
                 ? "text-blue-600 font-bold"
                 : "text-slate-500 hover:text-slate-800 hover:bg-slate-50"
-            }`}
-          >
-            <Calendar size={18} className={activeTab === "attendance" ? "text-blue-600" : "text-slate-400"} />
-            <span>Attendance</span>
-            {activeTab === "attendance" && (
-              <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-blue-600 rounded-full" />
-            )}
-          </button>
-        </div>
-
-        {/* TAB 1: PARENTS & PERSONAL DETAILS (Matches reference screenshot 100%) */}
-        {activeTab === "parents" && (
-          <div className="space-y-6 animate-in fade-in duration-200">
-            {/* 1. Additional Details Card */}
-            <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-7 shadow-sm space-y-4">
-              <div className="flex items-center gap-2.5 text-blue-600 border-b border-slate-100 pb-3.5">
-                <FileText size={20} className="stroke-[2.2]" />
-                <h3 className="text-base sm:text-lg font-bold text-slate-800">
-                  Additional Details
-                </h3>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-1">
-                {/* Personal Email */}
-                <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
-                    <Mail size={18} />
-                  </div>
-                  <div className="overflow-hidden">
-                    <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Personal Email</p>
-                    <p className="text-sm font-semibold text-slate-800 truncate" title={student.additionalDetails.personalEmail}>
-                      {student.additionalDetails.personalEmail}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Phone Number */}
-                <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
-                    <Phone size={18} />
-                  </div>
-                  <div className="overflow-hidden">
-                    <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Phone Number</p>
-                    <p className="text-sm font-semibold text-slate-800 truncate">
-                      {student.additionalDetails.phoneNumber}
-                    </p>
-                  </div>
-                </div>
-
-                {/* College Email */}
-                <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
-                    <Mail size={18} />
-                  </div>
-                  <div className="overflow-hidden">
-                    <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">College Email</p>
-                    <p className="text-sm font-semibold text-slate-800 truncate" title={student.additionalDetails.collegeEmail}>
-                      {student.additionalDetails.collegeEmail}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Blood Group */}
-                <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
-                    <Droplet size={18} />
-                  </div>
-                  <div className="overflow-hidden">
-                    <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Blood Group</p>
-                    <p className="text-sm font-bold text-slate-800">
-                      {student.additionalDetails.bloodGroup}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Date of Birth */}
-                <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
-                    <CalendarDays size={18} />
-                  </div>
-                  <div className="overflow-hidden">
-                    <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Date of Birth</p>
-                    <p className="text-sm font-semibold text-slate-800">
-                      {student.additionalDetails.dateOfBirth}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Aadhar Card Number */}
-                <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
-                    <CreditCard size={18} />
-                  </div>
-                  <div className="overflow-hidden">
-                    <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Aadhar Card Number</p>
-                    <p className="text-sm font-semibold text-slate-800 tracking-wider">
-                      {student.additionalDetails.aadharCardNumber}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* 2. Address Details Card */}
-            <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-7 shadow-sm space-y-4">
-              <div className="flex items-center gap-2.5 text-blue-600 border-b border-slate-100 pb-3.5">
-                <MapPin size={20} className="stroke-[2.2]" />
-                <h3 className="text-base sm:text-lg font-bold text-slate-800">
-                  Address Details
-                </h3>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-1">
-                {/* Country */}
-                <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
-                    <Globe size={18} />
-                  </div>
-                  <div className="overflow-hidden">
-                    <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Country</p>
-                    <p className="text-sm font-semibold text-slate-800">{student.addressDetails.country}</p>
-                  </div>
-                </div>
-
-                {/* State */}
-                <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
-                    <BookOpen size={18} />
-                  </div>
-                  <div className="overflow-hidden">
-                    <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">State</p>
-                    <p className="text-sm font-semibold text-slate-800">{student.addressDetails.state}</p>
-                  </div>
-                </div>
-
-                {/* District */}
-                <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
-                    <Building size={18} />
-                  </div>
-                  <div className="overflow-hidden">
-                    <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">District</p>
-                    <p className="text-sm font-semibold text-slate-800">{student.addressDetails.district}</p>
-                  </div>
-                </div>
-
-                {/* Pin Code */}
-                <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
-                    <MapPin size={18} />
-                  </div>
-                  <div className="overflow-hidden">
-                    <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Pin Code</p>
-                    <p className="text-sm font-semibold text-slate-800">{student.addressDetails.pinCode}</p>
-                  </div>
-                </div>
-
-                {/* Postal Address */}
-                <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
-                    <Mail size={18} />
-                  </div>
-                  <div className="overflow-hidden">
-                    <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Postal Address</p>
-                    <p className="text-sm font-semibold text-slate-800 truncate" title={student.addressDetails.postalAddress}>
-                      {student.addressDetails.postalAddress}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Police Station */}
-                <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
-                    <ShieldCheck size={18} />
-                  </div>
-                  <div className="overflow-hidden">
-                    <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Police Station</p>
-                    <p className="text-sm font-semibold text-slate-800 truncate" title={student.addressDetails.policeStation}>
-                      {student.addressDetails.policeStation}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Full Address (Spanning 3 columns full width) */}
-                <div className="col-span-1 sm:col-span-2 lg:col-span-3 flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
-                    <Home size={18} />
-                  </div>
-                  <div className="overflow-hidden">
-                    <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Full Address</p>
-                    <p className="text-sm font-semibold text-slate-800">
-                      {student.addressDetails.fullAddress}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* 3. Father's Details Card */}
-            <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-7 shadow-sm space-y-4">
-              <div className="flex items-center gap-2.5 text-blue-600 border-b border-slate-100 pb-3.5">
-                <User size={20} className="stroke-[2.2]" />
-                <h3 className="text-base sm:text-lg font-bold text-slate-800">
-                  Father&apos;s Details
-                </h3>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-1">
-                {/* Full Name */}
-                <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
-                    <User size={18} />
-                  </div>
-                  <div className="overflow-hidden">
-                    <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Full Name</p>
-                    <p className="text-sm font-semibold text-slate-800 truncate">{student.fatherDetails.fullName}</p>
-                  </div>
-                </div>
-
-                {/* Email Address */}
-                <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
-                    <Mail size={18} />
-                  </div>
-                  <div className="overflow-hidden">
-                    <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Email Address</p>
-                    <p className="text-sm font-semibold text-slate-800 truncate" title={student.fatherDetails.emailAddress}>
-                      {student.fatherDetails.emailAddress}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Phone Number */}
-                <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
-                    <Phone size={18} />
-                  </div>
-                  <div className="overflow-hidden">
-                    <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Phone Number</p>
-                    <p className="text-sm font-semibold text-slate-800 truncate">{student.fatherDetails.phoneNumber}</p>
-                  </div>
-                </div>
-
-                {/* Occupation */}
-                <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
-                    <Briefcase size={18} />
-                  </div>
-                  <div className="overflow-hidden">
-                    <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Occupation</p>
-                    <p className="text-sm font-semibold text-slate-800 truncate">{student.fatherDetails.occupation}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* 4. Mother's Details Card */}
-            <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-7 shadow-sm space-y-4">
-              <div className="flex items-center gap-2.5 text-blue-600 border-b border-slate-100 pb-3.5">
-                <User size={20} className="stroke-[2.2]" />
-                <h3 className="text-base sm:text-lg font-bold text-slate-800">
-                  Mother&apos;s Details
-                </h3>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-1">
-                {/* Full Name */}
-                <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
-                    <User size={18} />
-                  </div>
-                  <div className="overflow-hidden">
-                    <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Full Name</p>
-                    <p className="text-sm font-semibold text-slate-800 truncate">{student.motherDetails.fullName}</p>
-                  </div>
-                </div>
-
-                {/* Email Address */}
-                <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
-                    <Mail size={18} />
-                  </div>
-                  <div className="overflow-hidden">
-                    <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Email Address</p>
-                    <p className="text-sm font-semibold text-slate-800 truncate" title={student.motherDetails.emailAddress}>
-                      {student.motherDetails.emailAddress}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Phone Number */}
-                <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
-                    <Phone size={18} />
-                  </div>
-                  <div className="overflow-hidden">
-                    <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Phone Number</p>
-                    <p className="text-sm font-semibold text-slate-800 truncate">{student.motherDetails.phoneNumber}</p>
-                  </div>
-                </div>
-
-                {/* Occupation */}
-                <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
-                    <Briefcase size={18} />
-                  </div>
-                  <div className="overflow-hidden">
-                    <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Occupation</p>
-                    <p className="text-sm font-semibold text-slate-800 truncate">{student.motherDetails.occupation}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* 5. Info Note Footer */}
-            <div className="flex items-center gap-3 p-4 rounded-xl bg-blue-50/70 border border-blue-200/70 text-blue-900 text-xs sm:text-sm shadow-sm">
-              <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-600 text-white font-bold text-xs">
-                i
-              </div>
-              <p className="font-medium text-slate-700">
-                For any correction in parent or personal details, please contact the administration.
-              </p>
-            </div>
+                }`}
+            >
+              <Calendar size={18} className={activeTab === "attendance" ? "text-blue-600" : "text-slate-400"} />
+              <span>Attendance</span>
+              {activeTab === "attendance" && (
+                <span className="absolute bottom-0 left-4 right-4 h-0.5 bg-blue-600 rounded-full" />
+              )}
+            </button>
           </div>
-        )}
 
-        {/* TAB 2: ACADEMIC DETAILS */}
-        {activeTab === "academic" && (
-          <div className="space-y-6 animate-in fade-in duration-200">
-            {/* KPI Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
-                <p className="text-xs font-semibold text-slate-400 uppercase">Cumulative GPA</p>
-                <div className="flex items-baseline gap-2 mt-1">
-                  <span className="text-3xl font-extrabold text-blue-600">{student.academicDetails.cgpa}</span>
-                  <span className="text-xs text-slate-400">/ 10.0</span>
-                </div>
-                <p className="text-xs text-emerald-600 font-medium mt-1">Top 5% in CSE Department</p>
-              </div>
-
-              <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
-                <p className="text-xs font-semibold text-slate-400 uppercase">Credits Earned</p>
-                <div className="flex items-baseline gap-2 mt-1">
-                  <span className="text-3xl font-extrabold text-slate-800">{student.academicDetails.creditsEarned}</span>
-                  <span className="text-xs text-slate-400">/ {student.academicDetails.totalCredits}</span>
-                </div>
-                <p className="text-xs text-blue-600 font-medium mt-1">82.5% Degree Completed</p>
-              </div>
-
-              <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
-                <p className="text-xs font-semibold text-slate-400 uppercase">Faculty Mentor</p>
-                <div className="mt-1">
-                  <p className="text-base font-bold text-slate-800">{student.mentor}</p>
-                  <p className="text-xs text-slate-500">Associate Professor, CSE</p>
-                </div>
-              </div>
-
-              <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
-                <p className="text-xs font-semibold text-slate-400 uppercase">Current Standing</p>
-                <div className="mt-1">
-                  <p className="text-lg font-bold text-emerald-600">{student.academicDetails.classRank}</p>
-                  <p className="text-xs text-slate-500">{student.semester} - Active</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Enrolled Courses Table */}
-            <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-7 shadow-sm space-y-4">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                <div className="flex items-center gap-2.5 text-blue-600">
-                  <BookOpen size={20} className="stroke-[2.2]" />
+          {/* TAB 1: PARENTS & PERSONAL DETAILS (Matches reference screenshot 100%) */}
+          {activeTab === "parents" && (
+            <div className="space-y-6 animate-in fade-in duration-200">
+              {/* 1. Additional Details Card */}
+              <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-7 shadow-sm space-y-4">
+                <div className="flex items-center gap-2.5 text-blue-600 border-b border-slate-100 pb-3.5">
+                  <FileText size={20} className="stroke-[2.2]" />
                   <h3 className="text-base sm:text-lg font-bold text-slate-800">
-                    Enrolled Courses (VI Semester)
+                    Additional Details
                   </h3>
                 </div>
-                <span className="text-xs font-semibold bg-blue-50 text-blue-600 px-3 py-1 rounded-full">
-                  6 Subjects
-                </span>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-1">
+                  {/* Personal Email */}
+                  <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                      <Mail size={18} />
+                    </div>
+                    <div className="overflow-hidden">
+                      <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Personal Email</p>
+                      <p className="text-sm font-semibold text-slate-800 truncate" title={student.additionalDetails.personalEmail}>
+                        {student.additionalDetails.personalEmail}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Phone Number */}
+                  <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                      <Phone size={18} />
+                    </div>
+                    <div className="overflow-hidden">
+                      <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Phone Number</p>
+                      <p className="text-sm font-semibold text-slate-800 truncate">
+                        {student.additionalDetails.phoneNumber}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* College Email */}
+                  <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                      <Mail size={18} />
+                    </div>
+                    <div className="overflow-hidden">
+                      <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">College Email</p>
+                      <p className="text-sm font-semibold text-slate-800 truncate" title={student.additionalDetails.collegeEmail}>
+                        {student.additionalDetails.collegeEmail}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Blood Group */}
+                  <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                      <Droplet size={18} />
+                    </div>
+                    <div className="overflow-hidden">
+                      <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Blood Group</p>
+                      <p className="text-sm font-bold text-slate-800">
+                        {student.additionalDetails.bloodGroup}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Date of Birth */}
+                  <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                      <CalendarDays size={18} />
+                    </div>
+                    <div className="overflow-hidden">
+                      <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Date of Birth</p>
+                      <p className="text-sm font-semibold text-slate-800">
+                        {student.additionalDetails.dateOfBirth}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Aadhar Card Number */}
+                  <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                      <CreditCard size={18} />
+                    </div>
+                    <div className="overflow-hidden">
+                      <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Aadhar Card Number</p>
+                      <p className="text-sm font-semibold text-slate-800 tracking-wider">
+                        {student.additionalDetails.aadharCardNumber}
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-sm">
-                  <thead>
-                    <tr className="border-b border-slate-100 text-xs font-bold text-slate-400 uppercase tracking-wider">
-                      <th className="py-3 px-3">Code</th>
-                      <th className="py-3 px-3">Subject Name</th>
-                      <th className="py-3 px-3">Type</th>
-                      <th className="py-3 px-3">Credits</th>
-                      <th className="py-3 px-3">Faculty</th>
-                      <th className="py-3 px-3">Syllabus Progress</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-100">
-                    {student.academicDetails.currentSubjects.map((sub) => (
-                      <tr key={sub.code} className="hover:bg-blue-50/30 transition-colors">
-                        <td className="py-3.5 px-3 font-bold text-blue-600 text-xs">{sub.code}</td>
-                        <td className="py-3.5 px-3 font-semibold text-slate-800">{sub.name}</td>
-                        <td className="py-3.5 px-3">
-                          <span className="inline-block px-2.5 py-1 rounded-md text-[11px] font-semibold bg-slate-100 text-slate-700">
-                            {sub.type}
-                          </span>
-                        </td>
-                        <td className="py-3.5 px-3 font-medium text-slate-600">{sub.credits}</td>
-                        <td className="py-3.5 px-3 text-xs text-slate-600">{sub.faculty}</td>
-                        <td className="py-3.5 px-3">
-                          <div className="flex items-center gap-3">
-                            <div className="w-24 bg-slate-100 rounded-full h-2 overflow-hidden">
-                              <div
-                                className="bg-blue-600 h-full rounded-full"
-                                style={{ width: `${sub.progress}%` }}
-                              />
-                            </div>
-                            <span className="text-xs font-bold text-slate-600">{sub.progress}%</span>
-                          </div>
-                        </td>
+              {/* 2. Address Details Card */}
+              <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-7 shadow-sm space-y-4">
+                <div className="flex items-center gap-2.5 text-blue-600 border-b border-slate-100 pb-3.5">
+                  <MapPin size={20} className="stroke-[2.2]" />
+                  <h3 className="text-base sm:text-lg font-bold text-slate-800">
+                    Address Details
+                  </h3>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-1">
+                  {/* Country */}
+                  <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                      <Globe size={18} />
+                    </div>
+                    <div className="overflow-hidden">
+                      <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Country</p>
+                      <p className="text-sm font-semibold text-slate-800">{student.addressDetails.country}</p>
+                    </div>
+                  </div>
+
+                  {/* State */}
+                  <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                      <BookOpen size={18} />
+                    </div>
+                    <div className="overflow-hidden">
+                      <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">State</p>
+                      <p className="text-sm font-semibold text-slate-800">{student.addressDetails.state}</p>
+                    </div>
+                  </div>
+
+                  {/* District */}
+                  <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                      <Building size={18} />
+                    </div>
+                    <div className="overflow-hidden">
+                      <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">District</p>
+                      <p className="text-sm font-semibold text-slate-800">{student.addressDetails.district}</p>
+                    </div>
+                  </div>
+
+                  {/* Pin Code */}
+                  <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                      <MapPin size={18} />
+                    </div>
+                    <div className="overflow-hidden">
+                      <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Pin Code</p>
+                      <p className="text-sm font-semibold text-slate-800">{student.addressDetails.pinCode}</p>
+                    </div>
+                  </div>
+
+                  {/* Postal Address */}
+                  <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                      <Mail size={18} />
+                    </div>
+                    <div className="overflow-hidden">
+                      <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Postal Address</p>
+                      <p className="text-sm font-semibold text-slate-800 truncate" title={student.addressDetails.postalAddress}>
+                        {student.addressDetails.postalAddress}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Police Station */}
+                  <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                      <ShieldCheck size={18} />
+                    </div>
+                    <div className="overflow-hidden">
+                      <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Police Station</p>
+                      <p className="text-sm font-semibold text-slate-800 truncate" title={student.addressDetails.policeStation}>
+                        {student.addressDetails.policeStation}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Full Address (Spanning 3 columns full width) */}
+                  <div className="col-span-1 sm:col-span-2 lg:col-span-3 flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                      <Home size={18} />
+                    </div>
+                    <div className="overflow-hidden">
+                      <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Full Address</p>
+                      <p className="text-sm font-semibold text-slate-800">
+                        {student.addressDetails.fullAddress}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* 3. Father's Details Card */}
+              <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-7 shadow-sm space-y-4">
+                <div className="flex items-center gap-2.5 text-blue-600 border-b border-slate-100 pb-3.5">
+                  <User size={20} className="stroke-[2.2]" />
+                  <h3 className="text-base sm:text-lg font-bold text-slate-800">
+                    Father&apos;s Details
+                  </h3>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-1">
+                  {/* Full Name */}
+                  <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                      <User size={18} />
+                    </div>
+                    <div className="overflow-hidden">
+                      <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Full Name</p>
+                      <p className="text-sm font-semibold text-slate-800 truncate">{student.fatherDetails.fullName}</p>
+                    </div>
+                  </div>
+
+                  {/* Email Address */}
+                  <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                      <Mail size={18} />
+                    </div>
+                    <div className="overflow-hidden">
+                      <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Email Address</p>
+                      <p className="text-sm font-semibold text-slate-800 truncate" title={student.fatherDetails.emailAddress}>
+                        {student.fatherDetails.emailAddress}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Phone Number */}
+                  <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                      <Phone size={18} />
+                    </div>
+                    <div className="overflow-hidden">
+                      <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Phone Number</p>
+                      <p className="text-sm font-semibold text-slate-800 truncate">{student.fatherDetails.phoneNumber}</p>
+                    </div>
+                  </div>
+
+                  {/* Occupation */}
+                  <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                      <Briefcase size={18} />
+                    </div>
+                    <div className="overflow-hidden">
+                      <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Occupation</p>
+                      <p className="text-sm font-semibold text-slate-800 truncate">{student.fatherDetails.occupation}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* 4. Mother's Details Card */}
+              <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-7 shadow-sm space-y-4">
+                <div className="flex items-center gap-2.5 text-blue-600 border-b border-slate-100 pb-3.5">
+                  <User size={20} className="stroke-[2.2]" />
+                  <h3 className="text-base sm:text-lg font-bold text-slate-800">
+                    Mother&apos;s Details
+                  </h3>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-1">
+                  {/* Full Name */}
+                  <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                      <User size={18} />
+                    </div>
+                    <div className="overflow-hidden">
+                      <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Full Name</p>
+                      <p className="text-sm font-semibold text-slate-800 truncate">{student.motherDetails.fullName}</p>
+                    </div>
+                  </div>
+
+                  {/* Email Address */}
+                  <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                      <Mail size={18} />
+                    </div>
+                    <div className="overflow-hidden">
+                      <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Email Address</p>
+                      <p className="text-sm font-semibold text-slate-800 truncate" title={student.motherDetails.emailAddress}>
+                        {student.motherDetails.emailAddress}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Phone Number */}
+                  <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                      <Phone size={18} />
+                    </div>
+                    <div className="overflow-hidden">
+                      <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Phone Number</p>
+                      <p className="text-sm font-semibold text-slate-800 truncate">{student.motherDetails.phoneNumber}</p>
+                    </div>
+                  </div>
+
+                  {/* Occupation */}
+                  <div className="flex items-center gap-3.5 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+                      <Briefcase size={18} />
+                    </div>
+                    <div className="overflow-hidden">
+                      <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Occupation</p>
+                      <p className="text-sm font-semibold text-slate-800 truncate">{student.motherDetails.occupation}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* 5. Info Note Footer */}
+              <div className="flex items-center gap-3 p-4 rounded-xl bg-blue-50/70 border border-blue-200/70 text-blue-900 text-xs sm:text-sm shadow-sm">
+                <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-600 text-white font-bold text-xs">
+                  i
+                </div>
+                <p className="font-medium text-slate-700">
+                  For any correction in parent or personal details, please contact the administration.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 2: ACADEMIC DETAILS */}
+          {activeTab === "academic" && (
+            <div className="space-y-6 animate-in fade-in duration-200">
+              {/* KPI Cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+                  <p className="text-xs font-semibold text-slate-400 uppercase">Cumulative GPA</p>
+                  <div className="flex items-baseline gap-2 mt-1">
+                    <span className="text-3xl font-extrabold text-blue-600">{student.academicDetails.cgpa}</span>
+                    <span className="text-xs text-slate-400">/ 10.0</span>
+                  </div>
+                  <p className="text-xs text-emerald-600 font-medium mt-1">Top 5% in CSE Department</p>
+                </div>
+
+                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+                  <p className="text-xs font-semibold text-slate-400 uppercase">Credits Earned</p>
+                  <div className="flex items-baseline gap-2 mt-1">
+                    <span className="text-3xl font-extrabold text-slate-800">{student.academicDetails.creditsEarned}</span>
+                    <span className="text-xs text-slate-400">/ {student.academicDetails.totalCredits}</span>
+                  </div>
+                  <p className="text-xs text-blue-600 font-medium mt-1">82.5% Degree Completed</p>
+                </div>
+
+                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+                  <p className="text-xs font-semibold text-slate-400 uppercase">Faculty Mentor</p>
+                  <div className="mt-1">
+                    <p className="text-base font-bold text-slate-800">{student.mentor}</p>
+                    <p className="text-xs text-slate-500">Associate Professor, CSE</p>
+                  </div>
+                </div>
+
+                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+                  <p className="text-xs font-semibold text-slate-400 uppercase">Current Standing</p>
+                  <div className="mt-1">
+                    <p className="text-lg font-bold text-emerald-600">{student.academicDetails.classRank}</p>
+                    <p className="text-xs text-slate-500">{student.semester} - Active</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Enrolled Courses Table */}
+              <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-7 shadow-sm space-y-4">
+                <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                  <div className="flex items-center gap-2.5 text-blue-600">
+                    <BookOpen size={20} className="stroke-[2.2]" />
+                    <h3 className="text-base sm:text-lg font-bold text-slate-800">
+                      Enrolled Courses (VI Semester)
+                    </h3>
+                  </div>
+                  <span className="text-xs font-semibold bg-blue-50 text-blue-600 px-3 py-1 rounded-full">
+                    6 Subjects
+                  </span>
+                </div>
+
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-sm">
+                    <thead>
+                      <tr className="border-b border-slate-100 text-xs font-bold text-slate-400 uppercase tracking-wider">
+                        <th className="py-3 px-3">Code</th>
+                        <th className="py-3 px-3">Subject Name</th>
+                        <th className="py-3 px-3">Type</th>
+                        <th className="py-3 px-3">Credits</th>
+                        <th className="py-3 px-3">Faculty</th>
+                        <th className="py-3 px-3">Syllabus Progress</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100">
+                      {student.academicDetails.currentSubjects.map((sub) => (
+                        <tr key={sub.code} className="hover:bg-blue-50/30 transition-colors">
+                          <td className="py-3.5 px-3 font-bold text-blue-600 text-xs">{sub.code}</td>
+                          <td className="py-3.5 px-3 font-semibold text-slate-800">{sub.name}</td>
+                          <td className="py-3.5 px-3">
+                            <span className="inline-block px-2.5 py-1 rounded-md text-[11px] font-semibold bg-slate-100 text-slate-700">
+                              {sub.type}
+                            </span>
+                          </td>
+                          <td className="py-3.5 px-3 font-medium text-slate-600">{sub.credits}</td>
+                          <td className="py-3.5 px-3 text-xs text-slate-600">{sub.faculty}</td>
+                          <td className="py-3.5 px-3">
+                            <div className="flex items-center gap-3">
+                              <div className="w-24 bg-slate-100 rounded-full h-2 overflow-hidden">
+                                <div
+                                  className="bg-blue-600 h-full rounded-full"
+                                  style={{ width: `${sub.progress}%` }}
+                                />
+                              </div>
+                              <span className="text-xs font-bold text-slate-600">{sub.progress}%</span>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* TAB 3: RESULT DETAILS */}
-        {activeTab === "result" && (
-          <div className="space-y-6 animate-in fade-in duration-200">
-            {/* Header Actions */}
-            <div className="flex flex-wrap items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
-              <div>
-                <h3 className="text-lg font-bold text-slate-900">Academic Grade Performance</h3>
-                <p className="text-xs text-slate-500">Official Semester-wise Grade Point Average (SGPA) records</p>
+          {/* TAB 3: RESULT DETAILS */}
+          {activeTab === "result" && (
+            <div className="space-y-6 animate-in fade-in duration-200">
+              {/* Header Actions */}
+              <div className="flex flex-wrap items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+                <div>
+                  <h3 className="text-lg font-bold text-slate-900">Academic Grade Performance</h3>
+                  <p className="text-xs text-slate-500">Official Semester-wise Grade Point Average (SGPA) records</p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={() => showToast("Downloading official Grade Card PDF...")}
+                    className="flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-xl text-xs font-semibold transition-colors"
+                  >
+                    <Download size={14} /> Download Grade Card
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => window.print()}
+                    className="flex items-center gap-2 px-4 py-2 border border-slate-200 text-slate-700 hover:bg-slate-50 rounded-xl text-xs font-semibold transition-colors"
+                  >
+                    <Printer size={14} /> Print
+                  </button>
+                </div>
               </div>
-              <div className="flex items-center gap-3">
-                <button
-                  type="button"
-                  onClick={() => showToast("Downloading official Grade Card PDF...")}
-                  className="flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-xl text-xs font-semibold transition-colors"
-                >
-                  <Download size={14} /> Download Grade Card
-                </button>
-                <button
-                  type="button"
-                  onClick={() => window.print()}
-                  className="flex items-center gap-2 px-4 py-2 border border-slate-200 text-slate-700 hover:bg-slate-50 rounded-xl text-xs font-semibold transition-colors"
-                >
-                  <Printer size={14} /> Print
-                </button>
-              </div>
-            </div>
 
-            {/* Semester Progression Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-              {student.resultDetails.semesters.map((s, idx) => (
-                <div
-                  key={s.sem}
-                  className={`p-4 rounded-xl border text-center transition-all ${
-                    idx === 5
+              {/* Semester Progression Grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                {student.resultDetails.semesters.map((s, idx) => (
+                  <div
+                    key={s.sem}
+                    className={`p-4 rounded-xl border text-center transition-all ${idx === 5
                       ? "bg-blue-50/50 border-blue-300 ring-2 ring-blue-100"
                       : "bg-white border-slate-200 hover:border-blue-200"
-                  }`}
-                >
-                  <p className="text-xs font-bold text-slate-500">{s.sem}</p>
-                  <p className="text-2xl font-extrabold text-blue-700 my-1">
-                    {s.sgpa}
-                  </p>
-                  <span
-                    className={`inline-block text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                      s.status === "Passed"
+                      }`}
+                  >
+                    <p className="text-xs font-bold text-slate-500">{s.sem}</p>
+                    <p className="text-2xl font-extrabold text-blue-700 my-1">
+                      {s.sgpa}
+                    </p>
+                    <span
+                      className={`inline-block text-[10px] font-bold px-2 py-0.5 rounded-full ${s.status === "Passed"
                         ? "bg-emerald-100 text-emerald-700"
                         : "bg-amber-100 text-amber-700"
-                    }`}
-                  >
-                    {s.status}
-                  </span>
-                  <p className="text-[10px] text-slate-400 mt-1">{s.credits} Credits</p>
-                </div>
-              ))}
-            </div>
-
-            {/* Semester 5 Detailed Grade Table */}
-            <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-7 shadow-sm space-y-4">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                <div className="flex items-center gap-2 text-blue-600">
-                  <Award size={20} />
-                  <h4 className="text-base font-bold text-slate-800">Last Published Result (Semester 5)</h4>
-                </div>
-                <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full">
-                  SGPA: 8.95 (First Class with Distinction)
-                </span>
-              </div>
-
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-sm">
-                  <thead>
-                    <tr className="border-b border-slate-100 text-xs font-bold text-slate-400 uppercase tracking-wider">
-                      <th className="py-3 px-3">Subject Code</th>
-                      <th className="py-3 px-3">Subject Name</th>
-                      <th className="py-3 px-3">Internal</th>
-                      <th className="py-3 px-3">Theory</th>
-                      <th className="py-3 px-3">Total</th>
-                      <th className="py-3 px-3">Grade</th>
-                      <th className="py-3 px-3">Point</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-100">
-                    {student.resultDetails.sem5Grades.map((g) => (
-                      <tr key={g.code} className="hover:bg-slate-50/60">
-                        <td className="py-3 px-3 font-semibold text-blue-600 text-xs">{g.code}</td>
-                        <td className="py-3 px-3 font-medium text-slate-800">{g.subject}</td>
-                        <td className="py-3 px-3 text-xs text-slate-600">{g.internal}</td>
-                        <td className="py-3 px-3 text-xs text-slate-600">{g.theory}</td>
-                        <td className="py-3 px-3 text-xs font-bold text-slate-800">{g.total}</td>
-                        <td className="py-3 px-3">
-                          <span className="inline-flex items-center justify-center h-6 w-6 rounded-md bg-blue-100 text-blue-700 font-bold text-xs">
-                            {g.grade}
-                          </span>
-                        </td>
-                        <td className="py-3 px-3 font-bold text-slate-700">{g.gradePoint}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* TAB 4: ATTENDANCE DETAILS */}
-        {activeTab === "attendance" && (
-          <div className="space-y-6 animate-in fade-in duration-200">
-            {/* Top Attendance Metric Header */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-4">
-                <div className="h-14 w-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-                  <CheckCircle2 size={28} />
-                </div>
-                <div>
-                  <p className="text-xs font-semibold text-slate-400 uppercase">Overall Attendance</p>
-                  <p className="text-2xl font-extrabold text-emerald-600">
-                    {student.attendanceDetails.overallPercentage}%
-                  </p>
-                  <p className="text-[11px] text-slate-500">Above minimum (75%)</p>
-                </div>
-              </div>
-
-              <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
-                <p className="text-xs font-semibold text-slate-400 uppercase">Present Classes</p>
-                <p className="text-2xl font-extrabold text-slate-800 mt-1">
-                  {student.attendanceDetails.presentDays} / {student.attendanceDetails.totalWorkingDays}
-                </p>
-                <p className="text-[11px] text-blue-600 font-medium">Recorded lectures</p>
-              </div>
-
-              <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
-                <p className="text-xs font-semibold text-slate-400 uppercase">Leaves Approved</p>
-                <p className="text-2xl font-extrabold text-slate-800 mt-1">
-                  {student.attendanceDetails.leavesApproved} Days
-                </p>
-                <p className="text-[11px] text-emerald-600 font-medium">Medical & Event excused</p>
-              </div>
-
-              <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
-                <p className="text-xs font-semibold text-slate-400 uppercase">Absence Status</p>
-                <p className="text-2xl font-extrabold text-amber-600 mt-1">
-                  {student.attendanceDetails.unexcusedAbsent} Days
-                </p>
-                <p className="text-[11px] text-slate-400">Regular standing</p>
-              </div>
-            </div>
-
-            {/* Subject-wise Attendance Breakdown */}
-            <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-7 shadow-sm space-y-4">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                <div className="flex items-center gap-2.5 text-blue-600">
-                  <CalendarDays size={20} />
-                  <h4 className="text-base font-bold text-slate-800">Subject-wise Attendance (VI Semester)</h4>
-                </div>
-                <span className="text-xs text-slate-400">Updated today</span>
-              </div>
-
-              <div className="space-y-4">
-                {student.attendanceDetails.subjectAttendance.map((item) => (
-                  <div key={item.subject} className="p-4 rounded-xl bg-slate-50/60 border border-slate-100 space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="font-semibold text-slate-800 text-sm">{item.subject}</span>
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs text-slate-500 font-medium">
-                          {item.attended}/{item.total} classes
-                        </span>
-                        <span
-                          className={`text-xs font-bold px-2 py-0.5 rounded-full ${
-                            item.percentage >= 90
-                              ? "bg-emerald-100 text-emerald-700"
-                              : "bg-blue-100 text-blue-700"
-                          }`}
-                        >
-                          {item.percentage}%
-                        </span>
-                      </div>
-                    </div>
-                    <div className="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
-                      <div
-                        className={`h-full rounded-full ${
-                          item.percentage >= 90 ? "bg-emerald-500" : "bg-blue-500"
                         }`}
-                        style={{ width: `${item.percentage}%` }}
-                      />
-                    </div>
+                    >
+                      {s.status}
+                    </span>
+                    <p className="text-[10px] text-slate-400 mt-1">{s.credits} Credits</p>
                   </div>
                 ))}
               </div>
+
+              {/* Semester 5 Detailed Grade Table */}
+              <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-7 shadow-sm space-y-4">
+                <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                  <div className="flex items-center gap-2 text-blue-600">
+                    <Award size={20} />
+                    <h4 className="text-base font-bold text-slate-800">Last Published Result (Semester 5)</h4>
+                  </div>
+                  <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full">
+                    SGPA: 8.95 (First Class with Distinction)
+                  </span>
+                </div>
+
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-sm">
+                    <thead>
+                      <tr className="border-b border-slate-100 text-xs font-bold text-slate-400 uppercase tracking-wider">
+                        <th className="py-3 px-3">Subject Code</th>
+                        <th className="py-3 px-3">Subject Name</th>
+                        <th className="py-3 px-3">Internal</th>
+                        <th className="py-3 px-3">Theory</th>
+                        <th className="py-3 px-3">Total</th>
+                        <th className="py-3 px-3">Grade</th>
+                        <th className="py-3 px-3">Point</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100">
+                      {student.resultDetails.sem5Grades.map((g) => (
+                        <tr key={g.code} className="hover:bg-slate-50/60">
+                          <td className="py-3 px-3 font-semibold text-blue-600 text-xs">{g.code}</td>
+                          <td className="py-3 px-3 font-medium text-slate-800">{g.subject}</td>
+                          <td className="py-3 px-3 text-xs text-slate-600">{g.internal}</td>
+                          <td className="py-3 px-3 text-xs text-slate-600">{g.theory}</td>
+                          <td className="py-3 px-3 text-xs font-bold text-slate-800">{g.total}</td>
+                          <td className="py-3 px-3">
+                            <span className="inline-flex items-center justify-center h-6 w-6 rounded-md bg-blue-100 text-blue-700 font-bold text-xs">
+                              {g.grade}
+                            </span>
+                          </td>
+                          <td className="py-3 px-3 font-bold text-slate-700">{g.gradePoint}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+
+          {/* TAB 4: ATTENDANCE DETAILS */}
+          {activeTab === "attendance" && (
+            <div className="space-y-6 animate-in fade-in duration-200">
+              {/* Top Attendance Metric Header */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center gap-4">
+                  <div className="h-14 w-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+                    <CheckCircle2 size={28} />
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold text-slate-400 uppercase">Overall Attendance</p>
+                    <p className="text-2xl font-extrabold text-emerald-600">
+                      {student.attendanceDetails.overallPercentage}%
+                    </p>
+                    <p className="text-[11px] text-slate-500">Above minimum (75%)</p>
+                  </div>
+                </div>
+
+                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+                  <p className="text-xs font-semibold text-slate-400 uppercase">Present Classes</p>
+                  <p className="text-2xl font-extrabold text-slate-800 mt-1">
+                    {student.attendanceDetails.presentDays} / {student.attendanceDetails.totalWorkingDays}
+                  </p>
+                  <p className="text-[11px] text-blue-600 font-medium">Recorded lectures</p>
+                </div>
+
+                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+                  <p className="text-xs font-semibold text-slate-400 uppercase">Leaves Approved</p>
+                  <p className="text-2xl font-extrabold text-slate-800 mt-1">
+                    {student.attendanceDetails.leavesApproved} Days
+                  </p>
+                  <p className="text-[11px] text-emerald-600 font-medium">Medical & Event excused</p>
+                </div>
+
+                <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+                  <p className="text-xs font-semibold text-slate-400 uppercase">Absence Status</p>
+                  <p className="text-2xl font-extrabold text-amber-600 mt-1">
+                    {student.attendanceDetails.unexcusedAbsent} Days
+                  </p>
+                  <p className="text-[11px] text-slate-400">Regular standing</p>
+                </div>
+              </div>
+
+              {/* Subject-wise Attendance Breakdown */}
+              <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-7 shadow-sm space-y-4">
+                <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                  <div className="flex items-center gap-2.5 text-blue-600">
+                    <CalendarDays size={20} />
+                    <h4 className="text-base font-bold text-slate-800">Subject-wise Attendance (VI Semester)</h4>
+                  </div>
+                  <span className="text-xs text-slate-400">Updated today</span>
+                </div>
+
+                <div className="space-y-4">
+                  {student.attendanceDetails.subjectAttendance.map((item) => (
+                    <div key={item.subject} className="p-4 rounded-xl bg-slate-50/60 border border-slate-100 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="font-semibold text-slate-800 text-sm">{item.subject}</span>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs text-slate-500 font-medium">
+                            {item.attended}/{item.total} classes
+                          </span>
+                          <span
+                            className={`text-xs font-bold px-2 py-0.5 rounded-full ${item.percentage >= 90
+                              ? "bg-emerald-100 text-emerald-700"
+                              : "bg-blue-100 text-blue-700"
+                              }`}
+                          >
+                            {item.percentage}%
+                          </span>
+                        </div>
+                      </div>
+                      <div className="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
+                        <div
+                          className={`h-full rounded-full ${item.percentage >= 90 ? "bg-emerald-500" : "bg-blue-500"
+                            }`}
+                          style={{ width: `${item.percentage}%` }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </main>
 
@@ -1020,33 +1012,30 @@ export default function StudentProfile({ onBack, studentData: propStudentData, u
               <button
                 type="button"
                 onClick={() => setActiveEditSection("personal")}
-                className={`py-3 border-b-2 transition-colors ${
-                  activeEditSection === "personal"
-                    ? "border-blue-600 text-blue-600"
-                    : "border-transparent text-slate-400 hover:text-slate-700"
-                }`}
+                className={`py-3 border-b-2 transition-colors ${activeEditSection === "personal"
+                  ? "border-blue-600 text-blue-600"
+                  : "border-transparent text-slate-400 hover:text-slate-700"
+                  }`}
               >
                 Personal & Contact
               </button>
               <button
                 type="button"
                 onClick={() => setActiveEditSection("address")}
-                className={`py-3 border-b-2 transition-colors ${
-                  activeEditSection === "address"
-                    ? "border-blue-600 text-blue-600"
-                    : "border-transparent text-slate-400 hover:text-slate-700"
-                }`}
+                className={`py-3 border-b-2 transition-colors ${activeEditSection === "address"
+                  ? "border-blue-600 text-blue-600"
+                  : "border-transparent text-slate-400 hover:text-slate-700"
+                  }`}
               >
                 Address
               </button>
               <button
                 type="button"
                 onClick={() => setActiveEditSection("parents")}
-                className={`py-3 border-b-2 transition-colors ${
-                  activeEditSection === "parents"
-                    ? "border-blue-600 text-blue-600"
-                    : "border-transparent text-slate-400 hover:text-slate-700"
-                }`}
+                className={`py-3 border-b-2 transition-colors ${activeEditSection === "parents"
+                  ? "border-blue-600 text-blue-600"
+                  : "border-transparent text-slate-400 hover:text-slate-700"
+                  }`}
               >
                 Parents Information
               </button>

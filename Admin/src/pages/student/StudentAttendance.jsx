@@ -261,33 +261,36 @@ export default function StudentAttendance() {
         </div>
       )}
 
-      {/* Top Header matching reference */}
-      <header className="shrink-0 bg-white border-b border-slate-200/80 px-6 py-4 flex items-center justify-between shadow-[0_2px_10px_rgba(0,0,0,0.02)] z-20">
+      {/* Top Header matching Dashboard */}
+      <header className="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white/80 px-6 py-3 backdrop-blur-sm">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+          <h1 className="text-[28px] font-bold tracking-tight text-slate-800">
             Attendance
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+          <p className="text-sm text-slate-500">
             An overview of your academic performance and outcomes
           </p>
         </div>
 
-        {/* Right Notification Pill */}
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100/80 hover:bg-slate-200 text-slate-600 transition-colors relative"
-            title="Notifications"
-          >
-            <Bell size={18} />
-            <span className="absolute top-2.5 right-2.5 h-2 w-2 rounded-full bg-rose-500 ring-2 ring-white" />
-          </button>
+        <div className="flex items-center gap-3 sm:gap-4">
+          <div className="relative">
+            <button
+              type="button"
+              aria-label="Notifications"
+              className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 shadow-sm transition-colors hover:bg-slate-50 cursor-pointer"
+            >
+              <Bell size={18} />
+            </button>
+            <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#2563eb] px-1 text-[10px] font-semibold text-white">
+              3
+            </span>
+          </div>
         </div>
       </header>
 
       {/* Scrollable Main Content */}
-      <main className="flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6 lg:p-8">
-        <div className="max-w-7xl w-full mx-auto space-y-6 pb-12">
+      <main className="flex-1 overflow-y-auto overflow-x-hidden p-4">
+        <div className="w-full space-y-4 pb-12">
           {/* Main Semester Attendance Card Container */}
           <div className="bg-white rounded-2xl border border-slate-200/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] p-6 sm:p-8 space-y-6">
             {/* Card Header with Icon, Title, and Filter Dropdown */}

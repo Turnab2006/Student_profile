@@ -32,6 +32,8 @@ import {
 import StudentProfile from "./StudentProfile";
 import StudentResults from "./StudentResults";
 import StudentAttendance from "./StudentAttendance";
+import StudentActivities from "./StudentActivities";
+import StudentNotices from "./StudentNotices";
 import { tuhinaStudentData } from "../../data/studentProfileData";
 
 const navSections = [
@@ -54,7 +56,7 @@ const navSections = [
   {
     label: "COMMUNICATION",
     items: [
-      { label: "Activities", icon: NotebookPen, pageKey: "activities" },
+      { label: "Activities", icon: CalendarDays, pageKey: "activities" },
       { label: "Notices", icon: Bell, pageKey: "notices" },
     ],
   },
@@ -86,12 +88,12 @@ const statCards = [
     cardClass: "bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#2d6df6]",
     valueClass: "text-[#111827]",
     iconWrap: "bg-[#ecf3ff] text-[#2d6df6]",
-    pageKey: "events",
+    pageKey: "activities",
   },
   {
     label: "Active Notices",
     value: "5",
-    note: "Unred notices",
+    note: "Unread notices",
     icon: Bell,
     cardClass: "bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#f59e0b]",
     valueClass: "text-[#111827]",
@@ -113,7 +115,7 @@ const statCards = [
 const quickActions = [
   { label: "View Results", icon: BookText, tone: "bg-[#F5F7FF] text-[#2b6df7]", pageKey: "results" },
   { label: "View Notices", icon: Bell, tone: "bg-[#fff1d9] text-[#f59e0b]", pageKey: "notices" },
-  { label: "View Events", icon: CalendarDays, tone: "bg-[#f3eaff] text-[#8b5cf6]", pageKey: "events" },
+  { label: "View Events", icon: CalendarDays, tone: "bg-[#f3eaff] text-[#8b5cf6]", pageKey: "activities" },
   { label: "View Credit Point", icon: Trophy, tone: "bg-[#eafaf2] text-[#16a34a]", pageKey: "results" },
 ];
 
@@ -129,7 +131,7 @@ function InfoRow({ icon: Icon, text }) {
 }
 
 export default function StudentDashboard({ onLogout }) {
-  const [currentPage, setCurrentPage] = useState("dashboard"); // "dashboard" | "profile" | "results" | "attendances"
+  const [currentPage, setCurrentPage] = useState("dashboard"); // "dashboard" | "profile" | "results" | "attendances" | "activities"
   const [profileTab, setProfileTab] = useState("parents");
   const [currentMonth, setCurrentMonth] = useState(new Date(2026, 4, 1));
   const [selectedDate, setSelectedDate] = useState(new Date(2026, 4, 25));
@@ -183,6 +185,10 @@ export default function StudentDashboard({ onLogout }) {
       setCurrentPage("results");
     } else if (pageKey === "attendances" || label === "Attendance" || label === "Attendances") {
       setCurrentPage("attendances");
+    } else if (pageKey === "activities" || pageKey === "events" || label === "Activities") {
+      setCurrentPage("activities");
+    } else if (pageKey === "notices" || label === "Notices") {
+      setCurrentPage("notices");
     } else if (pageKey === "profile" || label === "Profile" || label === "Profile & Settings") {
       setProfileTab("parents");
       setCurrentPage("profile");
@@ -212,23 +218,24 @@ export default function StudentDashboard({ onLogout }) {
 
                 <div className="space-y-1">
                   {section.items.map(({ label, icon: Icon, pageKey }) => {
-                    const isActive = 
+                    const isActive =
                       (pageKey === "dashboard" && currentPage === "dashboard") ||
                       (pageKey === "results" && currentPage === "results") ||
                       (pageKey === "attendances" && currentPage === "attendances") ||
+                      (pageKey === "activities" && currentPage === "activities") ||
+                      (pageKey === "notices" && currentPage === "notices") ||
                       (pageKey === "profile" && currentPage === "profile" && profileTab === "parents") ||
                       (pageKey === "experiences" && currentPage === "profile" && profileTab === "academic");
-                    
+
                     return (
                       <button
                         key={label}
                         type="button"
                         onClick={() => handleNavClick(pageKey, label)}
-                        className={`flex w-full items-center gap-2.5 rounded-lg px-3 py-1.5 text-left text-sm font-medium transition-colors cursor-pointer ${
-                          isActive
+                        className={`flex w-full items-center gap-2.5 rounded-lg px-3 py-1.5 text-left text-sm font-medium transition-colors cursor-pointer ${isActive
                             ? "bg-blue-50 text-blue-600 font-semibold"
                             : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                        }`}
+                          }`}
                       >
                         <Icon size={16} className={isActive ? "text-blue-600" : "text-gray-500"} />
                         <span>{label}</span>
@@ -264,6 +271,14 @@ export default function StudentDashboard({ onLogout }) {
           <div className="flex-1 h-screen overflow-hidden flex flex-col min-w-0">
             <StudentAttendance />
           </div>
+        ) : currentPage === "activities" ? (
+          <div className="flex-1 h-screen overflow-hidden flex flex-col min-w-0">
+            <StudentActivities onNavigate={setCurrentPage} />
+          </div>
+        ) : currentPage === "notices" ? (
+          <div className="flex-1 h-screen overflow-hidden flex flex-col min-w-0">
+            <StudentNotices onNavigate={setCurrentPage} />
+          </div>
         ) : currentPage === "profile" ? (
           <div className="flex-1 h-screen overflow-hidden flex flex-col min-w-0">
             <StudentProfile
@@ -275,399 +290,397 @@ export default function StudentDashboard({ onLogout }) {
           </div>
         ) : (
           <div className="flex-1 overflow-y-auto bg-[#f6f7fb] min-w-0">
-          <header className="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white/80 px-6 py-3 backdrop-blur-sm">
-            <div>
-              <h1 className="text-[28px] font-bold tracking-tight text-slate-800">Welcome back, Tuhina!</h1>
-              <p className="text-sm text-slate-500">Here&apos;s what&apos;s happening today.</p>
-            </div>
+            <header className="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white/80 px-6 py-3 backdrop-blur-sm">
+              <div>
+                <h1 className="text-[28px] font-bold tracking-tight text-slate-800">Welcome back, Tuhina!</h1>
+                <p className="text-sm text-slate-500">Here&apos;s what&apos;s happening today.</p>
+              </div>
 
-            <div className="flex items-center gap-3 sm:gap-4">
-              <div className="relative">
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="relative">
+                  <button
+                    type="button"
+                    aria-label="Notifications"
+                    className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 shadow-sm transition-colors hover:bg-slate-50"
+                  >
+                    <Bell size={18} />
+                  </button>
+                  <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#2563eb] px-1 text-[10px] font-semibold text-white">
+                    3
+                  </span>
+                </div>
+
                 <button
                   type="button"
-                  aria-label="Notifications"
+                  aria-label="Messages"
                   className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 shadow-sm transition-colors hover:bg-slate-50"
                 >
-                  <Bell size={18} />
-                </button>
-                <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#2563eb] px-1 text-[10px] font-semibold text-white">
-                  3
-                </span>
-              </div>
-
-              <button
-                type="button"
-                aria-label="Messages"
-                className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 shadow-sm transition-colors hover:bg-slate-50"
-              >
-                <Mail size={18} />
-              </button>
-
-              <div className="hidden h-5 w-px bg-slate-200 sm:block" />
-
-              <div className="relative" ref={containerRef}>
-                <button
-                  type="button"
-                  onClick={() => setProfileOpen((prev) => !prev)}
-                  className="flex items-center gap-3 rounded-xl p-1.5 hover:bg-slate-100/80 transition-colors cursor-pointer focus:outline-none group"
-                >
-                  <div className="hidden text-right sm:block">
-                    <p className="text-sm font-semibold text-slate-700 group-hover:text-emerald-700 transition-colors">
-                      Tuhina Banerjee
-                    </p>
-                    <p className="text-[11px] text-slate-400 capitalize">Student</p>
-                  </div>
-
-                  <div className="relative">
-                    <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-[#5b8def] to-[#1d4ed8] text-xs font-bold text-white ring-2 ring-blue-100">
-                      TB
-                    </div>
-                    <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full bg-green-500 ring-2 ring-white" />
-                  </div>
-
-                  <ChevronDown
-                    size={14}
-                    className={`text-slate-400 transition-transform duration-200 ${
-                      profileOpen ? "rotate-180 text-emerald-600" : "group-hover:text-slate-600"
-                    }`}
-                  />
+                  <Mail size={18} />
                 </button>
 
-                {profileOpen && (
-                  <div className="absolute right-0 top-full mt-2.5 w-56 rounded-2xl border border-gray-100 bg-white p-2 shadow-2xl z-50 animate-in fade-in slide-in-from-top-2 duration-150">
-                    <div className="px-3 py-2.5 border-b border-gray-100 bg-gray-50/50 rounded-xl mb-1">
-                      <div className="flex items-center gap-2">
-                        <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 font-bold text-xs">
-                          TB
-                        </div>
-                        <div className="overflow-hidden">
-                          <p className="text-xs font-bold text-gray-800 truncate">Tuhina Banerjee</p>
-                          <p className="text-[10px] text-emerald-600 font-medium flex items-center gap-1">
-                            <ShieldCheck size={10} /> Student
-                          </p>
-                        </div>
-                      </div>
-                    </div>
+                <div className="hidden h-5 w-px bg-slate-200 sm:block" />
 
-                    <div className="space-y-0.5">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setProfileOpen(false);
-                          setCurrentPage("profile");
-                        }}
-                        className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-gray-700 rounded-xl hover:bg-emerald-50 hover:text-[#0da651] transition-colors cursor-pointer"
-                      >
-                        <User size={15} className="text-gray-400" />
-                        <span>View Profile</span>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => setProfileOpen(false)}
-                        className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-gray-700 rounded-xl hover:bg-emerald-50 hover:text-[#0da651] transition-colors cursor-pointer"
-                      >
-                        <Settings size={15} className="text-gray-400" />
-                        <span>Settings</span>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setProfileOpen(false);
-                          if (onLogout) onLogout();
-                        }}
-                        className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-rose-600 rounded-xl hover:bg-rose-50 transition-colors cursor-pointer"
-                      >
-                        <LogOut size={15} className="text-rose-500" />
-                        <span>Logout</span>
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </header>
-
-          <main className="space-y-3 p-4">
-            <section className="grid gap-3 xl:grid-cols-[1.7fr_0.8fr]">
-              <div
-                onClick={() => {
-                  setProfileTab("parents");
-                  setCurrentPage("profile");
-                }}
-                className="rounded-[22px] border border-slate-200 bg-white p-4 shadow-sm hover:border-blue-300 hover:shadow-md transition-all cursor-pointer group"
-              >
-                <div className="flex items-center gap-4">
-                  <div className="relative group/avatar">
-                    <div className="flex h-[120px] w-[120px] items-center justify-center rounded-[26px] bg-gradient-to-br from-[#f7d6d8] via-[#f5e5d7] to-[#dbeafe] text-[52px] font-bold text-slate-700 shadow-inner group-hover:scale-105 transition-transform overflow-hidden">
-                      <img
-                        src="/tuhina_avatar.jpg"
-                        alt="Tuhina Banerjee"
-                        className="h-full w-full object-cover"
-                        onError={(e) => {
-                          e.target.style.display = 'none';
-                        }}
-                      />
-                      <span className="absolute inset-0 flex items-center justify-center text-[52px] font-bold text-slate-700 pointer-events-none">
-                        TB
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between">
-                      <h2 className="text-[26px] font-bold tracking-tight text-slate-800 group-hover:text-blue-600 transition-colors">
+                <div className="relative" ref={containerRef}>
+                  <button
+                    type="button"
+                    onClick={() => setProfileOpen((prev) => !prev)}
+                    className="flex items-center gap-3 rounded-xl p-1.5 hover:bg-slate-100/80 transition-colors cursor-pointer focus:outline-none group"
+                  >
+                    <div className="hidden text-right sm:block">
+                      <p className="text-sm font-semibold text-slate-700 group-hover:text-emerald-700 transition-colors">
                         Tuhina Banerjee
-                      </h2>
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setProfileTab("parents");
-                          setCurrentPage("profile");
-                        }}
-                        className="px-3.5 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-xl text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer"
-                      >
-                        <UserRound size={14} />
-                        View Full Profile
-                      </button>
+                      </p>
+                      <p className="text-[11px] text-slate-400 capitalize">Student</p>
                     </div>
 
-                    <div className="mt-4 grid gap-2.5 sm:grid-cols-2">
-                      <InfoRow icon={Mail} text="tuhinabanerjee134@gmail.com" />
-                      <InfoRow icon={School} text="Department: CSE" />
-                      <InfoRow icon={Phone} text="+91 89812 18381" />
-                      <InfoRow icon={BookOpen} text="College Roll No: cse2024009" />
-                      <InfoRow icon={Award} text="B.Tech" />
-                      <InfoRow icon={MapPin} text="University Roll: NIL" />
-                    </div>
-                  </div>
-                </div>
-              </div>
+                    <div className="relative">
+                      <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-[#5b8def] to-[#1d4ed8] text-xs font-bold text-white ring-2 ring-blue-100">
 
-              <div className="w-full max-w-[700px] rounded-[26px] border border-slate-200 bg-white p-3.5 shadow-sm text-slate-800">
-                <div className="mb-3 flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-2 text-[22px] font-bold leading-none text-slate-800">
-                    <Award size={18} className="text-slate-700" />
-                    <span>Rank</span>
-                  </div>
-
-                  <div className="relative w-[130px]">
-                    <select
-                      defaultValue="CSE"
-                      className="w-full appearance-none rounded-xl border border-slate-200 bg-[#f1f3f5] px-3 py-2 pr-8 text-base font-medium text-slate-700 outline-none transition focus:border-blue-300"
-                      aria-label="Select department"
-                    >
-                      <option value="CSE">CSE</option>
-                      <option value="EE">EE</option>
-                      <option value="ECE">ECE</option>
-                      <option value="AIML">AIML</option>
-                    </select>
-                    <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-500" size={16} />
-                  </div>
-                </div>
-
-                <div className="mt-2 flex items-baseline justify-center gap-2 text-center">
-                  <span className="text-[38px] font-bold tracking-tight text-[#2563eb] leading-none">1</span>
-                  <span className="text-[28px] font-semibold text-slate-400 leading-none">/ 30</span>
-                </div>
-
-                <div className="mt-3 flex items-center justify-center gap-2 text-[14px] font-semibold text-[#16a34a]">
-                  <span>Top Performer</span>
-                  <ArrowUpRight size={16} className="text-[#16a34a]" />
-                </div>
-
-                <div className="mt-4 h-3 w-full overflow-hidden rounded-full bg-[#dfe3ea]">
-                  <div className="h-full w-[88%] rounded-full bg-[#2563eb]" />
-                </div>
-
-                <div className="mt-4 text-center text-[17px] font-medium tracking-tight text-slate-700">
-                  You&apos;re doing excellent!
-                </div>
-              </div>
-            </section>
-
-            <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-              {statCards.map(({ label, value, note, icon: Icon, cardClass, valueClass, iconWrap, pageKey }) => (
-                <div
-                  key={label}
-                  onClick={() => {
-                    if (pageKey) handleNavClick(pageKey, label);
-                  }}
-                  className={`rounded-[20px] border px-4 py-2.5 shadow-sm ${cardClass} ${
-                    pageKey ? "cursor-pointer hover:shadow-md hover:scale-[1.01] transition-all" : ""
-                  }`}
-                >
-                  <div className="flex items-start gap-3">
-                    <div className={`mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-full ${iconWrap}`}>
-                      <Icon size={16} />
-                    </div>
-
-                    <div className="flex-1 space-y-1">
-                      <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
-                        {label}
                       </div>
-                      <div className={`text-[30px] font-bold leading-none ${valueClass}`}>{value}</div>
-                      <div className="text-[14px] text-slate-500">{note}</div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </section>
-
-            <section className="grid gap-5 xl:grid-cols-[1.25fr_1fr_1fr]">
-              <div
-                onClick={() => setCurrentPage("attendances")}
-                className="rounded-[20px] border border-slate-200 bg-white p-5 shadow-sm hover:border-blue-300 hover:shadow-md transition-all cursor-pointer group"
-              >
-                <div className="mb-5 flex items-center justify-between">
-                  <h3 className="text-xl font-bold text-slate-800 group-hover:text-blue-600 transition-colors">
-                    Attendance Overview
-                  </h3>
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setCurrentPage("attendances");
-                    }}
-                    className="rounded-lg border border-slate-200 bg-slate-50 hover:bg-blue-50 hover:text-blue-600 px-2.5 py-1.5 text-xs font-medium text-slate-600 transition-colors cursor-pointer"
-                  >
-                    Semester 4
-                  </button>
-                </div>
-
-                <div className="flex flex-col items-center justify-center gap-4">
-                  <div className="relative flex h-44 w-44 items-center justify-center rounded-full bg-[conic-gradient(#2563eb_0_93%,#e6ebf3_93%_100%)] p-3">
-                    <div className="flex h-full w-full items-center justify-center rounded-full bg-white text-center">
-                      <div>
-                        <div className="text-[46px] font-bold leading-none text-slate-800">93%</div>
-                        <div className="mt-2 text-[12px] uppercase tracking-[0.14em] text-slate-400">Overall Attendance</div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="w-full max-w-[260px] space-y-3">
-                    <div className="flex items-center gap-3 text-sm text-slate-600">
-                      <span className="h-2.5 w-2.5 rounded-full bg-[#2563eb]" />
-                      <span className="flex-1">Classes attended (93%)</span>
-                      <span className="font-semibold text-slate-700">104</span>
+                      <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full bg-green-500 ring-2 ring-white" />
                     </div>
 
-                    <div className="flex items-center gap-3 text-sm text-slate-600">
-                      <span className="h-2.5 w-2.5 rounded-full bg-[#dfe3ea]" />
-                      <span className="flex-1">Classes absent (7%)</span>
-                      <span className="font-semibold text-slate-700">8</span>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-3 pt-2 text-sm">
-                      <div className="flex items-center gap-2 rounded-xl bg-[#eef9f3] px-3 py-2 text-emerald-700">
-                        <CheckCircle2 size={16} />
-                        <span>104</span>
-                      </div>
-                      <div className="flex items-center gap-2 rounded-xl bg-[#fff1f1] px-3 py-2 text-rose-500">
-                        <XCircle size={16} />
-                        <span>8</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="rounded-[20px] border border-slate-200 bg-white p-5 shadow-sm">
-                <h3 className="mb-5 text-xl font-bold text-slate-800">Quick Actions</h3>
-
-                <div className="grid gap-4 sm:grid-cols-2">
-                  {quickActions.map(({ label, icon: Icon, tone, pageKey }) => (
-                    <button
-                      key={label}
-                      type="button"
-                      onClick={() => {
-                        if (pageKey === "results") {
-                          setCurrentPage("results");
-                        } else if (pageKey) {
-                          handleNavClick(pageKey, label);
-                        }
-                      }}
-                      className={`flex min-h-[130px] flex-col items-center justify-center gap-3 rounded-[20px] border border-slate-200 ${tone} px-4 py-4 font-semibold shadow-sm transition-transform hover:-translate-y-0.5 cursor-pointer`}
-                    >
-                      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/50">
-                        <Icon size={20} />
-                      </div>
-                      <span className="text-[15px]">{label}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="rounded-[20px] border border-slate-200 bg-white p-5 shadow-sm">
-                <div className="mb-5 flex items-center justify-between">
-                  <button
-                    type="button"
-                    aria-label="Previous month"
-                    onClick={goToPreviousMonth}
-                    className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-slate-500 transition hover:bg-slate-100"
-                  >
-                    <ChevronLeft size={16} />
-                  </button>
-                  <span className="text-base font-semibold text-slate-700">{monthTitle}</span>
-                  <button
-                    type="button"
-                    aria-label="Next month"
-                    onClick={goToNextMonth}
-                    className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-slate-500 transition hover:bg-slate-100"
-                  >
-                    <ChevronRight size={16} />
-                  </button>
-                </div>
-
-                <div className="grid grid-cols-7 gap-2 text-center text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-400">
-                  {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((day, index) => (
-                    <div key={`${day}-${index}`}>{day}</div>
-                  ))}
-                </div>
-
-                <div className="mt-3 grid grid-cols-7 gap-2 text-center text-sm text-slate-500">
-                  {calendarDays.map((date) => {
-                    const isCurrentMonth = date.getMonth() === currentMonth.getMonth();
-                    const isSelected = selectedDate.toDateString() === date.toDateString();
-                    const isEvent = eventDates.has(date.toDateString());
-
-                    return (
-                      <button
-                        key={date.toISOString()}
-                        type="button"
-                        onClick={() => setSelectedDate(new Date(date))}
-                        className={`flex h-8 items-center justify-center rounded-md transition ${
-                          isSelected
-                            ? "bg-[#2563eb] font-semibold text-white shadow-sm"
-                            : isEvent
-                              ? "bg-[#e8f3ff] text-[#2563eb]"
-                              : isCurrentMonth
-                                ? "bg-slate-50 text-slate-600"
-                                : "bg-transparent text-slate-300"
+                    <ChevronDown
+                      size={14}
+                      className={`text-slate-400 transition-transform duration-200 ${profileOpen ? "rotate-180 text-emerald-600" : "group-hover:text-slate-600"
                         }`}
-                      >
-                        {date.getDate()}
-                      </button>
-                    );
-                  })}
-                </div>
+                    />
+                  </button>
 
-                <div className="mt-5 flex items-center justify-center gap-5 text-xs font-medium text-slate-500">
-                  <span className="flex items-center gap-2">
-                    <span className="h-2.5 w-2.5 rounded-full bg-[#2563eb]" />
-                    Selected
-                  </span>
-                  <span className="flex items-center gap-2">
-                    <span className="h-2.5 w-2.5 rounded-full bg-[#e8f3ff]" />
-                    Events
-                  </span>
+                  {profileOpen && (
+                    <div className="absolute right-0 top-full mt-2.5 w-56 rounded-2xl border border-gray-100 bg-white p-2 shadow-2xl z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                      <div className="px-3 py-2.5 border-b border-gray-100 bg-gray-50/50 rounded-xl mb-1">
+                        <div className="flex items-center gap-2">
+                          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 font-bold text-xs">
+                            TB
+                          </div>
+                          <div className="overflow-hidden">
+                            <p className="text-xs font-bold text-gray-800 truncate">Tuhina Banerjee</p>
+                            <p className="text-[10px] text-emerald-600 font-medium flex items-center gap-1">
+                              <ShieldCheck size={10} /> Student
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="space-y-0.5">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setProfileOpen(false);
+                            setCurrentPage("profile");
+                          }}
+                          className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-gray-700 rounded-xl hover:bg-emerald-50 hover:text-[#0da651] transition-colors cursor-pointer"
+                        >
+                          <User size={15} className="text-gray-400" />
+                          <span>View Profile</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => setProfileOpen(false)}
+                          className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-gray-700 rounded-xl hover:bg-emerald-50 hover:text-[#0da651] transition-colors cursor-pointer"
+                        >
+                          <Settings size={15} className="text-gray-400" />
+                          <span>Settings</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setProfileOpen(false);
+                            if (onLogout) onLogout();
+                          }}
+                          className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-rose-600 rounded-xl hover:bg-rose-50 transition-colors cursor-pointer"
+                        >
+                          <LogOut size={15} className="text-rose-500" />
+                          <span>Logout</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
-            </section>
-          </main>
-        </div>
+            </header>
+
+            <main className="space-y-3 p-4">
+              <section className="grid gap-3 xl:grid-cols-[1.7fr_0.8fr]">
+                <div
+                  onClick={() => {
+                    setProfileTab("parents");
+                    setCurrentPage("profile");
+                  }}
+                  className="rounded-[22px] border border-slate-200 bg-white p-4 shadow-sm hover:border-blue-300 hover:shadow-md transition-all cursor-pointer group"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="relative group/avatar">
+                      <div className="flex h-[120px] w-[120px] items-center justify-center rounded-[26px] bg-gradient-to-br from-[#f7d6d8] via-[#f5e5d7] to-[#dbeafe] text-[52px] font-bold text-slate-700 shadow-inner group-hover:scale-105 transition-transform overflow-hidden">
+                        <img
+                          src="/tuhina_avatar.jpg"
+                          alt="Tuhina Banerjee"
+                          className="h-full w-full object-cover"
+                          onError={(e) => {
+                            e.target.style.display = 'none';
+                            if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
+                          }}
+                        />
+                        <span className="hidden h-full w-full items-center justify-center text-[52px] font-bold text-slate-700 pointer-events-none">
+                          TB
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <h2 className="text-[26px] font-bold tracking-tight text-slate-800 group-hover:text-blue-600 transition-colors">
+                          Tuhina Banerjee
+                        </h2>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setProfileTab("parents");
+                            setCurrentPage("profile");
+                          }}
+                          className="px-3.5 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-xl text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer"
+                        >
+                          <UserRound size={14} />
+                          View Full Profile
+                        </button>
+                      </div>
+
+                      <div className="mt-4 grid gap-2.5 sm:grid-cols-2">
+                        <InfoRow icon={Mail} text="tuhinabanerjee134@gmail.com" />
+                        <InfoRow icon={School} text="Department: CSE" />
+                        <InfoRow icon={Phone} text="+91 89812 18381" />
+                        <InfoRow icon={BookOpen} text="College Roll No: cse2024009" />
+                        <InfoRow icon={Award} text="B.Tech" />
+                        <InfoRow icon={MapPin} text="University Roll: NIL" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="w-full max-w-[700px] rounded-[26px] border border-slate-200 bg-white p-3.5 shadow-sm text-slate-800">
+                  <div className="mb-3 flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-2 text-[22px] font-bold leading-none text-slate-800">
+                      <Award size={18} className="text-slate-700" />
+                      <span>Rank</span>
+                    </div>
+
+                    <div className="relative w-[130px]">
+                      <select
+                        defaultValue="CSE"
+                        className="w-full appearance-none rounded-xl border border-slate-200 bg-[#f1f3f5] px-3 py-2 pr-8 text-base font-medium text-slate-700 outline-none transition focus:border-blue-300"
+                        aria-label="Select department"
+                      >
+                        <option value="CSE">CSE</option>
+                        <option value="EE">EE</option>
+                        <option value="ECE">ECE</option>
+                        <option value="AIML">AIML</option>
+                      </select>
+                      <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-500" size={16} />
+                    </div>
+                  </div>
+
+                  <div className="mt-2 flex items-baseline justify-center gap-2 text-center">
+                    <span className="text-[38px] font-bold tracking-tight text-[#2563eb] leading-none">1</span>
+                    <span className="text-[28px] font-semibold text-slate-400 leading-none">/ 30</span>
+                  </div>
+
+                  <div className="mt-3 flex items-center justify-center gap-2 text-[14px] font-semibold text-[#16a34a]">
+                    <span>Top Performer</span>
+                    <ArrowUpRight size={16} className="text-[#16a34a]" />
+                  </div>
+
+                  <div className="mt-4 h-3 w-full overflow-hidden rounded-full bg-[#dfe3ea]">
+                    <div className="h-full w-[88%] rounded-full bg-[#2563eb]" />
+                  </div>
+
+                  <div className="mt-4 text-center text-[17px] font-medium tracking-tight text-slate-700">
+                    You&apos;re doing excellent!
+                  </div>
+                </div>
+              </section>
+
+              <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+                {statCards.map(({ label, value, note, icon: Icon, cardClass, valueClass, iconWrap, pageKey }) => (
+                  <div
+                    key={label}
+                    onClick={() => {
+                      if (pageKey) handleNavClick(pageKey, label);
+                    }}
+                    className={`rounded-[20px] border px-4 py-2.5 shadow-sm ${cardClass} ${pageKey ? "cursor-pointer hover:shadow-md hover:scale-[1.01] transition-all" : ""
+                      }`}
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className={`mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-full ${iconWrap}`}>
+                        <Icon size={16} />
+                      </div>
+
+                      <div className="flex-1 space-y-1">
+                        <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
+                          {label}
+                        </div>
+                        <div className={`text-[30px] font-bold leading-none ${valueClass}`}>{value}</div>
+                        <div className="text-[14px] text-slate-500">{note}</div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </section>
+
+              <section className="grid gap-5 xl:grid-cols-[1.25fr_1fr_1fr]">
+                <div
+                  onClick={() => setCurrentPage("attendances")}
+                  className="rounded-[20px] border border-slate-200 bg-white p-5 shadow-sm hover:border-blue-300 hover:shadow-md transition-all cursor-pointer group"
+                >
+                  <div className="mb-5 flex items-center justify-between">
+                    <h3 className="text-xl font-bold text-slate-800 group-hover:text-blue-600 transition-colors">
+                      Attendance Overview
+                    </h3>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setCurrentPage("attendances");
+                      }}
+                      className="rounded-lg border border-slate-200 bg-slate-50 hover:bg-blue-50 hover:text-blue-600 px-2.5 py-1.5 text-xs font-medium text-slate-600 transition-colors cursor-pointer"
+                    >
+                      Semester 4
+                    </button>
+                  </div>
+
+                  <div className="flex flex-col items-center justify-center gap-4">
+                    <div className="relative flex h-44 w-44 items-center justify-center rounded-full bg-[conic-gradient(#2563eb_0_93%,#e6ebf3_93%_100%)] p-3">
+                      <div className="flex h-full w-full items-center justify-center rounded-full bg-white text-center">
+                        <div>
+                          <div className="text-[46px] font-bold leading-none text-slate-800">93%</div>
+                          <div className="mt-2 text-[12px] uppercase tracking-[0.14em] text-slate-400">Overall Attendance</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="w-full max-w-[260px] space-y-3">
+                      <div className="flex items-center gap-3 text-sm text-slate-600">
+                        <span className="h-2.5 w-2.5 rounded-full bg-[#2563eb]" />
+                        <span className="flex-1">Classes attended (93%)</span>
+                        <span className="font-semibold text-slate-700">104</span>
+                      </div>
+
+                      <div className="flex items-center gap-3 text-sm text-slate-600">
+                        <span className="h-2.5 w-2.5 rounded-full bg-[#dfe3ea]" />
+                        <span className="flex-1">Classes absent (7%)</span>
+                        <span className="font-semibold text-slate-700">8</span>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-3 pt-2 text-sm">
+                        <div className="flex items-center gap-2 rounded-xl bg-[#eef9f3] px-3 py-2 text-emerald-700">
+                          <CheckCircle2 size={16} />
+                          <span>104</span>
+                        </div>
+                        <div className="flex items-center gap-2 rounded-xl bg-[#fff1f1] px-3 py-2 text-rose-500">
+                          <XCircle size={16} />
+                          <span>8</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="rounded-[20px] border border-slate-200 bg-white p-5 shadow-sm">
+                  <h3 className="mb-5 text-xl font-bold text-slate-800">Quick Actions</h3>
+
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    {quickActions.map(({ label, icon: Icon, tone, pageKey }) => (
+                      <button
+                        key={label}
+                        type="button"
+                        onClick={() => {
+                          if (pageKey === "results") {
+                            setCurrentPage("results");
+                          } else if (pageKey) {
+                            handleNavClick(pageKey, label);
+                          }
+                        }}
+                        className={`flex min-h-[130px] flex-col items-center justify-center gap-3 rounded-[20px] border border-slate-200 ${tone} px-4 py-4 font-semibold shadow-sm transition-transform hover:-translate-y-0.5 cursor-pointer`}
+                      >
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/50">
+                          <Icon size={20} />
+                        </div>
+                        <span className="text-[15px]">{label}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="rounded-[20px] border border-slate-200 bg-white p-5 shadow-sm">
+                  <div className="mb-5 flex items-center justify-between">
+                    <button
+                      type="button"
+                      aria-label="Previous month"
+                      onClick={goToPreviousMonth}
+                      className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-slate-500 transition hover:bg-slate-100"
+                    >
+                      <ChevronLeft size={16} />
+                    </button>
+                    <span className="text-base font-semibold text-slate-700">{monthTitle}</span>
+                    <button
+                      type="button"
+                      aria-label="Next month"
+                      onClick={goToNextMonth}
+                      className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-slate-500 transition hover:bg-slate-100"
+                    >
+                      <ChevronRight size={16} />
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-7 gap-2 text-center text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-400">
+                    {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((day, index) => (
+                      <div key={`${day}-${index}`}>{day}</div>
+                    ))}
+                  </div>
+
+                  <div className="mt-3 grid grid-cols-7 gap-2 text-center text-sm text-slate-500">
+                    {calendarDays.map((date) => {
+                      const isCurrentMonth = date.getMonth() === currentMonth.getMonth();
+                      const isSelected = selectedDate.toDateString() === date.toDateString();
+                      const isEvent = eventDates.has(date.toDateString());
+
+                      return (
+                        <button
+                          key={date.toISOString()}
+                          type="button"
+                          onClick={() => setSelectedDate(new Date(date))}
+                          className={`flex h-8 items-center justify-center rounded-md transition ${isSelected
+                              ? "bg-[#2563eb] font-semibold text-white shadow-sm"
+                              : isEvent
+                                ? "bg-[#e8f3ff] text-[#2563eb]"
+                                : isCurrentMonth
+                                  ? "bg-slate-50 text-slate-600"
+                                  : "bg-transparent text-slate-300"
+                            }`}
+                        >
+                          {date.getDate()}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <div className="mt-5 flex items-center justify-center gap-5 text-xs font-medium text-slate-500">
+                    <span className="flex items-center gap-2">
+                      <span className="h-2.5 w-2.5 rounded-full bg-[#2563eb]" />
+                      Selected
+                    </span>
+                    <span className="flex items-center gap-2">
+                      <span className="h-2.5 w-2.5 rounded-full bg-[#e8f3ff]" />
+                      Events
+                    </span>
+                  </div>
+                </div>
+              </section>
+            </main>
+          </div>
         )}
       </div>
     </div>
