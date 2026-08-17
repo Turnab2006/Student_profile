@@ -156,7 +156,7 @@ export const initialNoticesData = [
   }
 ];
 
-export default function StudentNotices({ onNavigate }) {
+export default function StudentNotices({ onNavigate, hideHeader = false }) {
   const [notices] = useState(initialNoticesData);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPriority, setSelectedPriority] = useState("all"); // 'all' | 'High' | 'Medium' | 'Low'
@@ -280,31 +280,33 @@ export default function StudentNotices({ onNavigate }) {
       )}
 
       {/* Top Header matching Dashboard */}
-      <header className="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white/80 px-6 py-3 backdrop-blur-sm">
-        <div>
-          <h1 className="text-[28px] font-bold tracking-tight text-slate-800">
-            Notices
-          </h1>
-          <p className="text-sm text-slate-500">
-            Stay updated with important announcements and information.
-          </p>
-        </div>
-
-        <div className="flex items-center gap-3 sm:gap-4">
-          <div className="relative">
-            <button
-              type="button"
-              aria-label="Notifications"
-              className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 shadow-sm transition-colors hover:bg-slate-50 cursor-pointer"
-            >
-              <Bell size={18} />
-            </button>
-            <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#2563eb] px-1 text-[10px] font-semibold text-white">
-              3
-            </span>
+      {!hideHeader && (
+        <header className="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white/80 px-6 py-3 backdrop-blur-sm">
+          <div>
+            <h1 className="text-[28px] font-bold tracking-tight text-slate-800">
+              Notices
+            </h1>
+            <p className="text-sm text-slate-500">
+              Stay updated with important announcements and information.
+            </p>
           </div>
-        </div>
-      </header>
+
+          <div className="flex items-center gap-3 sm:gap-4">
+            <div className="relative">
+              <button
+                type="button"
+                aria-label="Notifications"
+                className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 shadow-sm transition-colors hover:bg-slate-50 cursor-pointer"
+              >
+                <Bell size={18} />
+              </button>
+              <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#2563eb] px-1 text-[10px] font-semibold text-white">
+                3
+              </span>
+            </div>
+          </div>
+        </header>
+      )}
 
       {/* Main Content matching Dashboard padding & spacing */}
       <main className="space-y-3.5 p-4">

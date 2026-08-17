@@ -39,9 +39,15 @@ import {
 } from "lucide-react";
 import { initialStudentData } from "../../data/studentProfileData";
 
-export default function StudentProfile({ onBack, studentData: propStudentData, userRole = "student", defaultTab = "parents" }) {
+export default function StudentProfile({ 
+  onBack, 
+  studentData: propStudentData, 
+  userRole = "student", 
+  defaultTab = "parents",
+  hideHeader = false,
+}) {
   const [student, setStudent] = useState(propStudentData || initialStudentData);
-  const [activeTab, setActiveTab] = useState(defaultTab || "parents"); // "academic" | "parents" | "result" | "attendance"
+  const [activeTab, setActiveTab] = useState(defaultTab || "parents");
   const [searchQuery, setSearchQuery] = useState("");
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editFormData, setEditFormData] = useState(null);
@@ -84,85 +90,87 @@ export default function StudentProfile({ onBack, studentData: propStudentData, u
       )}
 
       {/* Top Header matching reference */}
-      <header className="shrink-0 bg-white border-b border-slate-200/80 px-4 sm:px-6 py-3 shadow-[0_2px_10px_rgba(0,0,0,0.03)] flex items-center justify-between gap-4 z-20">
-        {/* Left: Back Button & Title & Breadcrumbs */}
-        <div className="flex items-center gap-3.5 sm:gap-4">
-          <button
-            type="button"
-            onClick={onBack}
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-600 hover:scale-105 active:scale-95 transition-all shadow-sm border border-slate-200 cursor-pointer"
-            title="Go Back to Dashboard"
-          >
-            <ArrowLeft size={18} className="stroke-[2.5]" />
-          </button>
-          <div>
-            <h1 className="text-lg sm:text-xl font-bold tracking-tight text-slate-900">
-              Student Profile
-            </h1>
-            <nav className="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
-              <span className="hover:text-blue-600 cursor-pointer" onClick={onBack}>Home</span>
-              <span className="text-slate-400">&gt;</span>
-              <span className="hover:text-blue-600 cursor-pointer" onClick={onBack}>Students</span>
-              <span className="text-slate-400">&gt;</span>
-              <span className="text-blue-600 font-semibold">Student Profile</span>
-            </nav>
-          </div>
-        </div>
-
-        {/* Right: Search, Notifications, and User Pill */}
-        <div className="flex items-center gap-3 sm:gap-4">
-          {/* Search Bar */}
-          <div className="relative hidden md:block w-64 lg:w-72">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
-            <input
-              type="text"
-              placeholder="Search students..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-1.5 text-xs sm:text-sm bg-slate-100/80 border border-slate-200 rounded-full focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all placeholder:text-slate-400"
-            />
-          </div>
-
-          {/* Notification Bell with Badge */}
-          <div className="relative">
+      {!hideHeader && (
+        <header className="shrink-0 bg-white border-b border-slate-200/80 px-4 sm:px-6 py-3 shadow-[0_2px_10px_rgba(0,0,0,0.03)] flex items-center justify-between gap-4 z-20">
+          {/* Left: Back Button & Title & Breadcrumbs */}
+          <div className="flex items-center gap-3.5 sm:gap-4">
             <button
               type="button"
-              className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 hover:bg-slate-200/80 text-slate-600 transition-colors relative"
-              title="3 Unread Notifications"
+              onClick={onBack}
+              className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-600 hover:scale-105 active:scale-95 transition-all shadow-sm border border-slate-200 cursor-pointer"
+              title="Go Back to Dashboard"
             >
-              <Bell size={17} />
-              <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[10px] font-bold text-white shadow-sm ring-2 ring-white">
-                3
-              </span>
+              <ArrowLeft size={18} className="stroke-[2.5]" />
             </button>
+            <div>
+              <h1 className="text-lg sm:text-xl font-bold tracking-tight text-slate-900">
+                Student Profile
+              </h1>
+              <nav className="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
+                <span className="hover:text-blue-600 cursor-pointer" onClick={onBack}>Home</span>
+                <span className="text-slate-400">&gt;</span>
+                <span className="hover:text-blue-600 cursor-pointer" onClick={onBack}>Students</span>
+                <span className="text-slate-400">&gt;</span>
+                <span className="text-blue-600 font-semibold">Student Profile</span>
+              </nav>
+            </div>
           </div>
 
-          {/* User Badge / Profile */}
-          <div className="flex items-center gap-2.5 pl-2 border-l border-slate-200">
-            <img
-              src={student.avatar || "/tuhina_avatar.jpg"}
-              alt={userRole === "admin" ? "Admin User" : student.name}
-              className="w-9 h-9 rounded-full object-cover ring-2 ring-blue-100 shadow-sm"
-              onError={(e) => {
-                e.target.style.display = 'none';
-                e.target.nextSibling.style.display = 'flex';
-              }}
-            />
-            <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white font-bold text-xs hidden items-center justify-center shadow-sm">
-              {student.name.slice(0, 2).toUpperCase()}
+          {/* Right: Search, Notifications, and User Pill */}
+          <div className="flex items-center gap-3 sm:gap-4">
+            {/* Search Bar */}
+            <div className="relative hidden md:block w-64 lg:w-72">
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
+              <input
+                type="text"
+                placeholder="Search students..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-9 pr-4 py-1.5 text-xs sm:text-sm bg-slate-100/80 border border-slate-200 rounded-full focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all placeholder:text-slate-400"
+              />
             </div>
-            <div className="hidden sm:block text-left">
-              <p className="text-xs font-bold text-slate-800 leading-tight">
-                {userRole === "admin" ? "Admin User" : student.name}
-              </p>
-              <p className="text-[11px] text-slate-400 font-medium">
-                {userRole === "admin" ? "Super Admin" : "Student"}
-              </p>
+
+            {/* Notification Bell with Badge */}
+            <div className="relative">
+              <button
+                type="button"
+                className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 hover:bg-slate-200/80 text-slate-600 transition-colors relative"
+                title="3 Unread Notifications"
+              >
+                <Bell size={17} />
+                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[10px] font-bold text-white shadow-sm ring-2 ring-white">
+                  3
+                </span>
+              </button>
             </div>
-            <ChevronDown size={14} className="text-slate-400 hidden sm:block" />
+
+            {/* User Badge / Profile */}
+            <div className="flex items-center gap-2.5 pl-2 border-l border-slate-200">
+              <img
+                src={student.avatar || "/tuhina_avatar.jpg"}
+                alt={userRole === "admin" ? "Admin User" : student.name}
+                className="w-9 h-9 rounded-full object-cover ring-2 ring-blue-100 shadow-sm"
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  e.target.nextSibling.style.display = 'flex';
+                }}
+              />
+              <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white font-bold text-xs hidden items-center justify-center shadow-sm">
+                {student.name.slice(0, 2).toUpperCase()}
+              </div>
+              <div className="hidden sm:block text-left">
+                <p className="text-xs font-bold text-slate-800 leading-tight">
+                  {userRole === "admin" ? "Admin User" : student.name}
+                </p>
+                <p className="text-[11px] text-slate-400 font-medium">
+                  {userRole === "admin" ? "Super Admin" : "Student"}
+                </p>
+              </div>
+              <ChevronDown size={14} className="text-slate-400 hidden sm:block" />
+            </div>
           </div>
-        </div>
-      </header>
+        </header>
+      )}
 
       {/* Main Profile Page Body with smooth vertical scrolling */}
       <main className="flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6 lg:p-8">

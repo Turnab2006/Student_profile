@@ -1,86 +1,59 @@
 import { useState, useRef, useEffect } from "react";
 import {
-  ArrowUpRight,
   Award,
-  Bell,
-  BookOpen,
-  BookText,
+  CalendarCheck,
   CalendarDays,
-  CheckCircle2,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
-  CircleDashed,
-  FileText,
+  ClipboardList,
   GraduationCap,
-  LayoutGrid,
-  LogOut,
   Mail,
-  MapPin,
-  NotebookPen,
+  Megaphone,
   Phone,
-  School,
-  Settings,
-  ShieldCheck,
   Star,
-  Trophy,
   User,
-  UserRound,
   XCircle,
-  Users
+  Zap
 } from "lucide-react";
+import StudentSidebar from "../../components/student/StudentSidebar";
+import StudentHeader from "../../components/student/StudentHeader";
 import StudentProfile from "./StudentProfile";
+import StudentSubjects from "./StudentSubjects";
 import StudentResults from "./StudentResults";
 import StudentAttendance from "./StudentAttendance";
+import StudentCreditPoints from "./StudentCreditPoints";
+import StudentMessages from "./StudentMessages";
 import StudentActivities from "./StudentActivities";
 import StudentNotices from "./StudentNotices";
+import StudentSettings from "./StudentSettings";
+import StudentSupport from "./StudentSupport";
 import { tuhinaStudentData } from "../../data/studentProfileData";
 
-const navSections = [
-  {
-    label: "MAIN",
-    items: [
-      { label: "Dashboard", icon: LayoutGrid, pageKey: "dashboard" },
-      { label: "Profile", icon: UserRound, pageKey: "profile" },
-    ],
-  },
-  {
-    label: "ACADEMICS",
-    items: [
-      { label: "Experiences", icon: GraduationCap, pageKey: "experiences" },
-      { label: "Results", icon: FileText, pageKey: "results" },
-      { label: "Attendance", icon: Users, pageKey: "attendances" },
-      { label: "Credit Points", icon: Trophy, pageKey: "credit-points" },
-    ],
-  },
-  {
-    label: "COMMUNICATION",
-    items: [
-      { label: "Activities", icon: CalendarDays, pageKey: "activities" },
-      { label: "Notices", icon: Bell, pageKey: "notices" },
-    ],
-  },
-  {
-    label: "SYSTEM",
-    items: [
-      { label: "Profile & Settings", icon: School, pageKey: "profile" },
-      { label: "Support Center", icon: FileText, pageKey: "support" },
-    ],
-  },
-];
+const semesterAttendanceData = {
+  1: { percentage: 91, attended: 98, absent: 10 },
+  2: { percentage: 94, attended: 106, absent: 7 },
+  3: { percentage: 89, attended: 96, absent: 12 },
+  4: { percentage: 93, attended: 104, absent: 8 },
+  5: { percentage: 95, attended: 112, absent: 6 },
+  6: { percentage: 92, attended: 102, absent: 9 },
+  7: { percentage: 90, attended: 99, absent: 11 },
+  8: { percentage: 96, attended: 108, absent: 4 },
+};
 
-const statCards = [
+const statCardsConfig = [
   {
+    key: "attendance",
     label: "Attendance",
-    value: "93%",
     note: "Classes attended",
-    icon: CheckCircle2,
+    icon: CalendarCheck,
     cardClass: "bg-white text-slate-800 border border-slate-200 border-l-4 border-l-red-500",
     valueClass: "text-slate-900",
     iconWrap: "bg-[#fff1f1] text-red-500",
     pageKey: "attendances",
   },
   {
+    key: "events",
     label: "Active Events",
     value: "6",
     note: "Upcoming events",
@@ -91,57 +64,99 @@ const statCards = [
     pageKey: "activities",
   },
   {
+    key: "notices",
     label: "Active Notices",
     value: "5",
     note: "Unread notices",
-    icon: Bell,
+    icon: Megaphone,
     cardClass: "bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#f59e0b]",
     valueClass: "text-[#111827]",
     iconWrap: "bg-[#fff1dc] text-[#f59e0b]",
     pageKey: "notices",
   },
   {
+    key: "credits",
     label: "Credit Points",
-    value: "0",
+    value: "45",
     note: "Earn more to grow",
     icon: Star,
     cardClass: "bg-white text-emerald-700 border border-emerald-200 border-l-4 border-l-emerald-500",
     valueClass: "text-[#111827]",
     iconWrap: "bg-[#e7f7ec] text-emerald-600",
-    pageKey: "results",
+    pageKey: "credit-points",
   },
 ];
 
 const quickActions = [
-  { label: "View Results", icon: BookText, tone: "bg-[#F5F7FF] text-[#2b6df7]", pageKey: "results" },
-  { label: "View Notices", icon: Bell, tone: "bg-[#fff1d9] text-[#f59e0b]", pageKey: "notices" },
-  { label: "View Events", icon: CalendarDays, tone: "bg-[#f3eaff] text-[#8b5cf6]", pageKey: "activities" },
-  { label: "View Credit Point", icon: Trophy, tone: "bg-[#eafaf2] text-[#16a34a]", pageKey: "results" },
+  {
+    label: "View Results",
+    icon: ClipboardList,
+    tone: "bg-[#F0F5FF]",
+    borderTone: "border-[#D6E4FF]",
+    iconTone: "text-[#2384FD]",
+    iconBg: "bg-white/90",
+    textTone: "text-[#2384FD]",
+    pageKey: "results",
+  },
+  {
+    label: "View Notices",
+    icon: Megaphone,
+    tone: "bg-[#FFF9EE]",
+    borderTone: "border-[#FFE8C2]",
+    iconTone: "text-[#F59E0B]",
+    iconBg: "bg-white/90",
+    textTone: "text-[#D97706]",
+    pageKey: "notices",
+  },
+  {
+    label: "View Events",
+    icon: CalendarDays,
+    tone: "bg-[#F9F5FF]",
+    borderTone: "border-[#ECD9FF]",
+    iconTone: "text-[#8B5CF6]",
+    iconBg: "bg-white/90",
+    textTone: "text-[#8B5CF6]",
+    pageKey: "activities",
+  },
+  {
+    label: "View Credit Point",
+    icon: Star,
+    tone: "bg-[#F0FDF4]",
+    borderTone: "border-[#DCFCE7]",
+    iconTone: "text-[#16A34A]",
+    iconBg: "bg-white/90",
+    textTone: "text-[#16A34A]",
+    pageKey: "credit-points",
+  },
 ];
 
-function InfoRow({ icon: Icon, text }) {
-  return (
-    <div className="flex items-center gap-3 text-sm text-slate-600">
-      <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-slate-100 text-slate-500">
-        <Icon size={14} />
-      </div>
-      <span>{text}</span>
-    </div>
-  );
-}
-
 export default function StudentDashboard({ onLogout }) {
-  const [currentPage, setCurrentPage] = useState("dashboard"); // "dashboard" | "profile" | "results" | "attendances" | "activities"
+  const today = new Date();
+  const [currentPage, setCurrentPage] = useState("dashboard");
   const [profileTab, setProfileTab] = useState("parents");
-  const [currentMonth, setCurrentMonth] = useState(new Date(2026, 4, 1));
-  const [selectedDate, setSelectedDate] = useState(new Date(2026, 4, 25));
-  const [profileOpen, setProfileOpen] = useState(false);
-  const containerRef = useRef(null);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const [currentMonth, setCurrentMonth] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
+  const [selectedDate, setSelectedDate] = useState(new Date(today.getFullYear(), today.getMonth(), today.getDate()));
+  const [attendanceSemester, setAttendanceSemester] = useState(4);
+  const [semesterDropdownOpen, setSemesterDropdownOpen] = useState(false);
+  const semesterDropdownRef = useRef(null);
+
+  const currentAttendance = semesterAttendanceData[attendanceSemester] || semesterAttendanceData[4];
+
+  const statCards = statCardsConfig.map((card) => {
+    if (card.key === "attendance") {
+      return {
+        ...card,
+        value: `${currentAttendance.percentage}%`,
+      };
+    }
+    return card;
+  });
 
   useEffect(() => {
-    function handleClickOutside(event) {
-      if (containerRef.current && !containerRef.current.contains(event.target)) {
-        setProfileOpen(false);
+    function handleClickOutside(e) {
+      if (semesterDropdownRef.current && !semesterDropdownRef.current.contains(e.target)) {
+        setSemesterDropdownOpen(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -165,10 +180,15 @@ export default function StudentDashboard({ onLogout }) {
     return days;
   })();
 
-  const eventDates = new Set([
-    new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 20).toDateString(),
-    new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 23).toDateString(),
-  ]);
+  const isSameDay = (d1, d2) => {
+    return (
+      d1 &&
+      d2 &&
+      d1.getFullYear() === d2.getFullYear() &&
+      d1.getMonth() === d2.getMonth() &&
+      d1.getDate() === d2.getDate()
+    );
+  };
 
   const goToPreviousMonth = () => {
     setCurrentMonth((prev) => new Date(prev.getFullYear(), prev.getMonth() - 1, 1));
@@ -178,487 +198,425 @@ export default function StudentDashboard({ onLogout }) {
     setCurrentMonth((prev) => new Date(prev.getFullYear(), prev.getMonth() + 1, 1));
   };
 
-  function handleNavClick(pageKey, label) {
-    if (pageKey === "dashboard") {
-      setCurrentPage("dashboard");
-    } else if (pageKey === "results" || label === "Results" || label === "Credit Points") {
-      setCurrentPage("results");
-    } else if (pageKey === "attendances" || label === "Attendance" || label === "Attendances") {
-      setCurrentPage("attendances");
-    } else if (pageKey === "activities" || pageKey === "events" || label === "Activities") {
-      setCurrentPage("activities");
-    } else if (pageKey === "notices" || label === "Notices") {
-      setCurrentPage("notices");
-    } else if (pageKey === "profile" || label === "Profile" || label === "Profile & Settings") {
-      setProfileTab("parents");
-      setCurrentPage("profile");
-    } else if (pageKey === "experiences" || label === "Semesters" || label === "Subjects") {
-      setProfileTab("academic");
-      setCurrentPage("profile");
+  const handleSelectDate = (date) => {
+    setSelectedDate(new Date(date));
+    if (date.getMonth() !== currentMonth.getMonth()) {
+      setCurrentMonth(new Date(date.getFullYear(), date.getMonth(), 1));
     }
+  };
+
+  function handleNavigate(pageKey) {
+    if (pageKey === "logout") {
+      if (onLogout) onLogout();
+      return;
+    }
+    setCurrentPage(pageKey);
+    setMobileSidebarOpen(false);
   }
 
-  return (
-    <div className="h-screen overflow-x-hidden overflow-y-auto bg-[#edf1f5]">
-      <div className="flex min-h-screen border border-slate-200 bg-[#f4f6f8] shadow-[0_18px_45px_rgba(15,23,42,0.13)] ring-1 ring-slate-200/80">
-        {/* Left Sidebar */}
-        <aside className="sticky top-0 flex h-screen w-[250px] shrink-0 flex-col border-r border-gray-100 bg-white shadow-sm z-10">
-          <div className="flex h-[60px] shrink-0 items-center justify-between gap-3 border-b border-gray-100 px-5">
-            <span className="block text-lg font-extrabold tracking-wide text-gray-800">
-              TRACK<span className="text-blue-600">/</span><span className="text-gray-800">ADEMY</span>
-            </span>
-          </div>
+  function renderStudentContent() {
+    switch (currentPage) {
+      case "profile":
+        return (
+          <StudentProfile
+            studentData={tuhinaStudentData}
+            onBack={() => setCurrentPage("dashboard")}
+            userRole="student"
+            defaultTab={profileTab}
+            hideHeader={true}
+          />
+        );
 
-          <nav className="flex-1 space-y-3 overflow-y-auto px-2.5 py-2.5">
-            {navSections.map((section) => (
-              <div key={section.label}>
-                <p className="mb-1 px-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-gray-400">
-                  {section.label}
-                </p>
+      case "subjects":
+        return <StudentSubjects hideHeader={true} />;
 
-                <div className="space-y-1">
-                  {section.items.map(({ label, icon: Icon, pageKey }) => {
-                    const isActive =
-                      (pageKey === "dashboard" && currentPage === "dashboard") ||
-                      (pageKey === "results" && currentPage === "results") ||
-                      (pageKey === "attendances" && currentPage === "attendances") ||
-                      (pageKey === "activities" && currentPage === "activities") ||
-                      (pageKey === "notices" && currentPage === "notices") ||
-                      (pageKey === "profile" && currentPage === "profile" && profileTab === "parents") ||
-                      (pageKey === "experiences" && currentPage === "profile" && profileTab === "academic");
+      case "results":
+        return <StudentResults hideHeader={true} />;
 
-                    return (
-                      <button
-                        key={label}
-                        type="button"
-                        onClick={() => handleNavClick(pageKey, label)}
-                        className={`flex w-full items-center gap-2.5 rounded-lg px-3 py-1.5 text-left text-sm font-medium transition-colors cursor-pointer ${isActive
-                            ? "bg-blue-50 text-blue-600 font-semibold"
-                            : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                          }`}
-                      >
-                        <Icon size={16} className={isActive ? "text-blue-600" : "text-gray-500"} />
-                        <span>{label}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            ))}
-          </nav>
+      case "attendances":
+        return <StudentAttendance hideHeader={true} />;
 
-          <div className="mt-auto border-t border-gray-100 px-4 py-3 space-y-2">
-            <button
-              type="button"
-              onClick={onLogout}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-rose-50 px-3 py-2 text-sm font-semibold text-rose-500 transition-colors hover:bg-rose-100 cursor-pointer"
-            >
-              <LogOut size={16} />
-              <span>Logout</span>
-            </button>
-            <p className="text-[10px] text-gray-400 text-center font-medium">
-              &copy; 2024 Trackademy. All rights reserved.
-            </p>
-          </div>
-        </aside>
+      case "credit-points":
+        return <StudentCreditPoints hideHeader={true} />;
 
-        {/* Right Main Content Pane */}
-        {currentPage === "results" ? (
-          <div className="flex-1 h-screen overflow-hidden flex flex-col min-w-0">
-            <StudentResults />
-          </div>
-        ) : currentPage === "attendances" ? (
-          <div className="flex-1 h-screen overflow-hidden flex flex-col min-w-0">
-            <StudentAttendance />
-          </div>
-        ) : currentPage === "activities" ? (
-          <div className="flex-1 h-screen overflow-hidden flex flex-col min-w-0">
-            <StudentActivities onNavigate={setCurrentPage} />
-          </div>
-        ) : currentPage === "notices" ? (
-          <div className="flex-1 h-screen overflow-hidden flex flex-col min-w-0">
-            <StudentNotices onNavigate={setCurrentPage} />
-          </div>
-        ) : currentPage === "profile" ? (
-          <div className="flex-1 h-screen overflow-hidden flex flex-col min-w-0">
-            <StudentProfile
-              studentData={tuhinaStudentData}
-              onBack={() => setCurrentPage("dashboard")}
-              userRole="student"
-              defaultTab={profileTab}
-            />
-          </div>
-        ) : (
-          <div className="flex-1 overflow-y-auto bg-[#f6f7fb] min-w-0">
-            <header className="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white/80 px-6 py-3 backdrop-blur-sm">
-              <div>
-                <h1 className="text-[28px] font-bold tracking-tight text-slate-800">Welcome back, Tuhina!</h1>
-                <p className="text-sm text-slate-500">Here&apos;s what&apos;s happening today.</p>
-              </div>
+      case "message":
+        return <StudentMessages hideHeader={true} />;
 
-              <div className="flex items-center gap-3 sm:gap-4">
-                <div className="relative">
-                  <button
-                    type="button"
-                    aria-label="Notifications"
-                    className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 shadow-sm transition-colors hover:bg-slate-50"
-                  >
-                    <Bell size={18} />
-                  </button>
-                  <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#2563eb] px-1 text-[10px] font-semibold text-white">
-                    3
-                  </span>
-                </div>
+      case "activities":
+        return <StudentActivities onNavigate={setCurrentPage} hideHeader={true} />;
 
-                <button
-                  type="button"
-                  aria-label="Messages"
-                  className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 shadow-sm transition-colors hover:bg-slate-50"
-                >
-                  <Mail size={18} />
-                </button>
+      case "notices":
+        return <StudentNotices onNavigate={setCurrentPage} hideHeader={true} />;
 
-                <div className="hidden h-5 w-px bg-slate-200 sm:block" />
+      case "settings":
+        return <StudentSettings hideHeader={true} />;
 
-                <div className="relative" ref={containerRef}>
-                  <button
-                    type="button"
-                    onClick={() => setProfileOpen((prev) => !prev)}
-                    className="flex items-center gap-3 rounded-xl p-1.5 hover:bg-slate-100/80 transition-colors cursor-pointer focus:outline-none group"
-                  >
-                    <div className="hidden text-right sm:block">
-                      <p className="text-sm font-semibold text-slate-700 group-hover:text-emerald-700 transition-colors">
-                        Tuhina Banerjee
-                      </p>
-                      <p className="text-[11px] text-slate-400 capitalize">Student</p>
-                    </div>
+      case "support":
+        return <StudentSupport hideHeader={true} />;
 
-                    <div className="relative">
-                      <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-[#5b8def] to-[#1d4ed8] text-xs font-bold text-white ring-2 ring-blue-100">
-
-                      </div>
-                      <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full bg-green-500 ring-2 ring-white" />
-                    </div>
-
-                    <ChevronDown
-                      size={14}
-                      className={`text-slate-400 transition-transform duration-200 ${profileOpen ? "rotate-180 text-emerald-600" : "group-hover:text-slate-600"
-                        }`}
+      case "dashboard":
+      default:
+        return (
+          <main className="space-y-2.5 p-2 sm:px-5 sm:py-2.5">
+            {/* Top Grid: Profile Hero Banner & Rank Card */}
+            <section className="grid gap-2.5 xl:grid-cols-[1.8fr_0.8fr]">
+              {/* Student Hero Summary Card matching UI reference */}
+              <div className="rounded-2xl border border-slate-200 bg-white p-3 sm:p-4 shadow-sm group flex flex-col justify-center">
+                <div className="flex flex-col md:flex-row items-start md:items-center gap-5 sm:gap-6">
+                  {/* Avatar Image */}
+                  <div className="w-[125px] h-[125px] sm:w-[130px] sm:h-[130px] rounded-[16px] overflow-hidden shrink-0 border border-slate-200 shadow-2xs">
+                    <img
+                      src="/tuhina_avatar.jpg"
+                      alt="Tuhina Banerjee"
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        e.target.style.display = "none";
+                        if (e.target.nextSibling) e.target.nextSibling.style.display = "flex";
+                      }}
                     />
-                  </button>
+                    <div className="hidden w-full h-full bg-gradient-to-br from-blue-100 to-indigo-100 items-center justify-center text-3xl font-bold text-blue-700">
+                      TB
+                    </div>
+                  </div>
 
-                  {profileOpen && (
-                    <div className="absolute right-0 top-full mt-2.5 w-56 rounded-2xl border border-gray-100 bg-white p-2 shadow-2xl z-50 animate-in fade-in slide-in-from-top-2 duration-150">
-                      <div className="px-3 py-2.5 border-b border-gray-100 bg-gray-50/50 rounded-xl mb-1">
-                        <div className="flex items-center gap-2">
-                          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 font-bold text-xs">
-                            TB
-                          </div>
-                          <div className="overflow-hidden">
-                            <p className="text-xs font-bold text-gray-800 truncate">Tuhina Banerjee</p>
-                            <p className="text-[10px] text-emerald-600 font-medium flex items-center gap-1">
-                              <ShieldCheck size={10} /> Student
-                            </p>
-                          </div>
+                  {/* Content */}
+                  <div className="flex-1 min-w-0">
+                    <h2 className="text-2xl sm:text-[25px] font-bold text-gray-900 tracking-tight leading-tight">
+                      Tuhina Banerjee
+                    </h2>
+                    <p className="text-xs sm:text-[13px] text-gray-500 font-normal mt-2 mb-4">
+                      B.Tech | Computer Science &amp; Engineering
+                    </p>
+
+                    {/* User Info Area with Light Blue Background & Border */}
+                    <div className="bg-[#F2F7FF] rounded-2xl border border-[#DCE8FC] p-2.5 sm:px-4 sm:py-3 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 w-fit sm:w-auto">
+                      {/* Left Column */}
+                      <div className="space-y-3 shrink-0">
+                        <div className="flex items-center gap-2 text-xs sm:text-[13px] text-gray-700">
+                          <Mail size={15} className="text-gray-800 shrink-0 stroke-[1.8]" />
+                          <span>
+                            <strong className="font-semibold text-gray-900">Email :</strong>{" "}
+                            <span className="text-gray-600">tuhinabanerjee134@gmail.com</span>
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2 text-xs sm:text-[13px] text-gray-700">
+                          <Phone size={15} className="text-gray-800 shrink-0 stroke-[1.8]" />
+                          <span>
+                            <strong className="font-semibold text-gray-900">Phone :</strong>{" "}
+                            <span className="text-gray-600">+91-9999999999</span>
+                          </span>
                         </div>
                       </div>
 
-                      <div className="space-y-0.5">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setProfileOpen(false);
-                            setCurrentPage("profile");
-                          }}
-                          className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-gray-700 rounded-xl hover:bg-emerald-50 hover:text-[#0da651] transition-colors cursor-pointer"
-                        >
-                          <User size={15} className="text-gray-400" />
-                          <span>View Profile</span>
-                        </button>
+                      {/* Vertical Divider */}
+                      <div className="hidden sm:block w-[1px] h-9 bg-[#D4E4FC] self-center" />
 
-                        <button
-                          type="button"
-                          onClick={() => setProfileOpen(false)}
-                          className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-gray-700 rounded-xl hover:bg-emerald-50 hover:text-[#0da651] transition-colors cursor-pointer"
-                        >
-                          <Settings size={15} className="text-gray-400" />
-                          <span>Settings</span>
-                        </button>
-
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setProfileOpen(false);
-                            if (onLogout) onLogout();
-                          }}
-                          className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-rose-600 rounded-xl hover:bg-rose-50 transition-colors cursor-pointer"
-                        >
-                          <LogOut size={15} className="text-rose-500" />
-                          <span>Logout</span>
-                        </button>
+                      {/* Right Column */}
+                      <div className="space-y-2 shrink-0">
+                        <div className="flex items-center gap-2 text-xs sm:text-[13px] text-gray-700">
+                          <User size={15} className="text-gray-800 shrink-0 stroke-[1.8]" />
+                          <span>
+                            <strong className="font-semibold text-gray-900">College Roll :</strong>{" "}
+                            <span className="text-gray-600">CSE2024012</span>
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2 text-xs sm:text-[13px] text-gray-700">
+                          <GraduationCap size={15} className="text-gray-800 shrink-0 stroke-[1.8]" />
+                          <span>
+                            <strong className="font-semibold text-gray-900">University Roll :</strong>{" "}
+                            <span className="text-gray-600">11700124178</span>
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  )}
+                  </div>
                 </div>
               </div>
-            </header>
 
-            <main className="space-y-3 p-4">
-              <section className="grid gap-3 xl:grid-cols-[1.7fr_0.8fr]">
+              {/* Rank Card */}
+              <div className="w-full rounded-2xl border border-slate-200 bg-white p-3.5 sm:p-4 shadow-sm text-slate-800 flex flex-col justify-between">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2 text-sm sm:text-base font-bold leading-none text-slate-800">
+                    <Award size={18} className="text-slate-700" />
+                    <span>Academic Rank</span>
+                  </div>
+
+                  <div className="relative w-[95px]">
+                    <select
+                      defaultValue="CSE"
+                      className="w-full appearance-none rounded-xl border border-slate-200 bg-[#f1f3f5] px-2.5 py-1 pr-6 text-xs font-semibold text-slate-700 outline-none transition focus:border-blue-300"
+                      aria-label="Select department"
+                    >
+                      <option value="CSE">CSE</option>
+                      <option value="EE">EE</option>
+                      <option value="ECE">ECE</option>
+                      <option value="AIML">AIML</option>
+                    </select>
+                    <ChevronDown className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-slate-500" size={13} />
+                  </div>
+                </div>
+
+                <div className="my-1.5 text-center">
+                  <div className="flex items-baseline justify-center gap-2">
+                    <span className="text-3xl sm:text-[34px] font-bold tracking-tight text-[#2384FD] leading-none">1</span>
+                    <span className="text-xl sm:text-[20px] font-semibold text-slate-400 leading-none">/ 30</span>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="h-2 w-[85%] mx-auto overflow-hidden rounded-full bg-[#dfe3ea]">
+                    <div className="h-full w-[96%] rounded-full bg-[#2384FD]" />
+                  </div>
+                  <div className="mt-1.5 text-center text-[10px] sm:text-[11px] font-medium text-slate-500">
+                    Top 4% in Department
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Stat Cards Grid with Enhanced Height & Larger Numbers */}
+            <section className="grid gap-2.5 sm:grid-cols-2 xl:grid-cols-4">
+              {statCards.map(({ label, value, note, icon: Icon, cardClass, valueClass, iconWrap, pageKey }) => (
                 <div
+                  key={label}
                   onClick={() => {
-                    setProfileTab("parents");
-                    setCurrentPage("profile");
+                    if (pageKey) handleNavigate(pageKey);
                   }}
-                  className="rounded-[22px] border border-slate-200 bg-white p-4 shadow-sm hover:border-blue-300 hover:shadow-md transition-all cursor-pointer group"
+                  className={`rounded-2xl border px-4 py-4 sm:py-5 shadow-sm ${cardClass} cursor-pointer hover:shadow-md hover:scale-[1.01] transition-all`}
                 >
-                  <div className="flex items-center gap-4">
-                    <div className="relative group/avatar">
-                      <div className="flex h-[120px] w-[120px] items-center justify-center rounded-[26px] bg-gradient-to-br from-[#f7d6d8] via-[#f5e5d7] to-[#dbeafe] text-[52px] font-bold text-slate-700 shadow-inner group-hover:scale-105 transition-transform overflow-hidden">
-                        <img
-                          src="/tuhina_avatar.jpg"
-                          alt="Tuhina Banerjee"
-                          className="h-full w-full object-cover"
-                          onError={(e) => {
-                            e.target.style.display = 'none';
-                            if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
-                          }}
-                        />
-                        <span className="hidden h-full w-full items-center justify-center text-[52px] font-bold text-slate-700 pointer-events-none">
-                          TB
-                        </span>
-                      </div>
+                  <div className="flex items-center gap-5">
+                    <div className={`flex h-11 w-11 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-2xl ${iconWrap}`}>
+                      <Icon size={23} className="stroke-[2.2]" />
                     </div>
 
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between">
-                        <h2 className="text-[26px] font-bold tracking-tight text-slate-800 group-hover:text-blue-600 transition-colors">
-                          Tuhina Banerjee
-                        </h2>
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setProfileTab("parents");
-                            setCurrentPage("profile");
-                          }}
-                          className="px-3.5 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-xl text-xs font-semibold transition-colors flex items-center gap-1.5 cursor-pointer"
-                        >
-                          <UserRound size={14} />
-                          View Full Profile
-                        </button>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 truncate">
+                        {label}
                       </div>
-
-                      <div className="mt-4 grid gap-2.5 sm:grid-cols-2">
-                        <InfoRow icon={Mail} text="tuhinabanerjee134@gmail.com" />
-                        <InfoRow icon={School} text="Department: CSE" />
-                        <InfoRow icon={Phone} text="+91 89812 18381" />
-                        <InfoRow icon={BookOpen} text="College Roll No: cse2024009" />
-                        <InfoRow icon={Award} text="B.Tech" />
-                        <InfoRow icon={MapPin} text="University Roll: NIL" />
-                      </div>
+                      <div className={`text-2xl sm:text-[28px] font-extrabold leading-none mt-1 mb-0.5 ${valueClass}`}>{value}</div>
+                      <div className="text-xs text-slate-400 font-medium truncate">{note}</div>
                     </div>
                   </div>
                 </div>
+              ))}
+            </section>
 
-                <div className="w-full max-w-[700px] rounded-[26px] border border-slate-200 bg-white p-3.5 shadow-sm text-slate-800">
-                  <div className="mb-3 flex items-center justify-between gap-3">
-                    <div className="flex items-center gap-2 text-[22px] font-bold leading-none text-slate-800">
-                      <Award size={18} className="text-slate-700" />
-                      <span>Rank</span>
+            {/* Bottom 3 Columns: Attendance Overview, Quick Actions, Functional Calendar */}
+            <section className="grid gap-2.5 sm:grid-cols-2 xl:grid-cols-[1fr_1fr_1fr]">
+              {/* 1. Attendance Overview Card with Interactive Semester 1-8 Dropdown */}
+              <div className="rounded-2xl border border-slate-200 bg-white p-3.5 sm:p-4 shadow-sm flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-2">
+                    <div className="flex items-center gap-2 text-sm sm:text-base font-bold text-[#0F172A]">
+                      <CalendarCheck size={18} className="text-slate-700" />
+                      <h3>Attendance Overview</h3>
                     </div>
 
-                    <div className="relative w-[130px]">
-                      <select
-                        defaultValue="CSE"
-                        className="w-full appearance-none rounded-xl border border-slate-200 bg-[#f1f3f5] px-3 py-2 pr-8 text-base font-medium text-slate-700 outline-none transition focus:border-blue-300"
-                        aria-label="Select department"
+                    {/* Interactive Semester Dropdown (Semester 1 to 8) */}
+                    <div className="relative" ref={semesterDropdownRef}>
+                      <button
+                        type="button"
+                        onClick={() => setSemesterDropdownOpen((prev) => !prev)}
+                        className="flex items-center gap-1.5 px-3 py-1 bg-[#F8FAFC] border border-gray-200/80 rounded-xl text-xs font-semibold text-gray-700 hover:bg-gray-100 hover:border-blue-300 transition-all cursor-pointer shadow-2xs"
                       >
-                        <option value="CSE">CSE</option>
-                        <option value="EE">EE</option>
-                        <option value="ECE">ECE</option>
-                        <option value="AIML">AIML</option>
-                      </select>
-                      <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-500" size={16} />
+                        <span>Semester {attendanceSemester}</span>
+                        <ChevronDown
+                          size={13}
+                          className={`text-gray-400 transition-transform duration-200 ${
+                            semesterDropdownOpen ? "rotate-180 text-blue-600" : ""
+                          }`}
+                        />
+                      </button>
+
+                      {semesterDropdownOpen && (
+                        <div className="absolute right-0 top-full mt-1.5 w-36 rounded-xl border border-slate-200 bg-white p-1 shadow-xl z-30 animate-in fade-in slide-in-from-top-2 duration-150 max-h-52 overflow-y-auto">
+                          {[1, 2, 3, 4, 5, 6, 7, 8].map((sem) => (
+                            <button
+                              key={sem}
+                              type="button"
+                              onClick={() => {
+                                setAttendanceSemester(sem);
+                                setSemesterDropdownOpen(false);
+                              }}
+                              className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer flex items-center justify-between ${
+                                attendanceSemester === sem
+                                  ? "bg-[#E7EFFE] text-[#2384FD] font-bold"
+                                  : "text-gray-700 hover:bg-gray-50"
+                              }`}
+                            >
+                              <span>Semester {sem}</span>
+                              {attendanceSemester === sem && (
+                                <span className="w-1.5 h-1.5 rounded-full bg-[#2384FD]" />
+                              )}
+                            </button>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
 
-                  <div className="mt-2 flex items-baseline justify-center gap-2 text-center">
-                    <span className="text-[38px] font-bold tracking-tight text-[#2563eb] leading-none">1</span>
-                    <span className="text-[28px] font-semibold text-slate-400 leading-none">/ 30</span>
-                  </div>
-
-                  <div className="mt-3 flex items-center justify-center gap-2 text-[14px] font-semibold text-[#16a34a]">
-                    <span>Top Performer</span>
-                    <ArrowUpRight size={16} className="text-[#16a34a]" />
-                  </div>
-
-                  <div className="mt-4 h-3 w-full overflow-hidden rounded-full bg-[#dfe3ea]">
-                    <div className="h-full w-[88%] rounded-full bg-[#2563eb]" />
-                  </div>
-
-                  <div className="mt-4 text-center text-[17px] font-medium tracking-tight text-slate-700">
-                    You&apos;re doing excellent!
+                  {/* Circular Donut Gauge dynamically reflecting currentAttendance */}
+                  <div className="relative flex items-center justify-center my-4">
+                    <svg className="w-[180px] h-[180px] transform -rotate-90" viewBox="0 0 120 120">
+                      {/* Background track */}
+                      <circle
+                        cx="60"
+                        cy="60"
+                        r="50"
+                        stroke="#E2E8F0"
+                        strokeWidth="7"
+                        fill="transparent"
+                      />
+                      {/* Attended Progress track */}
+                      <circle
+                        cx="60"
+                        cy="60"
+                        r="50"
+                        stroke="#2384FD"
+                        strokeWidth="7"
+                        strokeDasharray={2 * Math.PI * 50}
+                        strokeDashoffset={2 * Math.PI * 50 * (1 - currentAttendance.percentage / 100)}
+                        strokeLinecap="round"
+                        fill="transparent"
+                        className="transition-all duration-700 ease-out"
+                      />
+                    </svg>
+                    <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
+                      <span className="text-4xl font-bold text-[#2384FD] tracking-tight leading-none transition-all">
+                        {currentAttendance.percentage}%
+                      </span>
+                      <span className="text-xs text-gray-400 font-medium mt-3">
+                        Overall Attendance
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </section>
 
-              <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-                {statCards.map(({ label, value, note, icon: Icon, cardClass, valueClass, iconWrap, pageKey }) => (
-                  <div
-                    key={label}
-                    onClick={() => {
-                      if (pageKey) handleNavClick(pageKey, label);
-                    }}
-                    className={`rounded-[20px] border px-4 py-2.5 shadow-sm ${cardClass} ${pageKey ? "cursor-pointer hover:shadow-md hover:scale-[1.01] transition-all" : ""
-                      }`}
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className={`mt-1 flex h-11 w-11 shrink-0 items-center justify-center rounded-full ${iconWrap}`}>
-                        <Icon size={16} />
-                      </div>
-
-                      <div className="flex-1 space-y-1">
-                        <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">
-                          {label}
-                        </div>
-                        <div className={`text-[30px] font-bold leading-none ${valueClass}`}>{value}</div>
-                        <div className="text-[14px] text-slate-500">{note}</div>
-                      </div>
+                {/* Bottom Stats Split Box reflecting selected semester */}
+                <div
+                  onClick={() => handleNavigate("attendances")}
+                  className="grid grid-cols-2 gap-2.5 p-2.5 bg-[#F8FAFC] rounded-xl border border-slate-200/80 cursor-pointer hover:bg-gray-100/60 transition-colors"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-full bg-[#ECFDF5] text-[#10B981] flex items-center justify-center shrink-0 border border-[#D1FAE5]">
+                      <CalendarCheck size={16} />
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-gray-900 leading-tight transition-all">
+                        {currentAttendance.attended}
+                      </p>
+                      <p className="text-[10px] text-gray-500 font-medium">Classes attended</p>
                     </div>
                   </div>
-                ))}
-              </section>
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-full bg-[#FEF2F2] text-[#EF4444] flex items-center justify-center shrink-0 border border-[#FEE2E2]">
+                      <XCircle size={16} />
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-gray-900 leading-tight transition-all">
+                        {currentAttendance.absent}
+                      </p>
+                      <p className="text-[10px] text-gray-500 font-medium">Classes absent</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-              <section className="grid gap-5 xl:grid-cols-[1.25fr_1fr_1fr]">
-                <div
-                  onClick={() => setCurrentPage("attendances")}
-                  className="rounded-[20px] border border-slate-200 bg-white p-5 shadow-sm hover:border-blue-300 hover:shadow-md transition-all cursor-pointer group"
-                >
-                  <div className="mb-5 flex items-center justify-between">
-                    <h3 className="text-xl font-bold text-slate-800 group-hover:text-blue-600 transition-colors">
-                      Attendance Overview
-                    </h3>
+              {/* 2. Quick Actions Card */}
+              <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 shadow-sm flex flex-col justify-between">
+                <div className="flex items-center gap-2 pb-2 border-b border-slate-100 mb-2.5 text-sm sm:text-base font-bold text-[#0F172A]">
+                  <Zap size={18} className="text-slate-700" />
+                  <h3>Quick Actions</h3>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2.5 flex-1">
+                  {quickActions.map(({ label, icon: Icon, tone, borderTone, iconTone, iconBg, textTone, pageKey }) => (
+                    <button
+                      key={label}
+                      type="button"
+                      onClick={() => handleNavigate(pageKey)}
+                      className={`rounded-2xl border ${borderTone} ${tone} p-3 flex flex-col items-center justify-center gap-2 transition-all hover:scale-[1.02] hover:shadow-xs cursor-pointer group`}
+                    >
+                      <div className={`w-14 h-14 rounded-full ${iconBg} shadow-2xs flex items-center justify-center ${iconTone} group-hover:scale-110 transition-transform`}>
+                        <Icon size={26} className="stroke-[2]" />
+                      </div>
+                      <div className={`flex items-center gap-1 text-[12px] font-bold ${textTone}`}>
+                        <span>{label}</span>
+                        <ChevronRight size={14} className="stroke-[2.5]" />
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* 3. Pure Functional Real-time Calendar Card */}
+              <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 shadow-sm flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between pb-2 border-b border-slate-100 mb-2.5">
+                    <div className="flex items-center gap-2 text-sm sm:text-base font-bold text-[#0F172A]">
+                      <CalendarDays size={18} className="text-slate-700" />
+                      <h3>Calendar</h3>
+                    </div>
                     <button
                       type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setCurrentPage("attendances");
+                      onClick={() => {
+                        const now = new Date();
+                        setSelectedDate(now);
+                        setCurrentMonth(new Date(now.getFullYear(), now.getMonth(), 1));
                       }}
-                      className="rounded-lg border border-slate-200 bg-slate-50 hover:bg-blue-50 hover:text-blue-600 px-2.5 py-1.5 text-xs font-medium text-slate-600 transition-colors cursor-pointer"
+                      className="text-[11px] font-semibold text-[#2384FD] hover:underline cursor-pointer"
                     >
-                      Semester 4
+                      Today
                     </button>
                   </div>
 
-                  <div className="flex flex-col items-center justify-center gap-4">
-                    <div className="relative flex h-44 w-44 items-center justify-center rounded-full bg-[conic-gradient(#2563eb_0_93%,#e6ebf3_93%_100%)] p-3">
-                      <div className="flex h-full w-full items-center justify-center rounded-full bg-white text-center">
-                        <div>
-                          <div className="text-[46px] font-bold leading-none text-slate-800">93%</div>
-                          <div className="mt-2 text-[12px] uppercase tracking-[0.14em] text-slate-400">Overall Attendance</div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="w-full max-w-[260px] space-y-3">
-                      <div className="flex items-center gap-3 text-sm text-slate-600">
-                        <span className="h-2.5 w-2.5 rounded-full bg-[#2563eb]" />
-                        <span className="flex-1">Classes attended (93%)</span>
-                        <span className="font-semibold text-slate-700">104</span>
-                      </div>
-
-                      <div className="flex items-center gap-3 text-sm text-slate-600">
-                        <span className="h-2.5 w-2.5 rounded-full bg-[#dfe3ea]" />
-                        <span className="flex-1">Classes absent (7%)</span>
-                        <span className="font-semibold text-slate-700">8</span>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-3 pt-2 text-sm">
-                        <div className="flex items-center gap-2 rounded-xl bg-[#eef9f3] px-3 py-2 text-emerald-700">
-                          <CheckCircle2 size={16} />
-                          <span>104</span>
-                        </div>
-                        <div className="flex items-center gap-2 rounded-xl bg-[#fff1f1] px-3 py-2 text-rose-500">
-                          <XCircle size={16} />
-                          <span>8</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="rounded-[20px] border border-slate-200 bg-white p-5 shadow-sm">
-                  <h3 className="mb-5 text-xl font-bold text-slate-800">Quick Actions</h3>
-
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    {quickActions.map(({ label, icon: Icon, tone, pageKey }) => (
-                      <button
-                        key={label}
-                        type="button"
-                        onClick={() => {
-                          if (pageKey === "results") {
-                            setCurrentPage("results");
-                          } else if (pageKey) {
-                            handleNavClick(pageKey, label);
-                          }
-                        }}
-                        className={`flex min-h-[130px] flex-col items-center justify-center gap-3 rounded-[20px] border border-slate-200 ${tone} px-4 py-4 font-semibold shadow-sm transition-transform hover:-translate-y-0.5 cursor-pointer`}
-                      >
-                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/50">
-                          <Icon size={20} />
-                        </div>
-                        <span className="text-[15px]">{label}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="rounded-[20px] border border-slate-200 bg-white p-5 shadow-sm">
-                  <div className="mb-5 flex items-center justify-between">
+                  {/* Month Navigation */}
+                  <div className="flex items-center justify-between px-1 mb-6">
                     <button
                       type="button"
                       aria-label="Previous month"
                       onClick={goToPreviousMonth}
-                      className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-slate-500 transition hover:bg-slate-100"
+                      className="p-1 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors cursor-pointer"
                     >
-                      <ChevronLeft size={16} />
+                      <ChevronLeft size={15} />
                     </button>
-                    <span className="text-base font-semibold text-slate-700">{monthTitle}</span>
+                    <span className="text-xs sm:text-sm font-bold text-gray-800">{monthTitle}</span>
                     <button
                       type="button"
                       aria-label="Next month"
                       onClick={goToNextMonth}
-                      className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 bg-slate-50 text-slate-500 transition hover:bg-slate-100"
+                      className="p-1 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors cursor-pointer"
                     >
-                      <ChevronRight size={16} />
+                      <ChevronRight size={15} />
                     </button>
                   </div>
 
-                  <div className="grid grid-cols-7 gap-2 text-center text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-400">
-                    {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((day, index) => (
+                  {/* Day Headers */}
+                  <div className="grid grid-cols-7 gap-1 text-center text-[12px] font-semibold text-gray-400 mb-1">
+                    {["M", "T", "W", "T", "F", "S", "S"].map((day, index) => (
                       <div key={`${day}-${index}`}>{day}</div>
                     ))}
                   </div>
 
-                  <div className="mt-3 grid grid-cols-7 gap-2 text-center text-sm text-slate-500">
+                  {/* Date Grid */}
+                  <div className="grid grid-cols-7 gap-y-1 gap-x-1 text-center text-xs font-medium text-gray-700">
                     {calendarDays.map((date) => {
                       const isCurrentMonth = date.getMonth() === currentMonth.getMonth();
-                      const isSelected = selectedDate.toDateString() === date.toDateString();
-                      const isEvent = eventDates.has(date.toDateString());
+                      const isSelected = isSameDay(selectedDate, date);
+                      const isToday = isSameDay(today, date);
 
                       return (
                         <button
                           key={date.toISOString()}
                           type="button"
-                          onClick={() => setSelectedDate(new Date(date))}
-                          className={`flex h-8 items-center justify-center rounded-md transition ${isSelected
-                              ? "bg-[#2563eb] font-semibold text-white shadow-sm"
-                              : isEvent
-                                ? "bg-[#e8f3ff] text-[#2563eb]"
-                                : isCurrentMonth
-                                  ? "bg-slate-50 text-slate-600"
-                                  : "bg-transparent text-slate-300"
+                          onClick={() => handleSelectDate(date)}
+                          className={`w-7 h-7 sm:w-7.5 sm:h-7.5 rounded-lg flex items-center justify-center mx-auto transition-all text-[11px] font-medium cursor-pointer ${isSelected
+                            ? "bg-[#2384FD] font-bold text-white shadow-xs"
+                            : isToday
+                              ? "bg-[#E7EFFE] text-[#2384FD] font-bold ring-1 ring-[#2384FD]/30"
+                              : isCurrentMonth
+                                ? "hover:bg-gray-100 text-gray-700"
+                                : "text-gray-300 hover:text-gray-500"
                             }`}
                         >
                           {date.getDate()}
@@ -666,22 +624,52 @@ export default function StudentDashboard({ onLogout }) {
                       );
                     })}
                   </div>
-
-                  <div className="mt-5 flex items-center justify-center gap-5 text-xs font-medium text-slate-500">
-                    <span className="flex items-center gap-2">
-                      <span className="h-2.5 w-2.5 rounded-full bg-[#2563eb]" />
-                      Selected
-                    </span>
-                    <span className="flex items-center gap-2">
-                      <span className="h-2.5 w-2.5 rounded-full bg-[#e8f3ff]" />
-                      Events
-                    </span>
-                  </div>
                 </div>
-              </section>
-            </main>
-          </div>
-        )}
+              </div>
+            </section>
+          </main>
+        );
+    }
+  }
+
+  return (
+    <div className="relative flex h-full w-full bg-[#EEF2F6] overflow-hidden min-h-screen">
+      {/* Mobile Drawer Overlay */}
+      {mobileSidebarOpen && (
+        <button
+          type="button"
+          aria-label="Close navigation overlay"
+          onClick={() => setMobileSidebarOpen(false)}
+          className="fixed inset-0 z-40 bg-black/40 backdrop-blur-[1px] lg:hidden"
+        />
+      )}
+
+      {/* Student Sidebar with Roboto font, #2384FD active color, #E7EFFE bg */}
+      <StudentSidebar
+        activePage={currentPage}
+        onNavigate={handleNavigate}
+        open={mobileSidebarOpen}
+        onClose={() => setMobileSidebarOpen(false)}
+        onLogout={onLogout}
+      />
+
+      {/* Right Content Pane */}
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+        {/* Student Top Header with Barlow font, dynamic title/subtitle, bell badge 3, help circle, profile dropdown */}
+        <StudentHeader
+          activePage={currentPage}
+          studentName="Tuhina Banerjee"
+          studentRole="Student"
+          avatarUrl="/tuhina_avatar.jpg"
+          onNavigate={handleNavigate}
+          onLogout={onLogout}
+          onOpenSidebar={() => setMobileSidebarOpen(true)}
+        />
+
+        {/* Scrollable Page Body */}
+        <div className="flex-1 overflow-y-auto min-w-0 bg-[#EEF2F6]">
+          {renderStudentContent()}
+        </div>
       </div>
     </div>
   );

@@ -190,7 +190,7 @@ export const semesterResultsData = [
   }
 ];
 
-export default function StudentResults() {
+export default function StudentResults({ hideHeader = false }) {
   const [selectedFilter, setSelectedFilter] = useState("all");
   const [toastMessage, setToastMessage] = useState(null);
   const [selectedSemesterModal, setSelectedSemesterModal] = useState(null);
@@ -245,32 +245,34 @@ export default function StudentResults() {
         </div>
       )}
 
-      {/* Top Header matching Dashboard */}
-      <header className="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white/80 px-6 py-3 backdrop-blur-sm">
-        <div>
-          <h1 className="text-[28px] font-bold tracking-tight text-slate-800">
-            Results
-          </h1>
-          <p className="text-sm text-slate-500">
-            An overview of your academic performance and outcomes
-          </p>
-        </div>
-
-        <div className="flex items-center gap-3 sm:gap-4">
-          <div className="relative">
-            <button
-              type="button"
-              aria-label="Notifications"
-              className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 shadow-sm transition-colors hover:bg-slate-50 cursor-pointer"
-            >
-              <Bell size={18} />
-            </button>
-            <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#2563eb] px-1 text-[10px] font-semibold text-white">
-              3
-            </span>
+      {/* Top Header */}
+      {!hideHeader && (
+        <header className="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white/80 px-6 py-3 backdrop-blur-sm font-barlow">
+          <div>
+            <h1 className="text-[28px] font-bold tracking-tight text-slate-800 font-barlow">
+              Results
+            </h1>
+            <p className="text-sm text-slate-500 font-barlow">
+              An overview of your academic performance and outcomes
+            </p>
           </div>
-        </div>
-      </header>
+
+          <div className="flex items-center gap-3 sm:gap-4">
+            <div className="relative">
+              <button
+                type="button"
+                aria-label="Notifications"
+                className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 shadow-sm transition-colors hover:bg-slate-50 cursor-pointer"
+              >
+                <Bell size={18} />
+              </button>
+              <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#2563eb] px-1 text-[10px] font-semibold text-white">
+                3
+              </span>
+            </div>
+          </div>
+        </header>
+      )}
 
       {/* Scrollable Main Content */}
       <main className="flex-1 overflow-y-auto overflow-x-hidden p-4">

@@ -193,7 +193,7 @@ export const initialActivitiesData = [
   }
 ];
 
-export default function StudentActivities({ onNavigate }) {
+export default function StudentActivities({ onNavigate, hideHeader = false }) {
   const [activities, setActivities] = useState(initialActivitiesData);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState("all"); // 'all' | 'upcoming' | 'past' | 'registered' | 'bookmarked' | 'Technical' | 'Career' | 'Sports' | 'Cultural'
@@ -322,32 +322,34 @@ export default function StudentActivities({ onNavigate }) {
         </div>
       )}
 
-      {/* Top Header matching Dashboard */}
-      <header className="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white/80 px-6 py-3 backdrop-blur-sm">
-        <div>
-          <h1 className="text-[28px] font-bold tracking-tight text-slate-800">
-            Activities
-          </h1>
-          <p className="text-sm text-slate-500">
-            Explore and manage all events and activities.
-          </p>
-        </div>
-
-        <div className="flex items-center gap-3 sm:gap-4">
-          <div className="relative">
-            <button
-              type="button"
-              aria-label="Notifications"
-              className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 shadow-sm transition-colors hover:bg-slate-50 cursor-pointer"
-            >
-              <Bell size={18} />
-            </button>
-            <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#2563eb] px-1 text-[10px] font-semibold text-white">
-              3
-            </span>
+      {/* Top Header */}
+      {!hideHeader && (
+        <header className="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white/80 px-6 py-3 backdrop-blur-sm font-barlow">
+          <div>
+            <h1 className="text-[28px] font-bold tracking-tight text-slate-800 font-barlow">
+              Activities
+            </h1>
+            <p className="text-sm text-slate-500 font-barlow">
+              Explore and manage all events and activities.
+            </p>
           </div>
-        </div>
-      </header>
+
+          <div className="flex items-center gap-3 sm:gap-4">
+            <div className="relative">
+              <button
+                type="button"
+                aria-label="Notifications"
+                className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 shadow-sm transition-colors hover:bg-slate-50 cursor-pointer"
+              >
+                <Bell size={18} />
+              </button>
+              <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#2563eb] px-1 text-[10px] font-semibold text-white">
+                3
+              </span>
+            </div>
+          </div>
+        </header>
+      )}
 
       {/* Main Content Pane matching Dashboard padding & spacing */}
       <main className="space-y-3.5 p-4">
