@@ -211,8 +211,6 @@ export default function Attendances({ onNavigate, onOpenSidebar }) {
   const [selectedDept, setSelectedDept] = useState("All Departments");
   const [selectedProgram, setSelectedProgram] = useState("All Programs");
   const [selectedSem, setSelectedSem] = useState("All Semesters");
-  const [selectedCourse, setSelectedCourse] = useState("All Courses");
-  const [dateRange, setDateRange] = useState("May 15, 2024 - May 21, 2024");
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -231,20 +229,18 @@ export default function Attendances({ onNavigate, onOpenSidebar }) {
     return defaultStudentsAttendance.filter((s) => {
       if (selectedDept !== "All Departments" && s.department !== selectedDept) return false;
       if (selectedProgram !== "All Programs" && s.program !== selectedProgram) return false;
-      if (selectedCourse !== "All Courses" && s.course !== selectedCourse) return false;
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
         return (
           s.name.toLowerCase().includes(q) ||
           s.email.toLowerCase().includes(q) ||
           s.rollNo.toLowerCase().includes(q) ||
-          s.course.toLowerCase().includes(q) ||
           s.department.toLowerCase().includes(q)
         );
       }
       return true;
     });
-  }, [selectedDept, selectedProgram, selectedCourse, searchQuery]);
+  }, [selectedDept, selectedProgram, searchQuery]);
 
   const totalPages = Math.ceil(filteredData.length / itemsPerPage) || 1;
   const currentStudents = useMemo(() => {
@@ -255,11 +251,11 @@ export default function Attendances({ onNavigate, onOpenSidebar }) {
   const handleExport = () => {
     const csvContent =
       "data:text/csv;charset=utf-8," +
-      ["Roll No,Name,Email,Department,Program,Course,Attendance,Status"]
+      ["Roll No,Name,Email,Department,Program,Attendance,Status"]
         .concat(
           filteredData.map(
             (s) =>
-              `"${s.rollNo}","${s.name}","${s.email}","${s.department}","${s.program}","${s.course}","${s.percentage}% (${s.attended}/${s.total})","${s.status}"`
+              `"${s.rollNo}","${s.name}","${s.email}","${s.department}","${s.program}","${s.percentage}% (${s.attended}/${s.total})","${s.status}"`
           )
         )
         .join("\n");
@@ -308,82 +304,6 @@ export default function Attendances({ onNavigate, onOpenSidebar }) {
 
       {/* Scrollable Main Body */}
       <main className="flex-1 overflow-y-auto p-6 space-y-6">
-        {/* Banner Section */}
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#eaf8f1] via-[#edf9f3] to-[#e4f5ec] border border-[#d2f0e1] p-6 sm:p-7 shadow-sm">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 relative z-10">
-            <div className="flex items-start gap-4 max-w-xl">
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[#0da651] text-white shadow-lg shadow-emerald-600/20">
-                <CalendarCheck size={28} className="stroke-[2.2]" />
-              </div>
-              <div>
-                <h2 className="text-2xl font-extrabold text-gray-800 tracking-tight">
-                  Student Attendance <span className="text-[#0da651]">Overview</span>
-                </h2>
-                <p className="mt-1 text-xs sm:text-sm text-gray-600 leading-relaxed font-normal">
-                  Track and monitor student attendance in real-time.
-                </p>
-              </div>
-            </div>
-
-            {/* Banner Illustration SVG */}
-            <div className="hidden md:flex items-center shrink-0 pr-4">
-              <svg width="220" height="110" viewBox="0 0 230 115" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <filter id="cardShadow" x="5" y="15" width="150" height="100" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
-                    <feDropShadow dx="0" dy="8" stdDeviation="6" floodColor="#000000" floodOpacity="0.08" />
-                  </filter>
-                  <filter id="ringShadow" x="120" y="15" width="100" height="100" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
-                    <feDropShadow dx="0" dy="6" stdDeviation="5" floodColor="#000000" floodOpacity="0.1" />
-                  </filter>
-                  <clipPath id="cardHeaderClip">
-                    <rect x="15" y="25" width="125" height="80" rx="14" />
-                  </clipPath>
-                </defs>
-
-                {/* Base Card with Shadow */}
-                <g filter="url(#cardShadow)">
-                  <rect x="15" y="25" width="125" height="80" rx="14" fill="#ffffff" stroke="#e2e8f0" strokeWidth="1" />
-                  {/* Blue Header Bar */}
-                  <rect x="15" y="25" width="125" height="24" fill="#3b82f6" clipPath="url(#cardHeaderClip)" />
-                </g>
-
-                {/* Row 1 Icons */}
-                {/* Green Check 1 */}
-                <rect x="26" y="57" width="17" height="17" rx="4" fill="#ffffff" stroke="#10b981" strokeWidth="1.8" />
-                <path d="M30 65.5 L33.5 69 L38.5 62" stroke="#10b981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-
-                {/* Red Cross 2 */}
-                <rect x="48" y="57" width="17" height="17" rx="4" fill="#ffffff" stroke="#ef4444" strokeWidth="1.8" />
-                <path d="M52 61.5 L61 70.5 M61 61.5 L52 70.5" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" />
-
-                {/* Green Check 3 */}
-                <rect x="70" y="57" width="17" height="17" rx="4" fill="#ffffff" stroke="#10b981" strokeWidth="1.8" />
-                <path d="M74 65.5 L77.5 69 L82.5 62" stroke="#10b981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-
-                {/* Row 2 Icons */}
-                {/* Green Check 4 */}
-                <rect x="26" y="80" width="17" height="17" rx="4" fill="#ffffff" stroke="#10b981" strokeWidth="1.8" />
-                <path d="M30 88.5 L33.5 92 L38.5 85" stroke="#10b981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-
-                {/* Green Check 5 */}
-                <rect x="48" y="80" width="17" height="17" rx="4" fill="#ffffff" stroke="#10b981" strokeWidth="1.8" />
-                <path d="M52 88.5 L55.5 92 L60.5 85" stroke="#10b981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-
-                {/* Donut Ring Chart Overlapping Right Edge */}
-                <g filter="url(#ringShadow)">
-                  <circle cx="168" cy="65" r="32" fill="none" stroke="#f1f5f9" strokeWidth="14" />
-                  {/* Green Segment (55%) */}
-                  <circle cx="168" cy="65" r="32" fill="none" stroke="#0da651" strokeWidth="14" strokeDasharray="115 200" strokeDashoffset="25" strokeLinecap="butt" />
-                  {/* Orange Segment (20%) */}
-                  <circle cx="168" cy="65" r="32" fill="none" stroke="#f59e0b" strokeWidth="14" strokeDasharray="42 200" strokeDashoffset="-90" strokeLinecap="butt" />
-                  {/* Red Segment (15%) */}
-                  <circle cx="168" cy="65" r="32" fill="none" stroke="#ef4444" strokeWidth="14" strokeDasharray="30 200" strokeDashoffset="-132" strokeLinecap="butt" />
-                </g>
-              </svg>
-            </div>
-          </div>
-        </div>
-
         {/* Metric Cards Row */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* Card 1: Total Students */}
@@ -485,7 +405,7 @@ export default function Attendances({ onNavigate, onOpenSidebar }) {
 
         {/* Filter & Action Controls Bar */}
         <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 flex-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 flex-1">
             {/* Search Box */}
             <div className="relative flex items-center md:col-span-1">
               <Search size={15} className="absolute left-3 text-gray-400" />
@@ -545,34 +465,10 @@ export default function Attendances({ onNavigate, onOpenSidebar }) {
               </select>
               <ChevronDown size={14} className="pointer-events-none absolute right-3 text-gray-400" />
             </div>
-
-            {/* Course Filter */}
-            <div className="relative flex items-center">
-              <select
-                value={selectedCourse}
-                onChange={(e) => setSelectedCourse(e.target.value)}
-                className="w-full appearance-none rounded-xl border border-gray-200 bg-gray-50/50 py-2 px-3 pr-8 text-xs sm:text-sm font-medium text-gray-700 focus:bg-white focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 cursor-pointer"
-              >
-                <option>All Courses</option>
-                <option>Data Structures</option>
-                <option>Algorithms</option>
-                <option>Database Systems</option>
-                <option>Operating Systems</option>
-                <option>Computer Networks</option>
-                <option>Software Engineering</option>
-              </select>
-              <ChevronDown size={14} className="pointer-events-none absolute right-3 text-gray-400" />
-            </div>
           </div>
 
           {/* Right Action Buttons */}
           <div className="flex items-center gap-3 shrink-0">
-            {/* Date Range Selector */}
-            <div className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2 text-xs font-semibold text-gray-700 shadow-2xs">
-              <span>{dateRange}</span>
-              <CalendarDays size={15} className="text-gray-400" />
-            </div>
-
             {/* Export Button */}
             <button
               onClick={handleExport}
@@ -603,7 +499,6 @@ export default function Attendances({ onNavigate, onOpenSidebar }) {
                   <th className="py-4 px-6">ROLL NO. ↕</th>
                   <th className="py-4 px-6">DEPARTMENT ↕</th>
                   <th className="py-4 px-6">PROGRAM ↕</th>
-                  <th className="py-4 px-6">COURSE ↕</th>
                   <th className="py-4 px-6">ATTENDANCE ↕</th>
                   <th className="py-4 px-6">STATUS</th>
                   <th className="py-4 px-6 text-right">ACTIONS</th>
@@ -612,7 +507,7 @@ export default function Attendances({ onNavigate, onOpenSidebar }) {
               <tbody className="divide-y divide-gray-100 text-xs sm:text-sm">
                 {currentStudents.length === 0 ? (
                   <tr>
-                    <td colSpan={8} className="py-12 text-center text-gray-400">
+                    <td colSpan={7} className="py-12 text-center text-gray-400">
                       No student attendance records found.
                     </td>
                   </tr>
@@ -645,12 +540,6 @@ export default function Attendances({ onNavigate, onOpenSidebar }) {
                       {/* Program */}
                       <td className="py-4 px-6 font-medium text-gray-600">
                         {s.program}
-                      </td>
-
-                      {/* Course */}
-                      <td className="py-4 px-6">
-                        <p className="font-semibold text-gray-800">{s.course}</p>
-                        <p className="text-[11px] text-gray-400 font-medium">{s.courseCode}</p>
                       </td>
 
                       {/* Attendance Progress */}

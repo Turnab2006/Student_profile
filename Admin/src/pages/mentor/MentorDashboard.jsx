@@ -10,6 +10,7 @@ import MentorCalendar from '../../components/mentor/MentorCalendar';
 import MentorMenteeChart from '../../components/mentor/MentorMenteeChart';
 import MentorProfilePage from '../../components/mentor/MentorProfilePage';
 import MentorMentees from './MentorMentees';
+import MentorMessages from './MentorMessages';
 import MentorAttendance from './MentorAttendance';
 import MentorResults from './MentorResults';
 import MentorNotices from './MentorNotices';
@@ -99,6 +100,9 @@ export default function MentorDashboard({ user, onLogout }) {
       }
       if (activeTab === 'mentees') {
         return <MentorMentees />;
+      }
+      if (activeTab === 'messages') {
+        return <MentorMessages hideHeader={true} />;
       }
       if (activeTab === 'attendance') {
         return <MentorAttendance initialUpload={startWithUpload} />;

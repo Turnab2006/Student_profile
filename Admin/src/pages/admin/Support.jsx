@@ -125,56 +125,6 @@ export default function Support({ onNavigate, onOpenSidebar, isMentor = false })
 
       <main className="flex-1 overflow-y-auto p-4 lg:p-5">
         <div className="max-w-[1500px] mx-auto space-y-4">
-          <section className="rounded-2xl border border-gray-100 bg-gradient-to-r from-[#e8f7ea] via-[#eefbf0] to-[#dff4e7] shadow-sm p-5 lg:p-6 overflow-hidden relative">
-            <div className="max-w-xl">
-              <h2 className="text-xl lg:text-2xl font-semibold text-gray-800">Support Center</h2>
-              <p className="mt-2 text-sm text-gray-500 max-w-lg">
-                Find help articles, contact support, and raise tickets for any issue in the dashboard.
-              </p>
-            </div>
-            <div className="pointer-events-none absolute right-4 top-4 hidden md:block">
-              <div className="relative h-36 w-52">
-                <div className="absolute inset-x-6 top-5 h-24 rounded-2xl bg-white/85 border border-white shadow-lg" />
-                <div className="absolute left-10 top-0 h-8 w-40 rounded-t-xl bg-white/90 border border-white shadow-sm" />
-                <div className="absolute right-0 top-8 h-14 w-14 rounded-full bg-primary/10 blur-[0.5px]" />
-                <div className="absolute left-16 top-12 h-20 w-28 rounded-2xl bg-white/90 border border-white shadow-md flex items-center justify-center text-[#0da651]">
-                  <Headset size={28} />
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <div className="grid grid-cols-1 lg:grid-cols-[240px_minmax(0,1fr)] gap-4 items-start">
-            <aside className="bg-white rounded-2xl border border-gray-100 shadow-sm p-3 lg:sticky lg:top-4">
-              <p className="px-3 pb-2 text-[10px] font-semibold tracking-widest text-gray-400 uppercase">Categories</p>
-              <div className="space-y-1">
-                {categories.map((item) => (
-                  <button
-                    key={item}
-                    type="button"
-                    onClick={() => setSelectedCategory(item)}
-                    className={`w-full flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition-colors cursor-pointer ${
-                      selectedCategory === item ? "bg-[#0da651]/10 text-[#0da651]" : "text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-                    }`}
-                  >
-                    <span>{item}</span>
-                    {selectedCategory === item ? <CircleHelp size={14} /> : null}
-                  </button>
-                ))}
-              </div>
-
-              <div className="mt-4 rounded-2xl bg-green-50/70 p-4 border border-green-100">
-                <div className="flex items-center gap-2 text-[#0da651] mb-2">
-                  <Clock3 size={16} />
-                  <p className="text-sm font-semibold">Support Hours</p>
-                </div>
-                <p className="text-xs leading-5 text-gray-500">
-                  Monday to Friday, 9:00 AM to 6:00 PM. Emergency system issues are monitored 24/7.
-                </p>
-              </div>
-            </aside>
-
-            <div className="space-y-4">
               <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
                 {filteredQuickActions.map((item) => {
                   const Icon = item.icon;
@@ -355,8 +305,6 @@ export default function Support({ onNavigate, onOpenSidebar, isMentor = false })
                   </section>
                 </div>
               </section>
-            </div>
-          </div>
         </div>
       </main>
     </div>
