@@ -21,10 +21,42 @@ import {
 import AdminProfile from "../../components/admin/AdminProfile";
 
 const summaryCards = [
-  { label: "Total Programs", value: "4", icon: GraduationCap, bg: "bg-emerald-50", iconColor: "text-emerald-600" },
-  { label: "Academic Sessions", value: "3", icon: CalendarDays, bg: "bg-violet-50", iconColor: "text-violet-600" },
-  { label: "Departments", value: "8", icon: School, bg: "bg-orange-50", iconColor: "text-orange-500" },
-  { label: "Total Students", value: "2,847", icon: Users, bg: "bg-blue-50", iconColor: "text-blue-600" },
+  {
+    label: "Total Programs",
+    value: "4",
+    subtext: "B.Tech, M.Tech, BCA, MCA",
+    icon: GraduationCap,
+    bg: "bg-emerald-50 text-emerald-600 border-emerald-100",
+    badge: "4 Degree Programs",
+    badgeBg: "bg-emerald-100/80 text-emerald-700",
+  },
+  {
+    label: "Academic Sessions",
+    value: "3",
+    subtext: "2022 - 2025 Active Terms",
+    icon: CalendarDays,
+    bg: "bg-violet-50 text-violet-600 border-violet-100",
+    badge: "Session 2024-25",
+    badgeBg: "bg-violet-100/80 text-violet-700",
+  },
+  {
+    label: "Departments",
+    value: "8",
+    subtext: "Engineering & Sciences",
+    icon: School,
+    bg: "bg-orange-50 text-orange-500 border-orange-100",
+    badge: "8 Active Depts",
+    badgeBg: "bg-orange-100/80 text-orange-700",
+  },
+  {
+    label: "Total Students",
+    value: "2,847",
+    subtext: "Enrolled Across Batches",
+    icon: Users,
+    bg: "bg-blue-50 text-blue-600 border-blue-100",
+    badge: "+12.5% Growth",
+    badgeBg: "bg-blue-100/80 text-blue-700",
+  },
 ];
 
 const overviewData = [
@@ -88,17 +120,21 @@ function FilterSelect({ label, options }) {
   );
 }
 
-function SummaryCard({ icon: Icon, label, value, bg, iconColor }) {
+function SummaryCard({ icon: Icon, label, value, subtext, bg, badge, badgeBg }) {
   return (
-    <div className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm h-full flex flex-col justify-between">
-      <div className="flex items-start gap-3">
-        <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl ${bg}`}>
-          <Icon size={20} className={iconColor} />
+    <div className="rounded-2xl border border-gray-100 bg-gray-50/50 p-3.5 sm:p-4 hover:bg-white hover:border-green-200 hover:shadow-xs transition-all flex flex-col justify-between">
+      <div className="flex items-center justify-between gap-2">
+        <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border ${bg}`}>
+          <Icon size={19} />
         </div>
-        <div>
-          <p className="text-[28px] font-semibold leading-none text-gray-800">{value}</p>
-          <p className="mt-2 text-xs font-medium text-gray-500">{label}</p>
-        </div>
+        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${badgeBg}`}>
+          {badge}
+        </span>
+      </div>
+      <div className="mt-3">
+        <p className="text-2xl font-extrabold tracking-tight text-gray-800 leading-tight">{value}</p>
+        <p className="text-xs font-bold text-gray-700 mt-1">{label}</p>
+        <p className="text-[11px] text-gray-400 font-medium mt-0.5">{subtext}</p>
       </div>
     </div>
   );
@@ -317,11 +353,19 @@ export default function Semesters({ onNavigate, onOpenSidebar }) {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {summaryCards.map((card) => (
                     <SummaryCard key={card.label} {...card} />
                   ))}
                 </div>
+              </div>
+
+              <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-xs">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="font-medium text-gray-700">Academic Status: <strong className="text-emerald-600 font-semibold">Active &amp; Operational</strong></span>
+                </div>
+                <span className="text-[11px] text-gray-400 font-medium hidden sm:inline">Session 2024-25</span>
               </div>
             </section>
 
@@ -337,22 +381,40 @@ export default function Semesters({ onNavigate, onOpenSidebar }) {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-[220px_1fr] gap-4 items-center pt-2">
+                <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-5 items-center pt-2">
                   <DonutChart />
                   <div className="space-y-3">
                     {overviewData.map((item) => (
-                      <div key={item.label} className="flex items-center justify-between gap-3 text-sm">
-                        <div className="flex items-center gap-2">
-                          <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: item.color }} />
-                          <span className="text-gray-600">{item.label}</span>
+                      <div key={item.label} className="space-y-1">
+                        <div className="flex items-center justify-between text-xs sm:text-sm">
+                          <div className="flex items-center gap-2">
+                            <span className="h-2.5 w-2.5 rounded-full shrink-0" style={{ backgroundColor: item.color }} />
+                            <span className="font-semibold text-gray-700">{item.label}</span>
+                          </div>
+                          <p className="font-bold text-gray-800">
+                            {item.value.toLocaleString()}{" "}
+                            <span className="text-[11px] font-normal text-gray-400">({item.percent}%)</span>
+                          </p>
                         </div>
-                        <div className="text-right">
-                          <p className="font-semibold text-gray-800">{item.value.toLocaleString()} <span className="text-xs text-gray-400">({item.percent}%)</span></p>
+                        <div className="h-1.5 w-full rounded-full bg-gray-100 overflow-hidden">
+                          <div
+                            className="h-full rounded-full transition-all duration-500"
+                            style={{ width: `${item.percent}%`, backgroundColor: item.color }}
+                          />
                         </div>
                       </div>
                     ))}
                   </div>
                 </div>
+              </div>
+
+              <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-xs">
+                <div className="flex items-center gap-2">
+                  <span className="font-medium text-gray-700">Seat Capacity: <strong className="text-gray-900 font-bold">2,847 / 3,000 Seats</strong></span>
+                </div>
+                <span className="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100">
+                  94.9% Occupancy
+                </span>
               </div>
             </section>
           </div>

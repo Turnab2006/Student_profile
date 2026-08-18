@@ -77,7 +77,11 @@ export default function AdminProfile({
 
   const handleLogoutClick = () => {
     setProfileOpen(false);
-    alert("Logged out successfully!");
+    if (onNavigate) {
+      onNavigate("logout");
+    }
+    const event = new CustomEvent("app-navigate", { detail: "logout" });
+    window.dispatchEvent(event);
   };
 
   return (

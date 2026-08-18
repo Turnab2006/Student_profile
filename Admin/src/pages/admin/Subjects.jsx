@@ -188,61 +188,6 @@ export default function Subjects({ onNavigate, subjectsList = [], setSubjectsLis
 
       {/* Scrollable Main Content */}
       <main className="flex-1 overflow-y-auto p-6 space-y-6">
-        {/* Banner Section */}
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#eaf8f1] via-[#edf9f3] to-[#e4f5ec] border border-[#d2f0e1] p-6 sm:p-7 shadow-sm">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 relative z-10">
-            <div className="flex items-start gap-4 max-w-xl">
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[#0da651] text-white shadow-lg shadow-emerald-600/20">
-                <BookOpen size={28} className="stroke-[2.2]" />
-              </div>
-              <div>
-                <h2 className="text-2xl font-extrabold text-gray-800 tracking-tight">
-                  Subjects <span className="text-[#0da651]">Management</span>
-                </h2>
-                <p className="mt-1 text-xs sm:text-sm text-gray-600 leading-relaxed font-normal">
-                  Manage and organize subjects across programs, years, departments and semesters.
-                </p>
-              </div>
-            </div>
-
-            {/* Illustration Graphic */}
-            <div className="hidden md:flex items-center shrink-0 pr-4">
-              <svg width="220" height="110" viewBox="0 0 240 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="drop-shadow-md">
-                {/* Book 1 (Blue bottom) */}
-                <rect x="20" y="80" width="120" height="20" rx="4" fill="#3b82f6" />
-                <rect x="25" y="84" width="110" height="12" rx="2" fill="#60a5fa" />
-                <rect x="20" y="80" width="12" height="20" rx="2" fill="#1d4ed8" />
-
-                {/* Book 2 (Orange middle) */}
-                <rect x="35" y="58" width="110" height="18" rx="4" fill="#f97316" />
-                <rect x="40" y="62" width="100" height="10" rx="2" fill="#fb923c" />
-                <rect x="35" y="58" width="10" height="18" rx="2" fill="#c2410c" />
-
-                {/* Book 3 (Green top) */}
-                <rect x="45" y="38" width="100" height="16" rx="3" fill="#10b981" />
-                <rect x="50" y="42" width="90" height="8" rx="1.5" fill="#34d399" />
-                <rect x="45" y="38" width="8" height="16" rx="1.5" fill="#047857" />
-
-                {/* Graduation Cap */}
-                <path d="M140 30 L195 10 L250 30 L195 50 Z" fill="#1e293b" />
-                <polygon points="195,10 245,28 195,46 145,28" fill="#334155" />
-                <rect x="175" y="38" width="40" height="22" rx="4" fill="#1e293b" />
-                {/* Tassel */}
-                <path d="M235 30 L235 55 L242 62" stroke="#eab308" strokeWidth="2.5" strokeLinecap="round" />
-                <circle cx="242" cy="64" r="3" fill="#eab308" />
-
-                {/* Plant Pot */}
-                <path d="M195 85 L203 105 L225 105 L233 85 Z" fill="#065f46" />
-                <ellipse cx="214" cy="85" rx="19" ry="4" fill="#047857" />
-                {/* Leaves */}
-                <path d="M214 85 Q200 65 190 70 Q205 80 214 85 Z" fill="#10b981" />
-                <path d="M214 85 Q228 60 238 68 Q223 78 214 85 Z" fill="#34d399" />
-                <path d="M214 85 Q214 55 218 58 Q216 75 214 85 Z" fill="#059669" />
-              </svg>
-            </div>
-          </div>
-        </div>
-
         {/* Filter Controls Bar */}
         <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 flex-1">
