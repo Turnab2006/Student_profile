@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Bell,
   Calendar,
@@ -18,8 +18,10 @@ import {
   Award,
   Sparkles,
   Search,
-  Filter
+  Filter,
+  Users
 } from "lucide-react";
+import SemesterResultDetail from "./SemesterResultDetail";
 
 export const semesterResultsData = [
   {
@@ -28,9 +30,10 @@ export const semesterResultsData = [
     semester: 1,
     sgpa: "9.20",
     grade: "A",
-    gradeBadgeClass: "bg-emerald-100 text-emerald-700",
-    rowBgClass: "bg-[#f4f9ff] hover:bg-[#ebf4ff]",
-    circleBadgeClass: "bg-blue-100 text-blue-600",
+    status: "Pass",
+    remarksBadgeClass: "bg-[#f3f0ff] text-[#7c3aed]",
+    rowBgClass: "bg-[#f8f7ff] hover:bg-[#f0efff] border border-indigo-100/50",
+    circleBadgeClass: "bg-[#ede9fe] text-[#7c3aed]",
     quoteColor: "text-blue-500",
     remark: "Excellent Result",
     academicYear: "2022 - 2023",
@@ -50,9 +53,10 @@ export const semesterResultsData = [
     semester: 2,
     sgpa: "9.01",
     grade: "A",
-    gradeBadgeClass: "bg-emerald-100 text-emerald-700",
-    rowBgClass: "bg-[#f4f9ff] hover:bg-[#ebf4ff]",
-    circleBadgeClass: "bg-blue-100 text-blue-600",
+    status: "Pass",
+    remarksBadgeClass: "bg-[#f3f0ff] text-[#7c3aed]",
+    rowBgClass: "bg-[#f8f7ff] hover:bg-[#f0efff] border border-indigo-100/50",
+    circleBadgeClass: "bg-[#ede9fe] text-[#7c3aed]",
     quoteColor: "text-emerald-500",
     remark: "Excellent Result",
     academicYear: "2022 - 2023",
@@ -71,9 +75,10 @@ export const semesterResultsData = [
     semester: 3,
     sgpa: "9.12",
     grade: "A",
-    gradeBadgeClass: "bg-emerald-100 text-emerald-700",
-    rowBgClass: "bg-[#f4fbf7] hover:bg-[#e7f7ed]",
-    circleBadgeClass: "bg-teal-100 text-teal-700",
+    status: "Pass",
+    remarksBadgeClass: "bg-[#edf9f0] text-[#16a34a]",
+    rowBgClass: "bg-[#f2faf5] hover:bg-[#e7f7ed] border border-emerald-100/50",
+    circleBadgeClass: "bg-[#dcfce7] text-[#16a34a]",
     quoteColor: "text-emerald-500",
     remark: "Excellent Result",
     academicYear: "2023 - 2024",
@@ -92,11 +97,12 @@ export const semesterResultsData = [
     semester: 4,
     sgpa: "8.88",
     grade: "A",
-    gradeBadgeClass: "bg-emerald-100 text-emerald-700",
-    rowBgClass: "bg-[#f4fbf7] hover:bg-[#e7f7ed]",
-    circleBadgeClass: "bg-emerald-100 text-emerald-700",
+    status: "Pass",
+    remarksBadgeClass: "bg-[#edf9f0] text-[#16a34a]",
+    rowBgClass: "bg-[#f2faf5] hover:bg-[#e7f7ed] border border-emerald-100/50",
+    circleBadgeClass: "bg-[#dcfce7] text-[#16a34a]",
     quoteColor: "text-emerald-500",
-    remark: "Excellent Result",
+    remark: "Good Result",
     academicYear: "2023 - 2024",
     totalCredits: 24,
     subjects: [
@@ -113,9 +119,10 @@ export const semesterResultsData = [
     semester: 5,
     sgpa: "9.70",
     grade: "A",
-    gradeBadgeClass: "bg-emerald-100 text-emerald-700",
-    rowBgClass: "bg-[#fffbf0] hover:bg-[#fdf4db]",
-    circleBadgeClass: "bg-amber-100 text-amber-700",
+    status: "Pass",
+    remarksBadgeClass: "bg-[#fef3c7] text-[#d97706]",
+    rowBgClass: "bg-[#fffbf2] hover:bg-[#fdf3dc] border border-amber-100/50",
+    circleBadgeClass: "bg-[#fef3c7] text-[#d97706]",
     quoteColor: "text-amber-500",
     remark: "Excellent Result",
     academicYear: "2024 - 2025",
@@ -134,11 +141,12 @@ export const semesterResultsData = [
     semester: 6,
     sgpa: "8.20",
     grade: "A",
-    gradeBadgeClass: "bg-emerald-100 text-emerald-700",
-    rowBgClass: "bg-[#fffbf0] hover:bg-[#fdf4db]",
-    circleBadgeClass: "bg-amber-100 text-amber-700",
+    status: "Pass",
+    remarksBadgeClass: "bg-[#fef3c7] text-[#d97706]",
+    rowBgClass: "bg-[#fffbf2] hover:bg-[#fdf3dc] border border-amber-100/50",
+    circleBadgeClass: "bg-[#fef3c7] text-[#d97706]",
     quoteColor: "text-amber-500",
-    remark: "Excellent Result",
+    remark: "Good Result",
     academicYear: "2024 - 2025",
     totalCredits: 22,
     subjects: [
@@ -154,9 +162,10 @@ export const semesterResultsData = [
     semester: 7,
     sgpa: "9.50",
     grade: "A",
-    gradeBadgeClass: "bg-emerald-100 text-emerald-700",
-    rowBgClass: "bg-[#fff5f5] hover:bg-[#fee2e2]",
-    circleBadgeClass: "bg-rose-100 text-rose-700",
+    status: "Pass",
+    remarksBadgeClass: "bg-[#e0f2fe] text-[#0284c7]",
+    rowBgClass: "bg-[#f0f9ff] hover:bg-[#e0f2fe] border border-sky-100/50",
+    circleBadgeClass: "bg-[#e0f2fe] text-[#0284c7]",
     quoteColor: "text-rose-500",
     remark: "Excellent Result",
     academicYear: "2025 - 2026",
@@ -174,9 +183,10 @@ export const semesterResultsData = [
     semester: 8,
     sgpa: "9.60",
     grade: "A",
-    gradeBadgeClass: "bg-emerald-100 text-emerald-700",
-    rowBgClass: "bg-[#fff5f5] hover:bg-[#fee2e2]",
-    circleBadgeClass: "bg-rose-100 text-rose-700",
+    status: "Pass",
+    remarksBadgeClass: "bg-[#e0f2fe] text-[#0284c7]",
+    rowBgClass: "bg-[#f0f9ff] hover:bg-[#e0f2fe] border border-sky-100/50",
+    circleBadgeClass: "bg-[#e0f2fe] text-[#0284c7]",
     quoteColor: "text-rose-500",
     remark: "Excellent Result",
     academicYear: "2025 - 2026",
@@ -190,11 +200,31 @@ export const semesterResultsData = [
   }
 ];
 
-export default function StudentResults({ hideHeader = false }) {
+export default function StudentResults({
+  activeSemester = null,
+  onSelectSemester = null,
+}) {
   const [selectedFilter, setSelectedFilter] = useState("all");
   const [toastMessage, setToastMessage] = useState(null);
-  const [selectedSemesterModal, setSelectedSemesterModal] = useState(null);
+  const [internalActiveSemester, setInternalActiveSemester] = useState(null);
   const [filterDropdownOpen, setFilterDropdownOpen] = useState(false);
+
+  // Controlled vs uncontrolled mode
+  const isControlled = onSelectSemester !== null && onSelectSemester !== undefined;
+  const activeDetailSemester = isControlled ? activeSemester : internalActiveSemester;
+
+  const setActiveDetailSemester = (sem) => {
+    if (isControlled) {
+      onSelectSemester(sem);
+    } else {
+      setInternalActiveSemester(sem);
+    }
+  };
+
+  // Auto-scroll to top whenever view changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [activeDetailSemester?.semester]);
 
   function showToast(msg) {
     setToastMessage(msg);
@@ -220,9 +250,9 @@ export default function StudentResults({ hideHeader = false }) {
     return true;
   });
 
-  const totalSems = filteredResults.length;
+  const totalSems = 8;
   const avgSGPA = (
-    filteredResults.reduce((acc, curr) => acc + parseFloat(curr.sgpa), 0) / (totalSems || 1)
+    filteredResults.reduce((acc, curr) => acc + parseFloat(curr.sgpa), 0) / (filteredResults.length || 1)
   ).toFixed(2);
 
   const highestSem = filteredResults.reduce((prev, curr) => {
@@ -230,7 +260,7 @@ export default function StudentResults({ hideHeader = false }) {
   }, filteredResults[0] || semesterResultsData[4]);
 
   return (
-    <div className="flex-1 h-full w-full min-h-0 bg-[#f8fafc] text-slate-800 flex flex-col overflow-hidden font-sans">
+    <div className="p-2 sm:px-5 sm:py-3.5 space-y-4 font-['Roboto',sans-serif] w-full max-w-[1600px] mx-auto">
       {/* Toast Alert */}
       {toastMessage && (
         <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-emerald-600 text-white px-5 py-3.5 rounded-xl shadow-2xl animate-in fade-in slide-in-from-bottom-4 duration-200">
@@ -238,398 +268,311 @@ export default function StudentResults({ hideHeader = false }) {
           <span className="text-sm font-medium">{toastMessage}</span>
           <button
             onClick={() => setToastMessage(null)}
-            className="ml-2 text-emerald-200 hover:text-white"
+            className="ml-2 text-emerald-200 hover:text-white cursor-pointer"
           >
             <X size={16} />
           </button>
         </div>
       )}
 
-      {/* Top Header */}
-      {!hideHeader && (
-        <header className="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white/80 px-6 py-3 backdrop-blur-sm font-barlow">
-          <div>
-            <h1 className="text-[28px] font-bold tracking-tight text-slate-800 font-barlow">
-              Results
-            </h1>
-            <p className="text-sm text-slate-500 font-barlow">
-              An overview of your academic performance and outcomes
-            </p>
-          </div>
+      {/* Conditional In-Page View: Dedicated Result Detail Page OR Main Semester Table */}
+      {activeDetailSemester ? (
+        <SemesterResultDetail
+          semester={activeDetailSemester}
+          allSemesters={semesterResultsData}
+          onBack={() => setActiveDetailSemester(null)}
+          onSelectSemester={setActiveDetailSemester}
+          onDownload={handleDownload}
+        />
+      ) : (
+        /* Main Semester Results Card Container */
+        <div className="bg-white rounded-3xl border border-slate-200/90 shadow-md shadow-slate-200/60 p-5 sm:p-7 lg:p-8 space-y-6 animate-in fade-in duration-200">
+          
+          {/* Card Header with Icon, Title, and Filter Dropdown */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-xl bg-[#eef5ff] text-[#1d61e7] shrink-0 shadow-2xs">
+                <FileText size={20} className="stroke-[2.2]" />
+              </div>
+              <h2 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight">
+                Semester Results
+              </h2>
+            </div>
 
-          <div className="flex items-center gap-3 sm:gap-4">
+            {/* Dropdown Filter */}
             <div className="relative">
               <button
                 type="button"
-                aria-label="Notifications"
-                className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 shadow-sm transition-colors hover:bg-slate-50 cursor-pointer"
+                onClick={() => setFilterDropdownOpen((prev) => !prev)}
+                className="flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs sm:text-sm font-semibold text-slate-700 shadow-2xs transition-all cursor-pointer"
               >
-                <Bell size={18} />
+                <Calendar size={14} className="text-[#1d61e7]" />
+                <span>
+                  {selectedFilter === "all"
+                    ? "All Semesters"
+                    : selectedFilter === "year1"
+                      ? "Year 1"
+                      : selectedFilter === "year2"
+                        ? "Year 2"
+                        : selectedFilter === "year3"
+                          ? "Year 3"
+                          : selectedFilter === "year4"
+                            ? "Year 4"
+                            : `Semester ${selectedFilter.replace("sem", "")}`}
+                </span>
+                <ChevronDown size={14} className="text-slate-400" />
               </button>
-              <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#2563eb] px-1 text-[10px] font-semibold text-white">
-                3
-              </span>
-            </div>
-          </div>
-        </header>
-      )}
 
-      {/* Scrollable Main Content */}
-      <main className="flex-1 overflow-y-auto overflow-x-hidden p-4">
-        <div className="w-full space-y-4 pb-12">
-          {/* Main Semester Results Card Container */}
-          <div className="bg-white rounded-2xl border border-slate-200/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] p-6 sm:p-8 space-y-6">
-            {/* Card Header with Icon, Title, and Filter Dropdown */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
-                  <FileText size={20} className="stroke-[2.2]" />
-                </div>
-                <h2 className="text-lg sm:text-xl font-bold text-slate-900">
-                  Semester Results
-                </h2>
-              </div>
-
-              {/* Dropdown Filter */}
-              <div className="relative">
-                <button
-                  type="button"
-                  onClick={() => setFilterDropdownOpen((prev) => !prev)}
-                  className="flex items-center gap-2.5 px-4 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs sm:text-sm font-semibold text-slate-700 shadow-sm transition-all"
-                >
-                  <Calendar size={15} className="text-slate-500" />
-                  <span>
-                    {selectedFilter === "all"
-                      ? "All Semesters"
-                      : selectedFilter === "year1"
-                        ? "Year 1"
-                        : selectedFilter === "year2"
-                          ? "Year 2"
-                          : selectedFilter === "year3"
-                            ? "Year 3"
-                            : selectedFilter === "year4"
-                              ? "Year 4"
-                              : `Semester ${selectedFilter.replace("sem", "")}`}
-                  </span>
-                  <ChevronDown size={14} className="text-slate-400" />
-                </button>
-
-                {filterDropdownOpen && (
-                  <div className="absolute right-0 top-full mt-2 w-48 rounded-xl border border-slate-100 bg-white p-1.5 shadow-xl z-30 animate-in fade-in zoom-in-95 duration-100">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSelectedFilter("all");
-                        setFilterDropdownOpen(false);
-                      }}
-                      className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold ${selectedFilter === "all" ? "bg-blue-50 text-blue-600" : "text-slate-700 hover:bg-slate-50"
-                        }`}
-                    >
-                      All Semesters
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSelectedFilter("year1");
-                        setFilterDropdownOpen(false);
-                      }}
-                      className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold ${selectedFilter === "year1" ? "bg-blue-50 text-blue-600" : "text-slate-700 hover:bg-slate-50"
-                        }`}
-                    >
-                      Year 1 (Sem 1 & 2)
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSelectedFilter("year2");
-                        setFilterDropdownOpen(false);
-                      }}
-                      className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold ${selectedFilter === "year2" ? "bg-blue-50 text-blue-600" : "text-slate-700 hover:bg-slate-50"
-                        }`}
-                    >
-                      Year 2 (Sem 3 & 4)
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSelectedFilter("year3");
-                        setFilterDropdownOpen(false);
-                      }}
-                      className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold ${selectedFilter === "year3" ? "bg-blue-50 text-blue-600" : "text-slate-700 hover:bg-slate-50"
-                        }`}
-                    >
-                      Year 3 (Sem 5 & 6)
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSelectedFilter("year4");
-                        setFilterDropdownOpen(false);
-                      }}
-                      className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold ${selectedFilter === "year4" ? "bg-blue-50 text-blue-600" : "text-slate-700 hover:bg-slate-50"
-                        }`}
-                    >
-                      Year 4 (Sem 7 & 8)
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* 4 Top KPI Cards matching screenshot */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {/* 1. Total Semesters */}
-              <div className="p-4 sm:p-5 rounded-2xl border border-slate-100 bg-[#fbfcfe] flex items-center gap-4 shadow-sm hover:border-blue-200 transition-colors">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
-                  <GraduationCap size={24} />
-                </div>
-                <div>
-                  <p className="text-xs font-medium text-slate-400">Total Semesters</p>
-                  <p className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-0.5">
-                    {totalSems}
-                  </p>
-                </div>
-              </div>
-
-              {/* 2. Average SGPA */}
-              <div className="p-4 sm:p-5 rounded-2xl border border-slate-100 bg-[#fbfcfe] flex items-center gap-4 shadow-sm hover:border-emerald-200 transition-colors">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
-                  <TrendingUp size={24} />
-                </div>
-                <div>
-                  <p className="text-xs font-medium text-slate-400">Average SGPA</p>
-                  <p className="text-2xl sm:text-3xl font-extrabold text-emerald-600 mt-0.5">
-                    {avgSGPA}
-                  </p>
-                </div>
-              </div>
-
-              {/* 3. Highest SGPA */}
-              <div className="p-4 sm:p-5 rounded-2xl border border-slate-100 bg-[#fbfcfe] flex items-center gap-4 shadow-sm hover:border-purple-200 transition-colors">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-purple-50 text-purple-600">
-                  <Trophy size={24} />
-                </div>
-                <div>
-                  <p className="text-xs font-medium text-slate-400">Highest SGPA</p>
-                  <p className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-0.5">
-                    {highestSem.sgpa}
-                  </p>
-                  <p className="text-[11px] font-medium text-purple-600">Semester {highestSem.semester}</p>
-                </div>
-              </div>
-
-              {/* 4. Overall Grade */}
-              <div className="p-4 sm:p-5 rounded-2xl border border-slate-100 bg-[#fbfcfe] flex items-center gap-4 shadow-sm hover:border-amber-200 transition-colors">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-500">
-                  <Award size={24} />
-                </div>
-                <div>
-                  <p className="text-xs font-medium text-slate-400">Overall Grade</p>
-                  <p className="text-2xl sm:text-3xl font-extrabold text-amber-600 mt-0.5">
-                    A
-                  </p>
-                  <p className="text-[11px] font-medium text-slate-400">Excellent</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Results Data Table matching exact design */}
-            <div className="overflow-x-auto rounded-xl">
-              <table className="w-full text-left text-sm border-separate border-spacing-y-2">
-                <thead>
-                  <tr className="text-xs font-semibold text-slate-500 tracking-wide">
-                    <th className="py-3 px-4 w-12">#</th>
-                    <th className="py-3 px-4">Year</th>
-                    <th className="py-3 px-4">Semester</th>
-                    <th className="py-3 px-4">
-                      <div className="flex items-center gap-1">
-                        <span>SGPA</span>
-                        <Info size={13} className="text-slate-400" />
-                      </div>
-                    </th>
-                    <th className="py-3 px-4 text-center">Overall Grade</th>
-                    <th className="py-3 px-4 text-center">Action</th>
-                    <th className="py-3 px-4">Remark</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredResults.map((sem) => (
-                    <tr
-                      key={sem.id}
-                      onClick={() => setSelectedSemesterModal(sem)}
-                      className={`${sem.rowBgClass} transition-colors rounded-xl cursor-pointer group`}
-                    >
-                      {/* Number badge */}
-                      <td className="py-3.5 px-4 rounded-l-xl">
-                        <span className={`flex h-7 w-7 items-center justify-center rounded-full ${sem.circleBadgeClass} text-xs font-bold shadow-xs`}>
-                          {sem.id}
-                        </span>
-                      </td>
-
-                      {/* Year */}
-                      <td className="py-3.5 px-4 font-semibold text-slate-700">
-                        {sem.year}
-                      </td>
-
-                      {/* Semester */}
-                      <td className="py-3.5 px-4 font-semibold text-slate-700">
-                        {sem.semester}
-                      </td>
-
-                      {/* SGPA */}
-                      <td className="py-3.5 px-4 font-bold text-slate-900">
-                        {sem.sgpa}
-                      </td>
-
-                      {/* Overall Grade Badge */}
-                      <td className="py-3.5 px-4 text-center">
-                        <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold">
-                          {sem.grade}
-                        </span>
-                      </td>
-
-                      {/* Action Button */}
-                      <td className="py-3.5 px-4 text-center">
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDownload(sem);
-                          }}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-emerald-300 bg-white hover:bg-emerald-50 text-emerald-600 text-xs font-semibold transition-all shadow-2xs active:scale-95 cursor-pointer"
-                        >
-                          <Download size={13} className="stroke-[2.5]" />
-                          <span>Download</span>
-                        </button>
-                      </td>
-
-                      {/* Remark with Quote Icon */}
-                      <td className="py-3.5 px-4 rounded-r-xl">
-                        <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
-                          <span className={`${sem.quoteColor} text-base leading-none font-serif`}>“</span>
-                          <span>{sem.remark}</span>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            {/* Grading System Footer Bar matching screenshot */}
-            <div className="flex items-center gap-3 p-4 rounded-xl bg-blue-50/60 border border-blue-100 text-slate-600 text-xs sm:text-xs">
-              <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-blue-600">
-                <Info size={16} />
-              </div>
-              <div className="flex flex-wrap items-center gap-x-2 gap-y-1 font-medium">
-                <span className="font-bold text-blue-700">Grading System:</span>
-                <span>O (Outstanding) 10.0 – 9.0</span>
-                <span className="text-slate-300">|</span>
-                <span>A+ (Excellent) 8.9 – 8.0</span>
-                <span className="text-slate-300">|</span>
-                <span>A (Very Good) 7.9 – 7.0</span>
-                <span className="text-slate-300">|</span>
-                <span>B (Good) 6.9 – 6.0</span>
-                <span className="text-slate-300">|</span>
-                <span>C (Average) 5.9 – 5.0</span>
-                <span className="text-slate-300">|</span>
-                <span>F (Fail) Below 5.0</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
-
-      {/* SEMESTER MARKS BREAKDOWN MODAL */}
-      {selectedSemesterModal && (
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl max-w-3xl w-full shadow-2xl border border-slate-100 overflow-hidden my-8 animate-in fade-in zoom-in-95 duration-150">
-            {/* Modal Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50/60">
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-100 text-blue-600">
-                  <Award size={20} />
-                </div>
-                <div>
-                  <h3 className="text-base font-bold text-slate-900">
-                    Semester {selectedSemesterModal.semester} Grade Card
-                  </h3>
-                  <p className="text-xs text-slate-500">
-                    Academic Year {selectedSemesterModal.academicYear} • SGPA: <strong className="text-blue-600">{selectedSemesterModal.sgpa}</strong>
-                  </p>
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={() => setSelectedSemesterModal(null)}
-                className="h-8 w-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500"
-              >
-                <X size={16} />
-              </button>
-            </div>
-
-            {/* Subject Marks Table */}
-            <div className="p-6 overflow-x-auto space-y-4">
-              <table className="w-full text-left text-sm">
-                <thead>
-                  <tr className="border-b border-slate-100 text-xs font-bold text-slate-400 uppercase tracking-wider">
-                    <th className="py-2.5 px-3">Subject Code</th>
-                    <th className="py-2.5 px-3">Subject Name</th>
-                    <th className="py-2.5 px-3">Credits</th>
-                    <th className="py-2.5 px-3">Internal</th>
-                    <th className="py-2.5 px-3">Theory</th>
-                    <th className="py-2.5 px-3">Total</th>
-                    <th className="py-2.5 px-3 text-center">Grade</th>
-                    <th className="py-2.5 px-3 text-center">Grade Point</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100">
-                  {selectedSemesterModal.subjects.map((sub) => (
-                    <tr key={sub.code} className="hover:bg-slate-50/70 transition-colors">
-                      <td className="py-3 px-3 font-semibold text-blue-600 text-xs">{sub.code}</td>
-                      <td className="py-3 px-3 font-medium text-slate-800">{sub.name}</td>
-                      <td className="py-3 px-3 text-slate-600">{sub.credits}</td>
-                      <td className="py-3 px-3 text-xs text-slate-600">{sub.internal}</td>
-                      <td className="py-3 px-3 text-xs text-slate-600">{sub.theory}</td>
-                      <td className="py-3 px-3 text-xs font-bold text-slate-800">{sub.total}</td>
-                      <td className="py-3 px-3 text-center">
-                        <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-emerald-100 text-emerald-700 text-xs font-bold">
-                          {sub.grade}
-                        </span>
-                      </td>
-                      <td className="py-3 px-3 text-center font-bold text-slate-700">{sub.point}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-
-              <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-xl bg-slate-50 border border-slate-100 text-xs font-semibold">
-                <div className="flex items-center gap-6">
-                  <span>Total Credits: <strong className="text-slate-800">{selectedSemesterModal.totalCredits}</strong></span>
-                  <span>Semester SGPA: <strong className="text-emerald-600 text-sm">{selectedSemesterModal.sgpa}</strong></span>
-                  <span>Overall Grade: <strong className="text-blue-600">{selectedSemesterModal.grade} (Outstanding)</strong></span>
-                </div>
-                <div className="flex items-center gap-2">
+              {filterDropdownOpen && (
+                <div className="absolute right-0 top-full mt-2 w-48 rounded-xl border border-slate-100 bg-white p-1.5 shadow-xl z-30 animate-in fade-in zoom-in-95 duration-100">
                   <button
                     type="button"
-                    onClick={() => handleDownload(selectedSemesterModal)}
-                    className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold transition-colors"
+                    onClick={() => {
+                      setSelectedFilter("all");
+                      setFilterDropdownOpen(false);
+                    }}
+                    className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold ${
+                      selectedFilter === "all" ? "bg-blue-50 text-blue-600" : "text-slate-700 hover:bg-slate-50"
+                    }`}
                   >
-                    <Download size={13} />
-                    <span>Download PDF</span>
+                    All Semesters
                   </button>
                   <button
                     type="button"
-                    onClick={() => window.print()}
-                    className="flex items-center gap-1.5 px-3 py-1.5 border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 rounded-lg text-xs font-semibold transition-colors"
+                    onClick={() => {
+                      setSelectedFilter("year1");
+                      setFilterDropdownOpen(false);
+                    }}
+                    className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold ${
+                      selectedFilter === "year1" ? "bg-blue-50 text-blue-600" : "text-slate-700 hover:bg-slate-50"
+                    }`}
                   >
-                    <Printer size={13} />
-                    <span>Print</span>
+                    Year 1 (Sem 1 & 2)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedFilter("year2");
+                      setFilterDropdownOpen(false);
+                    }}
+                    className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold ${
+                      selectedFilter === "year2" ? "bg-blue-50 text-blue-600" : "text-slate-700 hover:bg-slate-50"
+                    }`}
+                  >
+                    Year 2 (Sem 3 & 4)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedFilter("year3");
+                      setFilterDropdownOpen(false);
+                    }}
+                    className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold ${
+                      selectedFilter === "year3" ? "bg-blue-50 text-blue-600" : "text-slate-700 hover:bg-slate-50"
+                    }`}
+                  >
+                    Year 3 (Sem 5 & 6)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedFilter("year4");
+                      setFilterDropdownOpen(false);
+                    }}
+                    className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold ${
+                      selectedFilter === "year4" ? "bg-blue-50 text-blue-600" : "text-slate-700 hover:bg-slate-50"
+                    }`}
+                  >
+                    Year 4 (Sem 7 & 8)
                   </button>
                 </div>
+              )}
+            </div>
+          </div>
+
+          {/* Horizontal Divider Line with margin below */}
+          <div className="border-b border-slate-100 my-1" />
+
+          {/* 4 Top KPI Cards matching Attendance, Profile and Dashboard standard */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {/* 1. Total Semesters */}
+            <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-3.5 hover:border-blue-200 transition-colors">
+              <div className="h-12 w-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 border border-blue-100/80 shadow-2xs">
+                <GraduationCap size={24} className="stroke-[2.2]" />
+              </div>
+              <div className="overflow-hidden">
+                <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">TOTAL SEMESTERS</p>
+                <p className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-0.5">
+                  {totalSems}
+                </p>
+              </div>
+            </div>
+
+            {/* 2. Average SGPA */}
+            <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-3.5 hover:border-emerald-200 transition-colors">
+              <div className="h-12 w-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 border border-emerald-100/80 shadow-2xs">
+                <TrendingUp size={24} className="stroke-[2.2]" />
+              </div>
+              <div className="overflow-hidden">
+                <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">AVERAGE SGPA</p>
+                <p className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-0.5">
+                  {avgSGPA}
+                </p>
+              </div>
+            </div>
+
+            {/* 3. Highest SGPA */}
+            <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-3.5 hover:border-purple-200 transition-colors">
+              <div className="h-12 w-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0 border border-purple-100/80 shadow-2xs">
+                <Trophy size={24} className="stroke-[2.2]" />
+              </div>
+              <div className="overflow-hidden">
+                <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">HIGHEST SGPA</p>
+                <p className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-0.5">
+                  {highestSem.sgpa}
+                </p>
+                <p className="text-[11px] font-medium text-slate-500 truncate mt-0.5">Semester {highestSem.semester}</p>
+              </div>
+            </div>
+
+            {/* 4. Overall Grade */}
+            <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-3.5 hover:border-amber-200 transition-colors">
+              <div className="h-12 w-12 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center shrink-0 border border-amber-100/80 shadow-2xs">
+                <Award size={24} className="stroke-[2.2]" />
+              </div>
+              <div className="overflow-hidden">
+                <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">OVERALL GRADE</p>
+                <p className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-0.5">
+                  A
+                </p>
+                <p className="text-[11px] font-medium text-slate-500 truncate mt-0.5">Excellent</p>
               </div>
             </div>
           </div>
+
+          {/* Results Data Table matching Attendance layout, font size, space, and colors */}
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-separate border-spacing-y-2.5 min-w-[800px]">
+              <thead>
+                <tr className="bg-[#f0f6ff]/90 text-xs font-bold text-[#1d61e7] rounded-2xl overflow-hidden">
+                  <th className="py-4 px-5 rounded-l-2xl text-center w-16">
+                    #
+                  </th>
+                  <th className="py-4 px-5 text-center">
+                    Year
+                  </th>
+                  <th className="py-4 px-5 text-center">
+                    Semester
+                  </th>
+                  <th className="py-4 px-5 text-center">
+                    <div className="flex items-center justify-center gap-1.5">
+                      <span>SGPA</span>
+                      <Info size={14} className="text-[#1d61e7] stroke-[2.4]" />
+                    </div>
+                  </th>
+                  <th className="py-4 px-5 text-center">
+                    Grade
+                  </th>
+                  <th className="py-4 px-5 text-center">
+                    Remarks
+                  </th>
+                  <th className="py-4 px-5 text-center">
+                    View Details
+                  </th>
+                  <th className="py-4 px-5 rounded-r-2xl text-center">
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredResults.map((sem) => (
+                  <tr
+                    key={sem.id}
+                    className={`${sem.rowBgClass} transition-all duration-150 rounded-2xl shadow-2xs hover:shadow-sm cursor-pointer`}
+                    onClick={() => setActiveDetailSemester(sem)}
+                  >
+                    {/* Number badge */}
+                    <td className="py-4 px-5 rounded-l-2xl text-center">
+                      <span className={`mx-auto flex h-7 w-7 items-center justify-center rounded-full ${sem.circleBadgeClass} text-xs font-extrabold shadow-2xs`}>
+                        {sem.id}
+                      </span>
+                    </td>
+
+                    {/* 1. Year */}
+                    <td className="py-4 px-5 text-center font-semibold text-slate-800 text-sm">
+                      {sem.year}
+                    </td>
+
+                    {/* 2. Semester */}
+                    <td className="py-4 px-5 text-center font-semibold text-slate-800 text-sm">
+                      {sem.semester}
+                    </td>
+
+                    {/* 3. SGPA */}
+                    <td className="py-4 px-5 text-center font-extrabold text-slate-900 text-sm">
+                      {sem.sgpa}
+                    </td>
+
+                    {/* 4. Grade */}
+                    <td className="py-4 px-5 text-center">
+                      <span className="inline-flex px-3.5 py-1 rounded-full text-xs font-bold bg-[#edf9f0] text-[#16a34a] shadow-2xs">
+                        {sem.grade}
+                      </span>
+                    </td>
+
+                    {/* 5. Remarks Badge */}
+                    <td className="py-4 px-5 text-center">
+                      <span className={`inline-flex px-3.5 py-1 rounded-full text-xs font-bold ${sem.remarksBadgeClass} shadow-2xs`}>
+                        {sem.remark}
+                      </span>
+                    </td>
+
+                    {/* 6. View Details Button */}
+                    <td className="py-4 px-5 text-center">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setActiveDetailSemester(sem);
+                        }}
+                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-blue-50/90 hover:bg-blue-600 text-blue-600 hover:text-white border border-blue-200/70 hover:border-blue-600 text-xs font-bold transition-all shadow-2xs hover:shadow-xs active:scale-95 cursor-pointer"
+                        title={`View Semester ${sem.semester} breakdown`}
+                      >
+                        <Eye size={13} className="stroke-[2.4]" />
+                        <span>View</span>
+                      </button>
+                    </td>
+
+                    {/* 7. Action Button */}
+                    <td className="py-4 px-5 rounded-r-2xl text-center">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDownload(sem);
+                        }}
+                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl border border-blue-200 bg-white hover:bg-blue-50 text-[#1d61e7] text-xs font-bold transition-all shadow-2xs active:scale-95 cursor-pointer"
+                      >
+                        <Download size={13} className="stroke-[2.5]" />
+                        <span>Download</span>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Note Footer matching Attendance */}
+          <div className="flex items-center gap-2.5 p-3.5 rounded-2xl bg-[#f8fafc] text-xs text-slate-500 font-medium border border-slate-100/90">
+            <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-blue-50 text-[#1d61e7]">
+              <Info size={13} className="stroke-[2.4]" />
+            </div>
+            <p className="leading-relaxed">
+              <strong className="text-slate-800 font-bold">Grading System:</strong> O (Outstanding) 10.0 – 9.0 &bull; A+ (Excellent) 8.9 – 8.0 &bull; A (Very Good) 7.9 – 7.0 &bull; B (Good) 6.9 – 6.0 &bull; C (Average) 5.9 – 5.0 &bull; F (Fail) Below 5.0
+            </p>
+          </div>
+
         </div>
       )}
     </div>

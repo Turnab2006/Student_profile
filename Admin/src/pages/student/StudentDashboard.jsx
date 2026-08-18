@@ -135,6 +135,8 @@ export default function StudentDashboard({ onLogout }) {
   const [currentPage, setCurrentPage] = useState("dashboard");
   const [profileTab, setProfileTab] = useState("academic");
   const [isDigitalCardActive, setIsDigitalCardActive] = useState(false);
+  const [activeAttendanceSemester, setActiveAttendanceSemester] = useState(null);
+  const [activeResultSemester, setActiveResultSemester] = useState(null);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
   const [selectedDate, setSelectedDate] = useState(new Date(today.getFullYear(), today.getMonth(), today.getDate()));
@@ -214,6 +216,12 @@ export default function StudentDashboard({ onLogout }) {
     if (pageKey !== "profile") {
       setIsDigitalCardActive(false);
     }
+    if (pageKey !== "attendances") {
+      setActiveAttendanceSemester(null);
+    }
+    if (pageKey !== "results") {
+      setActiveResultSemester(null);
+    }
     setCurrentPage(pageKey);
     setMobileSidebarOpen(false);
   }
@@ -243,10 +251,22 @@ export default function StudentDashboard({ onLogout }) {
         return <StudentSubjects hideHeader={true} />;
 
       case "results":
-        return <StudentResults hideHeader={true} />;
+        return (
+          <StudentResults
+            hideHeader={true}
+            activeSemester={activeResultSemester}
+            onSelectSemester={setActiveResultSemester}
+          />
+        );
 
       case "attendances":
-        return <StudentAttendance hideHeader={true} />;
+        return (
+          <StudentAttendance
+            hideHeader={true}
+            activeSemester={activeAttendanceSemester}
+            onSelectSemester={setActiveAttendanceSemester}
+          />
+        );
 
       case "credit-points":
         return <StudentCreditPoints hideHeader={true} />;
@@ -678,6 +698,10 @@ export default function StudentDashboard({ onLogout }) {
           onOpenSidebar={() => setMobileSidebarOpen(true)}
           isDigitalCardActive={currentPage === "profile" && isDigitalCardActive}
           onNavigateToProfile={() => setIsDigitalCardActive(false)}
+          isAttendanceDetailActive={currentPage === "attendances" && Boolean(activeAttendanceSemester)}
+          onNavigateToAttendance={() => setActiveAttendanceSemester(null)}
+          isResultDetailActive={currentPage === "results" && Boolean(activeResultSemester)}
+          onNavigateToResults={() => setActiveResultSemester(null)}
         />
 
         {/* Scrollable Page Body */}

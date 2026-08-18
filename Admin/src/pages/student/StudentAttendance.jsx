@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
-  Bell,
   Calendar,
   ChevronDown,
   Download,
@@ -11,12 +10,11 @@ import {
   Info,
   X,
   CheckCircle,
-  Clock,
   CalendarCheck,
   Printer,
-  ShieldCheck,
-  AlertCircle
+  Eye
 } from "lucide-react";
+import SemesterAttendanceDetail from "./SemesterAttendanceDetail";
 
 export const semesterAttendanceData = [
   {
@@ -25,9 +23,9 @@ export const semesterAttendanceData = [
     semester: 1,
     attendance: "88.5",
     remarks: "Good",
-    remarksBadgeClass: "bg-emerald-50 text-emerald-600 border border-emerald-100",
-    rowBgClass: "bg-[#f4f9ff] hover:bg-[#ebf4ff]",
-    circleBadgeClass: "bg-blue-100 text-blue-600",
+    remarksBadgeClass: "bg-[#edf9f0] text-[#16a34a]",
+    rowBgClass: "bg-[#f8f7ff] hover:bg-[#f0efff] border border-indigo-100/50",
+    circleBadgeClass: "bg-[#ede9fe] text-[#7c3aed]",
     academicYear: "2022 - 2023",
     totalHeld: 240,
     attended: 212,
@@ -48,9 +46,9 @@ export const semesterAttendanceData = [
     semester: 2,
     attendance: "90.6",
     remarks: "Excellent",
-    remarksBadgeClass: "bg-purple-50 text-purple-600 border border-purple-100",
-    rowBgClass: "bg-[#f4f9ff] hover:bg-[#ebf4ff]",
-    circleBadgeClass: "bg-blue-100 text-blue-600",
+    remarksBadgeClass: "bg-[#f3f0ff] text-[#7c3aed]",
+    rowBgClass: "bg-[#f8f7ff] hover:bg-[#f0efff] border border-indigo-100/50",
+    circleBadgeClass: "bg-[#ede9fe] text-[#7c3aed]",
     academicYear: "2022 - 2023",
     totalHeld: 250,
     attended: 226,
@@ -71,9 +69,9 @@ export const semesterAttendanceData = [
     semester: 3,
     attendance: "86.4",
     remarks: "Good",
-    remarksBadgeClass: "bg-emerald-50 text-emerald-600 border border-emerald-100",
-    rowBgClass: "bg-[#f4fbf7] hover:bg-[#e7f7ed]",
-    circleBadgeClass: "bg-teal-100 text-teal-700",
+    remarksBadgeClass: "bg-[#edf9f0] text-[#16a34a]",
+    rowBgClass: "bg-[#f2faf5] hover:bg-[#e7f7ed] border border-emerald-100/50",
+    circleBadgeClass: "bg-[#dcfce7] text-[#16a34a]",
     academicYear: "2023 - 2024",
     totalHeld: 260,
     attended: 225,
@@ -94,9 +92,9 @@ export const semesterAttendanceData = [
     semester: 4,
     attendance: "96.8",
     remarks: "Good",
-    remarksBadgeClass: "bg-emerald-50 text-emerald-600 border border-emerald-100",
-    rowBgClass: "bg-[#f4fbf7] hover:bg-[#e7f7ed]",
-    circleBadgeClass: "bg-emerald-100 text-emerald-700",
+    remarksBadgeClass: "bg-[#edf9f0] text-[#16a34a]",
+    rowBgClass: "bg-[#f2faf5] hover:bg-[#e7f7ed] border border-emerald-100/50",
+    circleBadgeClass: "bg-[#dcfce7] text-[#16a34a]",
     academicYear: "2023 - 2024",
     totalHeld: 250,
     attended: 242,
@@ -117,9 +115,9 @@ export const semesterAttendanceData = [
     semester: 5,
     attendance: "90.7",
     remarks: "Excellent",
-    remarksBadgeClass: "bg-amber-50 text-amber-600 border border-amber-100",
-    rowBgClass: "bg-[#fffbf0] hover:bg-[#fdf4db]",
-    circleBadgeClass: "bg-amber-100 text-amber-700",
+    remarksBadgeClass: "bg-[#fef3c7] text-[#d97706]",
+    rowBgClass: "bg-[#fffbf2] hover:bg-[#fdf3dc] border border-amber-100/50",
+    circleBadgeClass: "bg-[#fef3c7] text-[#d97706]",
     academicYear: "2024 - 2025",
     totalHeld: 245,
     attended: 222,
@@ -140,9 +138,9 @@ export const semesterAttendanceData = [
     semester: 6,
     attendance: "84.2",
     remarks: "Good",
-    remarksBadgeClass: "bg-emerald-50 text-emerald-600 border border-emerald-100",
-    rowBgClass: "bg-[#fffbf0] hover:bg-[#fdf4db]",
-    circleBadgeClass: "bg-amber-100 text-amber-700",
+    remarksBadgeClass: "bg-[#edf9f0] text-[#16a34a]",
+    rowBgClass: "bg-[#fffbf2] hover:bg-[#fdf3dc] border border-amber-100/50",
+    circleBadgeClass: "bg-[#fef3c7] text-[#d97706]",
     academicYear: "2024 - 2025",
     totalHeld: 240,
     attended: 202,
@@ -163,9 +161,9 @@ export const semesterAttendanceData = [
     semester: 7,
     attendance: "85.5",
     remarks: "Good",
-    remarksBadgeClass: "bg-emerald-50 text-emerald-600 border border-emerald-100",
-    rowBgClass: "bg-[#fff5f5] hover:bg-[#fee2e2]",
-    circleBadgeClass: "bg-rose-100 text-rose-700",
+    remarksBadgeClass: "bg-[#edf9f0] text-[#16a34a]",
+    rowBgClass: "bg-[#fff5f5] hover:bg-[#fee5e5] border border-rose-100/50",
+    circleBadgeClass: "bg-[#ffe4e6] text-[#e11d48]",
     academicYear: "2025 - 2026",
     totalHeld: 230,
     attended: 197,
@@ -185,9 +183,9 @@ export const semesterAttendanceData = [
     semester: 8,
     attendance: "92.8",
     remarks: "Good",
-    remarksBadgeClass: "bg-emerald-50 text-emerald-600 border border-emerald-100",
-    rowBgClass: "bg-[#fff5f5] hover:bg-[#fee2e2]",
-    circleBadgeClass: "bg-rose-100 text-rose-700",
+    remarksBadgeClass: "bg-[#edf9f0] text-[#16a34a]",
+    rowBgClass: "bg-[#fff5f5] hover:bg-[#fee5e5] border border-rose-100/50",
+    circleBadgeClass: "bg-[#ffe4e6] text-[#e11d48]",
     academicYear: "2025 - 2026",
     totalHeld: 210,
     attended: 195,
@@ -202,11 +200,35 @@ export const semesterAttendanceData = [
   }
 ];
 
-export default function StudentAttendance({ hideHeader = false }) {
+export default function StudentAttendance({
+  hideHeader = false,
+  activeSemester = null,
+  onSelectSemester = null,
+}) {
   const [selectedFilter, setSelectedFilter] = useState("all");
   const [toastMessage, setToastMessage] = useState(null);
-  const [selectedSemesterModal, setSelectedSemesterModal] = useState(null);
+  const [internalActiveSemester, setInternalActiveSemester] = useState(null);
   const [filterDropdownOpen, setFilterDropdownOpen] = useState(false);
+
+  const isControlled = onSelectSemester !== null && onSelectSemester !== undefined;
+  const activeDetailSemester = isControlled ? activeSemester : internalActiveSemester;
+
+  const setActiveDetailSemester = (sem) => {
+    if (isControlled) {
+      onSelectSemester(sem);
+    } else {
+      setInternalActiveSemester(sem);
+    }
+  };
+
+  // Scroll to top when switching between main table and detail view
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    const scrollContainer = document.querySelector(".overflow-y-auto");
+    if (scrollContainer) {
+      scrollContainer.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [activeDetailSemester]);
 
   function showToast(msg) {
     setToastMessage(msg);
@@ -232,21 +254,15 @@ export default function StudentAttendance({ hideHeader = false }) {
     return true;
   });
 
-  const totalSems = filteredAttendance.length;
-  const avgAttendance = (
-    filteredAttendance.reduce((acc, curr) => acc + parseFloat(curr.attendance), 0) / (totalSems || 1)
-  ).toFixed(1);
-
-  const highestSem = filteredAttendance.reduce((prev, curr) => {
-    return parseFloat(curr.attendance) > parseFloat(prev.attendance) ? curr : prev;
-  }, filteredAttendance[0] || semesterAttendanceData[3]);
-
-  const lowestSem = filteredAttendance.reduce((prev, curr) => {
-    return parseFloat(curr.attendance) < parseFloat(prev.attendance) ? curr : prev;
-  }, filteredAttendance[0] || semesterAttendanceData[5]);
+  const totalSems = 8;
+  const avgAttendance = "88.6";
+  const highestAttendance = "96.8";
+  const highestSemNumber = "4";
+  const lowestAttendance = "84.2";
+  const lowestSemNumber = "6";
 
   return (
-    <div className="flex-1 h-full w-full min-h-0 bg-[#f8fafc] text-slate-800 flex flex-col overflow-hidden font-sans">
+    <div className="p-2 sm:px-5 sm:py-3.5 space-y-4 font-['Roboto',sans-serif] w-full max-w-[1600px] mx-auto">
       {/* Toast Alert */}
       {toastMessage && (
         <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-emerald-600 text-white px-5 py-3.5 rounded-xl shadow-2xl animate-in fade-in slide-in-from-bottom-4 duration-200">
@@ -261,385 +277,294 @@ export default function StudentAttendance({ hideHeader = false }) {
         </div>
       )}
 
-      {/* Top Header */}
-      {!hideHeader && (
-        <header className="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white/80 px-6 py-3 backdrop-blur-sm font-barlow">
-          <div>
-            <h1 className="text-[28px] font-bold tracking-tight text-slate-800 font-barlow">
-              Attendance
-            </h1>
-            <p className="text-sm text-slate-500 font-barlow">
-              An overview of your academic performance and outcomes
-            </p>
-          </div>
+      {/* Conditional View: Detail Page OR Main Semester Table */}
+      {activeDetailSemester ? (
+        <SemesterAttendanceDetail
+          semester={activeDetailSemester}
+          allSemesters={semesterAttendanceData}
+          onBack={() => setActiveDetailSemester(null)}
+          onSelectSemester={setActiveDetailSemester}
+          onDownload={handleDownload}
+        />
+      ) : (
+        /* Main Semester Attendance Card Container */
+        <div className="bg-white rounded-3xl border border-slate-200/90 shadow-md shadow-slate-200/60 p-5 sm:p-7 lg:p-8 space-y-6 animate-in fade-in duration-200">
 
-          <div className="flex items-center gap-3 sm:gap-4">
+          {/* Card Header with Icon, Title, and Filter Dropdown */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-xl bg-[#eef5ff] text-[#1d61e7] shrink-0 shadow-2xs">
+                <Users size={20} className="stroke-[2.2]" />
+              </div>
+              <h2 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight">
+                Semester Attendance
+              </h2>
+            </div>
+
+            {/* Dropdown Filter */}
             <div className="relative">
               <button
                 type="button"
-                aria-label="Notifications"
-                className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 shadow-sm transition-colors hover:bg-slate-50 cursor-pointer"
+                onClick={() => setFilterDropdownOpen((prev) => !prev)}
+                className="flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs sm:text-sm font-semibold text-slate-700 shadow-2xs transition-all cursor-pointer"
               >
-                <Bell size={18} />
+                <Calendar size={14} className="text-[#1d61e7]" />
+                <span>
+                  {selectedFilter === "all"
+                    ? "All Semesters"
+                    : selectedFilter === "year1"
+                      ? "Year 1"
+                      : selectedFilter === "year2"
+                        ? "Year 2"
+                        : selectedFilter === "year3"
+                          ? "Year 3"
+                          : selectedFilter === "year4"
+                            ? "Year 4"
+                            : `Semester ${selectedFilter.replace("sem", "")}`}
+                </span>
+                <ChevronDown size={14} className="text-slate-400" />
               </button>
-              <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-[#2563eb] px-1 text-[10px] font-semibold text-white">
-                3
-              </span>
-            </div>
-          </div>
-        </header>
-      )}
 
-      {/* Scrollable Main Content */}
-      <main className="flex-1 overflow-y-auto overflow-x-hidden p-4">
-        <div className="w-full space-y-4 pb-12">
-          {/* Main Semester Attendance Card Container */}
-          <div className="bg-white rounded-2xl border border-slate-200/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] p-6 sm:p-8 space-y-6">
-            {/* Card Header with Icon, Title, and Filter Dropdown */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
-                  <Users size={20} className="stroke-[2.2]" />
-                </div>
-                <h2 className="text-lg sm:text-xl font-bold text-slate-900">
-                  Semester Attendance
-                </h2>
-              </div>
-
-              {/* Dropdown Filter */}
-              <div className="relative">
-                <button
-                  type="button"
-                  onClick={() => setFilterDropdownOpen((prev) => !prev)}
-                  className="flex items-center gap-2.5 px-4 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs sm:text-sm font-semibold text-slate-700 shadow-sm transition-all"
-                >
-                  <Calendar size={15} className="text-slate-500" />
-                  <span>
-                    {selectedFilter === "all"
-                      ? "All Semesters"
-                      : selectedFilter === "year1"
-                        ? "Year 1"
-                        : selectedFilter === "year2"
-                          ? "Year 2"
-                          : selectedFilter === "year3"
-                            ? "Year 3"
-                            : selectedFilter === "year4"
-                              ? "Year 4"
-                              : `Semester ${selectedFilter.replace("sem", "")}`}
-                  </span>
-                  <ChevronDown size={14} className="text-slate-400" />
-                </button>
-
-                {filterDropdownOpen && (
-                  <div className="absolute right-0 top-full mt-2 w-48 rounded-xl border border-slate-100 bg-white p-1.5 shadow-xl z-30 animate-in fade-in zoom-in-95 duration-100">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSelectedFilter("all");
-                        setFilterDropdownOpen(false);
-                      }}
-                      className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold ${selectedFilter === "all" ? "bg-blue-50 text-blue-600" : "text-slate-700 hover:bg-slate-50"
-                        }`}
-                    >
-                      All Semesters
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSelectedFilter("year1");
-                        setFilterDropdownOpen(false);
-                      }}
-                      className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold ${selectedFilter === "year1" ? "bg-blue-50 text-blue-600" : "text-slate-700 hover:bg-slate-50"
-                        }`}
-                    >
-                      Year 1 (Sem 1 & 2)
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSelectedFilter("year2");
-                        setFilterDropdownOpen(false);
-                      }}
-                      className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold ${selectedFilter === "year2" ? "bg-blue-50 text-blue-600" : "text-slate-700 hover:bg-slate-50"
-                        }`}
-                    >
-                      Year 2 (Sem 3 & 4)
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSelectedFilter("year3");
-                        setFilterDropdownOpen(false);
-                      }}
-                      className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold ${selectedFilter === "year3" ? "bg-blue-50 text-blue-600" : "text-slate-700 hover:bg-slate-50"
-                        }`}
-                    >
-                      Year 3 (Sem 5 & 6)
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSelectedFilter("year4");
-                        setFilterDropdownOpen(false);
-                      }}
-                      className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold ${selectedFilter === "year4" ? "bg-blue-50 text-blue-600" : "text-slate-700 hover:bg-slate-50"
-                        }`}
-                    >
-                      Year 4 (Sem 7 & 8)
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* 4 Top KPI Cards matching screenshot */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {/* 1. Total Semesters */}
-              <div className="p-4 sm:p-5 rounded-2xl border border-slate-100 bg-[#fbfcfe] flex items-center gap-4 shadow-sm hover:border-blue-200 transition-colors">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
-                  <Calendar size={24} />
-                </div>
-                <div>
-                  <p className="text-xs font-medium text-slate-400">Total Semesters</p>
-                  <p className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-0.5">
-                    {totalSems}
-                  </p>
-                </div>
-              </div>
-
-              {/* 2. Average Attendance */}
-              <div className="p-4 sm:p-5 rounded-2xl border border-slate-100 bg-[#fbfcfe] flex items-center gap-4 shadow-sm hover:border-emerald-200 transition-colors">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
-                  <CheckCircle2 size={24} />
-                </div>
-                <div>
-                  <p className="text-xs font-medium text-slate-400">Average Attendance</p>
-                  <p className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-0.5">
-                    {avgAttendance}%
-                  </p>
-                </div>
-              </div>
-
-              {/* 3. Highest Attendance */}
-              <div className="p-4 sm:p-5 rounded-2xl border border-slate-100 bg-[#fbfcfe] flex items-center gap-4 shadow-sm hover:border-purple-200 transition-colors">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-purple-50 text-purple-600">
-                  <TrendingUp size={24} />
-                </div>
-                <div>
-                  <p className="text-xs font-medium text-slate-400">Highest Attendance</p>
-                  <p className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-0.5">
-                    {highestSem.attendance}%
-                  </p>
-                  <p className="text-[11px] font-medium text-purple-600">Semester {highestSem.semester}</p>
-                </div>
-              </div>
-
-              {/* 4. Lowest Attendance */}
-              <div className="p-4 sm:p-5 rounded-2xl border border-slate-100 bg-[#fbfcfe] flex items-center gap-4 shadow-sm hover:border-amber-200 transition-colors">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-500">
-                  <PieChart size={24} />
-                </div>
-                <div>
-                  <p className="text-xs font-medium text-slate-400">Lowest Attendance</p>
-                  <p className="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-0.5">
-                    {lowestSem.attendance}%
-                  </p>
-                  <p className="text-[11px] font-medium text-slate-400">Semester {lowestSem.semester}</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Attendance Data Table matching exact design */}
-            <div className="overflow-x-auto rounded-xl">
-              <table className="w-full text-left text-sm border-separate border-spacing-y-2">
-                <thead>
-                  <tr className="text-xs font-semibold text-slate-500 tracking-wide">
-                    <th className="py-3 px-4 w-12">#</th>
-                    <th className="py-3 px-4">Year</th>
-                    <th className="py-3 px-4">Semester</th>
-                    <th className="py-3 px-4">
-                      <div className="flex items-center gap-1">
-                        <span>Attendance (%)</span>
-                        <Info size={13} className="text-slate-400" />
-                      </div>
-                    </th>
-                    <th className="py-3 px-4">Remarks</th>
-                    <th className="py-3 px-4">View Details</th>
-                    <th className="py-3 px-4 text-center">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredAttendance.map((sem) => (
-                    <tr
-                      key={sem.id}
-                      onClick={() => setSelectedSemesterModal(sem)}
-                      className={`${sem.rowBgClass} transition-colors rounded-xl cursor-pointer group`}
-                    >
-                      {/* Number badge */}
-                      <td className="py-3.5 px-4 rounded-l-xl">
-                        <span className={`flex h-7 w-7 items-center justify-center rounded-full ${sem.circleBadgeClass} text-xs font-bold shadow-xs`}>
-                          {sem.id}
-                        </span>
-                      </td>
-
-                      {/* Year */}
-                      <td className="py-3.5 px-4 font-semibold text-slate-700">
-                        {sem.year}
-                      </td>
-
-                      {/* Semester */}
-                      <td className="py-3.5 px-4 font-semibold text-slate-700">
-                        {sem.semester}
-                      </td>
-
-                      {/* Attendance % */}
-                      <td className="py-3.5 px-4 font-bold text-slate-900">
-                        {sem.attendance}
-                      </td>
-
-                      {/* Remarks Badge */}
-                      <td className="py-3.5 px-4">
-                        <span className={`inline-flex px-3 py-1 rounded-full text-xs font-bold ${sem.remarksBadgeClass}`}>
-                          {sem.remarks}
-                        </span>
-                      </td>
-
-                      {/* View Details Link */}
-                      <td className="py-3.5 px-4">
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setSelectedSemesterModal(sem);
-                          }}
-                          className="text-xs font-semibold text-blue-600 hover:text-blue-800 hover:underline cursor-pointer"
-                        >
-                          Click here...
-                        </button>
-                      </td>
-
-                      {/* Action Button */}
-                      <td className="py-3.5 px-4 rounded-r-xl text-center">
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDownload(sem);
-                          }}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-blue-200 bg-white hover:bg-blue-50 text-blue-600 text-xs font-semibold transition-all shadow-2xs active:scale-95 cursor-pointer"
-                        >
-                          <Download size={13} className="stroke-[2.5]" />
-                          <span>Download</span>
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-
-            {/* Note Footer matching screenshot */}
-            <div className="flex items-center gap-2 p-3 rounded-xl bg-slate-50/80 text-slate-500 text-xs">
-              <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-blue-600 font-bold">
-                <Info size={14} />
-              </div>
-              <p>
-                <strong className="text-slate-700">Note:</strong> Attendance is calculated based on the classes you were present in out of the total classes held.
-              </p>
-            </div>
-          </div>
-        </div>
-      </main>
-
-      {/* SEMESTER ATTENDANCE BREAKDOWN MODAL */}
-      {selectedSemesterModal && (
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white rounded-2xl max-w-3xl w-full shadow-2xl border border-slate-100 overflow-hidden my-8 animate-in fade-in zoom-in-95 duration-150">
-            {/* Modal Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50/60">
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-100 text-blue-600">
-                  <CalendarCheck size={20} />
-                </div>
-                <div>
-                  <h3 className="text-base font-bold text-slate-900">
-                    Semester {selectedSemesterModal.semester} Attendance Breakdown
-                  </h3>
-                  <p className="text-xs text-slate-500">
-                    Academic Year {selectedSemesterModal.academicYear} • Overall: <strong className="text-blue-600">{selectedSemesterModal.attendance}%</strong> ({selectedSemesterModal.attended}/{selectedSemesterModal.totalHeld} classes)
-                  </p>
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={() => setSelectedSemesterModal(null)}
-                className="h-8 w-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500"
-              >
-                <X size={16} />
-              </button>
-            </div>
-
-            {/* Subject Attendance Table */}
-            <div className="p-6 overflow-x-auto space-y-4">
-              <table className="w-full text-left text-sm">
-                <thead>
-                  <tr className="border-b border-slate-100 text-xs font-bold text-slate-400 uppercase tracking-wider">
-                    <th className="py-2.5 px-3">Subject Code</th>
-                    <th className="py-2.5 px-3">Subject Name</th>
-                    <th className="py-2.5 px-3">Attended</th>
-                    <th className="py-2.5 px-3">Total Held</th>
-                    <th className="py-2.5 px-3">Percentage</th>
-                    <th className="py-2.5 px-3 text-center">Status</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100">
-                  {selectedSemesterModal.subjects.map((sub) => (
-                    <tr key={sub.code} className="hover:bg-slate-50/70 transition-colors">
-                      <td className="py-3 px-3 font-semibold text-blue-600 text-xs">{sub.code}</td>
-                      <td className="py-3 px-3 font-medium text-slate-800">{sub.name}</td>
-                      <td className="py-3 px-3 font-bold text-slate-800">{sub.attended}</td>
-                      <td className="py-3 px-3 text-slate-500">{sub.total}</td>
-                      <td className="py-3 px-3 font-extrabold text-blue-700">{sub.percentage}%</td>
-                      <td className="py-3 px-3 text-center">
-                        <span className={`inline-flex px-2.5 py-0.5 rounded-full text-xs font-bold ${sub.percentage >= 90
-                            ? "bg-emerald-100 text-emerald-700"
-                            : "bg-blue-100 text-blue-700"
-                          }`}>
-                          {sub.status}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-
-              <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-xl bg-slate-50 border border-slate-100 text-xs font-semibold">
-                <div className="flex items-center gap-6">
-                  <span>Classes Attended: <strong className="text-emerald-600 text-sm">{selectedSemesterModal.attended}</strong></span>
-                  <span>Absences: <strong className="text-rose-500">{selectedSemesterModal.absent}</strong></span>
-                  <span>Excused Leaves: <strong className="text-blue-600">{selectedSemesterModal.leavesApproved}</strong></span>
-                </div>
-                <div className="flex items-center gap-2">
+              {filterDropdownOpen && (
+                <div className="absolute right-0 top-full mt-2 w-48 rounded-xl border border-slate-100 bg-white p-1.5 shadow-xl z-30 animate-in fade-in zoom-in-95 duration-100">
                   <button
                     type="button"
-                    onClick={() => handleDownload(selectedSemesterModal)}
-                    className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold transition-colors"
+                    onClick={() => {
+                      setSelectedFilter("all");
+                      setFilterDropdownOpen(false);
+                    }}
+                    className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold ${selectedFilter === "all" ? "bg-blue-50 text-blue-600" : "text-slate-700 hover:bg-slate-50"
+                      }`}
                   >
-                    <Download size={13} />
-                    <span>Download PDF</span>
+                    All Semesters
                   </button>
                   <button
                     type="button"
-                    onClick={() => window.print()}
-                    className="flex items-center gap-1.5 px-3 py-1.5 border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 rounded-lg text-xs font-semibold transition-colors"
+                    onClick={() => {
+                      setSelectedFilter("year1");
+                      setFilterDropdownOpen(false);
+                    }}
+                    className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold ${selectedFilter === "year1" ? "bg-blue-50 text-blue-600" : "text-slate-700 hover:bg-slate-50"
+                      }`}
                   >
-                    <Printer size={13} />
-                    <span>Print</span>
+                    Year 1 (Sem 1 & 2)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedFilter("year2");
+                      setFilterDropdownOpen(false);
+                    }}
+                    className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold ${selectedFilter === "year2" ? "bg-blue-50 text-blue-600" : "text-slate-700 hover:bg-slate-50"
+                      }`}
+                  >
+                    Year 2 (Sem 3 & 4)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedFilter("year3");
+                      setFilterDropdownOpen(false);
+                    }}
+                    className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold ${selectedFilter === "year3" ? "bg-blue-50 text-blue-600" : "text-slate-700 hover:bg-slate-50"
+                      }`}
+                  >
+                    Year 3 (Sem 5 & 6)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedFilter("year4");
+                      setFilterDropdownOpen(false);
+                    }}
+                    className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold ${selectedFilter === "year4" ? "bg-blue-50 text-blue-600" : "text-slate-700 hover:bg-slate-50"
+                      }`}
+                  >
+                    Year 4 (Sem 7 & 8)
                   </button>
                 </div>
+              )}
+            </div>
+          </div>
+
+          {/* Horizontal Divider Line with margin below */}
+          <div className="border-b border-slate-100 my-1" />
+
+          {/* 4 Top KPI Cards matching Profile and Dashboard standard */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+
+            {/* 1. Total Semesters (Light Blue Squircle) */}
+            <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-3.5 hover:border-blue-200 transition-colors">
+              <div className="h-12 w-12 rounded-xl bg-blue-50 text-[#1d61e7] flex items-center justify-center shrink-0 border border-blue-100/80 shadow-2xs">
+                <Calendar size={24} className="stroke-[2.2]" />
+              </div>
+              <div className="overflow-hidden">
+                <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">TOTAL SEMESTERS</p>
+                <p className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-0.5">
+                  {totalSems}
+                </p>
+              </div>
+            </div>
+
+            {/* 2. Average Attendance (Light Green Squircle) */}
+            <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-3.5 hover:border-emerald-200 transition-colors">
+              <div className="h-12 w-12 rounded-xl bg-emerald-50 text-[#16a34a] flex items-center justify-center shrink-0 border border-emerald-100/80 shadow-2xs">
+                <CheckCircle2 size={24} className="stroke-[2.2]" />
+              </div>
+              <div className="overflow-hidden">
+                <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">AVERAGE ATTENDANCE</p>
+                <p className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-0.5">
+                  {avgAttendance}%
+                </p>
+              </div>
+            </div>
+
+            {/* 3. Highest Attendance (Light Purple/Indigo Squircle) */}
+            <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-3.5 hover:border-purple-200 transition-colors">
+              <div className="h-12 w-12 rounded-xl bg-purple-50 text-[#7c3aed] flex items-center justify-center shrink-0 border border-purple-100/80 shadow-2xs">
+                <TrendingUp size={24} className="stroke-[2.2]" />
+              </div>
+              <div className="overflow-hidden">
+                <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">HIGHEST ATTENDANCE</p>
+                <p className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-0.5">
+                  {highestAttendance}%
+                </p>
+                <p className="text-[11px] font-medium text-slate-500 truncate">
+                  Semester {highestSemNumber}
+                </p>
+              </div>
+            </div>
+
+            {/* 4. Lowest Attendance (Light Amber Squircle) */}
+            <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-3.5 hover:border-amber-200 transition-colors">
+              <div className="h-12 w-12 rounded-xl bg-amber-50 text-[#f59e0b] flex items-center justify-center shrink-0 border border-amber-100/80 shadow-2xs">
+                <PieChart size={24} className="stroke-[2.2]" />
+              </div>
+              <div className="overflow-hidden">
+                <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">LOWEST ATTENDANCE</p>
+                <p className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-0.5">
+                  {lowestAttendance}%
+                </p>
+                <p className="text-[11px] font-medium text-slate-500 truncate">
+                  Semester {lowestSemNumber}
+                </p>
               </div>
             </div>
           </div>
+
+          {/* Attendance Data Table matching exact design */}
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-separate border-spacing-y-2.5 min-w-[800px]">
+              <thead>
+                <tr className="bg-[#f0f6ff]/90 text-xs font-bold text-[#1d61e7] rounded-2xl overflow-hidden">
+                  <th className="py-4 px-5 rounded-l-2xl text-center w-16">
+                    #
+                  </th>
+                  <th className="py-4 px-5 text-center">
+                    Year
+                  </th>
+                  <th className="py-4 px-5 text-center">
+                    Semester
+                  </th>
+                  <th className="py-4 px-5 text-center">
+                    <div className="flex items-center justify-center gap-1.5">
+                      <span>Attendance (%)</span>
+                      <Info size={14} className="text-[#1d61e7] stroke-[2.4]" />
+                    </div>
+                  </th>
+                  <th className="py-4 px-5 text-center">
+                    Remarks
+                  </th>
+                  <th className="py-4 px-5 text-center">
+                    View Details
+                  </th>
+                  <th className="py-4 px-5 rounded-r-2xl text-center">
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredAttendance.map((sem) => (
+                  <tr
+                    key={sem.id}
+                    className={`${sem.rowBgClass} transition-all duration-150 rounded-2xl shadow-2xs hover:shadow-sm cursor-pointer`}
+                    onClick={() => setActiveDetailSemester(sem)}
+                  >
+                    {/* Number badge */}
+                    <td className="py-4 px-5 rounded-l-2xl text-center">
+                      <span className={`mx-auto flex h-7 w-7 items-center justify-center rounded-full ${sem.circleBadgeClass} text-xs font-extrabold shadow-2xs`}>
+                        {sem.id}
+                      </span>
+                    </td>
+
+                    {/* Year */}
+                    <td className="py-4 px-5 text-center font-semibold text-slate-800 text-sm">
+                      {sem.year}
+                    </td>
+
+                    {/* Semester */}
+                    <td className="py-4 px-5 text-center font-semibold text-slate-800 text-sm">
+                      {sem.semester}
+                    </td>
+
+                    {/* Attendance % */}
+                    <td className="py-4 px-5 text-center font-extrabold text-slate-900 text-sm">
+                      {sem.attendance}
+                    </td>
+
+                    {/* Remarks Badge */}
+                    <td className="py-4 px-5 text-center">
+                      <span className={`inline-flex px-3.5 py-1 rounded-full text-xs font-bold ${sem.remarksBadgeClass} shadow-2xs`}>
+                        {sem.remarks}
+                      </span>
+                    </td>
+
+                    {/* View Details Button (Proper Button) */}
+                    <td className="py-4 px-5 text-center">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setActiveDetailSemester(sem);
+                        }}
+                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-blue-50/90 hover:bg-blue-600 text-blue-600 hover:text-white border border-blue-200/70 hover:border-blue-600 text-xs font-bold transition-all shadow-2xs hover:shadow-xs active:scale-95 cursor-pointer"
+                        title={`View ${sem.semester}th Semester breakdown`}
+                      >
+                        <Eye size={13} className="stroke-[2.4]" />
+                        <span>View</span>
+                      </button>
+                    </td>
+
+                    {/* Action Button */}
+                    <td className="py-4 px-5 rounded-r-2xl text-center">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDownload(sem);
+                        }}
+                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl border border-blue-200 bg-white hover:bg-blue-50 text-[#1d61e7] text-xs font-bold transition-all shadow-2xs active:scale-95 cursor-pointer"
+                      >
+                        <Download size={13} className="stroke-[2.5]" />
+                        <span>Download</span>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Note Footer matching screenshot */}
+          <div className="flex items-center gap-2.5 p-3.5 rounded-2xl bg-[#f8fafc] text-xs text-slate-500 font-medium border border-slate-100/90">
+            <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-blue-50 text-[#1d61e7]">
+              <Info size={13} className="stroke-[2.4]" />
+            </div>
+            <p className="leading-relaxed">
+              <strong className="text-slate-800 font-bold">Note:</strong> Attendance is calculated based on the classes you were present in out of the total classes held.
+            </p>
+          </div>
+
         </div>
       )}
     </div>

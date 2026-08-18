@@ -37,3 +37,14 @@ html, body, #root {
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
 }
+
+@keyframes text-shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-2.5px); }
+  40%, 80% { transform: translateX(2.5px); }
+}
+
+.group:hover .hover-shake,
+.hover-shake:hover {
+  animation: text-shake 0.35s ease-in-out;
+}

@@ -24,6 +24,10 @@ export default function StudentHeader({
   onOpenSidebar,
   isDigitalCardActive = false,
   onNavigateToProfile,
+  isAttendanceDetailActive = false,
+  onNavigateToAttendance,
+  isResultDetailActive = false,
+  onNavigateToResults,
 }) {
   const [profileOpen, setProfileOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
@@ -146,11 +150,11 @@ export default function StudentHeader({
           <Menu size={20} />
         </button>
         <div className="min-w-0">
-          <h1 className="text-xl sm:text-[22px] font-bold leading-tight text-gray-900 tracking-tight truncate font-barlow">
+          <h1 className="text-xl sm:text-[22px] font-bold leading-tight text-gray-900 tracking-tight truncate font-['Roboto',sans-serif]">
             {currentMeta.title}
           </h1>
           {activePage === "profile" && isDigitalCardActive ? (
-            <div className="flex items-center gap-1.5 text-xs sm:text-[13px] mt-0.5 font-barlow">
+            <div className="flex items-center gap-1.5 text-xs sm:text-[13px] mt-0.5 font-['Roboto',sans-serif]">
               <button
                 type="button"
                 onClick={onNavigateToProfile}
@@ -161,8 +165,32 @@ export default function StudentHeader({
               <span className="text-gray-400 font-bold">&gt;</span>
               <span className="text-gray-600 font-medium">Digital ID Card</span>
             </div>
+          ) : activePage === "attendances" && isAttendanceDetailActive ? (
+            <div className="flex items-center gap-1.5 text-xs sm:text-[13px] mt-0.5 font-['Roboto',sans-serif]">
+              <button
+                type="button"
+                onClick={onNavigateToAttendance}
+                className="text-blue-600 hover:text-blue-700 hover:underline font-semibold cursor-pointer transition-colors"
+              >
+                Attendance
+              </button>
+              <span className="text-gray-400 font-bold">&gt;</span>
+              <span className="text-gray-600 font-medium">View Attendance</span>
+            </div>
+          ) : activePage === "results" && isResultDetailActive ? (
+            <div className="flex items-center gap-1.5 text-xs sm:text-[13px] mt-0.5 font-['Roboto',sans-serif]">
+              <button
+                type="button"
+                onClick={onNavigateToResults}
+                className="text-blue-600 hover:text-blue-700 hover:underline font-semibold cursor-pointer transition-colors"
+              >
+                Results
+              </button>
+              <span className="text-gray-400 font-bold">&gt;</span>
+              <span className="text-gray-600 font-medium">View Result</span>
+            </div>
           ) : (
-            <p className="text-xs sm:text-[13px] text-gray-400 mt-0.5 truncate hidden sm:block font-barlow font-normal">
+            <p className="text-xs sm:text-[13px] text-gray-400 mt-0.5 truncate hidden sm:block font-['Roboto',sans-serif] font-normal">
               {currentMeta.subtitle}
             </p>
           )}
