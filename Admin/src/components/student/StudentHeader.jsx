@@ -22,6 +22,8 @@ export default function StudentHeader({
   onNavigate,
   onLogout,
   onOpenSidebar,
+  isDigitalCardActive = false,
+  onNavigateToProfile,
 }) {
   const [profileOpen, setProfileOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
@@ -99,14 +101,25 @@ export default function StudentHeader({
     },
     {
       id: "3",
-      title: "Attendance Notice CS402",
-      desc: "Please review attendance for Algorithm Lab this week.",
+      title: "Mentor Session Scheduled",
+      desc: "Upcoming 1-on-1 counseling with Dr. Debarati Roy on Friday.",
       time: "1 day ago",
-      icon: AlertTriangle,
-      iconBg: "bg-amber-100 text-amber-600",
+      icon: ShieldCheck,
+      iconBg: "bg-indigo-100 text-indigo-600",
     },
   ];
 
+  const clearAllNotifications = () => {
+    setUnreadCount(0);
+  };
+
+  const handleNav = (page) => {
+    setProfileOpen(false);
+    setNotifOpen(false);
+    if (onNavigate) onNavigate(page);
+  };
+
+  // Close dropdowns on click outside
   useEffect(() => {
     function handleClickOutside(event) {
       if (containerRef.current && !containerRef.current.contains(event.target)) {
@@ -115,18 +128,14 @@ export default function StudentHeader({
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
-  const handleNav = (page) => {
-    setProfileOpen(false);
-    setNotifOpen(false);
-    onNavigate?.(page);
-  };
-
   return (
-    <header className="h-[65px] bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between shrink-0 font-['Barlow',sans-serif] select-none z-20">
-      {/* Left: Hamburger (Mobile) + Title + Subtitle */}
+    <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-gray-200/80 bg-white/95 px-4 sm:px-6 backdrop-blur-md transition-all shadow-2xs font-['Roboto',sans-serif]">
+      {/* Left: Mobile Toggle + Page Title / Breadcrumb */}
       <div className="flex items-center gap-3 min-w-0">
         <button
           type="button"
@@ -140,9 +149,23 @@ export default function StudentHeader({
           <h1 className="text-xl sm:text-[22px] font-bold leading-tight text-gray-900 tracking-tight truncate font-barlow">
             {currentMeta.title}
           </h1>
-          <p className="text-xs sm:text-[13px] text-gray-400 mt-0.5 truncate hidden sm:block font-barlow font-normal">
-            {currentMeta.subtitle}
-          </p>
+          {activePage === "profile" && isDigitalCardActive ? (
+            <div className="flex items-center gap-1.5 text-xs sm:text-[13px] mt-0.5 font-barlow">
+              <button
+                type="button"
+                onClick={onNavigateToProfile}
+                className="text-blue-600 hover:text-blue-700 hover:underline font-semibold cursor-pointer transition-colors"
+              >
+                Profile
+              </button>
+              <span className="text-gray-400 font-bold">&gt;</span>
+              <span className="text-gray-600 font-medium">Digital ID Card</span>
+            </div>
+          ) : (
+            <p className="text-xs sm:text-[13px] text-gray-400 mt-0.5 truncate hidden sm:block font-barlow font-normal">
+              {currentMeta.subtitle}
+            </p>
+          )}
         </div>
       </div>
 

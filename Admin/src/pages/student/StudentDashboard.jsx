@@ -28,7 +28,7 @@ import StudentActivities from "./StudentActivities";
 import StudentNotices from "./StudentNotices";
 import StudentSettings from "./StudentSettings";
 import StudentSupport from "./StudentSupport";
-import { tuhinaStudentData } from "../../data/studentProfileData";
+import { tuhinaStudentData, tanukaStudentData } from "../../data/studentProfileData";
 
 const semesterAttendanceData = {
   1: { percentage: 91, attended: 98, absent: 10 },
@@ -133,7 +133,8 @@ const quickActions = [
 export default function StudentDashboard({ onLogout }) {
   const today = new Date();
   const [currentPage, setCurrentPage] = useState("dashboard");
-  const [profileTab, setProfileTab] = useState("parents");
+  const [profileTab, setProfileTab] = useState("academic");
+  const [isDigitalCardActive, setIsDigitalCardActive] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
   const [selectedDate, setSelectedDate] = useState(new Date(today.getFullYear(), today.getMonth(), today.getDate()));
@@ -210,6 +211,9 @@ export default function StudentDashboard({ onLogout }) {
       if (onLogout) onLogout();
       return;
     }
+    if (pageKey !== "profile") {
+      setIsDigitalCardActive(false);
+    }
     setCurrentPage(pageKey);
     setMobileSidebarOpen(false);
   }
@@ -219,11 +223,19 @@ export default function StudentDashboard({ onLogout }) {
       case "profile":
         return (
           <StudentProfile
-            studentData={tuhinaStudentData}
-            onBack={() => setCurrentPage("dashboard")}
+            studentData={tanukaStudentData}
+            onBack={() => {
+              if (isDigitalCardActive) {
+                setIsDigitalCardActive(false);
+              } else {
+                setCurrentPage("dashboard");
+              }
+            }}
             userRole="student"
             defaultTab={profileTab}
             hideHeader={true}
+            showDigitalCard={isDigitalCardActive}
+            onToggleDigitalCard={setIsDigitalCardActive}
           />
         );
 
@@ -664,6 +676,8 @@ export default function StudentDashboard({ onLogout }) {
           onNavigate={handleNavigate}
           onLogout={onLogout}
           onOpenSidebar={() => setMobileSidebarOpen(true)}
+          isDigitalCardActive={currentPage === "profile" && isDigitalCardActive}
+          onNavigateToProfile={() => setIsDigitalCardActive(false)}
         />
 
         {/* Scrollable Page Body */}

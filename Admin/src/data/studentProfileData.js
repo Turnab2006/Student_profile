@@ -222,4 +222,139 @@ export const tuhinaStudentData = {
   }
 };
 
-export const initialStudentData = arjunStudentData;
+export const tanukaStudentData = {
+  id: "CSE2024012",
+  name: "Tanuka Saha",
+  verified: true,
+  avatar: "/tanuka_saha_avatar.png",
+  email: "tanuka.saha@gmail.com",
+  phone: "+91 9123930828",
+  department: "Computer Science & Engineering",
+  course: "B.Tech",
+  semester: "VI Semester",
+  year: "Third Year",
+  rollNo: "CSE2024012",
+  registrationNo: "REG-2024-CSE-0012",
+  academicYear: "2024 - 2028",
+  batch: "2024 - 2028",
+  mentor: "Dr. Debarati Roy",
+  section: "Section A",
+
+  // Parents / Personal Tab Details
+  additionalDetails: {
+    personalEmail: "tanuka.saha@gmail.com",
+    phoneNumber: "+91 9123930828",
+    collegeEmail: "tanuka.s@edusmart.edu",
+    bloodGroup: "O+",
+    dateOfBirth: "12 May 2004",
+    aadharCardNumber: "4521 8901 2345",
+    gender: "Female",
+    category: "General",
+    nationality: "Indian",
+    emergencyContact: "+91 9123930829"
+  },
+
+  addressDetails: {
+    country: "India",
+    state: "West Bengal",
+    district: "Kolkata",
+    pinCode: "700091",
+    postalAddress: "Plot 14, Salt Lake Sector V",
+    policeStation: "Bidhannagar East Police Station",
+    fullAddress: "Flat 4B, Greenwood Heights, Plot 14, Salt Lake Sector V, Bidhannagar, Kolkata, West Bengal - 700091"
+  },
+
+  fatherDetails: {
+    fullName: "Subhash Saha",
+    emailAddress: "subhash.saha@gmail.com",
+    phoneNumber: "+91 9123930820",
+    occupation: "Business Executive",
+    designation: "General Manager",
+    officeAddress: "Bikash Bhavan, Salt Lake, Kolkata"
+  },
+
+  motherDetails: {
+    fullName: "Ananya Saha",
+    emailAddress: "ananya.saha@gmail.com",
+    phoneNumber: "+91 9123930821",
+    occupation: "Professor",
+    institution: "University of Calcutta",
+    qualification: "Ph.D, M.Sc"
+  },
+
+  // Academic Tab Details
+  academicDetails: {
+    institution: "Rajasthan Technical University, Kota",
+    universityRole: "Regular",
+    registrationNumber: "22CS100123",
+    abcId: "ABCD1234567890",
+    enrollmentNumber: "RTU/2022/CS/12345",
+    admissionBatch: "2022 - 2026",
+    currentYear: "Third Year",
+    currentSemester: "VI Semester",
+    collegeRollNo: "CSE2022077",
+    cgpa: "9.42",
+    creditsEarned: "96",
+    totalCredits: "160",
+    currentSGPA: "9.50",
+    classRank: "1st in Dept",
+    attendanceOverall: "95.0%",
+    currentSubjects: [
+      { code: "CS601", name: "Design & Analysis of Algorithms", credits: 4, faculty: "Prof. S. Sengupta", type: "Core Theory", progress: 92 },
+      { code: "CS602", name: "Computer Networks & Security", credits: 4, faculty: "Dr. Debarati Roy", type: "Core Theory", progress: 88 },
+      { code: "CS603", name: "Artificial Intelligence & ML", credits: 4, faculty: "Dr. A. K. Banerjee", type: "Core Theory", progress: 95 },
+      { code: "CS604", name: "Cloud Computing & DevOps", credits: 3, faculty: "Prof. P. Dutta", type: "Department Elective", progress: 82 },
+      { code: "CS691", name: "Algorithms & AI Lab", credits: 2, faculty: "Prof. S. Sengupta", type: "Practical", progress: 98 },
+      { code: "CS692", name: "Major Project Phase - I", credits: 3, faculty: "Dr. Debarati Roy", type: "Project Work", progress: 85 }
+    ]
+  },
+
+  // Mentor Details
+  mentorDetails: {
+    name: "Prof. Rahul Sharma",
+    department: "Computer Science Engineering",
+    email: "rahul.sharma@edusmart.edu",
+    phone: "+91 91234 56789",
+    officeLocation: "Block B, Room 203",
+    avatar: "/rahul_sharma_avatar.png"
+  },
+
+  // Result Tab Details
+  resultDetails: {
+    semesters: [
+      { sem: "Semester 1", sgpa: "9.20", credits: 22, status: "Passed", year: "Autumn 2024" },
+      { sem: "Semester 2", sgpa: "9.35", credits: 22, status: "Passed", year: "Spring 2025" },
+      { sem: "Semester 3", sgpa: "9.50", credits: 22, status: "Passed", year: "Autumn 2025" },
+      { sem: "Semester 4", sgpa: "9.45", credits: 22, status: "Passed", year: "Spring 2026" },
+      { sem: "Semester 5", sgpa: "9.55", credits: 22, status: "Passed", year: "Autumn 2026" },
+      { sem: "Semester 6", sgpa: "In Progress", credits: 20, status: "Ongoing", year: "Spring 2027" }
+    ],
+    sem5Grades: [
+      { code: "CS501", subject: "Database Management Systems", internal: "29/30", theory: "68/70", total: "97/100", grade: "O", gradePoint: "10" },
+      { code: "CS502", subject: "Operating Systems Architecture", internal: "28/30", theory: "64/70", total: "92/100", grade: "O", gradePoint: "10" },
+      { code: "CS503", subject: "Software Engineering Principles", internal: "29/30", theory: "62/70", total: "91/100", grade: "O", gradePoint: "10" },
+      { code: "CS504", subject: "Theory of Computation", internal: "28/30", theory: "65/70", total: "93/100", grade: "O", gradePoint: "10" },
+      { code: "CS591", subject: "DBMS & OS Laboratory", internal: "40/40", theory: "58/60", total: "98/100", grade: "O", gradePoint: "10" }
+    ]
+  },
+
+  // Attendance Tab Details
+  attendanceDetails: {
+    overallPercentage: 95.0,
+    presentDays: 172,
+    totalWorkingDays: 180,
+    leavesApproved: 6,
+    unexcusedAbsent: 2,
+    subjectAttendance: [
+      { subject: "Design & Analysis of Algorithms", attended: 38, total: 40, percentage: 95.0, status: "Excellent" },
+      { subject: "Computer Networks & Security", attended: 36, total: 38, percentage: 94.7, status: "Excellent" },
+      { subject: "Artificial Intelligence & ML", attended: 41, total: 42, percentage: 97.6, status: "Excellent" },
+      { subject: "Cloud Computing & DevOps", attended: 30, total: 32, percentage: 93.8, status: "Good" },
+      { subject: "Algorithms & AI Lab", attended: 15, total: 15, percentage: 100.0, status: "Perfect" },
+      { subject: "Major Project Phase - I", attended: 28, total: 30, percentage: 93.3, status: "Good" }
+    ]
+  }
+};
+
+export const initialStudentData = tanukaStudentData;
+
