@@ -1,39 +1,17 @@
 import { useState } from "react";
 import {
   Send,
-  User,
   Paperclip,
-  Smile,
   Search,
   CheckCheck,
   Phone,
   Video,
-  MoreVertical
 } from "lucide-react";
 
 export default function StudentMessages({ hideHeader = false }) {
   const [activeContactId, setActiveContactId] = useState("1");
   const [messageInput, setMessageInput] = useState("");
-  const [messages, setMessages] = useState([
-    {
-      id: "m1",
-      sender: "mentor",
-      text: "Hello Tuhina! Please make sure to submit your semester project proposal draft before this Friday.",
-      time: "10:30 AM",
-    },
-    {
-      id: "m2",
-      sender: "student",
-      text: "Yes sir, I have already uploaded the draft in the activities portal. Could you please review Section 3 when you get a chance?",
-      time: "10:35 AM",
-    },
-    {
-      id: "m3",
-      sender: "mentor",
-      text: "I checked it, looks very promising! Just add the comparative analysis diagram and you are good to go.",
-      time: "10:42 AM",
-    },
-  ]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const contacts = [
     {
@@ -71,23 +49,83 @@ export default function StudentMessages({ hideHeader = false }) {
     },
   ];
 
+  const [conversations, setConversations] = useState({
+    "1": [
+      {
+        id: "m1",
+        sender: "mentor",
+        text: "Hello Tuhina! Please make sure to submit your semester project proposal draft before this Friday.",
+        time: "10:30 AM",
+      },
+      {
+        id: "m2",
+        sender: "student",
+        text: "Yes sir, I have already uploaded the draft in the activities portal. Could you please review Section 3 when you get a chance?",
+        time: "10:35 AM",
+      },
+      {
+        id: "m3",
+        sender: "mentor",
+        text: "I checked it, looks very promising! Just add the comparative analysis diagram and you are good to go.",
+        time: "10:42 AM",
+      },
+    ],
+    "2": [
+      {
+        id: "m1",
+        sender: "mentor",
+        text: "Assignment 3 marks have been updated in the portal. Please check.",
+        time: "Yesterday",
+      },
+      {
+        id: "m2",
+        sender: "student",
+        text: "Thank you ma'am, I will check them right away.",
+        time: "Yesterday",
+      },
+    ],
+    "3": [
+      {
+        id: "m1",
+        sender: "mentor",
+        text: "Your credit point verification is approved and updated in records.",
+        time: "May 18",
+      },
+      {
+        id: "m2",
+        sender: "student",
+        text: "Thank you very much!",
+        time: "May 18",
+      },
+    ],
+  });
+
+  const activeContact = contacts.find((c) => c.id === activeContactId) || contacts[0];
+  const messages = conversations[activeContactId] || [];
+
   const handleSendMessage = (e) => {
     e.preventDefault();
     if (!messageInput.trim()) return;
 
-    setMessages((prev) => [
+    const newMsg = {
+      id: Date.now().toString(),
+      sender: "student",
+      text: messageInput.trim(),
+      time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+    };
+
+    setConversations((prev) => ({
       ...prev,
-      {
-        id: Date.now().toString(),
-        sender: "student",
-        text: messageInput.trim(),
-        time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-      },
-    ]);
+      [activeContactId]: [...(prev[activeContactId] || []), newMsg],
+    }));
     setMessageInput("");
   };
 
-  const activeContact = contacts.find((c) => c.id === activeContactId) || contacts[0];
+  const filteredContacts = contacts.filter(
+    (c) =>
+      c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      c.role.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="p-4 sm:p-6 space-y-4 font-['Roboto',sans-serif]">
@@ -112,13 +150,15 @@ export default function StudentMessages({ hideHeader = false }) {
               <input
                 type="text"
                 placeholder="Search mentors & staff..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-9 pr-3 py-1.5 bg-gray-50 border border-gray-200 rounded-xl text-xs text-gray-800 placeholder-gray-400 focus:bg-white focus:outline-none focus:border-blue-500"
               />
             </div>
           </div>
 
           <div className="flex-1 overflow-y-auto divide-y divide-gray-50">
-            {contacts.map((contact) => {
+            {filteredContacts.map((contact) => {
               const isSelected = contact.id === activeContactId;
               return (
                 <button
