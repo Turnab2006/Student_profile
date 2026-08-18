@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   Award,
   CalendarCheck,
@@ -132,6 +133,9 @@ const quickActions = [
 
 export default function StudentDashboard({ onLogout }) {
   const today = new Date();
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const [currentPage, setCurrentPage] = useState("dashboard");
   const [profileTab, setProfileTab] = useState("academic");
   const [isDigitalCardActive, setIsDigitalCardActive] = useState(false);
@@ -143,6 +147,42 @@ export default function StudentDashboard({ onLogout }) {
   const [attendanceSemester, setAttendanceSemester] = useState(4);
   const [semesterDropdownOpen, setSemesterDropdownOpen] = useState(false);
   const semesterDropdownRef = useRef(null);
+
+  // Sync currentPage and detail views with location.pathname
+  useEffect(() => {
+    const path = location.pathname;
+    if (path.includes("/student/profile")) {
+      setCurrentPage("profile");
+    } else if (path.includes("/student/subjects")) {
+      setCurrentPage("subjects");
+    } else if (path.includes("/student/results/detail")) {
+      setCurrentPage("results");
+      setActiveResultSemester((prev) => prev || { semester: 5, sgpa: "9.42", percentage: "94.2%", status: "PASSED", credits: 20 });
+    } else if (path.includes("/student/results")) {
+      setCurrentPage("results");
+      setActiveResultSemester(null);
+    } else if (path.includes("/student/attendances/detail")) {
+      setCurrentPage("attendances");
+      setActiveAttendanceSemester((prev) => prev || { semester: 5, percentage: "92%", attended: 112, totalHeld: 120 });
+    } else if (path.includes("/student/attendances")) {
+      setCurrentPage("attendances");
+      setActiveAttendanceSemester(null);
+    } else if (path.includes("/student/credit-points")) {
+      setCurrentPage("credit-points");
+    } else if (path.includes("/student/message")) {
+      setCurrentPage("message");
+    } else if (path.includes("/student/activities")) {
+      setCurrentPage("activities");
+    } else if (path.includes("/student/notices")) {
+      setCurrentPage("notices");
+    } else if (path.includes("/student/settings")) {
+      setCurrentPage("settings");
+    } else if (path.includes("/student/support")) {
+      setCurrentPage("support");
+    } else {
+      setCurrentPage("dashboard");
+    }
+  }, [location.pathname]);
 
   const currentAttendance = semesterAttendanceData[attendanceSemester] || semesterAttendanceData[4];
 
@@ -201,7 +241,7 @@ export default function StudentDashboard({ onLogout }) {
     setCurrentMonth((prev) => new Date(prev.getFullYear(), prev.getMonth() + 1, 1));
   };
 
-  const handleSelectDate = (date) => {
+  const handleDateClick = (date) => {
     setSelectedDate(new Date(date));
     if (date.getMonth() !== currentMonth.getMonth()) {
       setCurrentMonth(new Date(date.getFullYear(), date.getMonth(), 1));
@@ -211,8 +251,23 @@ export default function StudentDashboard({ onLogout }) {
   function handleNavigate(pageKey) {
     if (pageKey === "logout") {
       if (onLogout) onLogout();
+      navigate("/");
       return;
     }
+    const studentPathMap = {
+      dashboard: "/student/dashboard",
+      profile: "/student/profile",
+      subjects: "/student/subjects",
+      results: "/student/results",
+      attendances: "/student/attendances",
+      "credit-points": "/student/credit-points",
+      message: "/student/message",
+      activities: "/student/activities",
+      notices: "/student/notices",
+      settings: "/student/settings",
+      support: "/student/support",
+    };
+
     if (pageKey !== "profile") {
       setIsDigitalCardActive(false);
     }
@@ -222,8 +277,10 @@ export default function StudentDashboard({ onLogout }) {
     if (pageKey !== "results") {
       setActiveResultSemester(null);
     }
-    setCurrentPage(pageKey);
+
+    const targetPath = studentPathMap[pageKey] || "/student/dashboard";
     setMobileSidebarOpen(false);
+    navigate(targetPath);
   }
 
   function renderStudentContent() {

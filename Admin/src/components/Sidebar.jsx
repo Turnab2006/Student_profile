@@ -10,94 +10,123 @@ import {
   Settings,
   HelpCircle,
   LogOut,
+  X,
 } from "lucide-react";
 
 const navSections = [
   {
     label: "MAIN",
     items: [
-      { icon: LayoutDashboard, label: "Dashboard", page: "dashboard" },
-      { icon: Users,           label: "Students",  page: "students"  },
-      { icon: UserCheck,       label: "Mentors",   page: "mentors"   },
+      { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+      { id: "students",  label: "Students",  icon: Users },
+      { id: "mentors",   label: "Mentors",   icon: UserCheck },
     ],
   },
   {
     label: "ACADEMICS",
     items: [
-      { icon: BookOpen,      label: "Semesters",   page: "semesters"   },
-      { icon: Grid,          label: "Subjects",    page: "subjects"    },
-      { icon: ClipboardList, label: "Attendances", page: "attendances" },
+      { id: "semesters",   label: "Semesters",   icon: BookOpen },
+      { id: "subjects",    label: "Subjects",    icon: Grid },
+      { id: "attendances", label: "Attendances", icon: ClipboardList },
     ],
   },
   {
-    label: "ANNOUNCEMENT",
+    label: "COMMUNICATION",
     items: [
-      { icon: Megaphone, label: "Activities", page: "activities" },
-      { icon: Bell,      label: "Notices",    page: "notices"    },
+      { id: "activities", label: "Activities", icon: Megaphone },
+      { id: "notices",    label: "Notices",    icon: Bell },
     ],
   },
   {
     label: "SYSTEM",
     items: [
-      { icon: Settings,   label: "Profile & Settings", page: "settings" },
-      { icon: HelpCircle, label: "Support Center",     page: "support"  },
+      { id: "settings", label: "Profile & Settings", icon: Settings },
+      { id: "support",  label: "Support Center",     icon: HelpCircle },
     ],
   },
 ];
 
-export default function Sidebar({ activePage = "dashboard", onNavigate, open = false, onClose }) {
+export default function Sidebar({
+  activePage = "dashboard",
+  onNavigate,
+  open = false,
+  onClose,
+  onLogout,
+}) {
   return (
     <aside
-      className={`fixed inset-y-0 left-0 z-50 flex h-full w-72 flex-col border-r border-gray-100 bg-white shadow-2xl transition-transform duration-300 ease-in-out lg:static lg:z-auto lg:w-64 lg:translate-x-0 lg:shadow-none ${
+      className={`fixed inset-y-0 left-0 z-50 flex h-full w-[250px] shrink-0 flex-col border-r border-gray-100 bg-white font-['Roboto',sans-serif] shadow-xl transition-transform duration-300 ease-in-out lg:static lg:z-auto lg:w-[250px] lg:translate-x-0 lg:shadow-none select-none ${
         open ? "translate-x-0" : "-translate-x-full"
       }`}
     >
-      {/* Logo */}
-      <div className="h-[60px] flex items-center justify-between gap-3 border-b border-gray-100 px-5 shrink-0">
-        <span className="block text-lg font-bold tracking-wide text-gray-800">LOGO</span>
+      {/* Brand Logo Header */}
+      <div className="h-[65px] flex items-center justify-between border-b border-gray-100 px-6 shrink-0">
+        <span className="block text-2xl font-bold tracking-tight text-gray-900">
+          Trackademy
+        </span>
         <button
           type="button"
           onClick={onClose}
-          className="inline-flex h-9 w-9 items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 lg:hidden"
+          className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-700 lg:hidden cursor-pointer transition-colors"
           aria-label="Close navigation"
         >
-          <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M18 6 6 18" />
-            <path d="m6 6 12 12" />
-          </svg>
+          <X size={18} />
         </button>
       </div>
 
-      {/* Nav */}
-      <nav className="flex-1 px-2.5 py-3 space-y-2.5 overflow-hidden">
+      {/* Nav List with proportional spacing matching Student Portal */}
+      <nav className="flex-1 px-3.5 py-3.5 space-y-4 overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
         {navSections.map((section) => (
           <div key={section.label}>
-            <p className="text-[10px] font-semibold text-gray-400 uppercase tracking-widest px-3 mb-1">
+            <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider px-3 mb-1.5 font-roboto">
               {section.label}
             </p>
-            {section.items.map(({ icon: Icon, label, page }) => (
-              <button
-                key={label}
-                onClick={() => onNavigate?.(page)}
-                className={`w-full flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
-                  activePage === page
-                    ? "bg-primary/10 text-primary"
-                    : "text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                }`}
-              >
-                <Icon size={16} />
-                {label}
-              </button>
-            ))}
+            <div className="space-y-1">
+              {section.items.map(({ id, label, icon: Icon }) => {
+                const isActive = activePage === id;
+                return (
+                  <button
+                    key={id}
+                    type="button"
+                    onClick={() => {
+                      onNavigate?.(id);
+                      onClose?.();
+                    }}
+                    className={`w-full flex items-center gap-3.5 px-3.5 py-2 rounded-xl text-sm transition-all cursor-pointer group ${
+                      isActive
+                        ? "bg-[#eaf8f1] text-[#0da651] font-semibold"
+                        : "text-[#5A6A80] hover:bg-gray-50 hover:text-gray-900 font-medium"
+                    }`}
+                  >
+                    <Icon
+                      size={18}
+                      className={`shrink-0 transition-colors ${
+                        isActive
+                          ? "text-[#0da651]"
+                          : "text-[#5A6A80] group-hover:text-gray-900"
+                      }`}
+                    />
+                    <span className="truncate">{label}</span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
         ))}
       </nav>
 
-      {/* Logout */}
-      <div className="border-t border-gray-100 px-3 py-3 shrink-0">
-        <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium text-red-400 hover:bg-red-50 transition-colors bg-red-50/70">
-          <LogOut size={16} />
-          Logout
+      {/* Bottom Logout Button */}
+      <div className="p-3.5 border-t border-gray-100 shrink-0">
+        <button
+          type="button"
+          onClick={() => {
+            if (onLogout) onLogout();
+            else onNavigate?.("logout");
+          }}
+          className="w-full flex items-center justify-center gap-2.5 py-2.5 px-4 rounded-xl text-sm font-semibold text-[#FF4D4F] bg-[#FFF0F0] hover:bg-[#FEECEB] active:scale-[0.99] transition-all cursor-pointer shadow-none"
+        >
+          <LogOut size={18} className="shrink-0 stroke-[2.2]" />
+          <span>Logout</span>
         </button>
       </div>
     </aside>

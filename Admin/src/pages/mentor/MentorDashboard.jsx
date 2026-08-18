@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Rocket, ArrowLeft, Sparkles, Clock } from 'lucide-react';
 import './MentorDashboard.css';
 import MentorSidebar from '../../components/mentor/MentorSidebar';
@@ -85,12 +86,49 @@ function MentorComingSoon({ title, onBack }) {
 }
 
 export default function MentorDashboard({ user, onLogout }) {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [startWithUpload, setStartWithUpload] = useState(false);
 
+  useEffect(() => {
+    const path = location.pathname;
+    if (path.includes('/mentor/mentees')) setActiveTab('mentees');
+    else if (path.includes('/mentor/profile')) setActiveTab('profile');
+    else if (path.includes('/mentor/messages')) setActiveTab('messages');
+    else if (path.includes('/mentor/results')) setActiveTab('results');
+    else if (path.includes('/mentor/attendances')) setActiveTab('attendance');
+    else if (path.includes('/mentor/credit-points')) setActiveTab('credit-points');
+    else if (path.includes('/mentor/notices')) setActiveTab('notices');
+    else if (path.includes('/mentor/activities')) setActiveTab('activities');
+    else if (path.includes('/mentor/settings')) setActiveTab('settings');
+    else if (path.includes('/mentor/support')) setActiveTab('support');
+    else setActiveTab('dashboard');
+  }, [location.pathname]);
+
   const handleNavigate = (tab, isUpload = false) => {
+    if (tab === 'logout') {
+      if (onLogout) onLogout();
+      navigate('/');
+      return;
+    }
+    const mentorPathMap = {
+      dashboard: '/mentor/dashboard',
+      mentees: '/mentor/mentees',
+      profile: '/mentor/profile',
+      messages: '/mentor/messages',
+      results: '/mentor/results',
+      attendance: '/mentor/attendances',
+      attendances: '/mentor/attendances',
+      'credit-points': '/mentor/credit-points',
+      notices: '/mentor/notices',
+      activities: '/mentor/activities',
+      settings: '/mentor/settings',
+      support: '/mentor/support',
+    };
     setActiveTab(tab);
     setStartWithUpload(Boolean(isUpload));
+    navigate(mentorPathMap[tab] || '/mentor/dashboard');
   };
 
   function renderView() {

@@ -9,12 +9,11 @@ import {
   CheckCircle2,
   AlertTriangle,
   Megaphone,
-  X
 } from "lucide-react";
 
 export default function AdminProfile({
   name = "Admin User",
-  role = "Super admin",
+  role = "Super Admin",
   avatar = "A",
   onNavigate,
 }) {
@@ -86,8 +85,8 @@ export default function AdminProfile({
   };
 
   return (
-    <div className="flex items-center gap-2 sm:gap-4 relative select-none shrink-0" ref={containerRef}>
-      {/* 1. Notification Bell Icon with Red Badge 3 */}
+    <div className="flex items-center gap-2 sm:gap-3.5 relative select-none shrink-0" ref={containerRef}>
+      {/* 1. Notification Bell Icon with Red Badge */}
       <div className="relative">
         <button
           type="button"
@@ -95,12 +94,13 @@ export default function AdminProfile({
             setNotifOpen((prev) => !prev);
             setProfileOpen(false);
           }}
-          className="relative flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-xl text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-all cursor-pointer focus:outline-none"
+          className="relative flex h-9 w-9 items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors cursor-pointer focus:outline-none"
           title="Notifications"
+          aria-label="Notifications"
         >
-          <Bell size={18} />
+          <Bell size={19} className="stroke-[1.8]" />
           {unreadCount > 0 && (
-            <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[10px] font-bold text-white shadow-sm animate-pulse">
+            <span className="absolute -top-0.5 -right-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[#FF4D4F] px-1 text-[10px] font-bold text-white shadow-sm ring-2 ring-white">
               {unreadCount}
             </span>
           )}
@@ -168,16 +168,17 @@ export default function AdminProfile({
       <button
         type="button"
         onClick={() => navigateTo("support")}
-        className="hidden sm:flex h-9 w-9 items-center justify-center rounded-xl text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-all cursor-pointer focus:outline-none"
+        className="flex h-9 w-9 items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors cursor-pointer focus:outline-none"
         title="Support Center"
+        aria-label="Support Center"
       >
-        <HelpCircle size={18} />
+        <HelpCircle size={19} className="stroke-[1.8]" />
       </button>
 
-      {/* Divider */}
+      {/* Vertical Divider */}
       <div className="hidden sm:block h-5 w-[1px] bg-gray-200" />
 
-      {/* 3. Admin Profile with Dropdown */}
+      {/* 3. Admin Profile Pill - Avatar on Left, Name & Role in Middle (like Student Portal) */}
       <div className="relative">
         <button
           type="button"
@@ -185,51 +186,38 @@ export default function AdminProfile({
             setProfileOpen((prev) => !prev);
             setNotifOpen(false);
           }}
-          className="flex items-center gap-3 p-1 rounded-xl hover:bg-gray-100/70 transition-all cursor-pointer focus:outline-none group"
+          className="flex items-center gap-2.5 sm:gap-3 p-1 rounded-xl hover:bg-gray-100/70 transition-all cursor-pointer focus:outline-none group"
         >
-          <div className="text-right leading-tight hidden sm:block">
-            <p className="text-xs sm:text-sm font-semibold text-gray-700 group-hover:text-emerald-700 transition-colors">
-              {name}
-            </p>
-            <p className="text-[11px] text-gray-400 capitalize">{role}</p>
-          </div>
-
+          {/* Avatar Icon on LEFT */}
           <div className="relative">
-            <div className="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center overflow-hidden text-sm font-bold text-white shadow-sm ring-2 ring-emerald-500/20">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center overflow-hidden text-sm font-bold text-white shadow-sm ring-2 ring-emerald-500/20">
               {avatar}
             </div>
             <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-white" />
           </div>
 
+          {/* Name & Role Text on RIGHT of Avatar */}
+          <div className="text-left leading-tight hidden sm:block">
+            <p className="text-xs sm:text-sm font-semibold text-gray-800 group-hover:text-[#0da651] transition-colors">
+              {name}
+            </p>
+            <p className="text-[11px] text-gray-400 capitalize font-medium">{role}</p>
+          </div>
+
+          {/* Chevron Icon */}
           <ChevronDown
-            size={14}
+            size={15}
             className={`text-gray-400 transition-transform duration-200 ${
               profileOpen ? "rotate-180 text-emerald-600" : "group-hover:text-gray-600"
             }`}
           />
         </button>
 
-        {/* Profile Dropdown Menu */}
+        {/* Profile Dropdown Menu - Strictly ONLY Settings & Logout */}
         {profileOpen && (
-          <div className="absolute right-0 top-full mt-2.5 w-56 rounded-2xl border border-gray-100 bg-white p-2 shadow-2xl z-50 animate-in fade-in slide-in-from-top-2 duration-150">
-            {/* User Info Header */}
-            <div className="px-3 py-2.5 border-b border-gray-100 bg-gray-50/50 rounded-xl mb-1">
-              <div className="flex items-center gap-2">
-                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 font-bold text-xs">
-                  {avatar}
-                </div>
-                <div className="overflow-hidden">
-                  <p className="text-xs font-bold text-gray-800 truncate">{name}</p>
-                  <p className="text-[10px] text-emerald-600 font-medium flex items-center gap-1">
-                    <ShieldCheck size={10} /> {role}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Menu Items */}
+          <div className="absolute right-0 top-full mt-2.5 w-44 rounded-2xl border border-slate-200 bg-white p-1.5 shadow-xl z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+            {/* Menu Items: Only Settings & Logout */}
             <div className="space-y-0.5">
-              {/* Settings */}
               <button
                 type="button"
                 onClick={() => navigateTo("settings")}
@@ -239,7 +227,6 @@ export default function AdminProfile({
                 <span>Settings</span>
               </button>
 
-              {/* Logout */}
               <button
                 type="button"
                 onClick={handleLogoutClick}
