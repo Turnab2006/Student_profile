@@ -385,7 +385,7 @@ export default function StudentDashboard({ onLogout }) {
                           <Mail size={15} className="text-gray-800 shrink-0 stroke-[1.8]" />
                           <span>
                             <strong className="font-semibold text-gray-900">Email :</strong>{" "}
-                            <span className="text-gray-600">tanukasaha12@gmail.com</span>
+                            <span className="text-gray-600">tanukas@gmail.com</span>
                           </span>
                         </div>
                         <div className="flex items-center gap-2 text-xs sm:text-[13px] text-gray-700">

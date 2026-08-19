@@ -9,6 +9,7 @@ import {
   Settings,
   Headset,
   LogOut,
+  X,
 } from 'lucide-react';
 
 function MessagesCustomIcon({ size = 20, strokeWidth = 2, className }) {
@@ -107,20 +108,46 @@ const menuGroups = [
   },
 ];
 
-export default function MentorSidebar({ activeTab = 'dashboard', onSelectTab, onLogout }) {
+export default function MentorSidebar({
+  activeTab = 'dashboard',
+  onSelectTab,
+  onLogout,
+  open = false,
+  onClose,
+}) {
   return (
-    <aside className="mentor-sidebar">
-      <div className="h-[60px] flex items-center justify-between border-b border-gray-100 px-5 shrink-0 cursor-pointer select-none" onClick={() => onSelectTab && onSelectTab('dashboard')}>
-        <span className="block text-lg font-extrabold tracking-wide text-gray-800">
+    <aside
+      className={`fixed inset-y-0 left-0 z-50 flex h-full w-[240px] shrink-0 flex-col border-r border-gray-100 bg-white shadow-xl transition-transform duration-300 ease-in-out lg:static lg:z-auto lg:w-[240px] lg:translate-x-0 lg:shadow-none select-none ${
+        open ? 'translate-x-0' : '-translate-x-full'
+      }`}
+    >
+      <div className="h-[65px] flex items-center justify-between border-b border-gray-100 px-5 shrink-0 select-none">
+        <span
+          className="block text-lg font-extrabold tracking-wide text-gray-800 cursor-pointer"
+          onClick={() => {
+            if (onSelectTab) onSelectTab('dashboard');
+            if (onClose) onClose();
+          }}
+        >
           TRACK<span className="text-blue-600">ADEMY</span>
         </span>
+        <button
+          type="button"
+          onClick={onClose}
+          className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-700 lg:hidden cursor-pointer transition-colors"
+          aria-label="Close navigation"
+        >
+          <X size={18} />
+        </button>
       </div>
 
-      <nav className="mentor-sidebar-nav">
+      <nav className="flex-1 px-3.5 py-3.5 space-y-3.5 overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
         {menuGroups.map((group) => (
-          <div key={group.title} className="mentor-nav-group">
-            <p className="mentor-group-title">{group.title}</p>
-            <div className="mentor-group-items">
+          <div key={group.title} className="space-y-1">
+            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider px-2.5 mb-1">
+              {group.title}
+            </p>
+            <div className="space-y-0.5">
               {group.items.map((item) => {
                 const Icon = item.icon;
                 const isActive = activeTab === item.id;
@@ -128,10 +155,21 @@ export default function MentorSidebar({ activeTab = 'dashboard', onSelectTab, on
                   <button
                     key={item.id}
                     type="button"
-                    onClick={() => onSelectTab && onSelectTab(item.id)}
-                    className={`mentor-nav-item${isActive ? ' active' : ''}`}
+                    onClick={() => {
+                      if (onSelectTab) onSelectTab(item.id);
+                      if (onClose) onClose();
+                    }}
+                    className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                      isActive
+                        ? 'bg-[#f0eaff] text-[#7656f4] font-bold'
+                        : 'text-slate-600 hover:bg-slate-50 hover:text-[#7656f4]'
+                    }`}
                   >
-                    <Icon className="mentor-nav-icon" size={20} strokeWidth={2} />
+                    <Icon
+                      size={18}
+                      strokeWidth={2}
+                      className={isActive ? 'text-[#7656f4]' : 'text-slate-400'}
+                    />
                     <span>{item.label}</span>
                   </button>
                 );
@@ -142,8 +180,15 @@ export default function MentorSidebar({ activeTab = 'dashboard', onSelectTab, on
       </nav>
 
       <div className="border-t border-gray-100 p-3 mt-auto">
-        <button type="button" className="mentor-logout-btn" onClick={onLogout}>
-          <LogOut className="mentor-logout-icon" size={20} strokeWidth={2} />
+        <button
+          type="button"
+          className="w-full flex items-center justify-center gap-2.5 p-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold transition-all cursor-pointer"
+          onClick={() => {
+            if (onLogout) onLogout();
+            if (onClose) onClose();
+          }}
+        >
+          <LogOut size={16} strokeWidth={2} />
           <span>Logout</span>
         </button>
       </div>

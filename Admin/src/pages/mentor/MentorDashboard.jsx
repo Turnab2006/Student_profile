@@ -6,8 +6,8 @@ import {
   Sparkles,
   Clock,
   Users,
-  CalendarCheck,
-  ClipboardList,
+  CheckCircle2,
+  TrendingUp,
   Star,
 } from 'lucide-react';
 import './MentorDashboard.css';
@@ -36,7 +36,7 @@ const stats = [
     icon: Users,
     cardClass: 'bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#7656f4]',
     valueClass: 'text-[#111827]',
-    iconWrap: 'bg-[#f0eaff] text-[#7656f4]',
+    iconWrap: 'bg-[#F3EEFF] text-[#7656f4]',
     pageKey: 'mentees',
   },
   {
@@ -44,10 +44,10 @@ const stats = [
     label: 'Attendance Rate',
     value: '92%',
     note: 'Classes recorded',
-    icon: CalendarCheck,
-    cardClass: 'bg-white text-slate-800 border border-slate-200 border-l-4 border-l-red-500',
-    valueClass: 'text-slate-900',
-    iconWrap: 'bg-[#fff1f1] text-red-500',
+    icon: CheckCircle2,
+    cardClass: 'bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#22C55E]',
+    valueClass: 'text-[#111827]',
+    iconWrap: 'bg-[#EAFBF1] text-[#22C55E]',
     pageKey: 'attendance',
   },
   {
@@ -55,10 +55,10 @@ const stats = [
     label: 'Results Published',
     value: '18',
     note: 'Published results',
-    icon: ClipboardList,
-    cardClass: 'bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#f59e0b]',
+    icon: TrendingUp,
+    cardClass: 'bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#F59E0B]',
     valueClass: 'text-[#111827]',
-    iconWrap: 'bg-[#fff1dc] text-[#f59e0b]',
+    iconWrap: 'bg-[#FFF5E8] text-[#F59E0B]',
     pageKey: 'results',
   },
   {
@@ -67,9 +67,9 @@ const stats = [
     value: '120',
     note: 'Total points issued',
     icon: Star,
-    cardClass: 'bg-white text-emerald-700 border border-emerald-200 border-l-4 border-l-emerald-500',
+    cardClass: 'bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#3B82F6]',
     valueClass: 'text-[#111827]',
-    iconWrap: 'bg-[#e7f7ec] text-emerald-600',
+    iconWrap: 'bg-[#EEF5FF] text-[#3B82F6]',
     pageKey: 'credit-points',
   },
 ];
@@ -119,6 +119,7 @@ export default function MentorDashboard({ user, onLogout }) {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [startWithUpload, setStartWithUpload] = useState(false);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   useEffect(() => {
     const path = location.pathname;
@@ -157,6 +158,7 @@ export default function MentorDashboard({ user, onLogout }) {
     };
     setActiveTab(tab);
     setStartWithUpload(Boolean(isUpload));
+    setMobileSidebarOpen(false);
     navigate(mentorPathMap[tab] || '/mentor/dashboard');
   };
 
@@ -196,43 +198,61 @@ export default function MentorDashboard({ user, onLogout }) {
     }
 
     return (
-      <>
-        <section className="mentor-grid mentor-profile-row">
+      <main className="space-y-2.5 p-2 sm:px-5 sm:py-2.5">
+        {/* Top Section: Mentor Profile Hero Card */}
+        <section className="w-full">
           <MentorProfileCard />
         </section>
 
-        <section className="mentor-stats-wrap mentor-stats-section">
-          <MentorStats items={stats} />
+        {/* Stats Section: 4 Stat Cards */}
+        <section>
+          <MentorStats items={stats} onNavigate={handleNavigate} />
         </section>
 
-        <section className="mentor-grid mentor-lower-grid mentor-bottom-row">
+        {/* Bottom 3 Columns: Total Mentees, Quick Actions, Real-time Calendar */}
+        <section className="grid gap-2.5 sm:grid-cols-2 xl:grid-cols-[1fr_1fr_1fr]">
           <MentorMenteeChart onNavigate={handleNavigate} />
           <MentorQuickActions onNavigate={handleNavigate} />
           <MentorCalendar />
         </section>
-      </>
+      </main>
     );
   }
 
   return (
-    <div className="mentor-dashboard-shell">
+    <div className="relative flex h-full w-full bg-[#EEF2F6] overflow-hidden min-h-screen">
+      {/* Mobile Drawer Overlay */}
+      {mobileSidebarOpen && (
+        <button
+          type="button"
+          aria-label="Close navigation overlay"
+          onClick={() => setMobileSidebarOpen(false)}
+          className="fixed inset-0 z-40 bg-black/40 backdrop-blur-[1px] lg:hidden"
+        />
+      )}
+
+      {/* Mentor Sidebar */}
       <MentorSidebar
         activeTab={activeTab}
-        onSelectTab={setActiveTab}
+        onSelectTab={handleNavigate}
         onLogout={onLogout}
+        open={mobileSidebarOpen}
+        onClose={() => setMobileSidebarOpen(false)}
       />
 
-      <main className="mentor-dashboard-main">
+      {/* Right Content Pane */}
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         <MentorNavbar
           activeTab={activeTab}
           user={user}
-          onSelectTab={setActiveTab}
+          onSelectTab={handleNavigate}
           onLogout={onLogout}
+          onOpenSidebar={() => setMobileSidebarOpen(true)}
         />
-        <div className="mentor-dashboard-content">
+        <div className="flex-1 overflow-y-auto min-w-0 bg-[#EEF2F6]">
           {renderView()}
         </div>
-      </main>
+      </div>
     </div>
   );
 }
