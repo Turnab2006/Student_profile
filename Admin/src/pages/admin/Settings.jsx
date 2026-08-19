@@ -147,8 +147,8 @@ export default function Settings({ onNavigate, onOpenSidebar }) {
       </header>
 
       <main className="flex-1 overflow-y-auto p-4 lg:p-5">
-        <div className="space-y-4 max-w-[1500px] mx-auto">
-          <section className="rounded-2xl border border-gray-100 bg-white shadow-sm p-5">
+        <div className="space-y-5 max-w-[1500px] mx-auto">
+          <section className="rounded-2xl border border-slate-200/90 bg-white shadow-md shadow-slate-200/50 p-5 sm:p-6">
               <SectionHeader
                 icon={UserRound}
                 title="Profile Settings"
@@ -226,7 +226,7 @@ export default function Settings({ onNavigate, onOpenSidebar }) {
               </div>
             </section>
 
-            <section className="rounded-2xl border border-gray-100 bg-white shadow-sm p-5">
+            <section className="rounded-2xl border border-slate-200/90 bg-white shadow-md shadow-slate-200/50 p-5 sm:p-6">
               <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_320px] gap-4 items-start">
                 <div>
                   <SectionHeader
@@ -280,7 +280,7 @@ export default function Settings({ onNavigate, onOpenSidebar }) {
               </div>
             </section>
 
-            <section className="rounded-2xl border border-gray-100 bg-white shadow-sm p-5">
+            <section className="rounded-2xl border border-slate-200/90 bg-white shadow-md shadow-slate-200/50 p-5 sm:p-6">
               <SectionHeader
                 icon={Sparkles}
                 title="Maintenance Mode"
@@ -339,7 +339,7 @@ export default function Settings({ onNavigate, onOpenSidebar }) {
               </div>
             </section>
 
-            <section className="rounded-2xl border border-gray-100 bg-white shadow-sm p-5">
+            <section className="rounded-2xl border border-slate-200/90 bg-white shadow-md shadow-slate-200/50 p-5 sm:p-6">
               <SectionHeader
                 icon={Settings2}
                 title="System Preferences"

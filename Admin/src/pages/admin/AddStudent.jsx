@@ -19,6 +19,7 @@ import {
   CheckCircle2,
   Briefcase,
   Building2,
+  Hash,
 } from "lucide-react";
 import AdminProfile from "../../components/admin/AdminProfile";
 
@@ -253,14 +254,14 @@ export default function AddStudent({ onNavigate, onOpenSidebar }) {
 
         <main className="flex-1 overflow-y-auto p-4 sm:p-6">
           <div className="max-w-[1500px] mx-auto space-y-5">
-            <section className="bg-white rounded-xl border border-gray-200 shadow-sm px-5 py-4">
+            <section className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 px-5 py-4">
               <h2 className="text-[22px] font-medium text-gray-800 leading-tight">Parent / Guardian Details</h2>
               <p className="text-sm text-gray-500 mt-1">Enter Father&apos;s &amp; Mother&apos;s Details</p>
             </section>
 
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 items-stretch">
               {/* Father's Details Card */}
-              <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 sm:p-6 h-full flex flex-col justify-between">
+              <section className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-5 sm:p-6 h-full flex flex-col justify-between">
                 <div>
                   <div className="flex items-center gap-3 mb-5">
                     <div className="w-8 h-8 rounded-full bg-emerald-100/70 flex items-center justify-center text-[#0da651]">
@@ -303,7 +304,7 @@ export default function AddStudent({ onNavigate, onOpenSidebar }) {
               </section>
 
               {/* Mother's Details Card */}
-              <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 sm:p-6 h-full flex flex-col justify-between">
+              <section className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-5 sm:p-6 h-full flex flex-col justify-between">
                 <div>
                   <div className="flex items-center gap-3 mb-5">
                     <div className="w-8 h-8 rounded-full bg-emerald-100/70 flex items-center justify-center text-[#0da651]">
@@ -348,7 +349,7 @@ export default function AddStudent({ onNavigate, onOpenSidebar }) {
 
             <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1.55fr)_minmax(290px,0.75fr)] gap-5 items-stretch">
               {/* Address Details Card */}
-              <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 sm:p-6 h-full flex flex-col justify-between">
+              <section className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-5 sm:p-6 h-full flex flex-col justify-between">
                 <div>
                   <div className="flex items-center gap-3 mb-5">
                     <div className="w-8 h-8 rounded-full bg-emerald-100/70 flex items-center justify-center text-[#0da651]">
@@ -390,7 +391,7 @@ export default function AddStudent({ onNavigate, onOpenSidebar }) {
               </section>
 
               {/* Checklist Card */}
-              <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 sm:p-6 h-full flex flex-col justify-between">
+              <section className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-5 sm:p-6 h-full flex flex-col justify-between">
                 <div>
                   <h3 className="text-sm font-bold text-[#0da651] mb-4">Checklist</h3>
                   <div className="space-y-2">
@@ -428,7 +429,7 @@ export default function AddStudent({ onNavigate, onOpenSidebar }) {
               </section>
             </div>
 
-            <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 sm:px-5 sm:py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <section className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-4 sm:px-5 sm:py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <button
                 type="button"
                 onClick={() => setStep(1)}
@@ -482,14 +483,14 @@ export default function AddStudent({ onNavigate, onOpenSidebar }) {
           <AdminProfile name="Admin User" role="Super Admin" avatar="A" onNavigate={onNavigate} />
         </header>
 
-        <main className="flex-1 overflow-y-auto p-4">
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6">
           <div className="max-w-[1500px] mx-auto space-y-4">
-            <section className="bg-white rounded-xl border border-gray-200 shadow-sm px-5 py-4">
+            <section className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 px-5 py-4">
               <h2 className="text-[22px] font-medium text-gray-800 leading-tight">Review &amp; Submit</h2>
               <p className="text-sm text-gray-500 mt-1">Please review all the information carefully before submitting the student details.</p>
             </section>
 
-            <section className="bg-white rounded-xl border border-gray-200 shadow-sm px-5 py-4">
+            <section className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 px-5 py-4">
               <div className="grid grid-cols-3 gap-3 items-center">
                 <div className="flex items-center gap-3">
                   <NumberBadge value={1} />
@@ -517,7 +518,7 @@ export default function AddStudent({ onNavigate, onOpenSidebar }) {
 
             <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1.75fr)_minmax(280px,0.95fr)] gap-4 items-start">
               <div className="space-y-4">
-                <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+                <section className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-5">
                   <div className="flex items-center justify-between gap-4 mb-4">
                     <div>
                       <h3 className="text-sm font-semibold text-gray-800">Personal Information</h3>
@@ -552,7 +553,7 @@ export default function AddStudent({ onNavigate, onOpenSidebar }) {
                   </div>
                 </section>
 
-                <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+                <section className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-5">
                   <div className="flex items-center justify-between gap-4 mb-4">
                     <div>
                       <h3 className="text-sm font-semibold text-gray-800">Academic Information</h3>
@@ -583,7 +584,7 @@ export default function AddStudent({ onNavigate, onOpenSidebar }) {
                   </div>
                 </section>
 
-                <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+                <section className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-5">
                   <div className="flex items-center justify-between gap-4 mb-4">
                     <div>
                       <h3 className="text-sm font-semibold text-gray-800">Parent / Guardian Details</h3>
@@ -614,7 +615,7 @@ export default function AddStudent({ onNavigate, onOpenSidebar }) {
                   </div>
                 </section>
 
-                <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+                <section className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-5">
                   <div className="flex items-center justify-between gap-4 mb-4">
                     <div>
                       <h3 className="text-sm font-semibold text-gray-800">Address Information</h3>
@@ -640,7 +641,7 @@ export default function AddStudent({ onNavigate, onOpenSidebar }) {
                   </div>
                 </section>
 
-                <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 sm:px-5 sm:py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <section className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-4 sm:px-5 sm:py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <button type="button" onClick={() => setStep(2)} className="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors w-full sm:w-auto">
                     <ArrowLeft size={15} />
                     Previous
@@ -659,7 +660,7 @@ export default function AddStudent({ onNavigate, onOpenSidebar }) {
               </div>
 
               <aside className="space-y-4">
-                <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+                <section className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-5">
                   <h3 className="text-sm font-semibold text-primary mb-4">Student Summary</h3>
                   <div className="space-y-4">
                     <div className="flex items-start gap-3">
@@ -690,7 +691,7 @@ export default function AddStudent({ onNavigate, onOpenSidebar }) {
                   </div>
                 </section>
 
-                <section className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
+                <section className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-5">
                   <h3 className="text-sm font-semibold text-primary mb-4">Checklist</h3>
                   <div className="space-y-3">
                     {reviewChecklist.map((item) => (
@@ -702,7 +703,7 @@ export default function AddStudent({ onNavigate, onOpenSidebar }) {
                   </div>
                 </section>
 
-                <section className="bg-white rounded-xl border border-blue-100 shadow-sm p-5">
+                <section className="bg-white rounded-2xl border border-blue-100 shadow-md shadow-blue-200/40 p-5">
                   <div className="flex items-start gap-3">
                     <div className="w-6 h-6 rounded-full bg-blue-50 flex items-center justify-center shrink-0 text-blue-500 mt-0.5">
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -756,7 +757,7 @@ export default function AddStudent({ onNavigate, onOpenSidebar }) {
 
       <main className="flex-1 overflow-y-auto p-6">
         <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.45fr)_minmax(320px,0.9fr)] gap-5 items-start">
-          <section className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+          <section className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-5 sm:p-6">
             <div className="flex items-start gap-3 mb-5">
               <NumberBadge value={1} />
               <div>
@@ -800,7 +801,7 @@ export default function AddStudent({ onNavigate, onOpenSidebar }) {
                   type="date"
                   value={form.dob}
                   onChange={update("dob")}
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-green-300 transition-shadow"
+                  className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-300"
                 />
               </div>
               <div>
@@ -818,86 +819,96 @@ export default function AddStudent({ onNavigate, onOpenSidebar }) {
 
             <p className="text-xs font-semibold text-primary mb-3">Academic Information</p>
 
-            <div className="grid grid-cols-3 gap-3 mb-4">
+            <div className="grid grid-cols-2 gap-3 mb-4">
               <div>
-                <Label required>College Roll Number</Label>
-                <TextField icon={IdCard} placeholder="Enter roll number" value={form.rollNumber} onChange={update("rollNumber")} />
-              </div>
-              <div>
-                <Label required>Select Program</Label>
-                <SelectField
-                  placeholder="Select program"
-                  options={["B.Tech", "B.Tech Lateral", "M.Tech", "B.Sc"]}
-                  value={form.program}
-                  onChange={update("program")}
-                />
+                <Label required>Program</Label>
+                <SelectField placeholder="Select program" options={["B.Tech", "B.Tech Lateral", "M.Tech", "BCA", "MCA"]} value={form.program} onChange={update("program")} />
               </div>
               <div>
                 <Label required>Department</Label>
-                <SelectField
-                  placeholder="Select department"
-                  options={["CSE", "ECE", "EE", "ME", "CE"]}
-                  value={form.department}
-                  onChange={update("department")}
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-3 gap-3 mb-4">
-              <div>
-                <Label required>Admission Year</Label>
-                <SelectField
-                  placeholder="Select admission year"
-                  options={["2024", "2023", "2022", "2021"]}
-                  value={form.admissionYear}
-                  onChange={update("admissionYear")}
-                />
-              </div>
-              <div>
-                <Label required>Session Name</Label>
-                <SelectField
-                  placeholder="Select session"
-                  options={["2024-2025", "2023-2024", "2022-2023"]}
-                  value={form.sessionName}
-                  onChange={update("sessionName")}
-                />
-              </div>
-              <div>
-                <Label required>Graduation Year</Label>
-                <TextField placeholder="Auto-calculated" disabled value={form.graduationYear} onChange={noOp} />
+                <SelectField placeholder="Select department" options={["Computer Science & Engineering", "Electrical Engineering", "Mechanical Engineering", "Civil Engineering"]} value={form.department} onChange={update("department")} />
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-3 mb-4">
               <div>
-                <Label required>Current Year</Label>
-                <TextField placeholder="Auto-calculated" disabled value="" onChange={noOp} />
+                <Label required>Admission Year</Label>
+                <SelectField placeholder="Select year" options={["2024", "2023", "2022", "2021"]} value={form.admissionYear} onChange={update("admissionYear")} />
+              </div>
+              <div>
+                <Label required>Academic Session</Label>
+                <SelectField placeholder="Select session" options={["2024 - 25", "2023 - 24", "2022 - 23"]} value={form.academicSession} onChange={update("academicSession")} />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-3 gap-3 mb-4">
+              <div>
+                <Label required>Year</Label>
+                <SelectField placeholder="Select year" options={["1st Year", "2nd Year", "3rd Year", "4th Year"]} value={form.year} onChange={update("year")} />
               </div>
               <div>
                 <Label required>Current Semester</Label>
-                <TextField placeholder="Auto-calculated" disabled value="" onChange={noOp} />
+                <SelectField placeholder="Select semester" options={["Semester 1", "Semester 2", "Semester 3", "Semester 4", "Semester 5", "Semester 6", "Semester 7", "Semester 8"]} value={form.currentSemester} onChange={update("currentSemester")} />
+              </div>
+              <div>
+                <Label required>College Roll Number</Label>
+                <TextField icon={Hash} placeholder="e.g. CSE2024001" value={form.rollNumber} onChange={update("rollNumber")} />
               </div>
             </div>
 
-            <div className="flex items-center justify-end pt-2">
+            <div className="grid grid-cols-2 gap-3 mb-4">
+              <div>
+                <Label required>University Roll Number</Label>
+                <TextField icon={Hash} placeholder="e.g. 12024001" value={form.universityRollNumber} onChange={update("universityRollNumber")} />
+              </div>
+              <div>
+                <Label required>Registration Number</Label>
+                <TextField icon={Hash} placeholder="e.g. REG2024001" value={form.registrationNumber} onChange={update("registrationNumber")} />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 mb-4">
+              <div>
+                <Label required>Blood Group</Label>
+                <SelectField placeholder="Select Blood Group" options={["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]} value={form.bloodGroup} onChange={update("bloodGroup")} />
+              </div>
+              <div>
+                <Label>ABC ID</Label>
+                <TextField placeholder="Enter ABC ID" value={form.abcId} onChange={update("abcId")} />
+              </div>
+            </div>
+
+            <div className="mb-5">
+              <Label>Aadhar Card Number</Label>
+              <TextField placeholder="Enter 12-digit Aadhar number" value={form.aadharNumber} onChange={update("aadharNumber")} />
+            </div>
+
+            <div className="pt-2 flex items-center justify-between">
               <button
                 type="button"
                 onClick={() => setStep(2)}
-                className="inline-flex items-center gap-2 rounded-lg border border-primary/20 bg-primary-light px-4 py-2 text-sm font-medium text-primary hover:bg-green-100 transition-colors"
+                className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-green-600 transition-colors cursor-pointer"
               >
-                Next: Additional Details
+                Continue to Parents Details
                 <ArrowRight size={15} />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => onNavigate?.("students")}
+                className="rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors cursor-pointer"
+              >
+                Cancel
               </button>
             </div>
 
-            <div className="mt-4 pt-4 border-t border-gray-100 text-xs text-gray-500 flex items-center gap-1.5">
-              <span className="inline-flex items-center justify-center w-4 h-4 rounded-full border border-gray-300 text-[10px] text-gray-500">i</span>
+            <div className="mt-4 pt-3 border-t border-gray-100 text-xs text-gray-400">
               Fields marked with <span className="text-red-500 font-semibold">*</span> are required
             </div>
           </section>
 
           <div className="space-y-5">
-            <section className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+            <section className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-5 sm:p-6">
               <div className="flex items-start gap-3 mb-3">
                 <NumberBadge value={2} />
                 <div>

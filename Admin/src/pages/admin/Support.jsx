@@ -129,8 +129,8 @@ export default function Support({ onNavigate, onOpenSidebar, isMentor = false })
                 {filteredQuickActions.map((item) => {
                   const Icon = item.icon;
                   return (
-                    <div key={item.title} className="rounded-2xl border border-gray-100 bg-white shadow-sm p-4 hover:shadow-md transition-shadow">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-50 text-[#0da651] mb-3">
+                    <div key={item.title} className="rounded-2xl border border-slate-200/90 bg-white shadow-md shadow-slate-200/50 p-4 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-300/40 transition-all duration-200">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-50 text-[#0da651] mb-3 border border-green-100 shadow-2xs">
                         <Icon size={18} />
                       </div>
                       <h3 className="text-sm font-semibold text-gray-800">{item.title}</h3>
@@ -140,7 +140,7 @@ export default function Support({ onNavigate, onOpenSidebar, isMentor = false })
                 })}
               </section>
 
-              <section className="rounded-2xl border border-gray-100 bg-white shadow-sm p-5">
+              <section className="rounded-2xl border border-slate-200/90 bg-white shadow-md shadow-slate-200/50 p-5 sm:p-6">
                 <div className="flex items-start justify-between gap-4 mb-4">
                   <div>
                     <h2 className="text-sm font-semibold text-gray-800">Contact Options</h2>
@@ -163,9 +163,9 @@ export default function Support({ onNavigate, onOpenSidebar, isMentor = false })
                   {contactCards.map((item) => {
                     const Icon = item.icon;
                     return (
-                      <div key={item.label} className="rounded-2xl border border-gray-100 p-4 bg-gray-50/30">
+                      <div key={item.label} className="rounded-2xl border border-slate-200/70 p-4 bg-gray-50/50 hover:bg-white hover:shadow-sm transition-all">
                         <div className="flex items-center gap-3 mb-3">
-                          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#0da651] border border-gray-100 shadow-2xs">
+                          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#0da651] border border-gray-200/80 shadow-2xs">
                             <Icon size={18} />
                           </div>
                           <div>
@@ -181,7 +181,7 @@ export default function Support({ onNavigate, onOpenSidebar, isMentor = false })
               </section>
 
               <section className="grid grid-cols-1 xl:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)] gap-4 items-start">
-                <div className="rounded-2xl border border-gray-100 bg-white shadow-sm p-5">
+                <div className="rounded-2xl border border-slate-200/90 bg-white shadow-md shadow-slate-200/50 p-5 sm:p-6">
                   <div className="flex items-start justify-between gap-4 mb-4">
                     <div>
                       <h2 className="text-sm font-semibold text-gray-800">Frequently Asked Questions</h2>
@@ -217,7 +217,7 @@ export default function Support({ onNavigate, onOpenSidebar, isMentor = false })
                 </div>
 
                 <div className="space-y-4" id="raise-ticket-section">
-                  <section className="rounded-2xl border border-gray-100 bg-white shadow-sm p-5">
+                  <section className="rounded-2xl border border-slate-200/90 bg-white shadow-md shadow-slate-200/50 p-5 sm:p-6">
                     <div className="flex items-center gap-3 mb-4">
                       <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-50 text-[#0da651]">
                         <Wrench size={18} />

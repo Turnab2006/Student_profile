@@ -98,7 +98,7 @@ export default function AddNotice({ onNavigate, onOpenSidebar, isMentor = false,
 
       <main className="flex-1 overflow-y-auto p-4 sm:p-6">
         <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+          <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-6 sm:p-7">
             <div className="flex items-center justify-between mb-5 border-b border-gray-100 pb-3">
               <h2 className="text-sm font-semibold text-gray-800">Notice Details</h2>
               {isMentor && (

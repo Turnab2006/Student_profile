@@ -236,7 +236,7 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                 </div>
               ) : (
                 visibleActivities.map((a) => (
-                  <div key={a.id} className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden flex flex-col hover:shadow-md transition-shadow">
+                  <div key={a.id} className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 overflow-hidden flex flex-col hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-300/40 transition-all duration-200">
                     <div className="h-40 bg-gradient-to-r from-emerald-600 via-teal-600 to-green-700 relative overflow-hidden flex items-end p-3">
                       {a.image && <img src={a.image} alt={a.title} className="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-overlay" />}
                       <div className="relative z-10 bg-black/40 backdrop-blur-xs px-2.5 py-1 rounded text-[11px] font-bold text-white tracking-wide">
@@ -288,7 +288,7 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
               )}
             </div>
           ) : (
-            <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+            <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 overflow-hidden">
               <div className="flex items-center justify-between px-5 py-3 border-b border-gray-100">
                 <p className="text-xs text-gray-500">Showing {visibleActivities.length} of {activitiesList.length} activities</p>
                 <div className="flex items-center gap-2">

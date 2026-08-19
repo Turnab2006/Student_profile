@@ -189,7 +189,7 @@ export default function Subjects({ onNavigate, subjectsList = [], setSubjectsLis
       {/* Scrollable Main Content */}
       <main className="flex-1 overflow-y-auto p-6 space-y-6">
         {/* Filter Controls Bar */}
-        <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
+        <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 flex-1">
             {/* Program Filter */}
             <div className="relative flex items-center">
@@ -283,7 +283,7 @@ export default function Subjects({ onNavigate, subjectsList = [], setSubjectsLis
         </div>
 
         {/* Subjects Data Table */}
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col">
+        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 overflow-hidden flex flex-col">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>

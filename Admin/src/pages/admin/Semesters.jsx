@@ -341,7 +341,7 @@ export default function Semesters({ onNavigate, onOpenSidebar }) {
           </div>
 
           <div className="grid grid-cols-1 xl:grid-cols-[1.2fr_1fr] gap-4 items-stretch">
-            <section className="rounded-2xl border border-gray-100 bg-white shadow-sm p-4 sm:p-5 h-full flex flex-col justify-between">
+            <section className="rounded-2xl border border-slate-200/90 bg-white shadow-md shadow-slate-200/50 p-4 sm:p-5 h-full flex flex-col justify-between">
               <div>
                 <div className="flex items-start justify-between gap-4 mb-5">
                   <div>
@@ -369,7 +369,7 @@ export default function Semesters({ onNavigate, onOpenSidebar }) {
               </div>
             </section>
 
-            <section className="rounded-2xl border border-gray-100 bg-white shadow-sm p-4 sm:p-5 h-full flex flex-col justify-between">
+            <section className="rounded-2xl border border-slate-200/90 bg-white shadow-md shadow-slate-200/50 p-4 sm:p-5 h-full flex flex-col justify-between">
               <div>
                 <div className="flex items-start justify-between gap-4 mb-5">
                   <div>
@@ -419,7 +419,7 @@ export default function Semesters({ onNavigate, onOpenSidebar }) {
             </section>
           </div>
 
-          <section className="rounded-2xl border border-gray-100 bg-white shadow-sm p-4 sm:p-5">
+          <section className="rounded-2xl border border-slate-200/90 bg-white shadow-md shadow-slate-200/50 p-4 sm:p-5">
             <div className="flex items-start justify-between gap-4 mb-5">
               <div>
                 <h2 className="text-sm font-semibold text-gray-800">Academic Sessions</h2>
@@ -433,7 +433,7 @@ export default function Semesters({ onNavigate, onOpenSidebar }) {
 
             <div className="space-y-4">
               {sessions.map((session) => (
-                <div key={session.year} className="rounded-2xl border border-gray-100 p-4 hover:bg-gray-50/50 transition-colors">
+                <div key={session.year} className="rounded-2xl border border-slate-200/70 bg-white shadow-xs p-4 hover:border-emerald-200 hover:shadow-md transition-all">
                   <div className="grid grid-cols-1 xl:grid-cols-[220px_1fr_160px] gap-4 items-center">
                     <div className="flex items-start gap-3">
                       <div className={`flex h-10 w-10 items-center justify-center rounded-full ${session.current ? "bg-emerald-50 text-emerald-600" : "bg-blue-50 text-blue-600"}`}>

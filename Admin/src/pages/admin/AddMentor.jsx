@@ -267,7 +267,7 @@ export default function AddMentor({ onNavigate, onOpenSidebar }) {
               </div>
 
               {/* Main Content Grid with OR divider */}
-              <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 sm:p-8 relative">
+              <div className="bg-white rounded-3xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-6 sm:p-8 relative">
                 <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.25fr)_auto_minmax(0,0.85fr)] gap-8 items-start">
                   
                   {/* Left Form: Mentor Details */}
@@ -480,7 +480,7 @@ export default function AddMentor({ onNavigate, onOpenSidebar }) {
           {/* STEP 2: ASSIGN MENTEES */}
           {step === 2 && (
             <div className="space-y-6">
-              <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 sm:p-8 space-y-6">
+              <div className="bg-white rounded-3xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-6 sm:p-8 space-y-6">
                 <div>
                   <h2 className="text-lg font-bold text-gray-800">Assign Mentees</h2>
                   <p className="text-xs text-gray-400 mt-0.5">Search and select students to assign under this mentor.</p>
@@ -697,7 +697,7 @@ export default function AddMentor({ onNavigate, onOpenSidebar }) {
                 {/* Left Review Cards */}
                 <div className="space-y-6">
                   {/* Review Mentor Details Card */}
-                  <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 space-y-5">
+                  <div className="bg-white rounded-3xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-6 space-y-5">
                     <div className="flex items-center justify-between">
                       <div>
                         <h2 className="text-base font-bold text-gray-800">Review Mentor Details</h2>
@@ -828,7 +828,7 @@ export default function AddMentor({ onNavigate, onOpenSidebar }) {
                   </div>
 
                   {/* Assigned Mentees Card */}
-                  <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 space-y-4">
+                  <div className="bg-white rounded-3xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-6 space-y-4">
                     <div className="flex items-center justify-between">
                       <div>
                         <h2 className="text-base font-bold text-gray-800">
@@ -884,7 +884,7 @@ export default function AddMentor({ onNavigate, onOpenSidebar }) {
                 {/* Right Review Sidebar */}
                 <div className="space-y-5">
                   {/* Summary Card */}
-                  <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 space-y-4">
+                  <div className="bg-white rounded-3xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-6 space-y-4">
                     <h3 className="text-sm font-bold text-[#0da651]">Summary</h3>
                     
                     <div className="space-y-3.5 text-xs">
@@ -943,7 +943,7 @@ export default function AddMentor({ onNavigate, onOpenSidebar }) {
                   </div>
 
                   {/* Checklist Card */}
-                  <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 space-y-4">
+                  <div className="bg-white rounded-3xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-6 space-y-4">
                     <h3 className="text-sm font-bold text-[#0da651]">Checklist</h3>
                     <div className="space-y-3">
                       {[

@@ -46,12 +46,14 @@ import {
   Info,
   UserCheck,
   CalendarClock,
-  UserX
+  UserX,
+  Menu,
 } from "lucide-react";
 import { initialStudentData } from "../../data/studentProfileData";
 import tuhinaAvatar from "../../assets/tuhina_avatar.jpg";
 import SubjectAttendanceOverview from "../../components/student/SubjectAttendanceOverview";
 import SubjectResultOverview from "../../components/student/SubjectResultOverview";
+import AdminProfile from "../../components/admin/AdminProfile";
 
 function Barcode({ value, width = 1.25, height = 38, fontSize = 11, font = "Roboto, sans-serif" }) {
   const svgRef = useRef(null);
@@ -554,6 +556,8 @@ function DigitalStudentIDSection({ student, onBack, showToast }) {
 
 export default function StudentProfile({
   onBack,
+  onNavigate,
+  onOpenSidebar,
   studentData: propStudentData,
   userRole = "student",
   defaultTab = "academic",
@@ -573,7 +577,6 @@ export default function StudentProfile({
     setInternalShowDigitalCard(val);
   };
 
-  const [searchQuery, setSearchQuery] = useState("");
   const [toastMessage, setToastMessage] = useState(null);
   const [showAttendanceInfo, setShowAttendanceInfo] = useState(false);
 
@@ -585,7 +588,7 @@ export default function StudentProfile({
   }
 
   return (
-    <div className="flex-1 h-full w-full min-h-0 bg-[#EEF2F6] text-slate-800 flex flex-col overflow-hidden font-['Roboto',sans-serif]">
+    <div className="flex-1 h-full w-full min-h-0 bg-gray-50/50 text-slate-800 flex flex-col overflow-hidden">
       {/* Toast Alert */}
       {toastMessage && (
         <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-emerald-600 text-white px-5 py-3.5 rounded-xl shadow-2xl animate-in fade-in slide-in-from-bottom-4 duration-200">
@@ -593,102 +596,81 @@ export default function StudentProfile({
           <span className="text-sm font-medium">{toastMessage}</span>
           <button
             onClick={() => setToastMessage(null)}
-            className="ml-2 text-emerald-200 hover:text-white"
+            className="ml-2 text-emerald-200 hover:text-white cursor-pointer"
           >
             <X size={16} />
           </button>
         </div>
       )}
 
-      {/* Top Header matching reference when not embedded */}
+      {/* Top Header matching original admin portal */}
       {!hideHeader && (
-        <header className="shrink-0 bg-white border-b border-slate-200/80 px-4 sm:px-6 py-2.5 shadow-[0_2px_10px_rgba(0,0,0,0.03)] flex items-center justify-between gap-4 z-20 font-['Roboto',sans-serif]">
-          {/* Left: Back Button & Title & Breadcrumbs */}
-          <div className="flex items-center gap-3.5 sm:gap-4">
+        <header className="h-[65px] bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-2xs z-20">
+          {/* Left: Mobile Sidebar Trigger + Back Button & Title & Breadcrumbs */}
+          <div className="flex items-center gap-3">
             <button
               type="button"
-              onClick={onBack}
-              className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-600 hover:scale-105 active:scale-95 transition-all shadow-2xs border border-slate-200 cursor-pointer"
-              title="Go Back"
+              onClick={() => {
+                if (onOpenSidebar) onOpenSidebar();
+                else window.dispatchEvent(new CustomEvent("toggle-mobile-sidebar"));
+              }}
+              className="h-10 w-10 rounded-xl bg-gray-100/80 hover:bg-gray-200 active:scale-95 flex items-center justify-center text-gray-700 lg:hidden cursor-pointer transition-all shrink-0"
+              aria-label="Open sidebar"
             >
-              <ArrowLeft size={16} className="stroke-[2.5]" />
+              <Menu size={20} />
             </button>
-            <div>
-              <h1 className="text-lg sm:text-xl font-bold tracking-tight text-slate-900 leading-tight">
+
+            <button
+              type="button"
+              onClick={() => {
+                if (isDigitalCard) {
+                  handleSetShowDigitalCard(false);
+                } else if (onBack) {
+                  onBack();
+                } else if (onNavigate) {
+                  onNavigate("students");
+                }
+              }}
+              className="h-9 w-9 rounded-xl bg-gray-100/80 hover:bg-gray-200 active:scale-95 flex items-center justify-center text-gray-700 cursor-pointer transition-all shrink-0"
+              title="Go Back"
+              aria-label="Go Back"
+            >
+              <ArrowLeft size={18} />
+            </button>
+
+            <div className="min-w-0">
+              <h1 className="text-xl font-bold text-gray-800 tracking-tight truncate">
                 {isDigitalCard ? "Digital Student ID" : "Student Profile"}
               </h1>
-              <nav className="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
-                <span className="hover:text-blue-600 cursor-pointer" onClick={onBack}>Home</span>
-                <span className="text-slate-400">&gt;</span>
+              <nav className="flex items-center gap-1.5 text-xs text-gray-400 mt-0.5">
                 <span
-                  className={`cursor-pointer ${isDigitalCard ? "text-blue-600 hover:underline font-semibold" : "text-blue-600 font-semibold"}`}
+                  className="hover:text-gray-600 cursor-pointer"
+                  onClick={() => {
+                    if (onNavigate) onNavigate("students");
+                    else if (onBack) onBack();
+                  }}
+                >
+                  Students
+                </span>
+                <span>&gt;</span>
+                <span
+                  className={`cursor-pointer ${isDigitalCard ? "hover:text-gray-600" : "text-[#0da651] font-semibold"}`}
                   onClick={() => handleSetShowDigitalCard(false)}
                 >
-                  Profile
+                  Student Profile
                 </span>
                 {isDigitalCard && (
                   <>
-                    <span className="text-slate-400">&gt;</span>
-                    <span className="text-slate-700 font-medium">Digital ID Card</span>
+                    <span>&gt;</span>
+                    <span className="text-[#0da651] font-semibold">Digital ID Card</span>
                   </>
                 )}
               </nav>
             </div>
           </div>
 
-          {/* Right: Search, Notifications, and User Pill */}
-          <div className="flex items-center gap-3 sm:gap-4">
-            {/* Search Bar */}
-            <div className="relative hidden md:block w-60 lg:w-68">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
-              <input
-                type="text"
-                placeholder="Search profile..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-4 py-1.5 text-xs sm:text-sm bg-slate-100/80 border border-slate-200 rounded-full focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all placeholder:text-slate-400"
-              />
-            </div>
-
-            {/* Notification Bell with Badge */}
-            <div className="relative">
-              <button
-                type="button"
-                className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 hover:bg-slate-200/80 text-slate-600 transition-colors relative"
-                title="Notifications"
-              >
-                <Bell size={16} />
-                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[10px] font-bold text-white shadow-xs ring-2 ring-white">
-                  3
-                </span>
-              </button>
-            </div>
-
-            {/* User Badge / Profile */}
-            <div className="flex items-center gap-2.5 pl-2 border-l border-slate-200">
-              <img
-                src={student.avatar || "/tanuka_saha_avatar.png"}
-                alt={userRole === "admin" ? "Admin User" : student.name}
-                className="w-8 h-8 rounded-full object-cover ring-2 ring-blue-100 shadow-2xs"
-                onError={(e) => {
-                  e.target.style.display = 'none';
-                  if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
-                }}
-              />
-              <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white font-bold text-xs hidden items-center justify-center shadow-2xs">
-                {(student.name || "TS").slice(0, 2).toUpperCase()}
-              </div>
-              <div className="hidden sm:block text-left">
-                <p className="text-xs font-bold text-slate-800 leading-tight">
-                  {userRole === "admin" ? "Admin User" : student.name}
-                </p>
-                <p className="text-[11px] text-slate-400 font-medium">
-                  {userRole === "admin" ? "Super Admin" : "Student"}
-                </p>
-              </div>
-              <ChevronDown size={14} className="text-slate-400 hidden sm:block" />
-            </div>
-          </div>
+          {/* Right: Original AdminProfile with interactive notification & profile dropdowns */}
+          <AdminProfile name="Admin User" role="Super Admin" avatar="A" onNavigate={onNavigate} />
         </header>
       )}
 

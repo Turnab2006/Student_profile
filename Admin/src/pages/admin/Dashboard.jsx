@@ -76,7 +76,7 @@ export default function Dashboard({ onNavigate, onOpenSidebar }) {
 
       <main className="flex-1 p-3.5 sm:p-4.5 space-y-3 overflow-y-auto">
         {/* Compact Hero Banner */}
-        <div className="rounded-2xl overflow-hidden relative min-h-[170px] shadow-2xs border border-gray-100 flex items-center">
+        <div className="rounded-2xl overflow-hidden relative min-h-[170px] shadow-md shadow-slate-200/50 border border-slate-200/80 flex items-center">
           <img src={adminHeroImage} alt="Dashboard hero" className="absolute inset-0 w-full h-full object-cover pointer-events-none" />
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/45 to-transparent" />
           <div className="relative z-10 ml-5 p-3.5 sm:p-4 flex flex-col justify-center">
@@ -115,9 +115,9 @@ export default function Dashboard({ onNavigate, onOpenSidebar }) {
         </div>
 
         {/* Compact Bottom Grid */}
-        <div className="grid grid-cols-1 xl:grid-cols-5 gap-3">
+        <div className="grid grid-cols-1 xl:grid-cols-5 gap-3.5">
           {/* Recent Activity (Top 5 items) */}
-          <div className="xl:col-span-3 bg-white rounded-2xl shadow-2xs p-3.5 sm:p-4 border border-gray-100 space-y-2 flex flex-col justify-between">
+          <div className="xl:col-span-3 bg-white rounded-2xl shadow-md shadow-slate-200/60 p-3.5 sm:p-4 border border-slate-200/90 space-y-2 flex flex-col justify-between">
             <div className="flex items-center justify-between border-b border-gray-100 pb-1.5">
               <h3 className="text-xs sm:text-sm font-bold text-gray-800 tracking-tight uppercase flex items-center gap-2">
                 <Activity size={16} className="text-gray-800 stroke-[2.4]" />
@@ -149,7 +149,7 @@ export default function Dashboard({ onNavigate, onOpenSidebar }) {
           </div>
 
           {/* Quick Action Card (Balanced height matching 5 activity rows without bottom gap) */}
-          <div className="xl:col-span-2 bg-white rounded-2xl shadow-2xs p-3.5 sm:p-4 border border-gray-100 flex flex-col justify-between space-y-2">
+          <div className="xl:col-span-2 bg-white rounded-2xl shadow-md shadow-slate-200/60 p-3.5 sm:p-4 border border-slate-200/90 flex flex-col justify-between space-y-2">
             <div className="border-b border-gray-100 pb-1.5">
               <h3 className="text-xs sm:text-sm font-bold text-gray-800 tracking-tight uppercase flex items-center gap-2">
                 <Zap size={16} className="text-gray-800 stroke-[2.4]" />
