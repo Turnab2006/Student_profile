@@ -1,70 +1,92 @@
-import { Users, CalendarCheck, ClipboardList, Star } from "lucide-react";
+import { Users, CheckCircle2, TrendingUp, Star, CalendarCheck, ClipboardList } from "lucide-react";
 
 const iconMap = {
   users: Users,
-  check: CalendarCheck,
-  trend: ClipboardList,
+  mentees: Users,
+  check: CheckCircle2,
+  attendance: CheckCircle2,
+  trend: TrendingUp,
+  results: TrendingUp,
   star: Star,
+  credits: Star,
+  calendar: CalendarCheck,
+  clipboard: ClipboardList,
 };
 
 const defaultCardStyles = {
   users: {
     cardClass: "bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#7656f4]",
     valueClass: "text-[#111827]",
-    iconWrap: "bg-[#f0eaff] text-[#7656f4]",
-    note: "Assigned students",
+    iconWrap: "bg-[#F3EEFF] text-[#7656f4]",
+    note: "Total Mentees",
     pageKey: "mentees",
   },
   mentees: {
     cardClass: "bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#7656f4]",
     valueClass: "text-[#111827]",
-    iconWrap: "bg-[#f0eaff] text-[#7656f4]",
-    note: "Assigned students",
+    iconWrap: "bg-[#F3EEFF] text-[#7656f4]",
+    note: "Total Mentees",
     pageKey: "mentees",
   },
   check: {
-    cardClass: "bg-white text-slate-800 border border-slate-200 border-l-4 border-l-red-500",
-    valueClass: "text-slate-900",
-    iconWrap: "bg-[#fff1f1] text-red-500",
-    note: "Classes recorded",
+    cardClass: "bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#22C55E]",
+    valueClass: "text-[#111827]",
+    iconWrap: "bg-[#EAFBF1] text-[#22C55E]",
+    note: "Attendance Rate",
     pageKey: "attendance",
   },
   attendance: {
-    cardClass: "bg-white text-slate-800 border border-slate-200 border-l-4 border-l-red-500",
-    valueClass: "text-slate-900",
-    iconWrap: "bg-[#fff1f1] text-red-500",
-    note: "Classes recorded",
+    cardClass: "bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#22C55E]",
+    valueClass: "text-[#111827]",
+    iconWrap: "bg-[#EAFBF1] text-[#22C55E]",
+    note: "Attendance Rate",
     pageKey: "attendance",
   },
   trend: {
-    cardClass: "bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#f59e0b]",
+    cardClass: "bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#F59E0B]",
     valueClass: "text-[#111827]",
-    iconWrap: "bg-[#fff1dc] text-[#f59e0b]",
-    note: "Published results",
+    iconWrap: "bg-[#FFF5E8] text-[#F59E0B]",
+    note: "Results Published",
     pageKey: "results",
   },
   results: {
-    cardClass: "bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#f59e0b]",
+    cardClass: "bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#F59E0B]",
     valueClass: "text-[#111827]",
-    iconWrap: "bg-[#fff1dc] text-[#f59e0b]",
-    note: "Published results",
+    iconWrap: "bg-[#FFF5E8] text-[#F59E0B]",
+    note: "Results Published",
     pageKey: "results",
   },
   star: {
-    cardClass: "bg-white text-emerald-700 border border-emerald-200 border-l-4 border-l-emerald-500",
+    cardClass: "bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#3B82F6]",
     valueClass: "text-[#111827]",
-    iconWrap: "bg-[#e7f7ec] text-emerald-600",
-    note: "Total points issued",
+    iconWrap: "bg-[#EEF5FF] text-[#3B82F6]",
+    note: "Credit Points Issued",
     pageKey: "credit-points",
   },
   credits: {
-    cardClass: "bg-white text-emerald-700 border border-emerald-200 border-l-4 border-l-emerald-500",
+    cardClass: "bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#3B82F6]",
     valueClass: "text-[#111827]",
-    iconWrap: "bg-[#e7f7ec] text-emerald-600",
-    note: "Total points issued",
+    iconWrap: "bg-[#EEF5FF] text-[#3B82F6]",
+    note: "Credit Points Issued",
     pageKey: "credit-points",
   },
 };
+
+function renderStatIcon(keyType, Icon) {
+  if (keyType === "attendance" || keyType === "check") {
+    return <CheckCircle2 size={24} className="fill-[#22C55E] text-white" />;
+  }
+  if (keyType === "credits" || keyType === "star") {
+    return <Star size={22} className="fill-[#3B82F6] text-[#3B82F6]" />;
+  }
+  if (keyType === "results" || keyType === "trend") {
+    return <TrendingUp size={23} className="stroke-[2.5]" />;
+  }
+  if (typeof Icon === "function") {
+    return <Icon size={23} className="stroke-[2.2]" />;
+  }
+  return <Users size={23} className="stroke-[2.2]" />;
+}
 
 export default function MentorStats({ items = [], onNavigate }) {
   return (
@@ -90,7 +112,7 @@ export default function MentorStats({ items = [], onNavigate }) {
         const iconWrap =
           item.iconWrap ||
           styleDefaults.iconWrap ||
-          "bg-[#f0eaff] text-[#7656f4]";
+          "bg-[#F3EEFF] text-[#7656f4]";
         const pageKey =
           item.pageKey || item.tab || styleDefaults.pageKey || item.key;
 
@@ -106,7 +128,7 @@ export default function MentorStats({ items = [], onNavigate }) {
               <div
                 className={`flex h-11 w-11 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-2xl ${iconWrap}`}
               >
-                <Icon size={23} className="stroke-[2.2]" />
+                {renderStatIcon(keyType, Icon)}
               </div>
 
               <div className="flex-1 min-w-0">

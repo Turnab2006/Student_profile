@@ -226,30 +226,42 @@ export default function MentorNavbar({
               setProfileOpen((prev) => !prev);
               setNotifOpen(false);
             }}
-            className="flex items-center gap-3 p-1 rounded-xl hover:bg-gray-100/70 transition-all cursor-pointer focus:outline-none group"
+            className="flex items-center gap-2.5 sm:gap-3 p-1 rounded-xl hover:bg-gray-100/70 transition-all cursor-pointer focus:outline-none group"
           >
-            <div className="text-right leading-tight hidden sm:block">
-              <p className="text-xs sm:text-sm font-semibold text-gray-700 group-hover:text-emerald-700 transition-colors">
-                {currentUser.name}
-              </p>
-              <p className="text-[11px] text-gray-400 capitalize">{currentUser.role}</p>
-            </div>
-
+            {/* Avatar on LEFT with online green dot */}
             <div className="relative">
-              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center overflow-hidden text-sm font-bold text-white shadow-sm ring-2 ring-emerald-500/20">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden bg-gradient-to-br from-purple-100 to-indigo-100 flex items-center justify-center border border-gray-200 shadow-sm">
                 {currentUser.avatar ? (
-                  <img src={currentUser.avatar} alt={currentUser.name} className="w-full h-full object-cover" />
-                ) : (
-                  <span>{currentUser.initials}</span>
-                )}
+                  <img
+                    src={currentUser.avatar}
+                    alt={currentUser.name}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                      if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
+                    }}
+                  />
+                ) : null}
+                <span className={`${currentUser.avatar ? 'hidden ' : ''}w-full h-full flex items-center justify-center text-xs font-bold text-[#7656f4]`}>
+                  {currentUser.initials}
+                </span>
               </div>
               <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-white" />
             </div>
 
+            {/* Name & Role Text on RIGHT */}
+            <div className="text-left leading-tight hidden sm:block">
+              <p className="text-sm font-semibold text-gray-900 group-hover:text-[#7656f4] transition-colors">
+                {currentUser.name}
+              </p>
+              <p className="text-xs text-gray-500 capitalize font-medium">{currentUser.role}</p>
+            </div>
+
+            {/* Chevron Icon */}
             <ChevronDown
-              size={14}
-              className={`text-gray-400 transition-transform duration-200 ${
-                profileOpen ? 'rotate-180 text-emerald-600' : 'group-hover:text-gray-600'
+              size={15}
+              className={`text-gray-500 transition-transform duration-200 ${
+                profileOpen ? 'rotate-180 text-[#7656f4]' : 'group-hover:text-gray-700'
               }`}
             />
           </button>

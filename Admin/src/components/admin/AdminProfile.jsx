@@ -190,7 +190,7 @@ export default function AdminProfile({
         >
           {/* Avatar Icon on LEFT */}
           <div className="relative">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center overflow-hidden text-sm font-bold text-white shadow-sm ring-2 ring-emerald-500/20">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center overflow-hidden text-sm font-bold text-white shadow-sm ring-2 ring-emerald-500/20 border border-gray-200">
               {avatar}
             </div>
             <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-white" />
@@ -198,17 +198,17 @@ export default function AdminProfile({
 
           {/* Name & Role Text on RIGHT of Avatar */}
           <div className="text-left leading-tight hidden sm:block">
-            <p className="text-xs sm:text-sm font-semibold text-gray-800 group-hover:text-[#0da651] transition-colors">
+            <p className="text-sm font-semibold text-gray-900 group-hover:text-[#0da651] transition-colors">
               {name}
             </p>
-            <p className="text-[11px] text-gray-400 capitalize font-medium">{role}</p>
+            <p className="text-xs text-gray-500 capitalize font-medium">{role}</p>
           </div>
 
           {/* Chevron Icon */}
           <ChevronDown
             size={15}
-            className={`text-gray-400 transition-transform duration-200 ${
-              profileOpen ? "rotate-180 text-emerald-600" : "group-hover:text-gray-600"
+            className={`text-gray-500 transition-transform duration-200 ${
+              profileOpen ? "rotate-180 text-emerald-600" : "group-hover:text-gray-700"
             }`}
           />
         </button>
