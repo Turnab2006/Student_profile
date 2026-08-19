@@ -1,6 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Rocket, ArrowLeft, Sparkles, Clock } from 'lucide-react';
+import {
+  Rocket,
+  ArrowLeft,
+  Sparkles,
+  Clock,
+  Users,
+  CalendarCheck,
+  ClipboardList,
+  Star,
+} from 'lucide-react';
 import './MentorDashboard.css';
 import MentorSidebar from '../../components/mentor/MentorSidebar';
 import MentorNavbar from '../../components/mentor/MentorNavbar';
@@ -20,28 +29,48 @@ import MentorSupport from './MentorSupport';
 
 const stats = [
   {
-    title: 'Total Mentees',
+    key: 'mentees',
+    label: 'Total Mentees',
     value: '25',
-    icon: 'users',
-    accent: 'purple',
+    note: 'Assigned students',
+    icon: Users,
+    cardClass: 'bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#7656f4]',
+    valueClass: 'text-[#111827]',
+    iconWrap: 'bg-[#f0eaff] text-[#7656f4]',
+    pageKey: 'mentees',
   },
   {
-    title: 'Attendance Rate',
+    key: 'attendance',
+    label: 'Attendance Rate',
     value: '92%',
-    icon: 'check',
-    accent: 'green',
+    note: 'Classes recorded',
+    icon: CalendarCheck,
+    cardClass: 'bg-white text-slate-800 border border-slate-200 border-l-4 border-l-red-500',
+    valueClass: 'text-slate-900',
+    iconWrap: 'bg-[#fff1f1] text-red-500',
+    pageKey: 'attendance',
   },
   {
-    title: 'Results Published',
+    key: 'results',
+    label: 'Results Published',
     value: '18',
-    icon: 'trend',
-    accent: 'orange',
+    note: 'Published results',
+    icon: ClipboardList,
+    cardClass: 'bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#f59e0b]',
+    valueClass: 'text-[#111827]',
+    iconWrap: 'bg-[#fff1dc] text-[#f59e0b]',
+    pageKey: 'results',
   },
   {
-    title: 'Credit Points Issued',
+    key: 'credits',
+    label: 'Credit Points Issued',
     value: '120',
-    icon: 'star',
-    accent: 'blue',
+    note: 'Total points issued',
+    icon: Star,
+    cardClass: 'bg-white text-emerald-700 border border-emerald-200 border-l-4 border-l-emerald-500',
+    valueClass: 'text-[#111827]',
+    iconWrap: 'bg-[#e7f7ec] text-emerald-600',
+    pageKey: 'credit-points',
   },
 ];
 
