@@ -1,36 +1,47 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   Send,
-  Paperclip,
   Search,
   CheckCheck,
-  Phone,
-  Video,
+  ChevronDown,
+  ArrowDown,
 } from "lucide-react";
 
 export default function MentorMessages({ hideHeader = false }) {
   const [activeContactId, setActiveContactId] = useState("1");
   const [messageInput, setMessageInput] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [showScrollBottom, setShowScrollBottom] = useState(false);
+
+  const messagesEndRef = useRef(null);
+  const messagesContainerRef = useRef(null);
 
   const contacts = [
     {
       id: "1",
-      name: "Tuhina Banerjee",
-      role: "Mentee • B.Tech CSE",
-      department: "CSE Dept",
-      avatar: "TB",
+      name: "Tanuka Saha",
+      role: "Student • 6th Semester",
+      department: "Computer Science & Engineering",
+      rollNo: "CSE/21/042",
+      email: "tanukasaha12@gmail.com",
+      phone: "+91 98765 43210",
+      avatar: "/tuhina_avatar.jpg",
+      initials: "TS",
       online: true,
-      lastMessage: "Just add the comparative analysis diagram...",
-      time: "10:42 AM",
+      lastMessage: "I wanted to discuss about my final year project idea...",
+      time: "10:30 AM",
       unread: 0,
     },
     {
       id: "2",
-      name: "Aarav Sharma",
-      role: "Mentee • B.Tech CSE",
-      department: "CSE Dept",
-      avatar: "AS",
+      name: "Arjun Sharma",
+      role: "Student • 6th Semester",
+      department: "Computer Science & Engineering",
+      rollNo: "CSE/21/015",
+      email: "arjun.sharma@trackademy.in",
+      phone: "+91 98301 22334",
+      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80",
+      initials: "AS",
       online: true,
       lastMessage: "Sir, I have submitted my semester project draft.",
       time: "10:42 AM",
@@ -39,9 +50,13 @@ export default function MentorMessages({ hideHeader = false }) {
     {
       id: "3",
       name: "Riya Sen",
-      role: "Mentee • B.Tech CSE",
-      department: "CSE Dept",
-      avatar: "RS",
+      role: "Student • 6th Semester",
+      department: "Computer Science & Engineering",
+      rollNo: "CSE/21/028",
+      email: "riya.sen@trackademy.in",
+      phone: "+91 98305 66778",
+      avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80",
+      initials: "RS",
       online: false,
       lastMessage: "Thank you for approving my credit points request!",
       time: "Yesterday",
@@ -50,12 +65,106 @@ export default function MentorMessages({ hideHeader = false }) {
     {
       id: "4",
       name: "Vikram Roy",
-      role: "Mentee • B.Tech CSE",
-      department: "CSE Dept",
-      avatar: "VR",
+      role: "Student • 6th Semester",
+      department: "Computer Science & Engineering",
+      rollNo: "CSE/21/033",
+      email: "vikram.roy@trackademy.in",
+      phone: "+91 98309 88990",
+      avatar: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&w=150&q=80",
+      initials: "VR",
       online: false,
       lastMessage: "Can I meet during your office hours tomorrow?",
       time: "Aug 5",
+      unread: 0,
+    },
+    {
+      id: "5",
+      name: "Sneha Mukherjee",
+      role: "Student • 6th Semester",
+      department: "Computer Science & Engineering",
+      rollNo: "CSE/21/009",
+      email: "sneha.m@trackademy.in",
+      phone: "+91 98307 11223",
+      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80",
+      initials: "SM",
+      online: true,
+      lastMessage: "Sir, I have updated my hackathon project report.",
+      time: "Aug 4",
+      unread: 1,
+    },
+    {
+      id: "6",
+      name: "Debarati Ghosh",
+      role: "Student • 6th Semester",
+      department: "Computer Science & Engineering",
+      rollNo: "CSE/21/019",
+      email: "debarati.g@trackademy.in",
+      phone: "+91 98302 44556",
+      avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=150&q=80",
+      initials: "DG",
+      online: false,
+      lastMessage: "Could you please sign my internship NOC form?",
+      time: "Aug 3",
+      unread: 0,
+    },
+    {
+      id: "7",
+      name: "Sourav Das",
+      role: "Student • 6th Semester",
+      department: "Computer Science & Engineering",
+      rollNo: "CSE/21/055",
+      email: "sourav.das@trackademy.in",
+      phone: "+91 98303 77889",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80",
+      initials: "SD",
+      online: true,
+      lastMessage: "Thanks Sir! The paper got accepted.",
+      time: "Aug 2",
+      unread: 0,
+    },
+    {
+      id: "8",
+      name: "Ananya Roy",
+      role: "Student • 6th Semester",
+      department: "Computer Science & Engineering",
+      rollNo: "CSE/21/061",
+      email: "ananya.r@trackademy.in",
+      phone: "+91 98304 99001",
+      avatar: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=150&q=80",
+      initials: "AR",
+      online: false,
+      lastMessage: "I need some guidance regarding campus placement prep.",
+      time: "Jul 29",
+      unread: 0,
+    },
+    {
+      id: "9",
+      name: "Pritam Paul",
+      role: "Student • 6th Semester",
+      department: "Computer Science & Engineering",
+      rollNo: "CSE/21/072",
+      email: "pritam.p@trackademy.in",
+      phone: "+91 98308 33445",
+      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80",
+      initials: "PP",
+      online: true,
+      lastMessage: "Submitted my laboratory assignment on DBMS.",
+      time: "Jul 28",
+      unread: 0,
+    },
+    {
+      id: "10",
+      name: "Pooja Verma",
+      role: "Student • 6th Semester",
+      department: "Computer Science & Engineering",
+      rollNo: "CSE/21/080",
+      email: "pooja.v@trackademy.in",
+      phone: "+91 98306 55667",
+      avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&q=80",
+      initials: "PV",
+      online: false,
+      lastMessage: "Thank you for the guidance during the counseling session.",
+      time: "Jul 25",
       unread: 0,
     },
   ];
@@ -63,35 +172,86 @@ export default function MentorMessages({ hideHeader = false }) {
   const [conversations, setConversations] = useState({
     "1": [
       {
+        id: "hist-0",
+        dateBadge: "28 April 2024",
+      },
+      {
         id: "m1",
         sender: "mentor",
-        text: "Hello Tuhina! Please make sure to submit your semester project proposal draft before this Friday.",
-        time: "10:30 AM",
+        text: "Welcome to the new academic term! Feel free to reach out here whenever you need guidance with your course projects or research topics.",
+        time: "09:30 AM",
       },
       {
         id: "m2",
         sender: "student",
-        text: "Yes sir, I have already uploaded the draft in the activities portal. Could you please review Section 3 when you get a chance?",
-        time: "10:35 AM",
+        text: "Thank you so much Sir! I will definitely keep that in mind.",
+        time: "09:45 AM",
+        status: "read",
+      },
+      {
+        id: "date-1",
+        dateBadge: "2 May 2024",
       },
       {
         id: "m3",
+        sender: "student",
+        text: "Hello Sir, How are you?",
+        time: "10:15 AM",
+        status: "read",
+      },
+      {
+        id: "m4",
         sender: "mentor",
-        text: "I checked it, looks very promising! Just add the comparative analysis diagram and you are good to go.",
-        time: "10:42 AM",
+        text: "Hello Tanuka,\nI'm good, thank you! How can I help you today?",
+        time: "10:18 AM",
+      },
+      {
+        id: "m5",
+        sender: "student",
+        text: "I wanted to discuss about my final year project idea and get your guidance on the next steps.",
+        time: "10:20 AM",
+        status: "read",
+      },
+      {
+        id: "m6",
+        sender: "mentor",
+        text: "Sure, I'd be happy to help. Please share your project idea and current progress.",
+        time: "10:22 AM",
+      },
+      {
+        id: "date-2",
+        dateBadge: "Today",
+      },
+      {
+        id: "m7",
+        sender: "student",
+        text: "Here is a brief overview of my project and the problems I'm facing. Could we schedule a meeting to discuss it in detail?",
+        time: "10:25 AM",
+        status: "read",
+      },
+      {
+        id: "m8",
+        sender: "mentor",
+        text: "Thank you for reaching out. Let's meet tomorrow at 11:00 AM in my cabin.",
+        time: "10:30 AM",
       },
     ],
     "2": [
+      {
+        id: "date-1",
+        dateBadge: "Today",
+      },
       {
         id: "m1",
         sender: "student",
         text: "Good morning Sir! I wanted to inquire about my attendance status.",
         time: "10:30 AM",
+        status: "read",
       },
       {
         id: "m2",
         sender: "mentor",
-        text: "Good morning Aarav! Your current attendance is at 95%, which is excellent.",
+        text: "Good morning Arjun! Your current attendance is at 95%, which is excellent.",
         time: "10:35 AM",
       },
       {
@@ -99,34 +259,159 @@ export default function MentorMessages({ hideHeader = false }) {
         sender: "student",
         text: "Sir, I have submitted my semester project draft.",
         time: "10:42 AM",
+        status: "read",
       },
     ],
     "3": [
       {
+        id: "date-1",
+        dateBadge: "Yesterday",
+      },
+      {
         id: "m1",
         sender: "student",
         text: "Thank you for approving my credit points request!",
-        time: "Yesterday",
+        time: "03:15 PM",
+        status: "read",
       },
       {
         id: "m2",
         sender: "mentor",
         text: "You are welcome Riya! Keep up the good work.",
-        time: "Yesterday",
+        time: "03:20 PM",
       },
     ],
     "4": [
       {
+        id: "date-1",
+        dateBadge: "5 August 2024",
+      },
+      {
         id: "m1",
         sender: "student",
         text: "Can I meet during your office hours tomorrow?",
-        time: "Aug 5",
+        time: "11:00 AM",
+        status: "read",
       },
       {
         id: "m2",
         sender: "mentor",
         text: "Sure Vikram, drop by around 2:00 PM tomorrow.",
-        time: "Aug 5",
+        time: "11:15 AM",
+      },
+    ],
+    "5": [
+      {
+        id: "date-1",
+        dateBadge: "4 August 2024",
+      },
+      {
+        id: "m1",
+        sender: "student",
+        text: "Sir, I have updated my hackathon project report with the dataset details.",
+        time: "02:10 PM",
+        status: "read",
+      },
+      {
+        id: "m2",
+        sender: "mentor",
+        text: "Great work Sneha! I reviewed the submission and endorsed your team.",
+        time: "02:25 PM",
+      },
+    ],
+    "6": [
+      {
+        id: "date-1",
+        dateBadge: "3 August 2024",
+      },
+      {
+        id: "m1",
+        sender: "student",
+        text: "Could you please sign my internship NOC form?",
+        time: "11:40 AM",
+        status: "read",
+      },
+      {
+        id: "m2",
+        sender: "mentor",
+        text: "Please send the PDF over email or bring the hardcopy to room 302.",
+        time: "12:05 PM",
+      },
+    ],
+    "7": [
+      {
+        id: "date-1",
+        dateBadge: "2 August 2024",
+      },
+      {
+        id: "m1",
+        sender: "student",
+        text: "Thanks Sir! The paper got accepted at the IEEE student conference.",
+        time: "04:30 PM",
+        status: "read",
+      },
+      {
+        id: "m2",
+        sender: "mentor",
+        text: "Hearty congratulations Sourav! Very proud of your research effort.",
+        time: "04:45 PM",
+      },
+    ],
+    "8": [
+      {
+        id: "date-1",
+        dateBadge: "29 July 2024",
+      },
+      {
+        id: "m1",
+        sender: "student",
+        text: "I need some guidance regarding campus placement prep and coding interviews.",
+        time: "01:15 PM",
+        status: "read",
+      },
+      {
+        id: "m2",
+        sender: "mentor",
+        text: "Let's schedule a mock technical interview session next Monday.",
+        time: "01:30 PM",
+      },
+    ],
+    "9": [
+      {
+        id: "date-1",
+        dateBadge: "28 July 2024",
+      },
+      {
+        id: "m1",
+        sender: "student",
+        text: "Submitted my laboratory assignment on DBMS.",
+        time: "05:00 PM",
+        status: "read",
+      },
+      {
+        id: "m2",
+        sender: "mentor",
+        text: "Acknowledged Pritam. Your queries and normalization schema look solid.",
+        time: "05:20 PM",
+      },
+    ],
+    "10": [
+      {
+        id: "date-1",
+        dateBadge: "25 July 2024",
+      },
+      {
+        id: "m1",
+        sender: "student",
+        text: "Thank you for the guidance during the counseling session.",
+        time: "03:40 PM",
+        status: "read",
+      },
+      {
+        id: "m2",
+        sender: "mentor",
+        text: "You are most welcome Pooja! Keep pushing ahead with confidence.",
+        time: "04:00 PM",
       },
     ],
   });
@@ -134,12 +419,30 @@ export default function MentorMessages({ hideHeader = false }) {
   const activeContact = contacts.find((c) => c.id === activeContactId) || contacts[0];
   const messages = conversations[activeContactId] || [];
 
+  // Scroll to bottom helper
+  const scrollToBottom = (behavior = "smooth") => {
+    messagesEndRef.current?.scrollIntoView({ behavior });
+  };
+
+  // Auto-scroll when activeContact changes or component mounts
+  useEffect(() => {
+    scrollToBottom("auto");
+  }, [activeContactId]);
+
+  // Track scroll position to show/hide the "Scroll to Bottom" button
+  const handleScroll = () => {
+    if (!messagesContainerRef.current) return;
+    const { scrollTop, scrollHeight, clientHeight } = messagesContainerRef.current;
+    const isFarFromBottom = scrollHeight - scrollTop - clientHeight > 150;
+    setShowScrollBottom(isFarFromBottom);
+  };
+
   const handleSendMessage = (e) => {
     e.preventDefault();
     if (!messageInput.trim()) return;
 
     const newMsg = {
-      id: Date.now().toString(),
+      id: "msg-" + Date.now(),
       sender: "mentor",
       text: messageInput.trim(),
       time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
@@ -150,184 +453,282 @@ export default function MentorMessages({ hideHeader = false }) {
       [activeContactId]: [...(prev[activeContactId] || []), newMsg],
     }));
     setMessageInput("");
+
+    setTimeout(() => {
+      scrollToBottom("smooth");
+    }, 50);
   };
 
   const filteredContacts = contacts.filter(
     (c) =>
       c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      c.role.toLowerCase().includes(searchTerm.toLowerCase())
+      c.role.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      c.rollNo.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
-    <div className="p-4 sm:p-6 space-y-4 font-['Roboto',sans-serif]">
+    <div className="p-2 sm:px-5 sm:py-3.5 space-y-3 font-['Roboto',sans-serif] w-full max-w-[1600px] mx-auto">
+      {/* Optional Top Page Header */}
       {!hideHeader && (
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900 font-['Barlow',sans-serif]">
-            Mentee Messages &amp; Chat
-          </h1>
-          <p className="text-xs sm:text-sm text-gray-500 mt-1 font-['Barlow',sans-serif]">
-            Direct communication with your assigned mentees and students.
-          </p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+              Mentee Messages &amp; Counseling
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+              Direct academic guidance and communication with your assigned mentees.
+            </p>
+          </div>
         </div>
       )}
 
-      {/* Main Messaging Container */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden grid grid-cols-1 md:grid-cols-[300px_1fr] min-h-[560px]">
-        {/* Left Contacts Sidebar */}
-        <div className="border-r border-gray-100 flex flex-col justify-between">
-          <div className="p-4 border-b border-gray-100">
-            <div className="relative">
-              <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+      {/* Main Container: Two Columns on Laptop/Desktop, Single Column on Mobile */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
+        
+        {/* ========================================================================= */}
+        {/* LEFT COLUMN: MENTEE CONTACTS (Desktop)                                    */}
+        {/* ========================================================================= */}
+        <div className="hidden lg:flex lg:col-span-4 xl:col-span-4 flex-col">
+          {/* Mentees List Selector Card */}
+          <div className="bg-white rounded-3xl border border-slate-200/90 shadow-md shadow-slate-200/60 p-4 space-y-3 flex flex-col h-[calc(100vh-125px)] sm:h-[calc(100vh-110px)] min-h-[550px]">
+            <div className="flex items-center justify-between px-1 shrink-0">
+              <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wider">
+                Mentees
+              </h2>
+              <span className="text-xs font-bold text-[#7656f4] bg-[#f0eaff] px-2.5 py-0.5 rounded-full">
+                {contacts.length} Assigned
+              </span>
+            </div>
+
+            {/* Search Input */}
+            <div className="relative shrink-0">
+              <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
                 type="text"
-                placeholder="Search mentees & students..."
+                placeholder="Search mentees by name, roll..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-9 pr-3 py-1.5 bg-gray-50 border border-gray-200 rounded-xl text-xs text-gray-800 placeholder-gray-400 focus:bg-white focus:outline-none focus:border-blue-500"
+                className="w-full pl-9 pr-3 py-2 bg-[#f8fafc] border border-slate-200/90 rounded-2xl text-xs text-slate-800 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-[#7656f4] transition-all"
               />
             </div>
-          </div>
 
-          <div className="flex-1 overflow-y-auto divide-y divide-gray-50">
-            {filteredContacts.map((contact) => {
-              const isSelected = contact.id === activeContactId;
-              return (
-                <button
-                  key={contact.id}
-                  type="button"
-                  onClick={() => setActiveContactId(contact.id)}
-                  className={`w-full text-left p-3.5 flex items-start gap-3 transition-colors cursor-pointer ${
-                    isSelected ? "bg-[#E7EFFE]" : "hover:bg-gray-50"
-                  }`}
-                >
-                  <div className="relative shrink-0">
-                    <div
-                      className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-xs ${
-                        isSelected ? "bg-[#2384FD] text-white" : "bg-blue-100 text-[#2384FD]"
-                      }`}
-                    >
-                      {contact.avatar}
+            {/* Contacts Scroll List with Visible Styled Scrollbar */}
+            <div className="space-y-1.5 flex-1 overflow-y-auto pr-1.5 [scrollbar-width:thin] [scrollbar-color:#cbd5e1_transparent] hover:[scrollbar-color:#94a3b8_transparent] custom-scrollbar">
+              {filteredContacts.map((contact) => {
+                const isSelected = contact.id === activeContactId;
+                return (
+                  <button
+                    key={contact.id}
+                    type="button"
+                    onClick={() => setActiveContactId(contact.id)}
+                    className={`w-full text-left p-2.5 sm:p-3 rounded-2xl flex items-center gap-3 transition-all cursor-pointer border ${
+                      isSelected
+                        ? "bg-[#f0eaff] border-[#7656f4]/30 shadow-xs"
+                        : "bg-white border-transparent hover:bg-slate-50 text-slate-700"
+                    }`}
+                  >
+                    <div className="relative shrink-0">
+                      <div className="w-10 h-10 rounded-full overflow-hidden border border-slate-200 shadow-2xs flex items-center justify-center bg-purple-100">
+                        {contact.avatar ? (
+                          <img
+                            src={contact.avatar}
+                            alt={contact.name}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              e.target.style.display = "none";
+                              if (e.target.nextSibling) e.target.nextSibling.style.display = "flex";
+                            }}
+                          />
+                        ) : null}
+                        <span className="hidden w-full h-full items-center justify-center text-xs font-bold text-[#7656f4]">
+                          {contact.initials}
+                        </span>
+                      </div>
+                      {contact.online && (
+                        <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-white" />
+                      )}
                     </div>
-                    {contact.online && (
-                      <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-white" />
-                    )}
-                  </div>
 
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between">
-                      <h4 className={`text-xs font-bold truncate ${isSelected ? "text-[#2384FD]" : "text-gray-900"}`}>
-                        {contact.name}
-                      </h4>
-                      <span className="text-[10px] text-gray-400">{contact.time}</span>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between">
+                        <h4 className={`text-xs font-bold truncate ${isSelected ? "text-[#7656f4]" : "text-slate-900"}`}>
+                          {contact.name}
+                        </h4>
+                        <span className="text-[10px] text-slate-400">{contact.time}</span>
+                      </div>
+                      <p className="text-[11px] text-slate-500 truncate mt-0.5">{contact.rollNo}</p>
+                      <p className="text-[11px] text-slate-400 truncate mt-0.5">{contact.lastMessage}</p>
                     </div>
-                    <p className="text-[11px] text-gray-500 truncate mt-0.5">{contact.role}</p>
-                    <p className="text-[11px] text-gray-400 truncate mt-1">{contact.lastMessage}</p>
-                  </div>
-                </button>
-              );
-            })}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
 
-        {/* Right Active Chat View */}
-        <div className="flex flex-col justify-between h-full bg-[#FAFAFC]">
-          {/* Chat Header */}
-          <div className="p-4 bg-white border-b border-gray-100 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-blue-100 text-[#2384FD] font-bold text-xs flex items-center justify-center">
-                {activeContact.avatar}
+        {/* ========================================================================= */}
+        {/* RIGHT COLUMN: CHAT CONVERSATION VIEW                                      */}
+        {/* ========================================================================= */}
+        <div className="lg:col-span-8 xl:col-span-8 w-full bg-white rounded-3xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex flex-col overflow-hidden h-[calc(100vh-125px)] sm:h-[calc(100vh-110px)] min-h-[550px] relative">
+          
+          {/* Top Header Bar with Active Mentee Summary */}
+          <div className="p-3.5 sm:p-4 bg-white border-b border-slate-100 flex items-center justify-between gap-3 shrink-0 shadow-2xs">
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="relative shrink-0">
+                <img
+                  src={activeContact.avatar}
+                  alt={activeContact.name}
+                  className="h-10 w-10 rounded-full object-cover ring-2 ring-slate-100 shadow-sm"
+                  onError={(e) => {
+                    e.target.style.display = "none";
+                    if (e.target.nextSibling) e.target.nextSibling.style.display = "flex";
+                  }}
+                />
+                <div className="hidden h-10 w-10 rounded-full bg-blue-100 text-[#2384FD] font-bold text-sm items-center justify-center">
+                  {activeContact.initials}
+                </div>
+                <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-emerald-500 ring-2 ring-white shadow-2xs" />
               </div>
-              <div>
-                <h3 className="text-sm font-bold text-gray-900">{activeContact.name}</h3>
-                <p className="text-xs text-emerald-600 font-medium flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                  {activeContact.role} &bull; {activeContact.department}
+
+              <div className="overflow-hidden min-w-0">
+                <h3 className="text-base sm:text-lg font-black tracking-tight bg-gradient-to-r from-[#2384FD] via-[#1d61e7] to-[#1e40af] bg-clip-text text-transparent truncate">
+                  {activeContact.name}
+                </h3>
+                <p className="text-[11px] sm:text-xs font-medium text-emerald-600 flex items-center gap-1.5 truncate mt-0.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
+                  <span>{activeContact.role} &bull; {activeContact.department}</span>
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center gap-2 text-gray-500">
-              <button
-                type="button"
-                className="p-2 rounded-lg hover:bg-gray-100 text-gray-600 cursor-pointer transition-colors"
-                title="Voice Call"
+            {/* Mobile Contact Switcher Dropdown */}
+            <div className="lg:hidden">
+              <select
+                value={activeContactId}
+                onChange={(e) => setActiveContactId(e.target.value)}
+                className="bg-slate-50 text-slate-800 text-xs font-bold px-3 py-1.5 rounded-xl border border-slate-200 outline-none cursor-pointer"
               >
-                <Phone size={16} />
-              </button>
-              <button
-                type="button"
-                className="p-2 rounded-lg hover:bg-gray-100 text-gray-600 cursor-pointer transition-colors"
-                title="Video Call"
-              >
-                <Video size={16} />
-              </button>
+                {contacts.map((c) => (
+                  <option key={c.id} value={c.id} className="text-slate-900">
+                    {c.name}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 
-          {/* Messages Area */}
-          <div className="flex-1 p-4 sm:p-6 overflow-y-auto space-y-4">
-            {messages.map((msg) => {
-              const isMentor = msg.sender === "mentor";
+          {/* Scrollable Message Flow Area */}
+          <div
+            ref={messagesContainerRef}
+            onScroll={handleScroll}
+            className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-7 space-y-4 sm:space-y-5 scroll-smooth custom-scrollbar bg-white relative"
+          >
+            {messages.map((item) => {
+              // Render Date Separator Pill
+              if (item.dateBadge) {
+                return (
+                  <div key={item.id} className="flex items-center justify-center my-3">
+                    <span className="bg-[#f0f4f9]/80 border border-slate-200/70 text-slate-600 font-semibold text-[11px] px-3.5 py-1 rounded-full shadow-2xs select-none">
+                      {item.dateBadge}
+                    </span>
+                  </div>
+                );
+              }
+
+              const isMentor = item.sender === "mentor";
+
               return (
                 <div
-                  key={msg.id}
-                  className={`flex items-end gap-2.5 ${isMentor ? "justify-end" : "justify-start"}`}
+                  key={item.id}
+                  className={`flex items-start gap-2.5 sm:gap-3 ${
+                    isMentor ? "justify-end" : "justify-start"
+                  }`}
                 >
+                  {/* Student Profile Thumbnail beside incoming messages */}
                   {!isMentor && (
-                    <div className="w-7 h-7 rounded-full bg-blue-100 text-[#2384FD] font-bold text-[10px] flex items-center justify-center shrink-0">
-                      {activeContact.avatar}
+                    <div className="relative shrink-0 mt-1">
+                      <img
+                        src={activeContact.avatar}
+                        alt="Mentee"
+                        className="h-8 w-8 sm:h-9 sm:w-9 rounded-full object-cover ring-1 ring-slate-200 shadow-sm"
+                        onError={(e) => {
+                          e.target.style.display = "none";
+                          if (e.target.nextSibling) e.target.nextSibling.style.display = "flex";
+                        }}
+                      />
+                      <div className="hidden h-8 w-8 sm:h-9 sm:w-9 rounded-full bg-purple-100 text-[#7656f4] font-bold text-xs items-center justify-center">
+                        {activeContact.initials}
+                      </div>
                     </div>
                   )}
 
+                  {/* Message Bubble with Box Shadow matching Student view */}
                   <div
-                    className={`max-w-md p-3.5 rounded-2xl text-xs sm:text-sm leading-relaxed shadow-2xs ${
+                    className={`p-3.5 sm:p-4 rounded-2xl text-xs sm:text-sm leading-relaxed max-w-[85%] sm:max-w-[72%] transition-all duration-200 ${
                       isMentor
-                        ? "bg-[#2384FD] text-white rounded-br-none"
-                        : "bg-white text-gray-800 border border-gray-100 rounded-bl-none"
+                        ? "bg-[#f0eaff] border border-purple-200/70 text-slate-800 rounded-tr-xs shadow-[0_4px_16px_rgba(118,86,244,0.09)] hover:shadow-[0_6px_20px_rgba(118,86,244,0.13)] ml-auto"
+                        : "bg-white border border-slate-200/80 shadow-[0_4px_16px_rgba(15,23,42,0.06)] hover:shadow-[0_6px_20px_rgba(15,23,42,0.09)] text-slate-800 rounded-tl-xs"
                     }`}
                   >
-                    <p>{msg.text}</p>
+                    <p className="whitespace-pre-line text-slate-800 font-normal">
+                      {item.text}
+                    </p>
+
+                    {/* Time & Read Status */}
                     <div
-                      className={`flex items-center justify-end gap-1 text-[10px] mt-1.5 ${
-                        isMentor ? "text-blue-100" : "text-gray-400"
+                      className={`flex items-center justify-end gap-1.5 text-[10px] sm:text-[11px] mt-1.5 ${
+                        isMentor ? "text-[#7656f4] font-medium" : "text-slate-400"
                       }`}
                     >
-                      <span>{msg.time}</span>
-                      {isMentor && <CheckCheck size={12} />}
+                      <span>{item.time}</span>
+                      {isMentor && (
+                        <CheckCheck size={14} className="text-[#7656f4] stroke-[2.4]" />
+                      )}
                     </div>
                   </div>
                 </div>
               );
             })}
+
+            {/* Scroll Anchor */}
+            <div ref={messagesEndRef} className="h-1" />
           </div>
 
-          {/* Composer Input */}
-          <form
-            onSubmit={handleSendMessage}
-            className="p-3 sm:p-4 bg-white border-t border-gray-100 flex items-center gap-2 sm:gap-3"
-          >
+          {/* Floating "Scroll Down" Button if user has scrolled up */}
+          {showScrollBottom && (
             <button
               type="button"
-              className="p-2 rounded-xl text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors cursor-pointer"
+              onClick={() => scrollToBottom("smooth")}
+              className="absolute bottom-20 right-6 sm:right-8 z-30 p-2.5 rounded-full bg-[#7656f4] text-white shadow-lg hover:bg-[#6242e2] transition-all active:scale-95 flex items-center justify-center cursor-pointer animate-in fade-in zoom-in-75"
+              title="Scroll to bottom"
+              aria-label="Scroll to bottom"
             >
-              <Paperclip size={18} />
+              <ArrowDown size={18} className="stroke-[2.5]" />
             </button>
+          )}
+
+          {/* Bottom Message Input Area */}
+          <form
+            onSubmit={handleSendMessage}
+            className="p-3 sm:p-4 bg-white border-t border-slate-100 flex items-center gap-2 sm:gap-3 shrink-0"
+          >
             <input
               type="text"
               placeholder={`Write message to ${activeContact.name}...`}
               value={messageInput}
               onChange={(e) => setMessageInput(e.target.value)}
-              className="flex-1 px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-xs sm:text-sm text-gray-800 placeholder-gray-400 focus:bg-white focus:outline-none focus:border-blue-500 transition-all"
+              className="flex-1 px-4 py-3 bg-[#f8fafc] sm:bg-white border border-slate-200/90 rounded-2xl text-xs sm:text-sm text-slate-800 placeholder:text-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-[#7656f4] transition-all shadow-2xs"
             />
             <button
               type="submit"
               disabled={!messageInput.trim()}
-              className="px-4 py-2.5 bg-[#2384FD] hover:bg-blue-600 disabled:opacity-50 text-white rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 transition-all cursor-pointer shadow-xs"
+              className="px-5 sm:px-6 py-3 bg-[#7656f4] hover:bg-[#6242e2] disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-2xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all cursor-pointer shadow-md shadow-purple-500/20 active:scale-95 shrink-0"
             >
-              <Send size={15} />
-              <span className="hidden sm:inline">Send</span>
+              <span>Send</span>
+              <Send size={15} className="stroke-[2.4]" />
             </button>
           </form>
+
         </div>
       </div>
     </div>

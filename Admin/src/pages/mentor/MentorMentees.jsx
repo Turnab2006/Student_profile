@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Search,
   Mail,
@@ -390,7 +391,7 @@ function ViewMenteeDetail({ mentee, onClose, onSendMessage }) {
   const [activeTab, setActiveTab] = useState('personal'); // 'personal' | 'academic' | 'parents' | 'experience' | 'skills'
 
   return (
-    <div className="flex flex-col gap-5 pb-12 w-full text-slate-800 font-sans animate-fade-in">
+    <div className="flex flex-col gap-2.5 pb-12 w-full text-slate-800 font-sans animate-fade-in p-2 sm:px-5 sm:py-2.5">
       {/* TOP HEADER BAR */}
       <div className="flex items-center justify-between px-1 py-1">
         <div className="flex items-center gap-3">
@@ -1606,7 +1607,17 @@ const DEPARTMENTS = [
   'Mechanical Engineering'
 ];
 
-export default function MentorMentees() {
+export default function MentorMentees({ onNavigate }) {
+  const navigate = useNavigate();
+
+  const handleGoToMessages = (mentee) => {
+    if (onNavigate) {
+      onNavigate('messages');
+    } else {
+      navigate('/mentor/messages');
+    }
+  };
+
   const [mentees, setMentees] = useState(initialMentees);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDepartment, setSelectedDepartment] = useState('all');
@@ -1757,7 +1768,7 @@ export default function MentorMentees() {
   }
 
   return (
-    <div className="flex flex-col gap-5 text-slate-800 font-sans pb-10">
+    <div className="flex flex-col gap-2.5 text-slate-800 font-sans p-2 sm:px-5 sm:py-2.5 pb-10">
       {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-slate-900 text-white px-5 py-3 rounded-xl shadow-2xl animate-fade-in border border-slate-700">
@@ -1850,70 +1861,32 @@ export default function MentorMentees() {
           <ChevronDown size={14} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-500" />
         </div>
 
-        {/* Add Student / Add Mentee Button */}
-        <button
-          type="button"
-          onClick={() => setShowAddModal(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-[#7656f4] hover:bg-[#6242e2] text-white rounded-lg text-sm font-medium transition-colors whitespace-nowrap cursor-pointer shadow-2xs active:scale-95 ml-auto"
-        >
-          <Plus size={15} />
-          <span>Add Mentee</span>
-        </button>
-      </div>
-
-      {/* SUB-HEADER TOOLBAR (SHOWING COUNT, SORT, VIEW MODES) */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-1 py-1">
-        <div className="text-[13px] font-medium text-gray-500">
-          Showing <span className="font-bold text-[#7656f4]">{filteredMentees.length}</span> of{' '}
-          <span className="font-bold text-[#7656f4]">{mentees.length}</span> mentees
-        </div>
-
-        <div className="flex items-center justify-between sm:justify-end gap-4 w-full sm:w-auto">
-          {/* Sort By Dropdown */}
-          <div className="flex items-center gap-2">
-            <span className="text-[13px] text-slate-400 font-medium">Sort by:</span>
-            <div className="relative">
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="appearance-none pl-3 pr-8 py-1.5 bg-white border border-slate-200 rounded-xl text-[13px] font-medium text-slate-700 outline-none cursor-pointer hover:border-slate-300 focus:border-[#7656f4]"
-              >
-                <option value="Name (A-Z)">Name (A-Z)</option>
-                <option value="Name (Z-A)">Name (Z-A)</option>
-                <option value="Roll No">Roll No</option>
-              </select>
-              <ChevronDown
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
-                size={14}
-              />
-            </div>
-          </div>
-
-          {/* View Toggles */}
-          <div className="flex items-center gap-1 bg-slate-100/80 p-1 rounded-xl border border-slate-200/60">
-            <button
-              onClick={() => setViewMode('list')}
-              title="List View"
-              className={`p-1.5 rounded-lg transition-all ${
-                viewMode === 'list'
-                  ? 'bg-white text-[#7656f4] shadow-sm border border-[#e2d9fd] font-bold'
-                  : 'text-slate-400 hover:text-slate-600'
-              }`}
-            >
-              <List size={18} />
-            </button>
-            <button
-              onClick={() => setViewMode('grid')}
-              title="Grid View"
-              className={`p-1.5 rounded-lg transition-all ${
-                viewMode === 'grid'
-                  ? 'bg-white text-[#7656f4] shadow-sm border border-[#e2d9fd] font-bold'
-                  : 'text-slate-400 hover:text-slate-600'
-              }`}
-            >
-              <LayoutGrid size={18} />
-            </button>
-          </div>
+        {/* List / Grid View Toggles (Moved into top bar) */}
+        <div className="flex items-center gap-1 bg-slate-100/80 p-1 rounded-xl border border-slate-200/60 ml-auto">
+          <button
+            type="button"
+            onClick={() => setViewMode('list')}
+            title="List View"
+            className={`p-1.5 rounded-lg transition-all cursor-pointer ${
+              viewMode === 'list'
+                ? 'bg-white text-[#7656f4] shadow-sm border border-[#e2d9fd] font-bold'
+                : 'text-slate-400 hover:text-slate-600'
+            }`}
+          >
+            <List size={18} />
+          </button>
+          <button
+            type="button"
+            onClick={() => setViewMode('grid')}
+            title="Grid View"
+            className={`p-1.5 rounded-lg transition-all cursor-pointer ${
+              viewMode === 'grid'
+                ? 'bg-white text-[#7656f4] shadow-sm border border-[#e2d9fd] font-bold'
+                : 'text-slate-400 hover:text-slate-600'
+            }`}
+          >
+            <LayoutGrid size={18} />
+          </button>
         </div>
       </div>
 
@@ -1928,7 +1901,7 @@ export default function MentorMentees() {
                   <th className="py-3.5 px-4 sm:px-5">MENTEE</th>
                   <th className="py-3.5 px-4">ID / COLLEGE ROLL NO.</th>
                   <th className="py-3.5 px-4">DEPARTMENT</th>
-                  <th className="py-3.5 px-4">MENTOR EMAIL</th>
+                  <th className="py-3.5 px-4">EMAIL</th>
                   <th className="py-3.5 px-4">CONTACT</th>
                   <th className="py-3.5 px-4 text-center">ACTIONS</th>
                 </tr>
@@ -1985,25 +1958,19 @@ export default function MentorMentees() {
                         </span>
                       </td>
 
-                      {/* MENTOR EMAIL */}
+                      {/* EMAIL (Student / Mentee Email) */}
                       <td className="py-3.5 px-4">
                         <div className="flex items-center gap-2 text-slate-700">
                           <Mail size={14} className="text-[#7656f4] flex-shrink-0" />
-                          <span className="text-[13px]">{mentee.mentorEmail}</span>
+                          <span className="text-[13px]">{mentee.studentEmail || mentee.email}</span>
                         </div>
                       </td>
 
-                      {/* CONTACT (Phone + Student Email) */}
+                      {/* CONTACT (Phone number only) */}
                       <td className="py-3.5 px-4">
-                        <div className="flex flex-col gap-1">
-                          <div className="flex items-center gap-1.5 text-[12px] text-slate-700 font-medium">
-                            <PhoneCall size={12} className="text-[#7656f4] flex-shrink-0" />
-                            <span>{mentee.phone}</span>
-                          </div>
-                          <div className="flex items-center gap-1.5 text-[12px] text-slate-500">
-                            <Mail size={12} className="text-[#7656f4] flex-shrink-0" />
-                            <span>{mentee.studentEmail}</span>
-                          </div>
+                        <div className="flex items-center gap-2 text-slate-700">
+                          <PhoneCall size={14} className="text-[#7656f4] flex-shrink-0" />
+                          <span className="text-[13px] font-medium">{mentee.phone}</span>
                         </div>
                       </td>
 
@@ -2019,10 +1986,10 @@ export default function MentorMentees() {
                             <ActionEyeIcon size={18} />
                           </button>
 
-                          {/* Quick Message Action */}
+                          {/* Quick Message Action -> Redirects to Message Section */}
                           <button
-                            onClick={() => setMessagingMentee(mentee)}
-                            title="Send Message"
+                            onClick={() => handleGoToMessages(mentee)}
+                            title="Open Message Section"
                             className="w-9 h-9 flex items-center justify-center rounded-xl bg-white border border-slate-200/90 text-[#7656f4] hover:border-[#7656f4] hover:bg-[#f0eaff] transition-all cursor-pointer shadow-2xs active:scale-95"
                           >
                             <ActionMessageIcon size={18} />
@@ -2184,7 +2151,8 @@ export default function MentorMentees() {
                   <span>View Profile</span>
                 </button>
                 <button
-                  onClick={() => setMessagingMentee(mentee)}
+                  onClick={() => handleGoToMessages(mentee)}
+                  title="Open Message Section"
                   className="w-9 h-9 flex items-center justify-center bg-white hover:bg-[#f0eaff] text-[#7656f4] rounded-xl border border-slate-200/90 hover:border-[#7656f4] transition-all cursor-pointer flex-shrink-0 shadow-2xs"
                 >
                   <ActionMessageIcon size={16} />

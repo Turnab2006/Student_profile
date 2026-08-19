@@ -168,7 +168,7 @@ export default function MentorDashboard({ user, onLogout }) {
         return <MentorProfilePage />;
       }
       if (activeTab === 'mentees') {
-        return <MentorMentees />;
+        return <MentorMentees onNavigate={handleNavigate} />;
       }
       if (activeTab === 'messages') {
         return <MentorMessages hideHeader={true} />;

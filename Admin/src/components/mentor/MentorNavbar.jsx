@@ -266,39 +266,16 @@ export default function MentorNavbar({
             />
           </button>
 
-          {/* Profile Dropdown Menu */}
+          {/* Profile Dropdown Menu - Same as Student and Admin */}
           {profileOpen && (
-            <div className="absolute right-0 top-full mt-2.5 w-56 rounded-2xl border border-gray-100 bg-white p-2 shadow-2xl z-50 animate-in fade-in slide-in-from-top-2 duration-150">
-              <div className="px-3 py-2.5 border-b border-gray-100 bg-gray-50/50 rounded-xl mb-1">
-                <div className="flex items-center gap-2">
-                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700 font-bold text-xs">
-                    {currentUser.initials}
-                  </div>
-                  <div className="overflow-hidden">
-                    <p className="text-xs font-bold text-gray-800 truncate">{currentUser.name}</p>
-                    <p className="text-[10px] text-emerald-600 font-medium flex items-center gap-1">
-                      <ShieldCheck size={10} /> {currentUser.role}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
+            <div className="absolute right-0 top-full mt-2.5 w-44 rounded-2xl border border-slate-200 bg-white p-1.5 shadow-xl z-50 animate-in fade-in slide-in-from-top-2 duration-150">
               <div className="space-y-0.5">
                 <button
                   type="button"
-                  onClick={() => navigateTo('profile')}
-                  className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-gray-700 rounded-xl hover:bg-emerald-50 hover:text-[#0da651] transition-colors cursor-pointer"
-                >
-                  <User size={15} className="text-gray-400" />
-                  <span>View Profile</span>
-                </button>
-
-                <button
-                  type="button"
                   onClick={() => navigateTo('settings')}
-                  className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-gray-700 rounded-xl hover:bg-emerald-50 hover:text-[#0da651] transition-colors cursor-pointer"
+                  className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-gray-700 rounded-xl hover:bg-purple-50 hover:text-[#7656f4] transition-colors cursor-pointer group"
                 >
-                  <Settings size={15} className="text-gray-400" />
+                  <Settings size={15} className="text-gray-400 group-hover:text-[#7656f4]" />
                   <span>Settings</span>
                 </button>
 

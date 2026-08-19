@@ -117,19 +117,20 @@ export default function MentorSidebar({
 }) {
   return (
     <aside
-      className={`fixed inset-y-0 left-0 z-50 flex h-full w-[240px] shrink-0 flex-col border-r border-gray-100 bg-white shadow-xl transition-transform duration-300 ease-in-out lg:static lg:z-auto lg:w-[240px] lg:translate-x-0 lg:shadow-none select-none ${
+      className={`fixed inset-y-0 left-0 z-50 flex h-full w-[250px] shrink-0 flex-col border-r border-gray-100 bg-white font-['Roboto',sans-serif] shadow-xl transition-transform duration-300 ease-in-out lg:static lg:z-auto lg:w-[250px] lg:translate-x-0 lg:shadow-none select-none ${
         open ? 'translate-x-0' : '-translate-x-full'
       }`}
     >
-      <div className="h-[65px] flex items-center justify-between border-b border-gray-100 px-5 shrink-0 select-none">
+      {/* Brand Logo Header */}
+      <div className="h-[65px] flex items-center justify-between border-b border-gray-100 px-6 shrink-0">
         <span
-          className="block text-lg font-extrabold tracking-wide text-gray-800 cursor-pointer"
+          className="block text-2xl font-bold tracking-tight text-gray-900 cursor-pointer"
           onClick={() => {
             if (onSelectTab) onSelectTab('dashboard');
             if (onClose) onClose();
           }}
         >
-          TRACK<span className="text-blue-600">ADEMY</span>
+          Trackademy
         </span>
         <button
           type="button"
@@ -141,13 +142,14 @@ export default function MentorSidebar({
         </button>
       </div>
 
-      <nav className="flex-1 px-3.5 py-3.5 space-y-3.5 overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+      {/* Nav List matching Student and Admin sidebars */}
+      <nav className="flex-1 px-3.5 py-3.5 space-y-4 overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
         {menuGroups.map((group) => (
-          <div key={group.title} className="space-y-1">
-            <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider px-2.5 mb-1">
+          <div key={group.title}>
+            <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider px-3 mb-1.5 font-roboto">
               {group.title}
             </p>
-            <div className="space-y-0.5">
+            <div className="space-y-1">
               {group.items.map((item) => {
                 const Icon = item.icon;
                 const isActive = activeTab === item.id;
@@ -159,18 +161,21 @@ export default function MentorSidebar({
                       if (onSelectTab) onSelectTab(item.id);
                       if (onClose) onClose();
                     }}
-                    className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                    className={`w-full flex items-center gap-3.5 px-3.5 py-2 rounded-xl text-sm transition-all cursor-pointer group ${
                       isActive
-                        ? 'bg-[#f0eaff] text-[#7656f4] font-bold'
-                        : 'text-slate-600 hover:bg-slate-50 hover:text-[#7656f4]'
+                        ? 'bg-[#f0eaff] text-[#7656f4] font-semibold'
+                        : 'text-[#5A6A80] hover:bg-gray-50 hover:text-gray-900 font-medium'
                     }`}
                   >
                     <Icon
                       size={18}
-                      strokeWidth={2}
-                      className={isActive ? 'text-[#7656f4]' : 'text-slate-400'}
+                      className={`shrink-0 transition-colors ${
+                        isActive
+                          ? 'text-[#7656f4]'
+                          : 'text-[#5A6A80] group-hover:text-gray-900'
+                      }`}
                     />
-                    <span>{item.label}</span>
+                    <span className="truncate">{item.label}</span>
                   </button>
                 );
               })}
@@ -179,16 +184,17 @@ export default function MentorSidebar({
         ))}
       </nav>
 
-      <div className="border-t border-gray-100 p-3 mt-auto">
+      {/* Bottom Logout Button */}
+      <div className="p-3.5 border-t border-gray-100 shrink-0">
         <button
           type="button"
-          className="w-full flex items-center justify-center gap-2.5 p-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold transition-all cursor-pointer"
           onClick={() => {
             if (onLogout) onLogout();
             if (onClose) onClose();
           }}
+          className="w-full flex items-center justify-center gap-2.5 py-2.5 px-4 rounded-xl text-sm font-semibold text-[#FF4D4F] bg-[#FFF0F0] hover:bg-[#FEECEB] active:scale-[0.99] transition-all cursor-pointer shadow-none"
         >
-          <LogOut size={16} strokeWidth={2} />
+          <LogOut size={18} className="shrink-0 stroke-[2.2]" />
           <span>Logout</span>
         </button>
       </div>
