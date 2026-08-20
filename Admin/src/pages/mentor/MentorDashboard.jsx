@@ -305,8 +305,10 @@ export default function MentorDashboard({ user, onLogout }) {
             studentData={studentToDisplay}
             onBack={() => handleNavigate('mentees')}
             userRole="mentor"
+            user={user}
             onNavigate={handleNavigate}
             onOpenSidebar={() => setMobileSidebarOpen(true)}
+            onLogout={onLogout}
           />
         </div>
       </div>
