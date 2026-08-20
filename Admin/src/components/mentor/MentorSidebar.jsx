@@ -117,9 +117,8 @@ export default function MentorSidebar({
 }) {
   return (
     <aside
-      className={`fixed inset-y-0 left-0 z-50 flex h-full w-[250px] shrink-0 flex-col border-r border-gray-100 bg-white font-['Roboto',sans-serif] shadow-xl transition-transform duration-300 ease-in-out lg:static lg:z-auto lg:w-[250px] lg:translate-x-0 lg:shadow-none select-none ${
-        open ? 'translate-x-0' : '-translate-x-full'
-      }`}
+      className={`fixed inset-y-0 left-0 z-50 flex h-full w-[250px] shrink-0 flex-col border-r border-gray-100 bg-white font-['Roboto',sans-serif] shadow-xl transition-transform duration-300 ease-in-out lg:static lg:z-auto lg:w-[250px] lg:translate-x-0 lg:shadow-none select-none ${open ? 'translate-x-0' : '-translate-x-full'
+        }`}
     >
       {/* Brand Logo Header */}
       <div className="h-[65px] flex items-center justify-between border-b border-gray-100 px-6 shrink-0">
@@ -161,19 +160,17 @@ export default function MentorSidebar({
                       if (onSelectTab) onSelectTab(item.id);
                       if (onClose) onClose();
                     }}
-                    className={`w-full flex items-center gap-3.5 px-3.5 py-2 rounded-xl text-sm transition-all cursor-pointer group ${
-                      isActive
+                    className={`w-full flex items-center gap-3.5 px-3.5 py-2 rounded-xl text-sm transition-all cursor-pointer group ${isActive
                         ? 'bg-[#f0eaff] text-[#7656f4] font-semibold'
                         : 'text-[#5A6A80] hover:bg-gray-50 hover:text-gray-900 font-medium'
-                    }`}
+                      }`}
                   >
                     <Icon
                       size={18}
-                      className={`shrink-0 transition-colors ${
-                        isActive
+                      className={`shrink-0 transition-colors ${isActive
                           ? 'text-[#7656f4]'
                           : 'text-[#5A6A80] group-hover:text-gray-900'
-                      }`}
+                        }`}
                     />
                     <span className="truncate">{item.label}</span>
                   </button>

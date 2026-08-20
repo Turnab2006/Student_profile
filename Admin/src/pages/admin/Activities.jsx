@@ -124,7 +124,7 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
     setSelected((prev) => (prev.includes(id) ? prev.filter((r) => r !== id) : [...prev, id]));
 
   return (
-    <div className="flex-1 h-full flex flex-col overflow-hidden bg-gray-50/50">
+    <div className={`flex-1 ${isMentor ? 'w-full' : 'h-full flex flex-col overflow-hidden bg-gray-50/50'}`}>
       {!isMentor && (
         <header className="h-[65px] bg-white border-b border-gray-100 px-6 flex items-center justify-between shrink-0 shadow-2xs">
           <div className="flex items-center gap-3">
@@ -148,7 +148,7 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
         </header>
       )}
 
-      <main className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4">
+      <main className={isMentor ? "p-2 sm:px-5 sm:py-2.5 space-y-4 pb-10" : "flex-1 overflow-y-auto p-4 sm:p-6 space-y-4"}>
         {/* Search + Filters */}
         <div className="flex items-center gap-3 flex-wrap">
           <div className="relative flex-1 min-w-[220px]">

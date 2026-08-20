@@ -98,7 +98,7 @@ export default function Support({ onNavigate, onOpenSidebar, isMentor = false })
   };
 
   return (
-    <div className="flex-1 h-full flex flex-col overflow-hidden bg-[#f6f8fb]">
+    <div className={`flex-1 ${isMentor ? 'w-full' : 'h-full flex flex-col overflow-hidden bg-[#f6f8fb]'}`}>
       {!isMentor && (
         <header className="h-[65px] bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-2xs">
           <div className="flex items-center gap-3 min-w-0 w-full sm:w-auto">
@@ -123,7 +123,7 @@ export default function Support({ onNavigate, onOpenSidebar, isMentor = false })
         </header>
       )}
 
-      <main className="flex-1 overflow-y-auto p-4 lg:p-5">
+      <main className={isMentor ? "p-2 sm:px-5 sm:py-2.5 space-y-4 pb-10" : "flex-1 overflow-y-auto p-4 lg:p-5"}>
         <div className="max-w-[1500px] mx-auto space-y-4">
               <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
                 {filteredQuickActions.map((item) => {

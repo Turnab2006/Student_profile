@@ -26,6 +26,8 @@ import MentorResults from './MentorResults';
 import MentorNotices from './MentorNotices';
 import MentorActivities from './MentorActivities';
 import MentorSupport from './MentorSupport';
+import StudentProfile from '../student/StudentProfile';
+import { initialStudentData } from '../../data/studentProfileData';
 
 const stats = [
   {
@@ -76,6 +78,7 @@ const stats = [
 
 const tabTitles = {
   mentees: 'Mentees Portal',
+  'student-profile': 'Student Profile',
   profile: 'Mentor Profile',
   messages: 'Messages & Chat',
   results: 'Student Results',
@@ -119,11 +122,15 @@ export default function MentorDashboard({ user, onLogout }) {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [startWithUpload, setStartWithUpload] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState(location.state?.mentee || null);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   useEffect(() => {
     const path = location.pathname;
-    if (path.includes('/mentor/mentees')) setActiveTab('mentees');
+    if (path.includes('/mentor/mentees/profile') || path.includes('/mentor/student-profile') || path.includes('/mentor/students/profile')) {
+      setActiveTab('student-profile');
+    }
+    else if (path.includes('/mentor/mentees')) setActiveTab('mentees');
     else if (path.includes('/mentor/profile')) setActiveTab('profile');
     else if (path.includes('/mentor/messages')) setActiveTab('messages');
     else if (path.includes('/mentor/results')) setActiveTab('results');
@@ -136,7 +143,7 @@ export default function MentorDashboard({ user, onLogout }) {
     else setActiveTab('dashboard');
   }, [location.pathname]);
 
-  const handleNavigate = (tab, isUpload = false) => {
+  const handleNavigate = (tab, isUpload = false, menteeData = null) => {
     if (tab === 'logout') {
       if (onLogout) onLogout();
       navigate('/');
@@ -145,6 +152,7 @@ export default function MentorDashboard({ user, onLogout }) {
     const mentorPathMap = {
       dashboard: '/mentor/dashboard',
       mentees: '/mentor/mentees',
+      'student-profile': '/mentor/mentees/profile',
       profile: '/mentor/profile',
       messages: '/mentor/messages',
       results: '/mentor/results',
@@ -156,16 +164,23 @@ export default function MentorDashboard({ user, onLogout }) {
       settings: '/mentor/settings',
       support: '/mentor/support',
     };
+    if (menteeData) {
+      setSelectedStudent(menteeData);
+    }
     setActiveTab(tab);
     setStartWithUpload(Boolean(isUpload));
     setMobileSidebarOpen(false);
-    navigate(mentorPathMap[tab] || '/mentor/dashboard');
+    navigate(mentorPathMap[tab] || '/mentor/dashboard', { state: menteeData ? { mentee: menteeData } : undefined });
   };
 
   function renderView() {
     if (activeTab !== 'dashboard') {
       if (activeTab === 'profile' || activeTab === 'settings') {
-        return <MentorProfilePage />;
+        return (
+          <div className="p-2 sm:px-5 sm:py-2.5 pb-10">
+            <MentorProfilePage />
+          </div>
+        );
       }
       if (activeTab === 'mentees') {
         return <MentorMentees onNavigate={handleNavigate} />;
@@ -174,10 +189,18 @@ export default function MentorDashboard({ user, onLogout }) {
         return <MentorMessages hideHeader={true} />;
       }
       if (activeTab === 'attendance') {
-        return <MentorAttendance initialUpload={startWithUpload} />;
+        return (
+          <div className="p-2 sm:px-5 sm:py-2.5 pb-10">
+            <MentorAttendance initialUpload={startWithUpload} />
+          </div>
+        );
       }
       if (activeTab === 'results') {
-        return <MentorResults initialUpload={startWithUpload} />;
+        return (
+          <div className="p-2 sm:px-5 sm:py-2.5 pb-10">
+            <MentorResults initialUpload={startWithUpload} />
+          </div>
+        );
       }
       if (activeTab === 'notices') {
         return <MentorNotices user={user} />;
@@ -190,10 +213,12 @@ export default function MentorDashboard({ user, onLogout }) {
       }
       const title = tabTitles[activeTab] || 'This Page';
       return (
-        <MentorComingSoon
-          title={title}
-          onBack={() => handleNavigate('dashboard')}
-        />
+        <div className="p-2 sm:px-5 sm:py-2.5 pb-10">
+          <MentorComingSoon
+            title={title}
+            onBack={() => handleNavigate('dashboard')}
+          />
+        </div>
       );
     }
 
@@ -216,6 +241,75 @@ export default function MentorDashboard({ user, onLogout }) {
           <MentorCalendar />
         </section>
       </main>
+    );
+  }
+
+  if (activeTab === 'student-profile') {
+    const studentToDisplay = selectedStudent
+      ? {
+          ...initialStudentData,
+          name: selectedStudent.name || initialStudentData.name,
+          rollNo: selectedStudent.rollNo || initialStudentData.rollNo,
+          department: selectedStudent.department || initialStudentData.department,
+          phone: selectedStudent.phone || initialStudentData.phone,
+          email: selectedStudent.studentEmail || selectedStudent.email || initialStudentData.email,
+          avatar: selectedStudent.avatar || initialStudentData.avatar,
+          academicDetails: {
+            ...initialStudentData.academicDetails,
+            collegeRollNo: selectedStudent.rollNo || initialStudentData.academicDetails?.collegeRollNo,
+            universityRollNo: `RTU/2024/${selectedStudent.rollNo?.slice(0, 3) || 'CS'}/` + (selectedStudent.rollNo?.replace(/\D/g, '') || '12345'),
+            attendanceOverall: selectedStudent.attendance || initialStudentData.academicDetails?.attendanceOverall || '95.0%',
+          },
+          additionalDetails: {
+            ...initialStudentData.additionalDetails,
+            personalEmail: selectedStudent.studentEmail || selectedStudent.email || initialStudentData.additionalDetails?.personalEmail,
+            phoneNumber: selectedStudent.phone || initialStudentData.additionalDetails?.phoneNumber,
+            collegeEmail: selectedStudent.studentEmail || initialStudentData.additionalDetails?.collegeEmail,
+          },
+          mentorDetails: {
+            ...initialStudentData.mentorDetails,
+            name: user?.name || 'Kaushik Chatterjee',
+            email: selectedStudent.mentorEmail || user?.email || 'kaushik.c@trackademy.edu',
+          },
+          attendanceDetails: {
+            ...initialStudentData.attendanceDetails,
+            overallPercentage: selectedStudent.attendance ? parseFloat(selectedStudent.attendance) : (initialStudentData.attendanceDetails?.overallPercentage || 95.0),
+          }
+        }
+      : initialStudentData;
+
+    return (
+      <div className="relative flex h-full w-full bg-[#EEF2F6] overflow-hidden min-h-screen">
+        {/* Mobile Drawer Overlay */}
+        {mobileSidebarOpen && (
+          <button
+            type="button"
+            aria-label="Close navigation overlay"
+            onClick={() => setMobileSidebarOpen(false)}
+            className="fixed inset-0 z-40 bg-black/40 backdrop-blur-[1px] lg:hidden"
+          />
+        )}
+
+        {/* Mentor Sidebar */}
+        <MentorSidebar
+          activeTab={activeTab}
+          onSelectTab={handleNavigate}
+          onLogout={onLogout}
+          open={mobileSidebarOpen}
+          onClose={() => setMobileSidebarOpen(false)}
+        />
+
+        {/* Right Content Pane for Student Profile */}
+        <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
+          <StudentProfile
+            studentData={studentToDisplay}
+            onBack={() => handleNavigate('mentees')}
+            userRole="mentor"
+            onNavigate={handleNavigate}
+            onOpenSidebar={() => setMobileSidebarOpen(true)}
+          />
+        </div>
+      </div>
     );
   }
 
