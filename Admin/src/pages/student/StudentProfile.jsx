@@ -46,12 +46,228 @@ import {
   Info,
   UserCheck,
   CalendarClock,
-  UserX
+  UserX,
+  Menu,
+  Settings,
+  LogOut,
+  HelpCircle,
+  AlertTriangle,
 } from "lucide-react";
 import { initialStudentData } from "../../data/studentProfileData";
 import tuhinaAvatar from "../../assets/tuhina_avatar.jpg";
 import SubjectAttendanceOverview from "../../components/student/SubjectAttendanceOverview";
 import SubjectResultOverview from "../../components/student/SubjectResultOverview";
+import AdminProfile from "../../components/admin/AdminProfile";
+
+function MentorProfileHeaderWidget({ user, onNavigate, onLogout }) {
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(3);
+  const containerRef = useRef(null);
+
+  const currentUser = {
+    name: user?.name || "Kaushik Chatterjee",
+    firstName: user?.firstName || user?.name?.split(" ")[0] || "Kaushik",
+    role: user?.role || "Senior Mentor",
+    avatar: user?.avatar || "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=320&q=80",
+    initials: user?.initials || (user?.name ? user.name.charAt(0) : "K"),
+  };
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (containerRef.current && !containerRef.current.contains(e.target)) {
+        setProfileOpen(false);
+        setNotifOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const navigateTo = (tab) => {
+    setProfileOpen(false);
+    setNotifOpen(false);
+    if (onNavigate) onNavigate(tab);
+  };
+
+  return (
+    <div className="flex items-center gap-2 sm:gap-4 relative select-none shrink-0" ref={containerRef}>
+      {/* Notification Bell */}
+      <div className="relative">
+        <button
+          type="button"
+          onClick={() => {
+            setNotifOpen((prev) => !prev);
+            setProfileOpen(false);
+          }}
+          className="relative flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-xl text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-all cursor-pointer focus:outline-none"
+          title="Notifications"
+        >
+          <Bell size={18} />
+          {unreadCount > 0 && (
+            <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[10px] font-bold text-white shadow-sm animate-pulse">
+              {unreadCount}
+            </span>
+          )}
+        </button>
+
+        {/* Notifications Dropdown */}
+        {notifOpen && (
+          <div className="absolute right-0 top-full mt-2.5 w-72 sm:w-80 rounded-2xl border border-gray-100 bg-white p-3 shadow-2xl z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+            <div className="flex items-center justify-between border-b border-gray-100 pb-2.5 px-1">
+              <div className="flex items-center gap-2">
+                <h4 className="text-xs font-bold text-gray-800">Notifications</h4>
+                {unreadCount > 0 && (
+                  <span className="rounded-full bg-rose-100 px-2 py-0.5 text-[10px] font-bold text-rose-600">
+                    {unreadCount} New
+                  </span>
+                )}
+              </div>
+              <button
+                type="button"
+                onClick={() => setUnreadCount(0)}
+                className="text-[11px] font-semibold text-emerald-600 hover:underline cursor-pointer"
+              >
+                Mark all read
+              </button>
+            </div>
+
+            <div className="py-2 space-y-2 max-h-72 overflow-y-auto">
+              <div
+                className="flex items-start gap-3 p-2 rounded-xl hover:bg-gray-50 transition-colors cursor-pointer"
+                onClick={() => navigateTo("notices")}
+              >
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600">
+                  <Megaphone size={15} />
+                </div>
+                <div className="flex-1 overflow-hidden">
+                  <p className="text-xs font-bold text-gray-800 leading-tight">New Project Deadline Extended</p>
+                  <p className="text-[11px] text-gray-500 leading-tight mt-0.5 line-clamp-2">Final term project deadline is extended to Aug 15.</p>
+                  <p className="text-[10px] text-gray-400 font-medium mt-1">10 mins ago</p>
+                </div>
+              </div>
+
+              <div
+                className="flex items-start gap-3 p-2 rounded-xl hover:bg-gray-50 transition-colors cursor-pointer"
+                onClick={() => navigateTo("attendance")}
+              >
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-100 text-amber-600">
+                  <AlertTriangle size={15} />
+                </div>
+                <div className="flex-1 overflow-hidden">
+                  <p className="text-xs font-bold text-gray-800 leading-tight">Mentee Attendance Alert</p>
+                  <p className="text-[11px] text-gray-500 leading-tight mt-0.5 line-clamp-2">2 mentees are below 75% attendance threshold.</p>
+                  <p className="text-[10px] text-gray-400 font-medium mt-1">1 hour ago</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="border-t border-gray-100 pt-2 text-center">
+              <button
+                type="button"
+                onClick={() => navigateTo("notices")}
+                className="w-full py-1.5 text-xs font-semibold text-[#0da651] hover:bg-emerald-50 rounded-xl transition-colors cursor-pointer"
+              >
+                View All Notices
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Help Circle Button */}
+      <button
+        type="button"
+        onClick={() => navigateTo("support")}
+        className="hidden sm:flex h-9 w-9 items-center justify-center rounded-xl text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-all cursor-pointer focus:outline-none"
+        title="Support Center"
+      >
+        <HelpCircle size={18} />
+      </button>
+
+      {/* Divider */}
+      <div className="hidden sm:block h-5 w-[1px] bg-gray-200" />
+
+      {/* User Profile Block */}
+      <div className="relative">
+        <button
+          type="button"
+          onClick={() => {
+            setProfileOpen((prev) => !prev);
+            setNotifOpen(false);
+          }}
+          className="flex items-center gap-2.5 sm:gap-3 p-1 rounded-xl hover:bg-gray-100/70 transition-all cursor-pointer focus:outline-none group"
+        >
+          {/* Avatar on LEFT with online green dot */}
+          <div className="relative">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden bg-gradient-to-br from-purple-100 to-indigo-100 flex items-center justify-center border border-gray-200 shadow-sm">
+              {currentUser.avatar ? (
+                <img
+                  src={currentUser.avatar}
+                  alt={currentUser.name}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.target.style.display = "none";
+                    if (e.target.nextSibling) e.target.nextSibling.style.display = "flex";
+                  }}
+                />
+              ) : null}
+              <span className={`${currentUser.avatar ? "hidden " : ""}w-full h-full flex items-center justify-center text-xs font-bold text-[#7656f4]`}>
+                {currentUser.initials}
+              </span>
+            </div>
+            <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-white" />
+          </div>
+
+          {/* Name & Role Text on RIGHT */}
+          <div className="text-left leading-tight hidden sm:block">
+            <p className="text-sm font-semibold text-gray-900 group-hover:text-[#7656f4] transition-colors">
+              {currentUser.name}
+            </p>
+            <p className="text-xs text-gray-500 capitalize font-medium">{currentUser.role}</p>
+          </div>
+
+          {/* Chevron Icon */}
+          <ChevronDown
+            size={15}
+            className={`text-gray-500 transition-transform duration-200 ${
+              profileOpen ? "rotate-180 text-[#7656f4]" : "group-hover:text-gray-700"
+            }`}
+          />
+        </button>
+
+        {/* Profile Dropdown Menu */}
+        {profileOpen && (
+          <div className="absolute right-0 top-full mt-2.5 w-44 rounded-2xl border border-slate-200 bg-white p-1.5 shadow-xl z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+            <div className="space-y-0.5">
+              <button
+                type="button"
+                onClick={() => navigateTo("settings")}
+                className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-gray-700 rounded-xl hover:bg-purple-50 hover:text-[#7656f4] transition-colors cursor-pointer group"
+              >
+                <Settings size={15} className="text-gray-400 group-hover:text-[#7656f4]" />
+                <span>Settings</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setProfileOpen(false);
+                  if (onLogout) onLogout();
+                  else if (onNavigate) onNavigate("logout");
+                }}
+                className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-rose-600 rounded-xl hover:bg-rose-50 transition-colors cursor-pointer"
+              >
+                <LogOut size={15} className="text-rose-500" />
+                <span>Logout</span>
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
 
 function Barcode({ value, width = 1.25, height = 38, fontSize = 11, font = "Roboto, sans-serif" }) {
   const svgRef = useRef(null);
@@ -554,8 +770,12 @@ function DigitalStudentIDSection({ student, onBack, showToast }) {
 
 export default function StudentProfile({
   onBack,
+  onNavigate,
+  onOpenSidebar,
   studentData: propStudentData,
   userRole = "student",
+  user,
+  onLogout,
   defaultTab = "academic",
   hideHeader = false,
   showDigitalCard: propShowDigitalCard,
@@ -573,7 +793,6 @@ export default function StudentProfile({
     setInternalShowDigitalCard(val);
   };
 
-  const [searchQuery, setSearchQuery] = useState("");
   const [toastMessage, setToastMessage] = useState(null);
   const [showAttendanceInfo, setShowAttendanceInfo] = useState(false);
 
@@ -585,7 +804,7 @@ export default function StudentProfile({
   }
 
   return (
-    <div className="flex-1 h-full w-full min-h-0 bg-[#EEF2F6] text-slate-800 flex flex-col overflow-hidden font-['Roboto',sans-serif]">
+    <div className="flex-1 h-full w-full min-h-0 bg-gray-50/50 text-slate-800 flex flex-col overflow-hidden">
       {/* Toast Alert */}
       {toastMessage && (
         <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-emerald-600 text-white px-5 py-3.5 rounded-xl shadow-2xl animate-in fade-in slide-in-from-bottom-4 duration-200">
@@ -593,102 +812,94 @@ export default function StudentProfile({
           <span className="text-sm font-medium">{toastMessage}</span>
           <button
             onClick={() => setToastMessage(null)}
-            className="ml-2 text-emerald-200 hover:text-white"
+            className="ml-2 text-emerald-200 hover:text-white cursor-pointer"
           >
             <X size={16} />
           </button>
         </div>
       )}
 
-      {/* Top Header matching reference when not embedded */}
+      {/* Top Header matching original admin portal */}
       {!hideHeader && (
-        <header className="shrink-0 bg-white border-b border-slate-200/80 px-4 sm:px-6 py-2.5 shadow-[0_2px_10px_rgba(0,0,0,0.03)] flex items-center justify-between gap-4 z-20 font-['Roboto',sans-serif]">
-          {/* Left: Back Button & Title & Breadcrumbs */}
-          <div className="flex items-center gap-3.5 sm:gap-4">
+        <header className="h-[65px] bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-2xs z-20">
+          {/* Left: Mobile Sidebar Trigger + Back Button & Title & Breadcrumbs */}
+          <div className="flex items-center gap-3">
             <button
               type="button"
-              onClick={onBack}
-              className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-slate-600 hover:bg-blue-50 hover:text-blue-600 hover:scale-105 active:scale-95 transition-all shadow-2xs border border-slate-200 cursor-pointer"
-              title="Go Back"
+              onClick={() => {
+                if (onOpenSidebar) onOpenSidebar();
+                else window.dispatchEvent(new CustomEvent("toggle-mobile-sidebar"));
+              }}
+              className="h-10 w-10 rounded-xl bg-gray-100/80 hover:bg-gray-200 active:scale-95 flex items-center justify-center text-gray-700 lg:hidden cursor-pointer transition-all shrink-0"
+              aria-label="Open sidebar"
             >
-              <ArrowLeft size={16} className="stroke-[2.5]" />
+              <Menu size={20} />
             </button>
-            <div>
-              <h1 className="text-lg sm:text-xl font-bold tracking-tight text-slate-900 leading-tight">
+
+            <button
+              type="button"
+              onClick={() => {
+                if (isDigitalCard) {
+                  handleSetShowDigitalCard(false);
+                } else if (onBack) {
+                  onBack();
+                } else if (onNavigate) {
+                  onNavigate(userRole === "mentor" ? "mentees" : "students");
+                }
+              }}
+              className="h-9 w-9 rounded-xl bg-gray-100/80 hover:bg-gray-200 active:scale-95 flex items-center justify-center text-gray-700 cursor-pointer transition-all shrink-0"
+              title="Go Back"
+              aria-label="Go Back"
+            >
+              <ArrowLeft size={18} />
+            </button>
+
+            <div className="min-w-0">
+              <h1 className="text-xl font-bold text-gray-800 tracking-tight truncate">
                 {isDigitalCard ? "Digital Student ID" : "Student Profile"}
               </h1>
-              <nav className="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
-                <span className="hover:text-blue-600 cursor-pointer" onClick={onBack}>Home</span>
-                <span className="text-slate-400">&gt;</span>
+              <nav className="flex items-center gap-1.5 text-xs text-gray-400 mt-0.5">
                 <span
-                  className={`cursor-pointer ${isDigitalCard ? "text-blue-600 hover:underline font-semibold" : "text-blue-600 font-semibold"}`}
+                  className="hover:text-gray-600 cursor-pointer"
+                  onClick={() => {
+                    if (onBack) {
+                      onBack();
+                    } else if (onNavigate) {
+                      onNavigate(userRole === "mentor" ? "mentees" : "students");
+                    }
+                  }}
+                >
+                  {userRole === "mentor" ? "Mentee" : "Students"}
+                </span>
+                <span>&gt;</span>
+                <span
+                  className={`cursor-pointer ${
+                    isDigitalCard
+                      ? "hover:text-gray-600"
+                      : (userRole === "mentor" ? "text-[#7656f4] font-semibold" : "text-[#0da651] font-semibold")
+                  }`}
                   onClick={() => handleSetShowDigitalCard(false)}
                 >
-                  Profile
+                  {userRole === "mentor" ? "View Mentee" : "Student Profile"}
                 </span>
                 {isDigitalCard && (
                   <>
-                    <span className="text-slate-400">&gt;</span>
-                    <span className="text-slate-700 font-medium">Digital ID Card</span>
+                    <span>&gt;</span>
+                    <span className={userRole === "mentor" ? "text-[#7656f4] font-semibold" : "text-[#0da651] font-semibold"}>
+                      Digital ID Card
+                    </span>
                   </>
                 )}
               </nav>
             </div>
           </div>
 
-          {/* Right: Search, Notifications, and User Pill */}
-          <div className="flex items-center gap-3 sm:gap-4">
-            {/* Search Bar */}
-            <div className="relative hidden md:block w-60 lg:w-68">
-              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
-              <input
-                type="text"
-                placeholder="Search profile..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-4 py-1.5 text-xs sm:text-sm bg-slate-100/80 border border-slate-200 rounded-full focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all placeholder:text-slate-400"
-              />
-            </div>
-
-            {/* Notification Bell with Badge */}
-            <div className="relative">
-              <button
-                type="button"
-                className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 hover:bg-slate-200/80 text-slate-600 transition-colors relative"
-                title="Notifications"
-              >
-                <Bell size={16} />
-                <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[10px] font-bold text-white shadow-xs ring-2 ring-white">
-                  3
-                </span>
-              </button>
-            </div>
-
-            {/* User Badge / Profile */}
-            <div className="flex items-center gap-2.5 pl-2 border-l border-slate-200">
-              <img
-                src={student.avatar || "/tanuka_saha_avatar.png"}
-                alt={userRole === "admin" ? "Admin User" : student.name}
-                className="w-8 h-8 rounded-full object-cover ring-2 ring-blue-100 shadow-2xs"
-                onError={(e) => {
-                  e.target.style.display = 'none';
-                  if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
-                }}
-              />
-              <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white font-bold text-xs hidden items-center justify-center shadow-2xs">
-                {(student.name || "TS").slice(0, 2).toUpperCase()}
-              </div>
-              <div className="hidden sm:block text-left">
-                <p className="text-xs font-bold text-slate-800 leading-tight">
-                  {userRole === "admin" ? "Admin User" : student.name}
-                </p>
-                <p className="text-[11px] text-slate-400 font-medium">
-                  {userRole === "admin" ? "Super Admin" : "Student"}
-                </p>
-              </div>
-              <ChevronDown size={14} className="text-slate-400 hidden sm:block" />
-            </div>
-          </div>
+          {/* Right: If mentor, render MentorProfileHeaderWidget. If admin, render AdminProfile */}
+          {userRole === "mentor" ? (
+            <MentorProfileHeaderWidget user={user} onNavigate={onNavigate} onLogout={onLogout} />
+          ) : (
+            <AdminProfile name="Admin User" role="Super Admin" avatar="A" onNavigate={onNavigate} />
+          )}
         </header>
       )}
 

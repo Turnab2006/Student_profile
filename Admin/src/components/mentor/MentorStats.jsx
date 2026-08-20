@@ -1,64 +1,151 @@
-function MenteesIcon() {
-  return (
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="#6C4CF5" xmlns="http://www.w3.org/2000/svg">
-      <path d="M12 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zm0 2c-3.1 0-7 1.6-7 4.5V19h14v-1.5c0-2.9-3.9-4.5-7-4.5z" />
-      <path d="M5.5 10.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zm-1 2c-2.1 0-4.5 1.1-4.5 3V17h4v-1.5c0-.9.4-1.8 1.1-2.4-.2-.1-.4-.1-.6-.1z" />
-      <path d="M18.5 10.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zm1 2c.2 0 .4 0 .6.1.7.6 1.1 1.5 1.1 2.4V17h4v-1.5c0-1.9-2.4-3-4.5-3z" />
-    </svg>
-  );
-}
-
-function AttendanceIcon() {
-  return (
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="12" cy="12" r="10" fill="#22C55E" />
-      <path d="M8.5 12.5l2.2 2.2 4.8-4.8" stroke="#ffffff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-function ResultsIcon() {
-  return (
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M1 18l7.5-7.5 5 5L23 6v13H1V18z" fill="#F59E0B" opacity="0.35" />
-      <path d="M1 18l7.5-7.5 5 5L23 6" stroke="#F59E0B" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M16 6h7v7" stroke="#F59E0B" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-function CreditPointsIcon() {
-  return (
-    <svg width="26" height="26" viewBox="0 0 24 24" fill="#4F8DFD" xmlns="http://www.w3.org/2000/svg">
-      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-    </svg>
-  );
-}
+import { Users, CheckCircle2, TrendingUp, Star, CalendarCheck, ClipboardList } from "lucide-react";
 
 const iconMap = {
-  users: MenteesIcon,
-  check: AttendanceIcon,
-  trend: ResultsIcon,
-  star: CreditPointsIcon,
+  users: Users,
+  mentees: Users,
+  check: CheckCircle2,
+  attendance: CheckCircle2,
+  trend: TrendingUp,
+  results: TrendingUp,
+  star: Star,
+  credits: Star,
+  calendar: CalendarCheck,
+  clipboard: ClipboardList,
 };
 
-export default function MentorStats({ items }) {
+const defaultCardStyles = {
+  users: {
+    cardClass: "bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#7656f4]",
+    valueClass: "text-[#111827]",
+    iconWrap: "bg-[#F3EEFF] text-[#7656f4]",
+    note: "Total Mentees",
+    pageKey: "mentees",
+  },
+  mentees: {
+    cardClass: "bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#7656f4]",
+    valueClass: "text-[#111827]",
+    iconWrap: "bg-[#F3EEFF] text-[#7656f4]",
+    note: "Total Mentees",
+    pageKey: "mentees",
+  },
+  check: {
+    cardClass: "bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#22C55E]",
+    valueClass: "text-[#111827]",
+    iconWrap: "bg-[#EAFBF1] text-[#22C55E]",
+    note: "Attendance Rate",
+    pageKey: "attendance",
+  },
+  attendance: {
+    cardClass: "bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#22C55E]",
+    valueClass: "text-[#111827]",
+    iconWrap: "bg-[#EAFBF1] text-[#22C55E]",
+    note: "Attendance Rate",
+    pageKey: "attendance",
+  },
+  trend: {
+    cardClass: "bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#F59E0B]",
+    valueClass: "text-[#111827]",
+    iconWrap: "bg-[#FFF5E8] text-[#F59E0B]",
+    note: "Results Published",
+    pageKey: "results",
+  },
+  results: {
+    cardClass: "bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#F59E0B]",
+    valueClass: "text-[#111827]",
+    iconWrap: "bg-[#FFF5E8] text-[#F59E0B]",
+    note: "Results Published",
+    pageKey: "results",
+  },
+  star: {
+    cardClass: "bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#3B82F6]",
+    valueClass: "text-[#111827]",
+    iconWrap: "bg-[#EEF5FF] text-[#3B82F6]",
+    note: "Credit Points Issued",
+    pageKey: "credit-points",
+  },
+  credits: {
+    cardClass: "bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#3B82F6]",
+    valueClass: "text-[#111827]",
+    iconWrap: "bg-[#EEF5FF] text-[#3B82F6]",
+    note: "Credit Points Issued",
+    pageKey: "credit-points",
+  },
+};
+
+function renderStatIcon(keyType, Icon) {
+  if (keyType === "attendance" || keyType === "check") {
+    return <CheckCircle2 size={24} className="fill-[#22C55E] text-white" />;
+  }
+  if (keyType === "credits" || keyType === "star") {
+    return <Star size={22} className="fill-[#3B82F6] text-[#3B82F6]" />;
+  }
+  if (keyType === "results" || keyType === "trend") {
+    return <TrendingUp size={23} className="stroke-[2.5]" />;
+  }
+  if (typeof Icon === "function") {
+    return <Icon size={23} className="stroke-[2.2]" />;
+  }
+  return <Users size={23} className="stroke-[2.2]" />;
+}
+
+export default function MentorStats({ items = [], onNavigate }) {
   return (
-    <div className="mentor-stats-container">
+    <div className="grid gap-2.5 sm:grid-cols-2 xl:grid-cols-4">
       {items.map((item) => {
-        const Icon = iconMap[item.icon];
+        const keyType = item.key || item.icon;
+        const styleDefaults = defaultCardStyles[keyType] || {};
+
+        const Icon =
+          typeof item.icon === "function"
+            ? item.icon
+            : iconMap[item.icon] || Users;
+
+        const label = item.label || item.title;
+        const value = item.value;
+        const note = item.note || item.subtext || styleDefaults.note || "";
+        const cardClass =
+          item.cardClass ||
+          styleDefaults.cardClass ||
+          "bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#7656f4]";
+        const valueClass =
+          item.valueClass || styleDefaults.valueClass || "text-[#111827]";
+        const iconWrap =
+          item.iconWrap ||
+          styleDefaults.iconWrap ||
+          "bg-[#F3EEFF] text-[#7656f4]";
+        const pageKey =
+          item.pageKey || item.tab || styleDefaults.pageKey || item.key;
+
         return (
-          <section key={item.title} className={`mentor-stat-item accent-${item.accent}`}>
-            <div className="mentor-stat-icon-box">
-              <div className="mentor-stat-icon">
-                <Icon />
+          <div
+            key={label}
+            onClick={() => {
+              if (pageKey && onNavigate) onNavigate(pageKey);
+            }}
+            className={`rounded-2xl border px-4 py-4 sm:py-5 shadow-sm ${cardClass} cursor-pointer hover:shadow-md hover:scale-[1.01] transition-all`}
+          >
+            <div className="flex items-center gap-5">
+              <div
+                className={`flex h-11 w-11 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-2xl ${iconWrap}`}
+              >
+                {renderStatIcon(keyType, Icon)}
+              </div>
+
+              <div className="flex-1 min-w-0">
+                <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 truncate">
+                  {label}
+                </div>
+                <div
+                  className={`text-2xl sm:text-[28px] font-extrabold leading-none mt-1 mb-0.5 ${valueClass}`}
+                >
+                  {value}
+                </div>
+                <div className="text-xs text-slate-400 font-medium truncate">
+                  {note}
+                </div>
               </div>
             </div>
-            <div className="mentor-stat-copy">
-              <strong>{item.value}</strong>
-              <span>{item.title}</span>
-            </div>
-          </section>
+          </div>
         );
       })}
     </div>

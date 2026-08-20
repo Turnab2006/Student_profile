@@ -147,7 +147,7 @@ export default function AddSubject({ onNavigate, subjectsList = [], setSubjectsL
       {/* Main Content Area */}
       <main className="flex-1 overflow-y-auto p-6 space-y-6">
         {/* Banner Section */}
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#eaf8f1] via-[#edf9f3] to-[#e4f5ec] border border-[#d2f0e1] p-6 sm:p-7 shadow-sm">
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#eaf8f1] via-[#edf9f3] to-[#e4f5ec] border border-[#d2f0e1] p-6 sm:p-7 shadow-md shadow-emerald-600/10">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 relative z-10">
             <div className="flex items-start gap-4 max-w-xl">
               <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[#0da651] text-white shadow-lg shadow-emerald-600/20">
@@ -197,7 +197,7 @@ export default function AddSubject({ onNavigate, subjectsList = [], setSubjectsL
         </div>
 
         {/* Card 1: Select Program Details */}
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-5">
+        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-6 space-y-5">
           <div className="flex items-center gap-2.5 border-b border-gray-100 pb-3">
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700">
               <Mail size={15} />
@@ -311,7 +311,7 @@ export default function AddSubject({ onNavigate, subjectsList = [], setSubjectsL
         </div>
 
         {/* Card 2: Enter Subject Details */}
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-5">
+        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-6 space-y-5">
           <div className="flex items-center gap-2.5 border-b border-gray-100 pb-3">
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700">
               <Pencil size={15} />

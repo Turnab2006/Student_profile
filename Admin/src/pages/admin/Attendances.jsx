@@ -307,9 +307,9 @@ export default function Attendances({ onNavigate, onOpenSidebar }) {
         {/* Metric Cards Row */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* Card 1: Total Students */}
-          <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm space-y-4 hover:shadow-md transition-shadow">
+          <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 space-y-4 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-300/40 transition-all duration-200">
             <div className="flex items-center justify-between">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-50 text-[#0da651]">
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-50 text-[#0da651] border border-emerald-100/60 shadow-2xs">
                 <Users size={20} />
               </div>
               <div className="text-right">
@@ -331,9 +331,9 @@ export default function Attendances({ onNavigate, onOpenSidebar }) {
           </div>
 
           {/* Card 2: Average Attendance */}
-          <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm space-y-4 hover:shadow-md transition-shadow">
+          <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 space-y-4 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-300/40 transition-all duration-200">
             <div className="flex items-center justify-between">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 border border-blue-100/60 shadow-2xs">
                 <UserCheck size={20} />
               </div>
               <div className="text-right">
@@ -355,9 +355,9 @@ export default function Attendances({ onNavigate, onOpenSidebar }) {
           </div>
 
           {/* Card 3: At Risk Students */}
-          <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm space-y-4 hover:shadow-md transition-shadow">
+          <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 space-y-4 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-300/40 transition-all duration-200">
             <div className="flex items-center justify-between">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-50 text-amber-600">
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-50 text-amber-600 border border-amber-100/60 shadow-2xs">
                 <AlertCircle size={20} />
               </div>
               <div className="text-right">
@@ -379,9 +379,9 @@ export default function Attendances({ onNavigate, onOpenSidebar }) {
           </div>
 
           {/* Card 4: Highest Attendance */}
-          <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm space-y-4 hover:shadow-md transition-shadow">
+          <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 space-y-4 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-300/40 transition-all duration-200">
             <div className="flex items-center justify-between">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-purple-50 text-purple-600">
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-purple-50 text-purple-600 border border-purple-100/60 shadow-2xs">
                 <Calendar size={20} />
               </div>
               <div className="text-right">
@@ -404,7 +404,7 @@ export default function Attendances({ onNavigate, onOpenSidebar }) {
         </div>
 
         {/* Filter & Action Controls Bar */}
-        <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
+        <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 flex-1">
             {/* Search Box */}
             <div className="relative flex items-center md:col-span-1">
@@ -490,7 +490,7 @@ export default function Attendances({ onNavigate, onOpenSidebar }) {
         </div>
 
         {/* Student Attendance Table */}
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col">
+        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 overflow-hidden flex flex-col">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>

@@ -152,7 +152,6 @@ export default function Mentors({ onNavigate, onOpenSidebar }) {
           </div>
           <FilterDropdown value={deptFilter} onChange={setDeptFilter} options={[{ value: "all", label: "All Departments" }, { value: "EE", label: "EE" }, { value: "ECE", label: "ECE" }, { value: "CS", label: "CS" }, { value: "ME", label: "ME" }, { value: "CE", label: "CE" }]} />
           <FilterDropdown value={statusFilter} onChange={setStatusFilter} options={[{ value: "all", label: "All Status" }, { value: "Active", label: "Active" }, { value: "On Leave", label: "On Leave" }]} />
-          <FilterDropdown value={sortBy} onChange={setSortBy} options={[{ value: "name-asc", label: "Sort by: Name (A-Z)" }, { value: "name-desc", label: "Sort by: Name (Z-A)" }, { value: "students-desc", label: "Sort by: Students (High-Low)" }, { value: "students-asc", label: "Sort by: Students (Low-High)" }, { value: "dept-asc", label: "Sort by: Department (A-Z)" }, { value: "dept-desc", label: "Sort by: Department (Z-A)" }]} />
           <button
             onClick={() => onNavigate?.("add-mentor")}
             className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-green-600 transition-colors whitespace-nowrap"
@@ -165,19 +164,22 @@ export default function Mentors({ onNavigate, onOpenSidebar }) {
         {/* Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {stats.map((s) => (
-            <div key={s.label} className="bg-white rounded-xl p-4 flex items-center gap-3 border border-gray-100 shadow-sm">
-              <div className={`w-10 h-10 rounded-full ${s.bg} flex items-center justify-center shrink-0`}>{s.icon}</div>
-              <div>
+            <div
+              key={s.label}
+              className="bg-white rounded-2xl p-4 flex items-center gap-3.5 border border-slate-200/90 shadow-md shadow-slate-200/60 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-300/40 transition-all duration-200"
+            >
+              <div className={`w-11 h-11 rounded-xl ${s.bg} flex items-center justify-center shrink-0 border border-slate-100/80 shadow-2xs`}>{s.icon}</div>
+              <div className="overflow-hidden">
                 <p className="text-lg font-bold text-gray-800 leading-tight">{s.value}</p>
-                <p className="text-[11px] font-medium text-gray-600">{s.label}</p>
-                <p className="text-[10px] text-gray-400">{s.sub}</p>
+                <p className="text-[11px] font-semibold text-gray-600 truncate">{s.label}</p>
+                <p className="text-[10px] text-gray-400 truncate">{s.sub}</p>
               </div>
             </div>
           ))}
         </div>
 
         {/* Table */}
-        <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 overflow-hidden">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 px-4 sm:px-5 py-3 border-b border-gray-100">
             <p className="text-xs text-gray-500 shrink-0">Showing {visibleMentors.length} of {mentors.length} mentors</p>
             <div className="flex items-center gap-2 justify-between sm:justify-end w-full sm:w-auto">

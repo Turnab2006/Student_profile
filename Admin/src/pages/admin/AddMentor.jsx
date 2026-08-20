@@ -21,7 +21,7 @@ import {
   X,
   Plus,
   ShieldCheck,
-  Circle,
+  CircleUserRound,
   Menu,
 } from "lucide-react";
 import AdminProfile from "../../components/admin/AdminProfile";
@@ -38,50 +38,70 @@ const defaultStudents = [
 
 function Label({ children, required }) {
   return (
-    <label className="block text-xs font-bold text-gray-700 mb-1.5">
+    <label className="block text-xs font-semibold text-gray-600 mb-1">
       {children}
       {required && <span className="text-red-500 ml-0.5">*</span>}
     </label>
   );
 }
 
-function InputWithIcon({ icon: Icon, type = "text", placeholder, value, onChange }) {
+function TextField({ icon: Icon, type = "text", placeholder, value, onChange }) {
   return (
-    <div className="relative">
-      {Icon && <Icon size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />}
+    <div className="relative group">
+      {Icon && (
+        <Icon
+          size={16}
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-hover:text-[#0da651] transition-colors pointer-events-none"
+        />
+      )}
       <input
         type={type}
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        className={`w-full border border-gray-200 rounded-xl py-2.5 text-sm bg-white text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-400/30 focus:border-emerald-500 transition-all ${
-          Icon ? "pl-10 pr-3.5" : "px-3.5"
+        className={`w-full border border-emerald-200/80 bg-[#f4fbf7] hover:bg-[#ebf8f0]/70 hover:border-emerald-300 rounded-lg py-2 text-sm text-gray-800 placeholder:text-gray-400 focus:bg-white focus:outline-none focus:border-[#0da651] focus:ring-2 focus:ring-emerald-200 transition-all ${
+          Icon ? "pl-9 pr-3" : "px-3"
         }`}
       />
     </div>
   );
 }
 
-function SelectWithIcon({ icon: Icon, placeholder, options = [], value, onChange }) {
+function SelectField({ placeholder, options = [], value, onChange, icon: Icon }) {
   return (
-    <div className="relative">
-      {Icon && <Icon size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />}
+    <div className="relative group">
+      {Icon && (
+        <Icon
+          size={16}
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-hover:text-[#0da651] transition-colors pointer-events-none"
+        />
+      )}
       <select
         value={value}
         onChange={onChange}
-        className={`w-full border border-gray-200 rounded-xl py-2.5 text-sm bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-400/30 focus:border-emerald-500 transition-all appearance-none pr-8 ${
-          Icon ? "pl-10" : "px-3.5"
+        className={`w-full border border-emerald-200/80 bg-[#f4fbf7] hover:bg-[#ebf8f0]/70 hover:border-emerald-300 rounded-lg py-2 text-sm text-gray-800 focus:bg-white focus:outline-none focus:border-[#0da651] focus:ring-2 focus:ring-emerald-200 transition-all appearance-none cursor-pointer ${
+          Icon ? "pl-9 pr-8" : "px-3 pr-8"
         }`}
       >
         <option value="">{placeholder}</option>
-        {options.map((opt) => (
-          <option key={opt.value || opt} value={opt.value || opt}>
-            {opt.label || opt}
+        {options.map((option) => (
+          <option key={option} value={option}>
+            {option}
           </option>
         ))}
       </select>
-      <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400 text-xs">▼</div>
+      <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-emerald-600 text-xs">
+        ▼
+      </div>
     </div>
+  );
+}
+
+function NumberBadge({ value }) {
+  return (
+    <span className="w-6 h-6 rounded-full bg-primary text-white text-[11px] font-bold flex items-center justify-center shrink-0">
+      {value}
+    </span>
   );
 }
 
@@ -135,11 +155,25 @@ export default function AddMentor({ onNavigate, onOpenSidebar }) {
     }
   };
 
-  const fullMentorName = `${form.firstName || "Prof. Kawshik"} ${form.middleName ? form.middleName + " " : ""}${form.lastName || "Chattarji"}`;
+  const fullMentorName = [form.firstName, form.middleName, form.lastName].filter(Boolean).join(" ") || "Prof. Kawshik Chattarji";
+
+  const reviewMentorDetails = [
+    { label: "Full Name", value: fullMentorName, icon: User },
+    { label: "College Email", value: form.email || "kawshik.c@abc.edu.in", icon: Mail },
+    { label: "Contact Number", value: form.phone || "+91 98765 43210", icon: Phone },
+    { label: "Gender", value: form.gender || "Male", icon: User },
+    { label: "Employee ID", value: form.empId || "EMP2024001", icon: IdCard },
+    { label: "Department", value: form.department || "Computer Science & Engineering", icon: Building2 },
+    { label: "Designation / Role", value: form.designation || "Assistant Professor", icon: Briefcase },
+    { label: "Qualification", value: form.qualification || "M.Tech in Computer Science", icon: GraduationCap },
+    { label: "Experience", value: form.experience ? `${form.experience} Years` : "6 Years", icon: Clock },
+    { label: "Date of Joining", value: form.joiningDate || "15 Apr 2022", icon: CalendarDays },
+    { label: "Status", value: form.status || "Active", icon: CheckCircle2 },
+  ];
 
   return (
-    <div className="flex-1 h-full flex flex-col overflow-hidden bg-[#f8fafc]">
-      {/* Header */}
+    <div className="flex-1 h-full flex flex-col overflow-hidden bg-gray-50">
+      {/* Topbar */}
       <header className="h-[65px] bg-white border-b border-gray-100 px-6 flex items-center justify-between shrink-0 shadow-2xs">
         <div className="flex items-center gap-3">
           <button
@@ -165,345 +199,414 @@ export default function AddMentor({ onNavigate, onOpenSidebar }) {
         <AdminProfile name="Admin User" role="Super Admin" avatar="A" onNavigate={onNavigate} />
       </header>
 
-      {/* Stepper Header Bar for Steps 2 and 3 */}
-      {step > 1 && (
-        <div className="bg-white border-b border-gray-100 px-6 py-4 shrink-0 shadow-2xs">
-          <div className="max-w-[1200px] mx-auto flex items-center justify-between">
-            {/* Step 1 Indicator */}
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full bg-[#0da651] text-white flex items-center justify-center font-bold text-sm">
-                <Check size={16} strokeWidth={3} />
-              </div>
-              <div>
-                <p className="text-xs font-bold text-gray-800">Mentor Details</p>
-                <p className="text-[11px] text-[#0da651] font-semibold">Completed</p>
-              </div>
-            </div>
-
-            <div className="h-0.5 flex-1 mx-6 bg-emerald-200" />
-
-            {/* Step 2 Indicator */}
-            <div className="flex items-center gap-3">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
-                step === 2 ? "bg-[#0da651] text-white" : step > 2 ? "bg-[#0da651] text-white" : "bg-gray-100 text-gray-400"
-              }`}>
-                {step > 2 ? <Check size={16} strokeWidth={3} /> : "2"}
-              </div>
-              <div>
-                <p className="text-xs font-bold text-gray-800">Assign Mentees</p>
-                <p className={`text-[11px] font-semibold ${step === 2 ? "text-[#0da651]" : step > 2 ? "text-[#0da651]" : "text-gray-400"}`}>
-                  {step === 2 ? "In Progress" : step > 2 ? "Completed" : "Pending"}
-                </p>
-              </div>
-            </div>
-
-            <div className={`h-0.5 flex-1 mx-6 ${step === 3 ? "bg-emerald-200" : "bg-gray-200"}`} />
-
-            {/* Step 3 Indicator */}
-            <div className="flex items-center gap-3">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
-                step === 3 ? "bg-[#0da651] text-white" : "bg-gray-100 text-gray-400"
-              }`}>
-                3
-              </div>
-              <div>
-                <p className="text-xs font-bold text-gray-800">Review &amp; Submit</p>
-                <p className={`text-[11px] font-semibold ${step === 3 ? "text-[#0da651]" : "text-gray-400"}`}>
-                  {step === 3 ? "In Progress" : "Pending"}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Main Body */}
-      <main className="flex-1 overflow-y-auto p-5 sm:p-6">
-        <div className="max-w-[1500px] mx-auto">
-          {/* STEP 1: MENTOR DETAILS & CSV UPLOAD */}
+      <main className="flex-1 overflow-y-auto p-4 sm:p-6">
+        <div className="max-w-[1500px] mx-auto space-y-5">
+          {/* STEP 1: MENTOR DETAILS & REGISTRATION MODE */}
           {step === 1 && (
-            <div className="space-y-6">
-              {/* Mode Selector Cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <button
-                  type="button"
-                  onClick={() => setAddMode("manual")}
-                  className={`flex items-start gap-4 p-4 rounded-2xl border transition-all text-left cursor-pointer ${
-                    addMode === "manual"
-                      ? "border-emerald-300 bg-[#eaf8f1] shadow-2xs"
-                      : "border-gray-200 bg-white hover:bg-gray-50"
-                  }`}
-                >
-                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
-                    addMode === "manual" ? "bg-emerald-100 text-[#0da651]" : "bg-gray-100 text-gray-500"
-                  }`}>
-                    <User size={20} />
+            <>
+              {/* Header Banner */}
+              <section className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#0da651] via-[#0e9f4e] to-[#09803d] border border-emerald-600/30 px-4 py-3 sm:px-5 sm:py-3.5 shadow-sm">
+                <div className="relative z-10 flex items-center gap-3.5">
+                  <div className="w-9 h-9 rounded-xl bg-white/20 text-white flex items-center justify-center shrink-0 border border-white/25">
+                    <CircleUserRound size={18} />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-gray-800">Add Mentor Manually</h3>
-                    <p className="text-xs text-gray-500 mt-0.5">Fill in the mentor details</p>
-                  </div>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setAddMode("csv")}
-                  className={`flex items-start gap-4 p-4 rounded-2xl border transition-all text-left cursor-pointer ${
-                    addMode === "csv"
-                      ? "border-emerald-300 bg-[#eaf8f1] shadow-2xs"
-                      : "border-gray-200 bg-white hover:bg-gray-50"
-                  }`}
-                >
-                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
-                    addMode === "csv" ? "bg-emerald-100 text-[#0da651]" : "bg-gray-100 text-gray-500"
-                  }`}>
-                    <FileText size={20} />
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-bold text-gray-800">Bulk Add Mentors</h3>
-                    <p className="text-xs text-gray-500 mt-0.5">Upload CSV file to add multiple mentors</p>
-                  </div>
-                </button>
-              </div>
-
-              {/* Main Content Grid with OR divider */}
-              <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 sm:p-8 relative">
-                <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.25fr)_auto_minmax(0,0.85fr)] gap-8 items-start">
-                  
-                  {/* Left Form: Mentor Details */}
-                  <div className="space-y-4">
-                    <h2 className="text-base font-bold text-[#0da651] mb-5">Mentor Details</h2>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                      <div>
-                        <Label required>First Name</Label>
-                        <InputWithIcon icon={User} placeholder="Enter first name" value={form.firstName} onChange={update("firstName")} />
-                      </div>
-                      <div>
-                        <Label>Middle Name</Label>
-                        <InputWithIcon icon={User} placeholder="Enter middle name" value={form.middleName} onChange={update("middleName")} />
-                      </div>
-                      <div>
-                        <Label required>Last Name</Label>
-                        <InputWithIcon icon={User} placeholder="Enter last name" value={form.lastName} onChange={update("lastName")} />
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <Label required>College Email</Label>
-                        <InputWithIcon icon={Mail} type="email" placeholder="Enter college email address" value={form.email} onChange={update("email")} />
-                      </div>
-                      <div>
-                        <Label required>Contact Number</Label>
-                        <InputWithIcon icon={Phone} type="tel" placeholder="Enter contact number" value={form.phone} onChange={update("phone")} />
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                      <div>
-                        <Label required>Gender</Label>
-                        <SelectWithIcon
-                          placeholder="Select gender"
-                          options={["Male", "Female", "Other"]}
-                          value={form.gender}
-                          onChange={update("gender")}
-                        />
-                      </div>
-                      <div>
-                        <Label required>Employee ID</Label>
-                        <InputWithIcon icon={IdCard} placeholder="Enter employee ID" value={form.empId} onChange={update("empId")} />
-                      </div>
-                      <div>
-                        <Label required>Department</Label>
-                        <SelectWithIcon
-                          placeholder="Select department"
-                          options={["Computer Science & Engineering", "Electrical Engineering", "Electronics & Comm. Engg", "Mechanical Engineering", "Civil Engineering"]}
-                          value={form.department}
-                          onChange={update("department")}
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <Label required>Designation / Role</Label>
-                      <InputWithIcon icon={Briefcase} placeholder="Enter designation or role (e.g. Assistant Professor)" value={form.designation} onChange={update("designation")} />
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <Label required>Qualification</Label>
-                        <InputWithIcon icon={GraduationCap} placeholder="Enter highest qualification" value={form.qualification} onChange={update("qualification")} />
-                      </div>
-                      <div>
-                        <Label required>Experience (Years)</Label>
-                        <InputWithIcon icon={Clock} placeholder="Enter years of experience" value={form.experience} onChange={update("experience")} />
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <Label required>Date of Joining</Label>
-                        <InputWithIcon icon={CalendarDays} type="date" value={form.joiningDate} onChange={update("joiningDate")} />
-                      </div>
-                      <div>
-                        <Label required>Status</Label>
-                        <SelectWithIcon
-                          placeholder="Select status"
-                          options={["Active", "Inactive", "On Leave"]}
-                          value={form.status}
-                          onChange={update("status")}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="pt-2 text-xs text-gray-400 flex items-center gap-1.5">
-                      <span className="inline-flex items-center justify-center w-4 h-4 rounded-full border border-gray-300 text-[10px] font-bold text-gray-500">i</span>
-                      Fields marked with <span className="text-red-500 font-bold">*</span> are required
-                    </div>
-                  </div>
-
-                  {/* Divider Line with OR Badge */}
-                  <div className="hidden lg:flex flex-col items-center justify-center h-full min-h-[480px]">
-                    <div className="w-[1px] flex-1 border-l-2 border-dashed border-gray-200" />
-                    <span className="my-4 w-9 h-9 rounded-full bg-white border border-gray-200 text-gray-400 font-bold text-xs flex items-center justify-center shadow-2xs">
-                      OR
-                    </span>
-                    <div className="w-[1px] flex-1 border-l-2 border-dashed border-gray-200" />
-                  </div>
-
-                  {/* Right Column: Import Mentors via CSV */}
-                  <div className="space-y-5">
-                    <div>
-                      <h3 className="text-base font-bold text-[#0da651]">Import Mentors via CSV</h3>
-                      <p className="text-xs text-gray-400 mt-1">Upload a CSV file to add multiple mentors at once.</p>
-                    </div>
-
-                    <div
-                      onDragOver={(e) => {
-                        e.preventDefault();
-                        setDragOver(true);
-                      }}
-                      onDragLeave={() => setDragOver(false)}
-                      onDrop={(e) => {
-                        e.preventDefault();
-                        setDragOver(false);
-                      }}
-                      className={`rounded-2xl border-2 border-dashed p-8 flex flex-col items-center justify-center text-center transition-all ${
-                        dragOver ? "border-emerald-500 bg-emerald-50" : "border-gray-200 bg-gray-50/50"
-                      }`}
-                    >
-                      <div className="w-12 h-12 rounded-full bg-emerald-100/70 border border-emerald-200 flex items-center justify-center mb-4">
-                        <Upload size={22} className="text-[#0da651]" />
-                      </div>
-                      <p className="text-sm font-bold text-gray-700">Drag &amp; drop your CSV file here</p>
-                      <p className="text-xs text-gray-400 mt-1 mb-4">or</p>
-                      <label className="inline-flex items-center gap-2 rounded-xl bg-[#0da651] px-5 py-2.5 text-sm font-bold text-white shadow-2xs hover:bg-green-600 transition-colors cursor-pointer">
-                        <FileText size={16} />
-                        Choose File
-                        <input type="file" accept=".csv" className="hidden" />
-                      </label>
-                      <p className="text-[11px] text-gray-400 mt-4">Supports CSV files only. Max file size: 10MB</p>
-                    </div>
-
-                    {/* How it works */}
-                    <div className="rounded-2xl border border-emerald-100 bg-emerald-50/40 p-5 space-y-4">
-                      <div className="flex items-center gap-2 text-xs font-bold text-[#0da651]">
-                        <FileText size={15} />
-                        <span>How it works?</span>
-                      </div>
-                      <div className="space-y-3.5">
-                        <div className="flex items-start gap-3">
-                          <span className="w-5 h-5 rounded-full bg-white border border-emerald-300 text-[#0da651] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
-                            1
-                          </span>
-                          <div>
-                            <p className="text-xs font-bold text-gray-700">Download the CSV template</p>
-                            <p className="text-[11px] text-gray-400 mt-0.5">Use our template to ensure the correct format.</p>
-                            <button
-                              type="button"
-                              className="mt-2 inline-flex items-center gap-2 rounded-lg border border-emerald-300 bg-white px-3 py-1.5 text-xs font-semibold text-[#0da651] hover:bg-emerald-50 transition-colors cursor-pointer"
-                            >
-                              <Download size={13} />
-                              Download Template
-                            </button>
-                          </div>
-                        </div>
-
-                        <div className="flex items-start gap-3">
-                          <span className="w-5 h-5 rounded-full bg-white border border-emerald-300 text-[#0da651] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
-                            2
-                          </span>
-                          <div>
-                            <p className="text-xs font-bold text-gray-700">Fill in your mentor data</p>
-                            <p className="text-[11px] text-gray-400 mt-0.5">Add mentor details in the template file.</p>
-                          </div>
-                        </div>
-
-                        <div className="flex items-start gap-3">
-                          <span className="w-5 h-5 rounded-full bg-white border border-emerald-300 text-[#0da651] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
-                            3
-                          </span>
-                          <div>
-                            <p className="text-xs font-bold text-gray-700">Upload and import</p>
-                            <p className="text-[11px] text-gray-400 mt-0.5">Upload the file and we'll import the data for you.</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">
+                      Mentor Information
+                    </h2>
+                    <p className="text-xs text-emerald-50/90 font-normal mt-0.5">
+                      Enter mentor&apos;s personal, contact, and professional details
+                    </p>
                   </div>
                 </div>
-              </div>
+                <div className="absolute right-0 top-0 bottom-0 w-40 bg-gradient-to-l from-white/10 to-transparent pointer-events-none" />
+              </section>
 
-              {/* Bottom Action Footer */}
-              <div className="flex items-center justify-between pt-2">
-                <button
-                  type="button"
-                  onClick={() => onNavigate?.("mentors")}
-                  className="rounded-xl border border-gray-200 bg-gray-100 px-6 py-2.5 text-sm font-semibold text-gray-600 hover:bg-gray-200 transition-colors cursor-pointer"
-                >
-                  Cancel
-                </button>
+              {/* Registration Mode Selector Card */}
+              <section className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-4 sm:p-5">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div>
+                    <h3 className="text-sm font-bold text-gray-800 flex items-center gap-2">
+                      <Users size={16} className="text-[#0da651]" />
+                      How many mentors do you want to register?
+                    </h3>
+                    <p className="text-xs text-gray-400 mt-0.5">
+                      Choose single mentor to fill details manually, or multiple mentors to import via CSV
+                    </p>
+                  </div>
 
-                <button
-                  type="button"
-                  onClick={() => setStep(2)}
-                  className="inline-flex items-center gap-2 rounded-xl bg-[#0da651] px-6 py-2.5 text-sm font-bold text-white shadow-2xs hover:bg-green-600 transition-all cursor-pointer active:scale-98"
-                >
-                  Next
-                  <ArrowRight size={16} />
-                </button>
-              </div>
-            </div>
+                  {/* Toggle Buttons */}
+                  <div className="flex items-center p-1 bg-slate-100/90 rounded-xl border border-slate-200/60 shrink-0">
+                    <button
+                      type="button"
+                      onClick={() => setAddMode("manual")}
+                      className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+                        addMode === "manual"
+                          ? "bg-primary text-white shadow-sm"
+                          : "text-gray-600 hover:text-gray-900"
+                      }`}
+                    >
+                      <User size={15} />
+                      Single Mentor
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setAddMode("csv")}
+                      className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+                        addMode === "csv"
+                          ? "bg-primary text-white shadow-sm"
+                          : "text-gray-600 hover:text-gray-900"
+                      }`}
+                    >
+                      <Users size={15} />
+                      Multiple Mentors
+                    </button>
+                  </div>
+                </div>
+              </section>
+
+              {/* Conditional Rendering based on Registration Mode */}
+              {addMode === "manual" ? (
+                <div className="space-y-5">
+                  <section className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-5 sm:p-7 space-y-6">
+                    <div className="flex items-start gap-3.5 pb-4 border-b border-gray-100">
+                      <NumberBadge value={1} />
+                      <div>
+                        <h2 className="text-base font-bold text-gray-800">Add Mentor Details</h2>
+                        <p className="text-xs text-gray-400 mt-0.5">Fill in the mentor&apos;s personal and professional information below</p>
+                      </div>
+                    </div>
+
+                    {/* Personal Information Section */}
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-2.5 pb-2.5 border-b border-emerald-100/80">
+                        <div className="w-7 h-7 rounded-lg bg-emerald-50 text-[#0da651] flex items-center justify-center shrink-0">
+                          <User size={15} />
+                        </div>
+                        <div>
+                          <h3 className="text-sm font-bold text-gray-800">Personal Information</h3>
+                          <p className="text-[11px] text-gray-400">Basic personal details and identification info</p>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                          <Label required>First Name</Label>
+                          <TextField icon={User} placeholder="Enter first name" value={form.firstName} onChange={update("firstName")} />
+                        </div>
+                        <div>
+                          <Label>Middle Name</Label>
+                          <TextField placeholder="Enter middle name" value={form.middleName} onChange={update("middleName")} />
+                        </div>
+                        <div>
+                          <Label required>Last Name</Label>
+                          <TextField icon={User} placeholder="Enter last name" value={form.lastName} onChange={update("lastName")} />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                          <Label required>College Email</Label>
+                          <TextField icon={Mail} placeholder="name@college.edu.in" type="email" value={form.email} onChange={update("email")} />
+                        </div>
+                        <div>
+                          <Label required>Contact Number</Label>
+                          <TextField icon={Phone} placeholder="+91 98765 43210" value={form.phone} onChange={update("phone")} />
+                        </div>
+                        <div>
+                          <Label required>Gender</Label>
+                          <SelectField placeholder="Select gender" options={["Male", "Female", "Other"]} value={form.gender} onChange={update("gender")} />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <Label required>Employee ID</Label>
+                          <TextField icon={IdCard} placeholder="e.g. EMP2024001" value={form.empId} onChange={update("empId")} />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Separator between sections */}
+                    <div className="my-8 border-t border-slate-100" />
+
+                    {/* Professional Details Section */}
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-2.5 pb-2.5 border-b border-emerald-100/80">
+                        <div className="w-7 h-7 rounded-lg bg-emerald-50 text-[#0da651] flex items-center justify-center shrink-0">
+                          <Briefcase size={15} />
+                        </div>
+                        <div>
+                          <h3 className="text-sm font-bold text-gray-800">Professional &amp; Department Details</h3>
+                          <p className="text-[11px] text-gray-400">Department, designation, qualification, and service record</p>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <Label required>Department</Label>
+                          <SelectField
+                            placeholder="Select department"
+                            options={["Computer Science & Engineering", "Electrical Engineering", "Electronics & Comm. Engg", "Mechanical Engineering", "Civil Engineering"]}
+                            value={form.department}
+                            onChange={update("department")}
+                          />
+                        </div>
+                        <div>
+                          <Label required>Designation / Role</Label>
+                          <TextField icon={Briefcase} placeholder="e.g. Assistant Professor" value={form.designation} onChange={update("designation")} />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <Label required>Qualification</Label>
+                          <TextField icon={GraduationCap} placeholder="e.g. M.Tech in Computer Science" value={form.qualification} onChange={update("qualification")} />
+                        </div>
+                        <div>
+                          <Label required>Experience (Years)</Label>
+                          <TextField icon={Clock} placeholder="e.g. 6" value={form.experience} onChange={update("experience")} />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <Label required>Date of Joining</Label>
+                          <div className="relative group">
+                            <input
+                              type="date"
+                              value={form.joiningDate}
+                              onChange={update("joiningDate")}
+                              className="w-full border border-emerald-200/80 bg-[#f4fbf7] hover:bg-[#ebf8f0]/70 hover:border-emerald-300 rounded-lg px-3 py-2 text-sm text-gray-800 focus:bg-white focus:outline-none focus:border-[#0da651] focus:ring-2 focus:ring-emerald-200 transition-all cursor-pointer"
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          <Label required>Status</Label>
+                          <SelectField
+                            placeholder="Select status"
+                            options={["Active", "Inactive", "On Leave"]}
+                            value={form.status}
+                            onChange={update("status")}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-6 pt-3 border-t border-gray-100 text-xs text-gray-400">
+                      Fields marked with <span className="text-red-500 font-semibold">*</span> are required
+                    </div>
+                  </section>
+
+                  {/* Bottom Action Buttons */}
+                  <section className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-4 sm:px-5 sm:py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <button
+                      type="button"
+                      onClick={() => onNavigate?.("mentors")}
+                      className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-5 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors cursor-pointer w-full sm:w-auto"
+                    >
+                      Cancel
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setStep(2)}
+                      className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-6 py-2.5 text-sm font-medium text-white hover:bg-green-600 transition-colors whitespace-nowrap cursor-pointer shadow-sm w-full sm:w-auto"
+                    >
+                      Continue
+                      <ArrowRight size={15} />
+                    </button>
+                  </section>
+                </div>
+              ) : (
+                /* Multiple Mentors (Bulk CSV Import) View */
+                <div className="space-y-5">
+                  <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,0.9fr)] gap-5 items-stretch">
+                    {/* Left Dropzone Card */}
+                    <section className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-6 sm:p-8 flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-center gap-3 mb-6 pb-3 border-b border-gray-100">
+                          <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-100 text-[#0da651] flex items-center justify-center shrink-0">
+                            <Upload size={20} className="stroke-[2.2]" />
+                          </div>
+                          <div>
+                            <h2 className="text-base font-bold text-gray-800">Bulk Import via CSV</h2>
+                            <p className="text-xs text-gray-400 mt-0.5">Upload a CSV spreadsheet with mentor records</p>
+                          </div>
+                        </div>
+
+                        <div
+                          onDragOver={(e) => {
+                            e.preventDefault();
+                            setDragOver(true);
+                          }}
+                          onDragLeave={() => setDragOver(false)}
+                          onDrop={(e) => {
+                            e.preventDefault();
+                            setDragOver(false);
+                          }}
+                          className={`rounded-2xl border-2 border-dashed p-8 sm:p-10 flex flex-col items-center justify-center text-center transition-all ${
+                            dragOver ? "border-[#0da651] bg-emerald-50/60 scale-[1.01]" : "border-emerald-200/80 bg-[#f4fbf7]/70 hover:bg-[#ebf8f0] hover:border-emerald-300"
+                          }`}
+                        >
+                          <div className="w-16 h-16 rounded-2xl bg-emerald-50 border border-emerald-100 text-[#0da651] flex items-center justify-center mb-4 shadow-xs">
+                            <Upload size={28} className="stroke-[2.2]" />
+                          </div>
+                          <p className="text-base font-bold text-gray-800">Drag &amp; drop your CSV file here</p>
+                          <p className="text-xs text-gray-400 mt-1 mb-4">Supports CSV files up to 10MB</p>
+                          <label className="inline-flex items-center gap-2 rounded-xl bg-primary hover:bg-green-600 active:scale-[0.98] px-6 py-2.5 text-sm font-semibold text-white shadow-sm shadow-emerald-600/20 transition-all cursor-pointer">
+                            <FileText size={16} />
+                            Browse CSV File
+                            <input type="file" accept=".csv" className="hidden" />
+                          </label>
+                        </div>
+                      </div>
+
+                      <div className="mt-6 rounded-2xl border border-emerald-200/80 bg-gradient-to-r from-emerald-50/80 via-[#f4fbf7] to-emerald-50/50 p-4 flex items-start gap-3.5 shadow-2xs">
+                        <div className="w-9 h-9 rounded-xl bg-white border border-emerald-200 text-[#0da651] flex items-center justify-center shrink-0 shadow-2xs">
+                          <ShieldCheck size={18} />
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-emerald-950">Secure &amp; Encrypted Upload</p>
+                          <p className="text-[11px] text-emerald-800/80 mt-0.5 leading-relaxed">
+                            Your uploaded records are securely validated and imported into the institution database.
+                          </p>
+                        </div>
+                      </div>
+                    </section>
+
+                    {/* Right Guide Card */}
+                    <section className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-6 sm:p-8 flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-center gap-3 mb-6 pb-3 border-b border-gray-100">
+                          <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-100 text-[#0da651] flex items-center justify-center shrink-0">
+                            <FileText size={20} className="stroke-[2.2]" />
+                          </div>
+                          <div>
+                            <h2 className="text-base font-bold text-gray-800">CSV Template &amp; Guidelines</h2>
+                            <p className="text-xs text-gray-400 mt-0.5">Follow instructions to format your mentor data</p>
+                          </div>
+                        </div>
+
+                        <div className="rounded-2xl border border-emerald-100 bg-gradient-to-br from-emerald-50/60 via-[#f4fbf7] to-emerald-50/30 p-5 space-y-4">
+                          <p className="text-xs font-bold text-[#0da651] flex items-center gap-1.5">How it works?</p>
+                          <div className="space-y-4">
+                            <div className="flex items-start gap-3.5">
+                              <span className="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+                                1
+                              </span>
+                              <div>
+                                <p className="text-xs font-bold text-gray-800">Download the Official Template</p>
+                                <p className="text-[11px] text-gray-500 mt-0.5">Pre-configured with all required columns and headers.</p>
+                                <button
+                                  type="button"
+                                  className="mt-2.5 inline-flex items-center gap-1.5 rounded-lg border border-emerald-200/90 bg-white px-3.5 py-1.5 text-xs font-semibold text-[#0da651] hover:bg-emerald-50 hover:border-emerald-300 shadow-2xs transition-all cursor-pointer"
+                                >
+                                  <Download size={13} />
+                                  Download CSV Template
+                                </button>
+                              </div>
+                            </div>
+
+                            <div className="flex items-start gap-3.5">
+                              <span className="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+                                2
+                              </span>
+                              <div>
+                                <p className="text-xs font-bold text-gray-800">Fill in Mentor Information</p>
+                                <p className="text-[11px] text-gray-500 mt-0.5">Add names, emails, employee IDs, departments, and roles.</p>
+                              </div>
+                            </div>
+
+                            <div className="flex items-start gap-3.5">
+                              <span className="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+                                3
+                              </span>
+                              <div>
+                                <p className="text-xs font-bold text-gray-800">Upload and Process</p>
+                                <p className="text-[11px] text-gray-500 mt-0.5">Our system will validate headers and import all mentors at once.</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+
+                  {/* Bottom Action Bar for Bulk Upload */}
+                  <section className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-4 sm:px-5 sm:py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <button
+                      type="button"
+                      onClick={() => onNavigate?.("mentors")}
+                      className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-5 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors cursor-pointer w-full sm:w-auto"
+                    >
+                      Cancel
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => onNavigate?.("mentors")}
+                      className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary hover:bg-green-600 px-6 py-2.5 text-sm font-medium text-white transition-colors whitespace-nowrap cursor-pointer shadow-sm shadow-emerald-600/20 w-full sm:w-auto"
+                    >
+                      Add Mentors
+                      <ArrowRight size={15} />
+                    </button>
+                  </section>
+                </div>
+              )}
+            </>
           )}
 
           {/* STEP 2: ASSIGN MENTEES */}
           {step === 2 && (
-            <div className="space-y-6">
-              <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 sm:p-8 space-y-6">
-                <div>
-                  <h2 className="text-lg font-bold text-gray-800">Assign Mentees</h2>
-                  <p className="text-xs text-gray-400 mt-0.5">Search and select students to assign under this mentor.</p>
+            <div className="space-y-5">
+              {/* Header Banner */}
+              <section className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#0da651] via-[#0e9f4e] to-[#09803d] border border-emerald-600/30 px-4 py-3 sm:px-5 sm:py-3.5 shadow-sm">
+                <div className="relative z-10 flex items-center gap-3.5">
+                  <div className="w-9 h-9 rounded-xl bg-white/20 text-white flex items-center justify-center shrink-0 border border-white/25">
+                    <Users size={18} />
+                  </div>
+                  <div>
+                    <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">
+                      Assign Mentees
+                    </h2>
+                    <p className="text-xs text-emerald-50/90 font-normal mt-0.5">
+                      Select students to assign under {fullMentorName}
+                    </p>
+                  </div>
+                </div>
+                <div className="absolute right-0 top-0 bottom-0 w-40 bg-gradient-to-l from-white/10 to-transparent pointer-events-none" />
+              </section>
+
+              {/* Main Assign Mentees Card */}
+              <section className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-5 sm:p-6 space-y-6">
+                <div className="flex items-start gap-3 pb-4 border-b border-gray-100">
+                  <NumberBadge value={2} />
+                  <div>
+                    <h2 className="text-base font-bold text-gray-800">Select Students</h2>
+                    <p className="text-xs text-gray-400 mt-0.5">Search and assign mentees from the available student records</p>
+                  </div>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.2fr)_auto_minmax(0,1fr)] gap-6 items-start">
                   {/* Left Column: Available Students */}
-                  <div className="border border-gray-100 rounded-2xl p-4 bg-white space-y-4">
+                  <div className="border border-emerald-100 rounded-2xl p-4 bg-[#f4fbf7]/40 space-y-4">
                     <div className="flex items-center gap-3">
                       <div className="relative flex-1">
                         <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
                         <input
                           type="text"
-                          placeholder="Search by roll number or email address..."
+                          placeholder="Search by name, roll number, email..."
                           value={searchQuery}
                           onChange={(e) => setSearchQuery(e.target.value)}
-                          className="w-full border border-gray-200 rounded-xl pl-9 pr-3.5 py-2 text-xs text-gray-800 bg-gray-50/50 focus:outline-none focus:ring-2 focus:ring-emerald-400/30"
+                          className="w-full border border-emerald-200/80 rounded-xl pl-9 pr-3.5 py-2 text-xs text-gray-800 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-200"
                         />
                       </div>
                       <select
                         value={programFilter}
                         onChange={(e) => setProgramFilter(e.target.value)}
-                        className="border border-emerald-200 rounded-xl px-3 py-2 text-xs font-bold text-[#0da651] bg-emerald-50/50 focus:outline-none"
+                        className="border border-emerald-200/80 rounded-xl px-3 py-2 text-xs font-bold text-[#0da651] bg-white focus:outline-none cursor-pointer"
                       >
                         <option value="All Programs">All Programs</option>
                         <option value="B.Tech">B.Tech</option>
@@ -526,7 +629,7 @@ export default function AddMentor({ onNavigate, onOpenSidebar }) {
                             key={st.id}
                             onClick={() => toggleStudentSelect(st.id)}
                             className={`flex items-center justify-between p-3 rounded-xl border transition-all cursor-pointer ${
-                              isSelected ? "border-emerald-300 bg-emerald-50/40" : "border-gray-100 hover:bg-gray-50"
+                              isSelected ? "border-emerald-300 bg-emerald-50/70" : "border-gray-200/80 bg-white hover:bg-emerald-50/30"
                             }`}
                           >
                             <div className="flex items-center gap-3 min-w-0">
@@ -572,23 +675,14 @@ export default function AddMentor({ onNavigate, onOpenSidebar }) {
 
                   {/* Transfer Arrows */}
                   <div className="hidden lg:flex flex-col gap-2 justify-center my-auto pt-16">
-                    <button
-                      type="button"
-                      className="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-200 text-[#0da651] flex items-center justify-center hover:bg-emerald-100 transition-colors"
-                    >
+                    <div className="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-200 text-[#0da651] flex items-center justify-center">
                       <ArrowRight size={18} />
-                    </button>
-                    <button
-                      type="button"
-                      className="w-9 h-9 rounded-xl bg-gray-100 border border-gray-200 text-gray-500 flex items-center justify-center hover:bg-gray-200 transition-colors"
-                    >
-                      <ArrowLeft size={18} />
-                    </button>
+                    </div>
                   </div>
 
                   {/* Right Column: Selected Mentees */}
                   <div className="space-y-4">
-                    <div className="border border-gray-100 rounded-2xl p-4 bg-white space-y-4">
+                    <div className="border border-emerald-100 rounded-2xl p-4 bg-white space-y-4">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <h3 className="text-xs font-bold text-gray-800">Selected Mentees</h3>
@@ -596,23 +690,25 @@ export default function AddMentor({ onNavigate, onOpenSidebar }) {
                             {selectedMentees.length}
                           </span>
                         </div>
-                        <button
-                          type="button"
-                          onClick={() => setSelectedStudentIds([])}
-                          className="text-xs font-bold text-red-500 hover:text-red-600 transition-colors"
-                        >
-                          Clear All
-                        </button>
+                        {selectedMentees.length > 0 && (
+                          <button
+                            type="button"
+                            onClick={() => setSelectedStudentIds([])}
+                            className="text-xs font-bold text-red-500 hover:text-red-600 transition-colors cursor-pointer"
+                          >
+                            Clear All
+                          </button>
+                        )}
                       </div>
 
-                      <div className="space-y-2 max-h-[280px] overflow-y-auto pr-1">
+                      <div className="space-y-2 max-h-[300px] overflow-y-auto pr-1">
                         {selectedMentees.length === 0 ? (
-                          <div className="p-8 text-center text-xs text-gray-400 border border-dashed rounded-xl">
+                          <div className="p-8 text-center text-xs text-gray-400 border border-dashed border-emerald-200 rounded-xl bg-[#f4fbf7]/40">
                             No mentees selected yet. Click + Add on available students.
                           </div>
                         ) : (
                           selectedMentees.map((st) => (
-                            <div key={st.id} className="flex items-center justify-between p-3 rounded-xl border border-gray-100 bg-gray-50/50">
+                            <div key={st.id} className="flex items-center justify-between p-3 rounded-xl border border-emerald-100 bg-[#f4fbf7]/50">
                               <div className="flex items-center gap-3 min-w-0">
                                 <div className={`w-8 h-8 rounded-full ${st.bg} text-xs font-bold flex items-center justify-center shrink-0`}>
                                   {st.initials}
@@ -630,7 +726,7 @@ export default function AddMentor({ onNavigate, onOpenSidebar }) {
                                 <button
                                   type="button"
                                   onClick={() => toggleStudentSelect(st.id)}
-                                  className="text-gray-400 hover:text-red-500 p-1 transition-colors"
+                                  className="text-gray-400 hover:text-red-500 p-1 transition-colors cursor-pointer"
                                 >
                                   <X size={16} />
                                 </button>
@@ -642,375 +738,209 @@ export default function AddMentor({ onNavigate, onOpenSidebar }) {
                     </div>
 
                     {/* Bottom Info Box */}
-                    <div className="rounded-2xl border border-emerald-100 bg-emerald-50/40 p-4 flex items-start gap-3">
-                      <div className="w-8 h-8 rounded-full bg-emerald-100 text-[#0da651] flex items-center justify-center shrink-0 mt-0.5">
+                    <div className="rounded-2xl border border-emerald-200/80 bg-gradient-to-r from-emerald-50/80 via-[#f4fbf7] to-emerald-50/50 p-4 flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-full bg-white border border-emerald-200 text-[#0da651] flex items-center justify-center shrink-0 mt-0.5">
                         <Users size={16} />
                       </div>
                       <div>
-                        <h4 className="text-xs font-bold text-gray-800">Assign Multiple Mentees</h4>
-                        <p className="text-[11px] text-gray-500 mt-0.5">
-                          You can assign multiple students to this mentor. Use search to find students quickly.
+                        <h4 className="text-xs font-bold text-emerald-950">Assign Multiple Mentees</h4>
+                        <p className="text-[11px] text-emerald-800/80 mt-0.5">
+                          You can assign multiple students to this mentor. Use the search box to find students quickly.
                         </p>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </section>
 
               {/* Bottom Action Footer */}
-              <div className="flex items-center justify-between pt-2">
+              <section className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-4 sm:px-5 sm:py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <button
                   type="button"
                   onClick={() => setStep(1)}
-                  className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-5 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer"
+                  className="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors w-full sm:w-auto cursor-pointer"
                 >
-                  <ArrowLeft size={16} />
+                  <ArrowLeft size={15} />
                   Previous
                 </button>
 
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-end">
                   <button
                     type="button"
                     onClick={() => onNavigate?.("mentors")}
-                    className="rounded-xl border border-gray-200 bg-gray-100 px-6 py-2.5 text-sm font-semibold text-gray-600 hover:bg-gray-200 transition-colors cursor-pointer"
+                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors cursor-pointer"
                   >
                     Cancel
                   </button>
-
                   <button
                     type="button"
                     onClick={() => setStep(3)}
-                    className="inline-flex items-center gap-2 rounded-xl bg-[#0da651] px-6 py-2.5 text-sm font-bold text-white shadow-2xs hover:bg-green-600 transition-all cursor-pointer active:scale-98"
+                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-6 py-2.5 text-sm font-medium text-white hover:bg-green-600 transition-colors whitespace-nowrap cursor-pointer shadow-sm"
                   >
-                    Next
-                    <ArrowRight size={16} />
+                    Continue
+                    <ArrowRight size={15} />
                   </button>
                 </div>
-              </div>
+              </section>
             </div>
           )}
 
           {/* STEP 3: REVIEW & SUBMIT */}
           {step === 3 && (
-            <div className="space-y-6">
-              <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1.75fr)_minmax(300px,0.9fr)] gap-6 items-start">
-                {/* Left Review Cards */}
-                <div className="space-y-6">
-                  {/* Review Mentor Details Card */}
-                  <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 space-y-5">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h2 className="text-base font-bold text-gray-800">Review Mentor Details</h2>
-                        <p className="text-xs text-gray-400 mt-0.5">Please review all the information before submitting.</p>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => setStep(1)}
-                        className="inline-flex items-center gap-1.5 rounded-xl border border-emerald-300 bg-emerald-50/50 px-4 py-1.5 text-xs font-bold text-[#0da651] hover:bg-emerald-100 transition-colors cursor-pointer"
-                      >
-                        Edit
-                      </button>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                      <div className="min-w-0 flex items-start gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-emerald-50 text-[#0da651] flex items-center justify-center shrink-0">
-                          <User size={16} />
-                        </div>
-                        <div className="min-w-0">
-                          <p className="text-[10px] font-bold text-gray-400 uppercase">Full Name</p>
-                          <p className="text-xs font-bold text-gray-800 truncate">{fullMentorName}</p>
-                        </div>
-                      </div>
-
-                      <div className="min-w-0 flex items-start gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-emerald-50 text-[#0da651] flex items-center justify-center shrink-0">
-                          <IdCard size={16} />
-                        </div>
-                        <div className="min-w-0">
-                          <p className="text-[10px] font-bold text-gray-400 uppercase">Employee ID</p>
-                          <p className="text-xs font-bold text-gray-800 truncate">{form.empId || "EMP2024001"}</p>
-                        </div>
-                      </div>
-
-                      <div className="min-w-0 flex items-start gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-emerald-50 text-[#0da651] flex items-center justify-center shrink-0">
-                          <Building2 size={16} />
-                        </div>
-                        <div className="min-w-0">
-                          <p className="text-[10px] font-bold text-gray-400 uppercase">Department</p>
-                          <p className="text-xs font-bold text-gray-800 truncate">{form.department || "Computer Science & Engineering"}</p>
-                        </div>
-                      </div>
-
-                      <div className="min-w-0 flex items-start gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-emerald-50 text-[#0da651] flex items-center justify-center shrink-0">
-                          <Mail size={16} />
-                        </div>
-                        <div className="min-w-0">
-                          <p className="text-[10px] font-bold text-gray-400 uppercase">College Email</p>
-                          <p className="text-xs font-bold text-gray-800 truncate">{form.email || "kawshik.c@abc.edu.in"}</p>
-                        </div>
-                      </div>
-
-                      <div className="min-w-0 flex items-start gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-emerald-50 text-[#0da651] flex items-center justify-center shrink-0">
-                          <Phone size={16} />
-                        </div>
-                        <div className="min-w-0">
-                          <p className="text-[10px] font-bold text-gray-400 uppercase">Contact Number</p>
-                          <p className="text-xs font-bold text-gray-800 truncate">{form.phone || "+91 98765 43210"}</p>
-                        </div>
-                      </div>
-
-                      <div className="min-w-0 flex items-start gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-emerald-50 text-[#0da651] flex items-center justify-center shrink-0">
-                          <User size={16} />
-                        </div>
-                        <div className="min-w-0">
-                          <p className="text-[10px] font-bold text-gray-400 uppercase">Gender</p>
-                          <p className="text-xs font-bold text-gray-800 truncate">{form.gender || "Male"}</p>
-                        </div>
-                      </div>
-
-                      <div className="min-w-0 flex items-start gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-emerald-50 text-[#0da651] flex items-center justify-center shrink-0">
-                          <Briefcase size={16} />
-                        </div>
-                        <div className="min-w-0">
-                          <p className="text-[10px] font-bold text-gray-400 uppercase">Designation / Role</p>
-                          <p className="text-xs font-bold text-gray-800 truncate">{form.designation || "Assistant Professor"}</p>
-                        </div>
-                      </div>
-
-                      <div className="min-w-0 flex items-start gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-emerald-50 text-[#0da651] flex items-center justify-center shrink-0">
-                          <GraduationCap size={16} />
-                        </div>
-                        <div className="min-w-0">
-                          <p className="text-[10px] font-bold text-gray-400 uppercase">Qualification</p>
-                          <p className="text-xs font-bold text-gray-800 truncate">{form.qualification || "M.Tech in Computer Science"}</p>
-                        </div>
-                      </div>
-
-                      <div className="min-w-0 flex items-start gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-emerald-50 text-[#0da651] flex items-center justify-center shrink-0">
-                          <Clock size={16} />
-                        </div>
-                        <div className="min-w-0">
-                          <p className="text-[10px] font-bold text-gray-400 uppercase">Experience</p>
-                          <p className="text-xs font-bold text-gray-800 truncate">{form.experience || "6"} Years</p>
-                        </div>
-                      </div>
-
-                      <div className="min-w-0 flex items-start gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-emerald-50 text-[#0da651] flex items-center justify-center shrink-0">
-                          <CalendarDays size={16} />
-                        </div>
-                        <div className="min-w-0">
-                          <p className="text-[10px] font-bold text-gray-400 uppercase">Date of Joining</p>
-                          <p className="text-xs font-bold text-gray-800 truncate">{form.joiningDate || "15 Apr 2022"}</p>
-                        </div>
-                      </div>
-
-                      <div className="min-w-0 flex items-start gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-emerald-50 text-[#0da651] flex items-center justify-center shrink-0">
-                          <CheckCircle2 size={16} />
-                        </div>
-                        <div className="min-w-0">
-                          <p className="text-[10px] font-bold text-gray-400 uppercase">Status</p>
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-[#0da651] mt-0.5">
-                            {form.status || "Active"}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+            <div className="space-y-5">
+              {/* Header Banner */}
+              <section className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#0da651] via-[#0e9f4e] to-[#09803d] border border-emerald-600/30 px-4 py-3 sm:px-5 sm:py-3.5 shadow-sm">
+                <div className="relative z-10 flex items-center gap-3.5">
+                  <div className="w-9 h-9 rounded-xl bg-white/20 text-white flex items-center justify-center shrink-0 border border-white/25">
+                    <CheckCircle2 size={18} />
                   </div>
-
-                  {/* Assigned Mentees Card */}
-                  <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h2 className="text-base font-bold text-gray-800">
-                          Assigned Mentees ({selectedMentees.length})
-                        </h2>
-                        <p className="text-xs text-gray-400 mt-0.5">Review the mentees assigned to this mentor.</p>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => setStep(2)}
-                        className="inline-flex items-center gap-1.5 rounded-xl border border-emerald-300 bg-emerald-50/50 px-4 py-1.5 text-xs font-bold text-[#0da651] hover:bg-emerald-100 transition-colors cursor-pointer"
-                      >
-                        Edit
-                      </button>
-                    </div>
-
-                    <div className="overflow-x-auto border border-gray-100 rounded-2xl">
-                      <table className="w-full text-left text-xs">
-                        <thead className="bg-gray-50/80 text-gray-400 uppercase text-[10px] font-bold border-b border-gray-100">
-                          <tr>
-                            <th className="py-3 px-4">#</th>
-                            <th className="py-3 px-4">Mentee Name</th>
-                            <th className="py-3 px-4">College Roll No.</th>
-                            <th className="py-3 px-4">Email Address</th>
-                            <th className="py-3 px-4">Program</th>
-                            <th className="py-3 px-4">Year</th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-100 font-semibold text-gray-700">
-                          {selectedMentees.map((st, idx) => (
-                            <tr key={st.id} className="hover:bg-gray-50/60 transition-colors">
-                              <td className="py-3.5 px-4 font-bold text-gray-400">{idx + 1}</td>
-                              <td className="py-3.5 px-4">
-                                <div className="flex items-center gap-2.5">
-                                  <div className={`w-7 h-7 rounded-full ${st.bg} text-[11px] font-bold flex items-center justify-center`}>
-                                    {st.initials}
-                                  </div>
-                                  <span className="font-bold text-gray-800">{st.name}</span>
-                                </div>
-                              </td>
-                              <td className="py-3.5 px-4 font-mono text-gray-600">{st.rollNo}</td>
-                              <td className="py-3.5 px-4 text-gray-500">{st.email}</td>
-                              <td className="py-3.5 px-4">{st.program}</td>
-                              <td className="py-3.5 px-4">{st.year}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Right Review Sidebar */}
-                <div className="space-y-5">
-                  {/* Summary Card */}
-                  <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 space-y-4">
-                    <h3 className="text-sm font-bold text-[#0da651]">Summary</h3>
-                    
-                    <div className="space-y-3.5 text-xs">
-                      <div className="flex items-start gap-3">
-                        <div className="w-7 h-7 rounded-lg bg-emerald-50 text-[#0da651] flex items-center justify-center shrink-0">
-                          <User size={14} />
-                        </div>
-                        <div>
-                          <p className="text-[10px] font-bold text-gray-400 uppercase">Mentor</p>
-                          <p className="font-bold text-gray-800">{fullMentorName}</p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-start gap-3">
-                        <div className="w-7 h-7 rounded-lg bg-emerald-50 text-[#0da651] flex items-center justify-center shrink-0">
-                          <Building2 size={14} />
-                        </div>
-                        <div>
-                          <p className="text-[10px] font-bold text-gray-400 uppercase">Department</p>
-                          <p className="font-bold text-gray-800">{form.department || "Computer Science & Engineering"}</p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-start gap-3">
-                        <div className="w-7 h-7 rounded-lg bg-emerald-50 text-[#0da651] flex items-center justify-center shrink-0">
-                          <IdCard size={14} />
-                        </div>
-                        <div>
-                          <p className="text-[10px] font-bold text-gray-400 uppercase">Employee ID</p>
-                          <p className="font-bold text-gray-800">{form.empId || "EMP2024001"}</p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-start gap-3">
-                        <div className="w-7 h-7 rounded-lg bg-emerald-50 text-[#0da651] flex items-center justify-center shrink-0">
-                          <Users size={14} />
-                        </div>
-                        <div>
-                          <p className="text-[10px] font-bold text-gray-400 uppercase">Total Mentees</p>
-                          <p className="font-bold text-gray-800">{selectedMentees.length}</p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-start gap-3">
-                        <div className="w-7 h-7 rounded-lg bg-emerald-50 text-[#0da651] flex items-center justify-center shrink-0">
-                          <CheckCircle2 size={14} />
-                        </div>
-                        <div>
-                          <p className="text-[10px] font-bold text-gray-400 uppercase">Status</p>
-                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-[#0da651] mt-0.5">
-                            {form.status || "Active"}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Checklist Card */}
-                  <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 space-y-4">
-                    <h3 className="text-sm font-bold text-[#0da651]">Checklist</h3>
-                    <div className="space-y-3">
-                      {[
-                        "Mentor details added",
-                        "Required information provided",
-                        "Mentees assigned",
-                        "All information looks correct",
-                      ].map((item) => (
-                        <div key={item} className="flex items-center gap-2.5">
-                          <CheckCircle2 size={16} className="text-[#0da651] shrink-0" />
-                          <span className="text-xs font-semibold text-gray-700">{item}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Please Note Card */}
-                  <div className="rounded-3xl border border-blue-100 bg-blue-50/50 p-5 flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-500 flex items-center justify-center shrink-0 mt-0.5">
-                      <span className="font-bold text-sm">i</span>
-                    </div>
-                    <div>
-                      <h4 className="text-xs font-bold text-blue-700">Please Note</h4>
-                      <p className="text-[11px] text-gray-600 mt-1 leading-relaxed">
-                        Once you submit, the mentor will be created and assigned to the selected mentees. You can edit the details later if needed.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Bottom Action Footer */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setStep(2)}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-5 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer w-full sm:w-auto"
-                >
-                  <ArrowLeft size={16} />
-                  Previous
-                </button>
-
-                <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
-                  <button
-                    type="button"
-                    onClick={() => onNavigate?.("mentors")}
-                    className="w-full sm:w-auto rounded-xl border border-gray-200 bg-gray-100 px-6 py-2.5 text-sm font-semibold text-gray-600 hover:bg-gray-200 transition-colors cursor-pointer"
-                  >
-                    Cancel
-                  </button>
-
-                  <div className="flex flex-col items-center w-full sm:w-auto">
-                    <button
-                      type="button"
-                      onClick={() => onNavigate?.("mentors")}
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-2xl bg-[#0da651] px-6 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-green-600 transition-all cursor-pointer active:scale-98 whitespace-nowrap"
-                    >
-                      <span>Submit &amp; Assign Mentor</span>
-                      <ArrowRight size={16} />
-                    </button>
-                    <p className="text-[11px] text-gray-400 mt-1.5 flex items-center justify-center gap-1.5 font-medium">
-                      <ShieldCheck size={13} className="text-[#0da651]" />
-                      <span>Your data is safe and secure</span>
+                  <div>
+                    <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">
+                      Review &amp; Register Mentor
+                    </h2>
+                    <p className="text-xs text-emerald-50/90 font-normal mt-0.5">
+                      Verify mentor details and assigned mentees before final registration
                     </p>
                   </div>
                 </div>
-              </div>
+                <div className="absolute right-0 top-0 bottom-0 w-40 bg-gradient-to-l from-white/10 to-transparent pointer-events-none" />
+              </section>
+
+              {/* Review Section 1: Mentor Information */}
+              <section className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-5 sm:p-6">
+                <div className="flex items-center justify-between gap-4 mb-5 pb-3 border-b border-gray-100">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-emerald-100/70 flex items-center justify-center text-[#0da651]">
+                      <User size={18} />
+                    </div>
+                    <div>
+                      <h3 className="text-base font-bold text-gray-800">Mentor Information</h3>
+                      <p className="text-xs text-gray-400 mt-0.5">Personal details, contact info, and department record</p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setStep(1)}
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-300/80 bg-emerald-50/50 px-3.5 py-1.5 text-xs font-semibold text-[#0da651] hover:bg-emerald-100/70 transition-colors cursor-pointer"
+                  >
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="m18 2 4 4-14 14-4 1 1-4 14-14Z" />
+                    </svg>
+                    Edit
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5">
+                  {reviewMentorDetails.map((item) => (
+                    <div key={item.label} className="p-3.5 rounded-xl bg-[#f4fbf7] border border-emerald-200/80 hover:bg-[#ebf8f0]/80 transition-all flex items-start gap-3">
+                      <div className="w-7 h-7 rounded-lg bg-white border border-emerald-200/80 flex items-center justify-center shrink-0 text-[#0da651] mt-0.5">
+                        <item.icon size={14} />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-[10px] font-semibold text-emerald-800/80 uppercase tracking-wider">{item.label}</p>
+                        <p className="text-xs sm:text-sm font-bold text-gray-800 mt-0.5 truncate" title={item.value}>{item.value}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              {/* Review Section 2: Assigned Mentees */}
+              <section className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-5 sm:p-6">
+                <div className="flex items-center justify-between gap-4 mb-5 pb-3 border-b border-gray-100">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-emerald-100/70 flex items-center justify-center text-[#0da651]">
+                      <Users size={18} />
+                    </div>
+                    <div>
+                      <h3 className="text-base font-bold text-gray-800">
+                        Assigned Mentees ({selectedMentees.length})
+                      </h3>
+                      <p className="text-xs text-gray-400 mt-0.5">Students currently assigned under this mentor</p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setStep(2)}
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-emerald-300/80 bg-emerald-50/50 px-3.5 py-1.5 text-xs font-semibold text-[#0da651] hover:bg-emerald-100/70 transition-colors cursor-pointer"
+                  >
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="m18 2 4 4-14 14-4 1 1-4 14-14Z" />
+                    </svg>
+                    Edit
+                  </button>
+                </div>
+
+                {selectedMentees.length === 0 ? (
+                  <div className="p-8 text-center text-xs text-gray-400 border border-dashed border-emerald-200 rounded-xl bg-[#f4fbf7]/40">
+                    No mentees assigned. You can assign students later or click Edit.
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto rounded-xl border border-emerald-100">
+                    <table className="w-full text-left text-xs">
+                      <thead className="bg-[#f4fbf7] text-emerald-800/80 uppercase text-[10px] font-bold border-b border-emerald-100">
+                        <tr>
+                          <th className="py-3 px-4">#</th>
+                          <th className="py-3 px-4">Mentee Name</th>
+                          <th className="py-3 px-4">College Roll No.</th>
+                          <th className="py-3 px-4">Email Address</th>
+                          <th className="py-3 px-4">Program</th>
+                          <th className="py-3 px-4">Year</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-emerald-50 font-semibold text-gray-700 bg-white">
+                        {selectedMentees.map((st, idx) => (
+                          <tr key={st.id} className="hover:bg-[#f4fbf7]/50 transition-colors">
+                            <td className="py-3 px-4 font-bold text-gray-400">{idx + 1}</td>
+                            <td className="py-3 px-4">
+                              <div className="flex items-center gap-2.5">
+                                <div className={`w-7 h-7 rounded-full ${st.bg} text-[11px] font-bold flex items-center justify-center shrink-0`}>
+                                  {st.initials}
+                                </div>
+                                <span className="font-bold text-gray-800">{st.name}</span>
+                              </div>
+                            </td>
+                            <td className="py-3 px-4 font-mono text-gray-600">{st.rollNo}</td>
+                            <td className="py-3 px-4 text-gray-500">{st.email}</td>
+                            <td className="py-3 px-4">{st.program}</td>
+                            <td className="py-3 px-4">{st.year}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </section>
+
+              {/* Bottom Action Footer */}
+              <section className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-4 sm:px-5 sm:py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <button
+                  type="button"
+                  onClick={() => setStep(2)}
+                  className="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors w-full sm:w-auto cursor-pointer"
+                >
+                  <ArrowLeft size={15} />
+                  Previous
+                </button>
+
+                <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-end">
+                  <button
+                    type="button"
+                    onClick={() => onNavigate?.("mentors")}
+                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => onNavigate?.("mentors")}
+                    className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-6 py-2.5 text-sm font-medium text-white hover:bg-green-600 transition-colors whitespace-nowrap cursor-pointer shadow-sm"
+                  >
+                    Register
+                    <ArrowRight size={15} />
+                  </button>
+                </div>
+              </section>
             </div>
           )}
         </div>
@@ -1018,3 +948,4 @@ export default function AddMentor({ onNavigate, onOpenSidebar }) {
     </div>
   );
 }
+

@@ -1,8 +1,8 @@
 import {
   Users,
-  UserCheck,
-  Bell,
-  CalendarDays,
+  CheckCircle2,
+  TrendingUp,
+  Star,
   UserPlus,
   UserCheck2,
   Upload,
@@ -10,16 +10,57 @@ import {
   BookOpen,
   Menu,
   Activity,
+  CalendarDays,
   Zap,
 } from "lucide-react";
 import adminHeroImage from "../../assets/admin-hero.svg";
 import AdminProfile from "../../components/admin/AdminProfile";
 
 const stats = [
-  { label: "Total Students", value: "2847", subtext: "Enrolled in department", icon: Users, color: "text-rose-600", bg: "bg-rose-50" },
-  { label: "Total Mentors", value: "156", subtext: "Active faculty & staff", icon: UserCheck, color: "text-blue-600", bg: "bg-blue-50" },
-  { label: "Active Notices", value: "10", subtext: "Published announcements", icon: Bell, color: "text-emerald-600", bg: "bg-emerald-50" },
-  { label: "Upcoming Events", value: "6", subtext: "Scheduled this month", icon: CalendarDays, color: "text-amber-500", bg: "bg-amber-50" },
+  {
+    key: "students",
+    label: "Total Students",
+    value: "2,847",
+    subtext: "Enrolled in department",
+    icon: Users,
+    cardClass: "bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#7656f4]",
+    valueClass: "text-[#111827]",
+    iconWrap: "bg-[#F3EEFF] text-[#7656f4]",
+    pageKey: "students",
+  },
+  {
+    key: "mentors",
+    label: "Total Mentors",
+    value: "156",
+    subtext: "Active faculty & staff",
+    icon: CheckCircle2,
+    cardClass: "bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#22C55E]",
+    valueClass: "text-[#111827]",
+    iconWrap: "bg-[#EAFBF1] text-[#22C55E]",
+    pageKey: "mentors",
+  },
+  {
+    key: "notices",
+    label: "Active Notices",
+    value: "10",
+    subtext: "Published announcements",
+    icon: TrendingUp,
+    cardClass: "bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#F59E0B]",
+    valueClass: "text-[#111827]",
+    iconWrap: "bg-[#FFF5E8] text-[#F59E0B]",
+    pageKey: "notices",
+  },
+  {
+    key: "events",
+    label: "Upcoming Events",
+    value: "6",
+    subtext: "Scheduled this month",
+    icon: Star,
+    cardClass: "bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#3B82F6]",
+    valueClass: "text-[#111827]",
+    iconWrap: "bg-[#EEF5FF] text-[#3B82F6]",
+    pageKey: "activities",
+  },
 ];
 
 // Top 5 recent activities
@@ -76,7 +117,7 @@ export default function Dashboard({ onNavigate, onOpenSidebar }) {
 
       <main className="flex-1 p-3.5 sm:p-4.5 space-y-3 overflow-y-auto">
         {/* Compact Hero Banner */}
-        <div className="rounded-2xl overflow-hidden relative min-h-[170px] shadow-2xs border border-gray-100 flex items-center">
+        <div className="rounded-2xl overflow-hidden relative min-h-[160px] shadow-md shadow-slate-200/50 border border-slate-200/80 flex items-center">
           <img src={adminHeroImage} alt="Dashboard hero" className="absolute inset-0 w-full h-full object-cover pointer-events-none" />
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/45 to-transparent" />
           <div className="relative z-10 ml-5 p-3.5 sm:p-4 flex flex-col justify-center">
@@ -87,37 +128,53 @@ export default function Dashboard({ onNavigate, onOpenSidebar }) {
           </div>
         </div>
 
-        {/* Stats Grid - Matched same to same as Student Dashboard Stat Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-          {stats.map(({ label, value, subtext, icon: Icon, color, bg }) => (
+        {/* Stats Grid - Standardized to match Mentor and Student Dashboard Stat Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+          {stats.map(({ key, label, value, subtext, cardClass, valueClass, iconWrap, pageKey }) => (
             <div
               key={label}
-              className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-3.5 hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-300/40 cursor-pointer transition-all duration-200"
+              onClick={() => {
+                if (pageKey && onNavigate) onNavigate(pageKey);
+              }}
+              className={`rounded-2xl border px-4 py-4 sm:py-5 shadow-sm ${cardClass} cursor-pointer hover:shadow-md hover:scale-[1.01] transition-all`}
             >
-              <div
-                className={`h-12 w-12 rounded-xl ${bg} ${color} flex items-center justify-center shrink-0 border border-slate-100/80 shadow-2xs`}
-              >
-                <Icon size={24} className="stroke-[2.2]" />
-              </div>
-              <div className="overflow-hidden">
-                <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
-                  {label}
-                </p>
-                <p className="text-xl sm:text-2xl font-extrabold text-slate-800 mt-0.5">
-                  {value}
-                </p>
-                <p className={`text-[11px] font-medium truncate ${color}`}>
-                  {subtext}
-                </p>
+              <div className="flex items-center gap-5">
+                <div
+                  className={`flex h-11 w-11 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-2xl ${iconWrap}`}
+                >
+                  {key === "mentors" ? (
+                    <CheckCircle2 size={24} className="fill-[#22C55E] text-white" />
+                  ) : key === "events" ? (
+                    <Star size={22} className="fill-[#3B82F6] text-[#3B82F6]" />
+                  ) : key === "notices" ? (
+                    <TrendingUp size={23} className="stroke-[2.5]" />
+                  ) : (
+                    <Users size={23} className="stroke-[2.2]" />
+                  )}
+                </div>
+
+                <div className="flex-1 min-w-0">
+                  <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 truncate">
+                    {label}
+                  </div>
+                  <div
+                    className={`text-2xl sm:text-[28px] font-extrabold leading-none mt-1 mb-0.5 ${valueClass}`}
+                  >
+                    {value}
+                  </div>
+                  <div className="text-xs text-slate-400 font-medium truncate">
+                    {subtext}
+                  </div>
+                </div>
               </div>
             </div>
           ))}
         </div>
 
         {/* Compact Bottom Grid */}
-        <div className="grid grid-cols-1 xl:grid-cols-5 gap-3">
+        <div className="grid grid-cols-1 xl:grid-cols-5 gap-3.5">
           {/* Recent Activity (Top 5 items) */}
-          <div className="xl:col-span-3 bg-white rounded-2xl shadow-2xs p-3.5 sm:p-4 border border-gray-100 space-y-2 flex flex-col justify-between">
+          <div className="xl:col-span-3 bg-white rounded-2xl shadow-md shadow-slate-200/60 p-3.5 sm:p-4 border border-slate-200/90 space-y-2 flex flex-col justify-between">
             <div className="flex items-center justify-between border-b border-gray-100 pb-1.5">
               <h3 className="text-xs sm:text-sm font-bold text-gray-800 tracking-tight uppercase flex items-center gap-2">
                 <Activity size={16} className="text-gray-800 stroke-[2.4]" />
@@ -149,7 +206,7 @@ export default function Dashboard({ onNavigate, onOpenSidebar }) {
           </div>
 
           {/* Quick Action Card (Balanced height matching 5 activity rows without bottom gap) */}
-          <div className="xl:col-span-2 bg-white rounded-2xl shadow-2xs p-3.5 sm:p-4 border border-gray-100 flex flex-col justify-between space-y-2">
+          <div className="xl:col-span-2 bg-white rounded-2xl shadow-md shadow-slate-200/60 p-3.5 sm:p-4 border border-slate-200/90 flex flex-col justify-between space-y-2">
             <div className="border-b border-gray-100 pb-1.5">
               <h3 className="text-xs sm:text-sm font-bold text-gray-800 tracking-tight uppercase flex items-center gap-2">
                 <Zap size={16} className="text-gray-800 stroke-[2.4]" />

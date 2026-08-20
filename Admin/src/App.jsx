@@ -96,7 +96,7 @@ function AdminLayout({ subjectsList, setSubjectsList, onLogout }) {
     switch (adminActivePage) {
       case "dashboard":       return <Dashboard onNavigate={handleAdminNavigate} onOpenSidebar={handleOpenSidebar} />;
       case "students":        return <Students onNavigate={handleAdminNavigate} onOpenSidebar={handleOpenSidebar} />;
-      case "student-profile": return <StudentProfile onBack={() => navigate("/admin/students")} userRole="admin" />;
+      case "student-profile": return <StudentProfile onBack={() => navigate("/admin/students")} userRole="admin" onNavigate={handleAdminNavigate} onOpenSidebar={handleOpenSidebar} />;
       case "add-student":     return <AddStudent onNavigate={handleAdminNavigate} onOpenSidebar={handleOpenSidebar} />;
       case "mentors":         return <Mentors onNavigate={handleAdminNavigate} onOpenSidebar={handleOpenSidebar} />;
       case "mentor-details":  return <MentorDetails onNavigate={handleAdminNavigate} onOpenSidebar={handleOpenSidebar} />;

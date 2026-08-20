@@ -1,6 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Rocket, ArrowLeft, Sparkles, Clock } from 'lucide-react';
+import {
+  Rocket,
+  ArrowLeft,
+  Sparkles,
+  Clock,
+  Users,
+  CheckCircle2,
+  TrendingUp,
+  Star,
+} from 'lucide-react';
 import './MentorDashboard.css';
 import MentorSidebar from '../../components/mentor/MentorSidebar';
 import MentorNavbar from '../../components/mentor/MentorNavbar';
@@ -17,36 +26,59 @@ import MentorResults from './MentorResults';
 import MentorNotices from './MentorNotices';
 import MentorActivities from './MentorActivities';
 import MentorSupport from './MentorSupport';
+import StudentProfile from '../student/StudentProfile';
+import { initialStudentData } from '../../data/studentProfileData';
 
 const stats = [
   {
-    title: 'Total Mentees',
+    key: 'mentees',
+    label: 'Total Mentees',
     value: '25',
-    icon: 'users',
-    accent: 'purple',
+    note: 'Assigned students',
+    icon: Users,
+    cardClass: 'bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#7656f4]',
+    valueClass: 'text-[#111827]',
+    iconWrap: 'bg-[#F3EEFF] text-[#7656f4]',
+    pageKey: 'mentees',
   },
   {
-    title: 'Attendance Rate',
+    key: 'attendance',
+    label: 'Attendance Rate',
     value: '92%',
-    icon: 'check',
-    accent: 'green',
+    note: 'Classes recorded',
+    icon: CheckCircle2,
+    cardClass: 'bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#22C55E]',
+    valueClass: 'text-[#111827]',
+    iconWrap: 'bg-[#EAFBF1] text-[#22C55E]',
+    pageKey: 'attendance',
   },
   {
-    title: 'Results Published',
+    key: 'results',
+    label: 'Results Published',
     value: '18',
-    icon: 'trend',
-    accent: 'orange',
+    note: 'Published results',
+    icon: TrendingUp,
+    cardClass: 'bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#F59E0B]',
+    valueClass: 'text-[#111827]',
+    iconWrap: 'bg-[#FFF5E8] text-[#F59E0B]',
+    pageKey: 'results',
   },
   {
-    title: 'Credit Points Issued',
+    key: 'credits',
+    label: 'Credit Points Issued',
     value: '120',
-    icon: 'star',
-    accent: 'blue',
+    note: 'Total points issued',
+    icon: Star,
+    cardClass: 'bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#3B82F6]',
+    valueClass: 'text-[#111827]',
+    iconWrap: 'bg-[#EEF5FF] text-[#3B82F6]',
+    pageKey: 'credit-points',
   },
 ];
 
 const tabTitles = {
   mentees: 'Mentees Portal',
+  'student-profile': 'Student Profile',
   profile: 'Mentor Profile',
   messages: 'Messages & Chat',
   results: 'Student Results',
@@ -90,10 +122,15 @@ export default function MentorDashboard({ user, onLogout }) {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [startWithUpload, setStartWithUpload] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState(location.state?.mentee || null);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   useEffect(() => {
     const path = location.pathname;
-    if (path.includes('/mentor/mentees')) setActiveTab('mentees');
+    if (path.includes('/mentor/mentees/profile') || path.includes('/mentor/student-profile') || path.includes('/mentor/students/profile')) {
+      setActiveTab('student-profile');
+    }
+    else if (path.includes('/mentor/mentees')) setActiveTab('mentees');
     else if (path.includes('/mentor/profile')) setActiveTab('profile');
     else if (path.includes('/mentor/messages')) setActiveTab('messages');
     else if (path.includes('/mentor/results')) setActiveTab('results');
@@ -106,7 +143,7 @@ export default function MentorDashboard({ user, onLogout }) {
     else setActiveTab('dashboard');
   }, [location.pathname]);
 
-  const handleNavigate = (tab, isUpload = false) => {
+  const handleNavigate = (tab, isUpload = false, menteeData = null) => {
     if (tab === 'logout') {
       if (onLogout) onLogout();
       navigate('/');
@@ -115,6 +152,7 @@ export default function MentorDashboard({ user, onLogout }) {
     const mentorPathMap = {
       dashboard: '/mentor/dashboard',
       mentees: '/mentor/mentees',
+      'student-profile': '/mentor/mentees/profile',
       profile: '/mentor/profile',
       messages: '/mentor/messages',
       results: '/mentor/results',
@@ -126,27 +164,43 @@ export default function MentorDashboard({ user, onLogout }) {
       settings: '/mentor/settings',
       support: '/mentor/support',
     };
+    if (menteeData) {
+      setSelectedStudent(menteeData);
+    }
     setActiveTab(tab);
     setStartWithUpload(Boolean(isUpload));
-    navigate(mentorPathMap[tab] || '/mentor/dashboard');
+    setMobileSidebarOpen(false);
+    navigate(mentorPathMap[tab] || '/mentor/dashboard', { state: menteeData ? { mentee: menteeData } : undefined });
   };
 
   function renderView() {
     if (activeTab !== 'dashboard') {
       if (activeTab === 'profile' || activeTab === 'settings') {
-        return <MentorProfilePage />;
+        return (
+          <div className="p-2 sm:px-5 sm:py-2.5 pb-10">
+            <MentorProfilePage />
+          </div>
+        );
       }
       if (activeTab === 'mentees') {
-        return <MentorMentees />;
+        return <MentorMentees onNavigate={handleNavigate} />;
       }
       if (activeTab === 'messages') {
         return <MentorMessages hideHeader={true} />;
       }
       if (activeTab === 'attendance') {
-        return <MentorAttendance initialUpload={startWithUpload} />;
+        return (
+          <div className="p-2 sm:px-5 sm:py-2.5 pb-10">
+            <MentorAttendance initialUpload={startWithUpload} />
+          </div>
+        );
       }
       if (activeTab === 'results') {
-        return <MentorResults initialUpload={startWithUpload} />;
+        return (
+          <div className="p-2 sm:px-5 sm:py-2.5 pb-10">
+            <MentorResults initialUpload={startWithUpload} />
+          </div>
+        );
       }
       if (activeTab === 'notices') {
         return <MentorNotices user={user} />;
@@ -159,51 +213,142 @@ export default function MentorDashboard({ user, onLogout }) {
       }
       const title = tabTitles[activeTab] || 'This Page';
       return (
-        <MentorComingSoon
-          title={title}
-          onBack={() => handleNavigate('dashboard')}
-        />
+        <div className="p-2 sm:px-5 sm:py-2.5 pb-10">
+          <MentorComingSoon
+            title={title}
+            onBack={() => handleNavigate('dashboard')}
+          />
+        </div>
       );
     }
 
     return (
-      <>
-        <section className="mentor-grid mentor-profile-row">
+      <main className="space-y-2.5 p-2 sm:px-5 sm:py-2.5">
+        {/* Top Section: Mentor Profile Hero Card */}
+        <section className="w-full">
           <MentorProfileCard />
         </section>
 
-        <section className="mentor-stats-wrap mentor-stats-section">
-          <MentorStats items={stats} />
+        {/* Stats Section: 4 Stat Cards */}
+        <section>
+          <MentorStats items={stats} onNavigate={handleNavigate} />
         </section>
 
-        <section className="mentor-grid mentor-lower-grid mentor-bottom-row">
+        {/* Bottom 3 Columns: Total Mentees, Quick Actions, Real-time Calendar */}
+        <section className="grid gap-2.5 sm:grid-cols-2 xl:grid-cols-[1fr_1fr_1fr]">
           <MentorMenteeChart onNavigate={handleNavigate} />
           <MentorQuickActions onNavigate={handleNavigate} />
           <MentorCalendar />
         </section>
-      </>
+      </main>
+    );
+  }
+
+  if (activeTab === 'student-profile') {
+    const studentToDisplay = selectedStudent
+      ? {
+          ...initialStudentData,
+          name: selectedStudent.name || initialStudentData.name,
+          rollNo: selectedStudent.rollNo || initialStudentData.rollNo,
+          department: selectedStudent.department || initialStudentData.department,
+          phone: selectedStudent.phone || initialStudentData.phone,
+          email: selectedStudent.studentEmail || selectedStudent.email || initialStudentData.email,
+          avatar: selectedStudent.avatar || initialStudentData.avatar,
+          academicDetails: {
+            ...initialStudentData.academicDetails,
+            collegeRollNo: selectedStudent.rollNo || initialStudentData.academicDetails?.collegeRollNo,
+            universityRollNo: `RTU/2024/${selectedStudent.rollNo?.slice(0, 3) || 'CS'}/` + (selectedStudent.rollNo?.replace(/\D/g, '') || '12345'),
+            attendanceOverall: selectedStudent.attendance || initialStudentData.academicDetails?.attendanceOverall || '95.0%',
+          },
+          additionalDetails: {
+            ...initialStudentData.additionalDetails,
+            personalEmail: selectedStudent.studentEmail || selectedStudent.email || initialStudentData.additionalDetails?.personalEmail,
+            phoneNumber: selectedStudent.phone || initialStudentData.additionalDetails?.phoneNumber,
+            collegeEmail: selectedStudent.studentEmail || initialStudentData.additionalDetails?.collegeEmail,
+          },
+          mentorDetails: {
+            ...initialStudentData.mentorDetails,
+            name: user?.name || 'Kaushik Chatterjee',
+            email: selectedStudent.mentorEmail || user?.email || 'kaushik.c@trackademy.edu',
+          },
+          attendanceDetails: {
+            ...initialStudentData.attendanceDetails,
+            overallPercentage: selectedStudent.attendance ? parseFloat(selectedStudent.attendance) : (initialStudentData.attendanceDetails?.overallPercentage || 95.0),
+          }
+        }
+      : initialStudentData;
+
+    return (
+      <div className="relative flex h-full w-full bg-[#EEF2F6] overflow-hidden min-h-screen">
+        {/* Mobile Drawer Overlay */}
+        {mobileSidebarOpen && (
+          <button
+            type="button"
+            aria-label="Close navigation overlay"
+            onClick={() => setMobileSidebarOpen(false)}
+            className="fixed inset-0 z-40 bg-black/40 backdrop-blur-[1px] lg:hidden"
+          />
+        )}
+
+        {/* Mentor Sidebar */}
+        <MentorSidebar
+          activeTab={activeTab}
+          onSelectTab={handleNavigate}
+          onLogout={onLogout}
+          open={mobileSidebarOpen}
+          onClose={() => setMobileSidebarOpen(false)}
+        />
+
+        {/* Right Content Pane for Student Profile */}
+        <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
+          <StudentProfile
+            studentData={studentToDisplay}
+            onBack={() => handleNavigate('mentees')}
+            userRole="mentor"
+            user={user}
+            onNavigate={handleNavigate}
+            onOpenSidebar={() => setMobileSidebarOpen(true)}
+            onLogout={onLogout}
+          />
+        </div>
+      </div>
     );
   }
 
   return (
-    <div className="mentor-dashboard-shell">
+    <div className="relative flex h-full w-full bg-[#EEF2F6] overflow-hidden min-h-screen">
+      {/* Mobile Drawer Overlay */}
+      {mobileSidebarOpen && (
+        <button
+          type="button"
+          aria-label="Close navigation overlay"
+          onClick={() => setMobileSidebarOpen(false)}
+          className="fixed inset-0 z-40 bg-black/40 backdrop-blur-[1px] lg:hidden"
+        />
+      )}
+
+      {/* Mentor Sidebar */}
       <MentorSidebar
         activeTab={activeTab}
-        onSelectTab={setActiveTab}
+        onSelectTab={handleNavigate}
         onLogout={onLogout}
+        open={mobileSidebarOpen}
+        onClose={() => setMobileSidebarOpen(false)}
       />
 
-      <main className="mentor-dashboard-main">
+      {/* Right Content Pane */}
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         <MentorNavbar
           activeTab={activeTab}
           user={user}
-          onSelectTab={setActiveTab}
+          onSelectTab={handleNavigate}
           onLogout={onLogout}
+          onOpenSidebar={() => setMobileSidebarOpen(true)}
         />
-        <div className="mentor-dashboard-content">
+        <div className="flex-1 overflow-y-auto min-w-0 bg-[#EEF2F6]">
           {renderView()}
         </div>
-      </main>
+      </div>
     </div>
   );
 }

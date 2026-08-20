@@ -371,7 +371,7 @@ export default function StudentDashboard({ onLogout }) {
                   {/* Content */}
                   <div className="flex-1 min-w-0">
                     <h2 className="text-2xl sm:text-[25px] font-bold text-gray-900 tracking-tight leading-tight">
-                      Tuhina Banerjee
+                      Tanuka Saha
                     </h2>
                     <p className="text-xs sm:text-[13px] text-gray-500 font-normal mt-2 mb-4">
                       B.Tech | Computer Science &amp; Engineering
@@ -385,7 +385,7 @@ export default function StudentDashboard({ onLogout }) {
                           <Mail size={15} className="text-gray-800 shrink-0 stroke-[1.8]" />
                           <span>
                             <strong className="font-semibold text-gray-900">Email :</strong>{" "}
-                            <span className="text-gray-600">tuhinabanerjee134@gmail.com</span>
+                            <span className="text-gray-600">tanukas@gmail.com</span>
                           </span>
                         </div>
                         <div className="flex items-center gap-2 text-xs sm:text-[13px] text-gray-700">
@@ -511,9 +511,8 @@ export default function StudentDashboard({ onLogout }) {
                         <span>Semester {attendanceSemester}</span>
                         <ChevronDown
                           size={13}
-                          className={`text-gray-400 transition-transform duration-200 ${
-                            semesterDropdownOpen ? "rotate-180 text-blue-600" : ""
-                          }`}
+                          className={`text-gray-400 transition-transform duration-200 ${semesterDropdownOpen ? "rotate-180 text-blue-600" : ""
+                            }`}
                         />
                       </button>
 
@@ -527,11 +526,10 @@ export default function StudentDashboard({ onLogout }) {
                                 setAttendanceSemester(sem);
                                 setSemesterDropdownOpen(false);
                               }}
-                              className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer flex items-center justify-between ${
-                                attendanceSemester === sem
-                                  ? "bg-[#E7EFFE] text-[#2384FD] font-bold"
-                                  : "text-gray-700 hover:bg-gray-50"
-                              }`}
+                              className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer flex items-center justify-between ${attendanceSemester === sem
+                                ? "bg-[#E7EFFE] text-[#2384FD] font-bold"
+                                : "text-gray-700 hover:bg-gray-50"
+                                }`}
                             >
                               <span>Semester {sem}</span>
                               {attendanceSemester === sem && (
@@ -747,7 +745,7 @@ export default function StudentDashboard({ onLogout }) {
         {/* Student Top Header with Barlow font, dynamic title/subtitle, bell badge 3, help circle, profile dropdown */}
         <StudentHeader
           activePage={currentPage}
-          studentName="Tuhina Banerjee"
+          studentName="Tanuka Saha"
           studentRole="Student"
           avatarUrl="/tuhina_avatar.jpg"
           onNavigate={handleNavigate}

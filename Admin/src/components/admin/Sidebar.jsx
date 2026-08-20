@@ -46,6 +46,16 @@ const navSections = [
   },
 ];
 
+const PAGE_PARENT_MAP = {
+  "add-student": "students",
+  "student-profile": "students",
+  "add-mentor": "mentors",
+  "mentor-details": "mentors",
+  "add-subject": "subjects",
+  "add-activity": "activities",
+  "add-notice": "notices",
+};
+
 export default function Sidebar({
   activePage = "dashboard",
   onNavigate,
@@ -53,6 +63,8 @@ export default function Sidebar({
   onClose,
   onLogout,
 }) {
+  const currentNavId = PAGE_PARENT_MAP[activePage] || activePage;
+
   return (
     <aside
       className={`fixed inset-y-0 left-0 z-50 flex h-full w-[250px] shrink-0 flex-col border-r border-gray-100 bg-white font-['Roboto',sans-serif] shadow-xl transition-transform duration-300 ease-in-out lg:static lg:z-auto lg:w-[250px] lg:translate-x-0 lg:shadow-none select-none ${
@@ -83,7 +95,7 @@ export default function Sidebar({
             </p>
             <div className="space-y-1">
               {section.items.map(({ id, label, icon: Icon }) => {
-                const isActive = activePage === id;
+                const isActive = currentNavId === id;
                 return (
                   <button
                     key={id}

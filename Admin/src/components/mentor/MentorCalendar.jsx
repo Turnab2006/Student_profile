@@ -1,149 +1,130 @@
-import { useState, useEffect } from 'react';
-import { Calendar as CalendarIcon, ChevronLeft, ChevronRight } from 'lucide-react';
-
-const weekDays = [
-  { day: 'Mo', isWeekend: false },
-  { day: 'Tu', isWeekend: false },
-  { day: 'We', isWeekend: false },
-  { day: 'Th', isWeekend: false },
-  { day: 'Fr', isWeekend: false },
-  { day: 'Sa', isWeekend: true },
-  { day: 'Su', isWeekend: true },
-];
-
-const monthsList = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December'
-];
+import { useState } from 'react';
+import { CalendarDays, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function MentorCalendar() {
-  const [now, setNow] = useState(() => new Date());
-  const [currentDate, setCurrentDate] = useState(() => new Date());
-  const [selectedDate, setSelectedDate] = useState(() => new Date());
+  const today = new Date();
+  const [currentMonth, setCurrentMonth] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
+  const [selectedDate, setSelectedDate] = useState(new Date(today.getFullYear(), today.getMonth(), today.getDate()));
 
-  // Automatically update system date/time state every 30 seconds so it advances every day seamlessly
-  useEffect(() => {
-    const timer = setInterval(() => {
-      const updated = new Date();
-      setNow(updated);
-    }, 30000);
-    return () => clearInterval(timer);
-  }, []);
+  const monthTitle = currentMonth.toLocaleString('en-US', { month: 'long', year: 'numeric' });
 
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
+  const calendarDays = (() => {
+    const firstDayOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
+    const firstDayIndex = (firstDayOfMonth.getDay() + 6) % 7;
+    const startDate = new Date(firstDayOfMonth);
+    startDate.setDate(firstDayOfMonth.getDate() - firstDayIndex);
 
-  const isCurrentMonthToday =
-    now.getFullYear() === year && now.getMonth() === month;
+    const days = [];
+    for (let i = 0; i < 42; i += 1) {
+      const date = new Date(startDate);
+      date.setDate(startDate.getDate() + i);
+      days.push(date);
+    }
+    return days;
+  })();
 
-  // Month navigation handlers
-  const handlePrevMonth = () => {
-    setCurrentDate(new Date(year, month - 1, 1));
+  const isSameDay = (d1, d2) => {
+    return (
+      d1 &&
+      d2 &&
+      d1.getFullYear() === d2.getFullYear() &&
+      d1.getMonth() === d2.getMonth() &&
+      d1.getDate() === d2.getDate()
+    );
   };
 
-  const handleNextMonth = () => {
-    setCurrentDate(new Date(year, month + 1, 1));
+  const goToPreviousMonth = () => {
+    setCurrentMonth((prev) => new Date(prev.getFullYear(), prev.getMonth() - 1, 1));
   };
 
-  // Generate calendar days for current month grid (Monday start)
-  const getCalendarCells = () => {
-    const firstDayIndex = new Date(year, month, 1).getDay();
-    // Adjust for Monday start: Mon=0, Tue=1, ..., Sun=6
-    const offset = (firstDayIndex + 6) % 7;
-
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-    const daysInPrevMonth = new Date(year, month, 0).getDate();
-
-    const cells = [];
-
-    // Prev month trailing days
-    for (let i = offset - 1; i >= 0; i--) {
-      cells.push({
-        dayNumber: daysInPrevMonth - i,
-        isMuted: true,
-        isCurrentMonth: false,
-      });
-    }
-
-    // Current month days
-    for (let d = 1; d <= daysInMonth; d++) {
-      const isToday = isCurrentMonthToday && now.getDate() === d;
-      const isSelected =
-        selectedDate &&
-        selectedDate.getFullYear() === year &&
-        selectedDate.getMonth() === month &&
-        selectedDate.getDate() === d;
-
-      cells.push({
-        dayNumber: d,
-        isMuted: false,
-        isCurrentMonth: true,
-        isToday,
-        isSelected,
-        dateObj: new Date(year, month, d),
-      });
-    }
-
-    // Next month leading days to complete 35 or 42 grid cells
-    const totalCells = cells.length > 35 ? 42 : 35;
-    const remaining = totalCells - cells.length;
-    for (let i = 1; i <= remaining; i++) {
-      cells.push({
-        dayNumber: i,
-        isMuted: true,
-        isCurrentMonth: false,
-      });
-    }
-
-    return cells;
+  const goToNextMonth = () => {
+    setCurrentMonth((prev) => new Date(prev.getFullYear(), prev.getMonth() + 1, 1));
   };
 
-  const cells = getCalendarCells();
+  const handleDateClick = (date) => {
+    setSelectedDate(new Date(date));
+    if (date.getMonth() !== currentMonth.getMonth()) {
+      setCurrentMonth(new Date(date.getFullYear(), date.getMonth(), 1));
+    }
+  };
 
   return (
-    <section className="mentor-panel mentor-calendar-panel">
-      <div className="mentor-panel-header mentor-calendar-header">
-        <div className="mentor-panel-title-wrap">
-          <span className="mentor-panel-icon">
-            <CalendarIcon size={19} />
-          </span>
-          <h3>Calendar</h3>
-        </div>
-
-        <div className="mentor-month-switcher">
-          <button type="button" aria-label="Previous month" onClick={handlePrevMonth}>
-            <ChevronLeft size={14} />
-          </button>
-          <span>{`${monthsList[month]} ${year}`}</span>
-          <button type="button" aria-label="Next month" onClick={handleNextMonth}>
-            <ChevronRight size={14} />
-          </button>
-        </div>
-      </div>
-
-      <div className="mentor-calendar-grid">
-        {weekDays.map(({ day, isWeekend }) => (
-          <div key={day} className={`mentor-weekday${isWeekend ? ' weekend' : ''}`}>
-            {day}
+    <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 shadow-sm flex flex-col justify-between">
+      <div>
+        <div className="flex items-center justify-between pb-2 border-b border-slate-100 mb-2.5">
+          <div className="flex items-center gap-2 text-sm sm:text-base font-bold text-[#0F172A]">
+            <CalendarDays size={18} className="text-slate-700" />
+            <h3>Calendar</h3>
           </div>
-        ))}
+          <button
+            type="button"
+            onClick={() => {
+              const now = new Date();
+              setSelectedDate(now);
+              setCurrentMonth(new Date(now.getFullYear(), now.getMonth(), 1));
+            }}
+            className="text-[11px] font-semibold text-[#7656f4] hover:underline cursor-pointer"
+          >
+            Today
+          </button>
+        </div>
 
-        {cells.map((cell, index) => {
-          const { dayNumber, isMuted, isSelected, isToday, dateObj } = cell;
-          const activeClass = isSelected || isToday ? ' selected' : '';
-          const mutedClass = isMuted ? ' muted' : '';
+        {/* Month Navigation */}
+        <div className="flex items-center justify-between px-1 mb-6">
+          <button
+            type="button"
+            aria-label="Previous month"
+            onClick={goToPreviousMonth}
+            className="p-1 rounded-lg text-gray-500 hover:text-[#7656f4] hover:bg-[#f0eaff] transition-colors cursor-pointer"
+          >
+            <ChevronLeft size={15} />
+          </button>
+          <span className="text-xs sm:text-sm font-bold text-gray-800">{monthTitle}</span>
+          <button
+            type="button"
+            aria-label="Next month"
+            onClick={goToNextMonth}
+            className="p-1 rounded-lg text-gray-500 hover:text-[#7656f4] hover:bg-[#f0eaff] transition-colors cursor-pointer"
+          >
+            <ChevronRight size={15} />
+          </button>
+        </div>
 
-          return (
-            <div
-              key={`${dayNumber}-${index}`}
-              className={`mentor-calendar-day${activeClass}${mutedClass}`}
-              onClick={() => dateObj && setSelectedDate(dateObj)}
-            >
-              {dayNumber}
-            </div>
-          );
-        })}
+        {/* Day Headers */}
+        <div className="grid grid-cols-7 gap-1 text-center text-[12px] font-semibold text-gray-400 mb-1">
+          {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((day, index) => (
+            <div key={`${day}-${index}`}>{day}</div>
+          ))}
+        </div>
+
+        {/* Date Grid */}
+        <div className="grid grid-cols-7 gap-y-1 gap-x-1 text-center text-xs font-medium text-gray-700">
+          {calendarDays.map((date) => {
+            const isCurrentMonth = date.getMonth() === currentMonth.getMonth();
+            const isSelected = isSameDay(selectedDate, date);
+            const isToday = isSameDay(today, date);
+
+            return (
+              <button
+                key={date.toISOString()}
+                type="button"
+                onClick={() => handleDateClick(date)}
+                className={`w-7 h-7 sm:w-7.5 sm:h-7.5 rounded-lg flex items-center justify-center mx-auto transition-all text-[11px] font-medium cursor-pointer ${
+                  isSelected
+                    ? 'bg-[#7656f4] font-bold text-white shadow-xs'
+                    : isToday
+                    ? 'bg-[#f0eaff] text-[#7656f4] font-bold ring-1 ring-[#7656f4]/30'
+                    : isCurrentMonth
+                    ? 'hover:bg-purple-50 hover:text-[#7656f4] text-gray-700'
+                    : 'text-gray-300 hover:text-gray-500'
+                }`}
+              >
+                {date.getDate()}
+              </button>
+            );
+          })}
+        </div>
       </div>
-    </section>
+    </div>
   );
 }

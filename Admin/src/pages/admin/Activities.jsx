@@ -124,7 +124,7 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
     setSelected((prev) => (prev.includes(id) ? prev.filter((r) => r !== id) : [...prev, id]));
 
   return (
-    <div className="flex-1 h-full flex flex-col overflow-hidden bg-gray-50/50">
+    <div className={`flex-1 ${isMentor ? 'w-full' : 'h-full flex flex-col overflow-hidden bg-gray-50/50'}`}>
       {!isMentor && (
         <header className="h-[65px] bg-white border-b border-gray-100 px-6 flex items-center justify-between shrink-0 shadow-2xs">
           <div className="flex items-center gap-3">
@@ -148,7 +148,7 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
         </header>
       )}
 
-      <main className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4">
+      <main className={isMentor ? "p-2 sm:px-5 sm:py-2.5 space-y-4 pb-10" : "flex-1 overflow-y-auto p-4 sm:p-6 space-y-4"}>
         {/* Search + Filters */}
         <div className="flex items-center gap-3 flex-wrap">
           <div className="relative flex-1 min-w-[220px]">
@@ -236,7 +236,7 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                 </div>
               ) : (
                 visibleActivities.map((a) => (
-                  <div key={a.id} className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden flex flex-col hover:shadow-md transition-shadow">
+                  <div key={a.id} className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 overflow-hidden flex flex-col hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-300/40 transition-all duration-200">
                     <div className="h-40 bg-gradient-to-r from-emerald-600 via-teal-600 to-green-700 relative overflow-hidden flex items-end p-3">
                       {a.image && <img src={a.image} alt={a.title} className="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-overlay" />}
                       <div className="relative z-10 bg-black/40 backdrop-blur-xs px-2.5 py-1 rounded text-[11px] font-bold text-white tracking-wide">
@@ -288,7 +288,7 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
               )}
             </div>
           ) : (
-            <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+            <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 overflow-hidden">
               <div className="flex items-center justify-between px-5 py-3 border-b border-gray-100">
                 <p className="text-xs text-gray-500">Showing {visibleActivities.length} of {activitiesList.length} activities</p>
                 <div className="flex items-center gap-2">

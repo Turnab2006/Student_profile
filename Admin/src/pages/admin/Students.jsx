@@ -4,7 +4,6 @@ import {
   ChevronDown,
   Plus,
   Download,
-  Upload,
   Users,
   GraduationCap,
   UserRound,
@@ -186,45 +185,37 @@ export default function Students({ onNavigate, onOpenSidebar }) {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3 sm:gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3 sm:gap-4">
           {stats.map((s) => (
-            <div key={s.label} className="col-span-1 bg-white rounded-xl p-4 flex items-center gap-3 border border-gray-100 shadow-sm">
-              <div className={`w-10 h-10 rounded-full ${s.bg} flex items-center justify-center shrink-0`}>
+            <div
+              key={s.label}
+              className="col-span-1 bg-white rounded-2xl p-4 flex items-center gap-3.5 border border-slate-200/90 shadow-md shadow-slate-200/60 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-300/40 transition-all duration-200"
+            >
+              <div className={`w-11 h-11 rounded-xl ${s.bg} flex items-center justify-center shrink-0 border border-slate-100/80 shadow-2xs`}>
                 {s.icon}
               </div>
-              <div>
+              <div className="overflow-hidden">
                 <p className="text-lg font-bold text-gray-800 leading-tight">{s.value}</p>
-                <p className="text-[11px] font-medium text-gray-600">{s.label}</p>
-                <p className="text-[10px] text-gray-400">{s.sub}</p>
+                <p className="text-[11px] font-semibold text-gray-600 truncate">{s.label}</p>
+                <p className="text-[10px] text-gray-400 truncate">{s.sub}</p>
               </div>
             </div>
           ))}
 
           {/* Export */}
-          <div className="col-span-1 bg-white rounded-xl p-4 flex items-center gap-3 border border-gray-100 shadow-sm cursor-pointer hover:bg-gray-50 transition-colors">
-            <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center shrink-0">
-              <Download size={18} className="text-gray-500" />
+          <div className="col-span-1 bg-white rounded-2xl p-4 flex items-center gap-3.5 border border-slate-200/90 shadow-md shadow-slate-200/60 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-300/40 cursor-pointer hover:bg-gray-50/80 transition-all duration-200">
+            <div className="w-11 h-11 rounded-xl bg-gray-50 flex items-center justify-center shrink-0 border border-slate-100/80 shadow-2xs">
+              <Download size={18} className="text-gray-600" />
             </div>
-            <div>
-              <p className="text-[12px] font-semibold text-gray-700">Export</p>
-              <p className="text-[10px] text-gray-400">Export student list</p>
-            </div>
-          </div>
-
-          {/* Import CSV */}
-          <div className="col-span-1 bg-white rounded-xl p-4 flex items-center gap-3 border border-gray-100 shadow-sm cursor-pointer hover:bg-gray-50 transition-colors">
-            <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center shrink-0">
-              <Upload size={18} className="text-gray-500" />
-            </div>
-            <div>
-              <p className="text-[12px] font-semibold text-gray-700">Import CSV</p>
-              <p className="text-[10px] text-gray-400">Bulk import students</p>
+            <div className="overflow-hidden">
+              <p className="text-[13px] font-bold text-gray-800">Export</p>
+              <p className="text-[10px] text-gray-400 truncate">Export student list</p>
             </div>
           </div>
         </div>
 
         {/* Table */}
-        <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 overflow-hidden">
           {/* Table meta row */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 px-4 sm:px-5 py-3 border-b border-gray-100">
             <p className="text-xs text-gray-500 shrink-0">Showing {visibleStudents.length} of {students.length} students</p>
