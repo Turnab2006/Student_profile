@@ -31,6 +31,20 @@ import AdminProfile from "../../components/admin/AdminProfile";
 import SubjectCard, { SUBJECT_THEMES } from "../../components/student/SubjectCard";
 import { semesterSubjectsData, semesterOptions } from "../student/StudentSubjects";
 
+const formatDept = (dept) => {
+  if (!dept) return "";
+  const d = dept.toLowerCase().trim();
+  if (d.includes("computer science") || d === "cs" || d === "cse") return "CSE";
+  if (d.includes("electronics") || d.includes("communication") || d === "ece") return "ECE";
+  if (d.includes("electrical") || d === "ee") return "EE";
+  if (d.includes("master of computer applications") || d === "mca") return "MCA";
+  if (d.includes("computer applications") || d === "ca" || d === "bca") return "BCA";
+  if (d.includes("vlsi")) return "VLSI";
+  if (d.includes("civil") || d === "ce") return "CE";
+  if (d.includes("mechanical") || d === "me") return "ME";
+  return dept.toUpperCase();
+};
+
 const defaultSubjects = [
   {
     id: "1",
@@ -696,7 +710,7 @@ export default function Subjects({ onNavigate, subjectsList = [], setSubjectsLis
             </div>
 
             {/* Subjects Data Table */}
-            <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 overflow-hidden flex flex-col">
+            <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 overflow-hidden flex flex-col font-['Roboto',sans-serif]">
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead>
@@ -739,8 +753,8 @@ export default function Subjects({ onNavigate, subjectsList = [], setSubjectsLis
                             </td>
 
                             {/* Department */}
-                            <td className="py-4 px-6 font-medium text-gray-700">
-                              {item.department}
+                            <td className="py-4 px-6 font-semibold text-gray-700">
+                              {formatDept(item.department)}
                             </td>
 
                             {/* Year in Number */}

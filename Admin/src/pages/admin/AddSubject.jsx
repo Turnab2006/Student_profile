@@ -25,6 +25,20 @@ const programBadges = {
   MCA: "bg-[#f2f7ff] text-blue-600 border-blue-200/90",
 };
 
+const formatDept = (dept) => {
+  if (!dept) return "";
+  const d = dept.toLowerCase().trim();
+  if (d.includes("computer science") || d === "cs" || d === "cse") return "CSE";
+  if (d.includes("electronics") || d.includes("communication") || d === "ece") return "ECE";
+  if (d.includes("electrical") || d === "ee") return "EE";
+  if (d.includes("master of computer applications") || d === "mca") return "MCA";
+  if (d.includes("computer applications") || d === "ca" || d === "bca") return "BCA";
+  if (d.includes("vlsi")) return "VLSI";
+  if (d.includes("civil") || d === "ce") return "CE";
+  if (d.includes("mechanical") || d === "me") return "ME";
+  return dept.toUpperCase();
+};
+
 export default function AddSubject({ onNavigate, subjectsList = [], setSubjectsList, onOpenSidebar }) {
   // Form State - Filters MUST be selected first
   const [program, setProgram] = useState("");
@@ -420,54 +434,59 @@ export default function AddSubject({ onNavigate, subjectsList = [], setSubjectsL
               <div className="w-full space-y-3">
                 <div className="overflow-x-auto rounded-xl border border-emerald-200/80 bg-white">
                   <table className="w-full text-left text-xs">
-                    <thead className="bg-emerald-50/70 text-emerald-900 font-bold border-b border-emerald-200/60">
-                      <tr>
+                    <thead>
+                      <tr className="bg-gradient-to-r from-[#0da651] via-[#0e9f4e] to-[#09803d] text-white text-xs font-bold uppercase tracking-wider">
                         <th className="py-3 px-4">Code</th>
                         <th className="py-3 px-4">Subject Name</th>
                         <th className="py-3 px-4">Program</th>
+                        <th className="py-3 px-4 text-center">Year</th>
+                        <th className="py-3 px-4 text-center">Semester</th>
                         <th className="py-3 px-4">Department / Branch</th>
-                        <th className="py-3 px-4">Year</th>
-                        <th className="py-3 px-4">Semester</th>
                         <th className="py-3 px-4 text-right">Action</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
-                      {queuedSubjects.map((item) => (
-                        <tr key={item.id} className="hover:bg-emerald-50/30 transition-colors">
-                          <td className="py-3 px-4 font-extrabold text-emerald-700">
-                            <span className="inline-block px-2.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-bold text-[#0da651]">
-                              {item.code}
-                            </span>
-                          </td>
-                          <td className="py-3 px-4 font-bold text-gray-800 text-xs sm:text-sm">
-                            {item.name}
-                          </td>
-                          <td className="py-3 px-4 font-semibold text-gray-700">
-                            <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-bold border ${programBadges[item.program] || "bg-slate-100 text-slate-700"}`}>
-                              {item.program}
-                            </span>
-                          </td>
-                          <td className="py-3 px-4 text-gray-600 font-medium">
-                            {item.department}
-                          </td>
-                          <td className="py-3 px-4 font-semibold text-gray-700">
-                            {item.year}
-                          </td>
-                          <td className="py-3 px-4 font-bold text-blue-600">
-                            {item.semester}
-                          </td>
-                          <td className="py-3 px-4 text-right">
-                            <button
-                              type="button"
-                              onClick={() => handleRemoveQueued(item.id)}
-                              className="text-rose-500 hover:text-rose-700 p-1.5 rounded-lg hover:bg-rose-50 transition-colors cursor-pointer"
-                              title="Remove subject"
-                            >
-                              <Trash2 size={15} />
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
+                      {queuedSubjects.map((item) => {
+                        const yrNum = item.year ? item.year.toString().replace(/[^0-9]/g, "") : item.year;
+                        const smNum = item.semester ? item.semester.toString().replace(/[^0-9]/g, "") : item.semester;
+
+                        return (
+                          <tr key={item.id} className="hover:bg-emerald-50/30 transition-colors">
+                            <td className="py-3 px-4 font-extrabold text-emerald-700">
+                              <span className="inline-block px-2.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-bold text-[#0da651]">
+                                {item.code}
+                              </span>
+                            </td>
+                            <td className="py-3 px-4 font-bold text-gray-800 text-xs sm:text-sm">
+                              {item.name}
+                            </td>
+                            <td className="py-3 px-4 font-semibold text-gray-700">
+                              <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-bold border ${programBadges[item.program] || "bg-slate-100 text-slate-700"}`}>
+                                {item.program}
+                              </span>
+                            </td>
+                            <td className="py-3 px-4 text-center font-bold text-gray-700">
+                              {yrNum}
+                            </td>
+                            <td className="py-3 px-4 text-center font-bold text-blue-600">
+                              {smNum}
+                            </td>
+                            <td className="py-3 px-4 text-gray-700 font-semibold">
+                              {formatDept(item.department)}
+                            </td>
+                            <td className="py-3 px-4 text-right">
+                              <button
+                                type="button"
+                                onClick={() => handleRemoveQueued(item.id)}
+                                className="text-rose-500 hover:text-rose-700 p-1.5 rounded-lg hover:bg-rose-50 transition-colors cursor-pointer"
+                                title="Remove subject"
+                              >
+                                <Trash2 size={15} />
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
                     </tbody>
                   </table>
                 </div>
