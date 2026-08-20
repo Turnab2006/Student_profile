@@ -6,30 +6,45 @@ import {
   Plus,
   Trash2,
   ChevronDown,
-  Share2,
   BookOpen,
-  Bell,
-  HelpCircle,
-  Search,
   Pencil,
-  Mail,
-  Hash,
   Lightbulb,
   Send,
-  X,
   BookPlus,
-  Command,
   FolderOpen,
   Menu,
+  CheckCircle2,
+  AlertCircle,
 } from "lucide-react";
 import AdminProfile from "../../components/admin/AdminProfile";
 
+const programBadges = {
+  "B.Tech": "bg-[#f2faf5] text-[#0da651] border-emerald-200/90",
+  "M.Tech": "bg-[#fff8f2] text-orange-600 border-orange-200/90",
+  BCA: "bg-[#f7f5fd] text-violet-600 border-violet-200/90",
+  MCA: "bg-[#f2f7ff] text-blue-600 border-blue-200/90",
+};
+
+const formatDept = (dept) => {
+  if (!dept) return "";
+  const d = dept.toLowerCase().trim();
+  if (d.includes("computer science") || d === "cs" || d === "cse") return "CSE";
+  if (d.includes("electronics") || d.includes("communication") || d === "ece") return "ECE";
+  if (d.includes("electrical") || d === "ee") return "EE";
+  if (d.includes("master of computer applications") || d === "mca") return "MCA";
+  if (d.includes("computer applications") || d === "ca" || d === "bca") return "BCA";
+  if (d.includes("vlsi")) return "VLSI";
+  if (d.includes("civil") || d === "ce") return "CE";
+  if (d.includes("mechanical") || d === "me") return "ME";
+  return dept.toUpperCase();
+};
+
 export default function AddSubject({ onNavigate, subjectsList = [], setSubjectsList, onOpenSidebar }) {
-  // Form State
-  const [program, setProgram] = useState("B.Tech");
-  const [courseBranch, setCourseBranch] = useState("Computer Science Engineering");
-  const [year, setYear] = useState("Third Year");
-  const [semester, setSemester] = useState("V - Fifth Semester");
+  // Form State - Filters MUST be selected first
+  const [program, setProgram] = useState("");
+  const [courseBranch, setCourseBranch] = useState("");
+  const [year, setYear] = useState("");
+  const [semester, setSemester] = useState("");
 
   const [subjectCode, setSubjectCode] = useState("");
   const [subjectName, setSubjectName] = useState("");
@@ -37,20 +52,31 @@ export default function AddSubject({ onNavigate, subjectsList = [], setSubjectsL
   const [queuedSubjects, setQueuedSubjects] = useState([]);
   const [errorMsg, setErrorMsg] = useState("");
 
-  // Clean semester display (e.g. "V - Fifth Semester" -> "V Semester")
-  const formatSem = (semStr) => {
-    if (semStr.includes(" - ")) {
-      const parts = semStr.split(" - ");
-      return `${parts[0]} Semester`;
-    }
-    return semStr;
-  };
-
   // Add a single subject to queue
   const handleAddSubjectToQueue = (e) => {
     e?.preventDefault();
-    if (!subjectCode.trim() || !subjectName.trim()) {
-      setErrorMsg("Please enter both Subject Code and Subject Name.");
+    if (!program) {
+      setErrorMsg("Please select Program from the dropdown first.");
+      return;
+    }
+    if (!courseBranch) {
+      setErrorMsg("Please select Course / Branch from the dropdown first.");
+      return;
+    }
+    if (!year) {
+      setErrorMsg("Please select Academic Year from the dropdown first.");
+      return;
+    }
+    if (!semester) {
+      setErrorMsg("Please select Semester from the dropdown first.");
+      return;
+    }
+    if (!subjectCode.trim()) {
+      setErrorMsg("Please enter the Subject Code (e.g. CS501).");
+      return;
+    }
+    if (!subjectName.trim()) {
+      setErrorMsg("Please enter the Subject Name.");
       return;
     }
     setErrorMsg("");
@@ -62,7 +88,7 @@ export default function AddSubject({ onNavigate, subjectsList = [], setSubjectsL
       program,
       department: courseBranch,
       year,
-      semester: formatSem(semester),
+      semester,
     };
 
     setQueuedSubjects((prev) => [...prev, newSubject]);
@@ -77,10 +103,10 @@ export default function AddSubject({ onNavigate, subjectsList = [], setSubjectsL
 
   // Clear all
   const handleClearForm = () => {
-    setProgram("B.Tech");
-    setCourseBranch("Computer Science Engineering");
-    setYear("Third Year");
-    setSemester("V - Fifth Semester");
+    setProgram("");
+    setCourseBranch("");
+    setYear("");
+    setSemester("");
     setSubjectCode("");
     setSubjectName("");
     setQueuedSubjects([]);
@@ -91,21 +117,21 @@ export default function AddSubject({ onNavigate, subjectsList = [], setSubjectsL
   const handleSubmitAndSave = () => {
     let toSave = [...queuedSubjects];
 
-    // If inputs are currently filled, automatically add them to list too
-    if (subjectCode.trim() && subjectName.trim()) {
+    // If inputs are currently filled and filters are selected, automatically include them
+    if (program && courseBranch && year && semester && subjectCode.trim() && subjectName.trim()) {
       toSave.push({
-        id: Date.now().toString(),
+        id: Date.now().toString() + Math.random().toString(36).substr(2, 4),
         code: subjectCode.trim().toUpperCase(),
         name: subjectName.trim(),
         program,
         department: courseBranch,
         year,
-        semester: formatSem(semester),
+        semester,
       });
     }
 
     if (toSave.length === 0) {
-      setErrorMsg("Please add at least one subject before saving.");
+      setErrorMsg("Please select all filters, enter subject details, and click 'Add Subject' before saving.");
       return;
     }
 
@@ -116,10 +142,17 @@ export default function AddSubject({ onNavigate, subjectsList = [], setSubjectsL
     onNavigate?.("subjects");
   };
 
+  const selectFieldClass = (hasVal) =>
+    `w-full appearance-none border ${hasVal ? "border-emerald-300 bg-[#eaf8ee]" : "border-emerald-200/80 bg-[#f4fbf7]"
+    } hover:bg-[#ebf8f0]/70 hover:border-emerald-300 rounded-lg px-3 py-2 pr-8 text-sm font-semibold text-gray-800 focus:bg-white focus:outline-none focus:border-[#0da651] focus:ring-2 focus:ring-emerald-200 transition-all cursor-pointer`;
+
+  const inputFieldClass =
+    "w-full border border-emerald-200/80 bg-[#f4fbf7] hover:bg-[#ebf8f0]/70 hover:border-emerald-300 rounded-lg px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400 focus:bg-white focus:outline-none focus:border-[#0da651] focus:ring-2 focus:ring-emerald-200 transition-all";
+
   return (
     <div className="flex-1 h-full flex flex-col overflow-hidden bg-[#f8fafc]">
       {/* Top Header Bar */}
-      <header className="h-[65px] bg-white border-b border-gray-100 px-6 flex items-center justify-between shrink-0 shadow-2xs">
+      <header className="h-[65px] bg-white border-b border-gray-100 px-6 flex items-center justify-between shrink-0">
         <div className="flex items-center gap-3">
           <button
             type="button"
@@ -133,7 +166,7 @@ export default function AddSubject({ onNavigate, subjectsList = [], setSubjectsL
             <Menu size={20} />
           </button>
           <div>
-            <h1 className="text-xl font-bold text-gray-800 tracking-tight">Add New Subject</h1>
+            <h1 className="text-xl font-bold text-gray-800 tracking-tight">Add Subject</h1>
             <nav className="flex items-center gap-1.5 text-xs text-gray-400 mt-0.5">
               <span className="hover:text-gray-600 cursor-pointer" onClick={() => onNavigate?.("subjects")}>Subjects</span>
               <span>&gt;</span>
@@ -145,89 +178,67 @@ export default function AddSubject({ onNavigate, subjectsList = [], setSubjectsL
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-1 overflow-y-auto p-6 space-y-6">
-        {/* Banner Section */}
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#eaf8f1] via-[#edf9f3] to-[#e4f5ec] border border-[#d2f0e1] p-6 sm:p-7 shadow-md shadow-emerald-600/10">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 relative z-10">
-            <div className="flex items-start gap-4 max-w-xl">
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-[#0da651] text-white shadow-lg shadow-emerald-600/20">
-                <BookPlus size={28} className="stroke-[2.2]" />
+      <main className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5">
+        {/* Solid Green Gradient Banner */}
+        <section className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#0da651] via-[#0e9f4e] to-[#09803d] border border-emerald-600/30 px-4 py-3 sm:px-5 sm:py-3.5 shadow-sm">
+          <div className="relative z-10 flex items-center gap-3.5">
+            <div className="w-9 h-9 rounded-xl bg-white/20 text-white flex items-center justify-center shrink-0 border border-white/25">
+              <BookPlus size={18} />
+            </div>
+            <div>
+              <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">
+                Add New Subject
+              </h2>
+              <p className="text-xs text-emerald-50/90 font-normal mt-0.5">
+                First select program, course, year and semester then enter subject details to add subjects to the list
+              </p>
+            </div>
+          </div>
+          <div className="absolute right-0 top-0 bottom-0 w-40 bg-gradient-to-l from-white/10 to-transparent pointer-events-none" />
+        </section>
+
+        {/* Card 1: Step 1 - Select Program Details */}
+        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-5 sm:p-6 space-y-5">
+          <div className="flex items-center justify-between gap-3 mb-4 pb-3 border-b border-gray-100">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-emerald-100/70 flex items-center justify-center text-[#0da651]">
+                <GraduationCap size={18} />
               </div>
               <div>
-                <h2 className="text-2xl font-extrabold text-gray-800 tracking-tight">
-                  Add New <span className="text-[#0da651]">Subject</span>
-                </h2>
-                <p className="mt-1 text-xs sm:text-sm text-gray-600 leading-relaxed font-normal">
-                  Select program, course, year and semester then enter subject details to add a new subject.
-                </p>
+                <h3 className="text-base font-bold text-gray-800">1. Select Program &amp; Semester Filters</h3>
+                <p className="text-xs text-gray-400 mt-0.5">Admin must select all 4 filters before adding subject details</p>
               </div>
             </div>
-
-            {/* Illustration Graphic */}
-            <div className="hidden md:flex items-center shrink-0 pr-4">
-              <svg width="220" height="110" viewBox="0 0 240 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="drop-shadow-md">
-                {/* Yellow Book */}
-                <rect x="25" y="82" width="115" height="18" rx="4" fill="#eab308" />
-                <rect x="30" y="86" width="105" height="10" rx="2" fill="#fde047" />
-                <rect x="25" y="82" width="10" height="18" rx="2" fill="#ca8a04" />
-
-                {/* Purple Book */}
-                <rect x="35" y="62" width="105" height="18" rx="4" fill="#8b5cf6" />
-                <rect x="40" y="66" width="95" height="10" rx="2" fill="#a78bfa" />
-                <rect x="35" y="62" width="10" height="18" rx="2" fill="#6d28d9" />
-
-                {/* Blue Book */}
-                <rect x="45" y="44" width="95" height="16" rx="3" fill="#3b82f6" />
-                <rect x="50" y="48" width="85" height="8" rx="1.5" fill="#60a5fa" />
-                <rect x="45" y="44" width="8" height="16" rx="1.5" fill="#1d4ed8" />
-
-                {/* Open Diploma / Certificate Scroll */}
-                <rect x="15" y="102" width="150" height="12" rx="3" fill="#f8fafc" stroke="#cbd5e1" strokeWidth="1.5" />
-
-                {/* Graduation Cap */}
-                <path d="M145 35 L200 15 L255 35 L200 55 Z" fill="#1e293b" />
-                <polygon points="200,15 250,33 200,51 150,33" fill="#334155" />
-                <rect x="180" y="43" width="40" height="20" rx="4" fill="#1e293b" />
-                {/* Gold tassel */}
-                <path d="M240 35 L240 60 L246 66" stroke="#f59e0b" strokeWidth="2.5" strokeLinecap="round" />
-                <circle cx="246" cy="68" r="3" fill="#f59e0b" />
-              </svg>
-            </div>
-          </div>
-        </div>
-
-        {/* Card 1: Select Program Details */}
-        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-6 space-y-5">
-          <div className="flex items-center gap-2.5 border-b border-gray-100 pb-3">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700">
-              <Mail size={15} />
-            </div>
-            <h3 className="text-sm font-bold text-gray-800 tracking-tight">Select Program Details</h3>
+            {program && courseBranch && year && semester && (
+              <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-[#0da651] border border-emerald-200/80">
+                <CheckCircle2 size={13} />
+                Filters Selected
+              </span>
+            )}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Program */}
             <div>
               <label className="block text-xs font-semibold text-gray-700 mb-1.5">
                 Program <span className="text-rose-500">*</span>
               </label>
               <div className="relative flex items-center">
-                <div className="absolute left-3 z-10 pointer-events-none flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600">
-                  <GraduationCap size={16} />
-                </div>
                 <select
                   value={program}
-                  onChange={(e) => setProgram(e.target.value)}
-                  className="w-full appearance-none rounded-xl border border-gray-200 bg-white py-2.5 pl-14 pr-8 text-xs sm:text-sm font-medium text-gray-700 shadow-2xs focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 cursor-pointer"
+                  onChange={(e) => {
+                    setProgram(e.target.value);
+                    setErrorMsg("");
+                  }}
+                  className={selectFieldClass(!!program)}
                 >
-                  <option>B.Tech</option>
-                  <option>M.Tech</option>
-                  <option>BCA</option>
-                  <option>MCA</option>
-                  <option>B.Sc</option>
-                  <option>M.Sc</option>
+                  <option value="">Select Program</option>
+                  <option value="B.Tech">B.Tech</option>
+                  <option value="M.Tech">M.Tech</option>
+                  <option value="BCA">BCA</option>
+                  <option value="MCA">MCA</option>
                 </select>
-                <ChevronDown size={15} className="pointer-events-none absolute right-3 text-gray-400" />
+                <ChevronDown size={14} className="pointer-events-none absolute right-3 text-[#0da651]" />
               </div>
             </div>
 
@@ -237,24 +248,23 @@ export default function AddSubject({ onNavigate, subjectsList = [], setSubjectsL
                 Course / Branch <span className="text-rose-500">*</span>
               </label>
               <div className="relative flex items-center">
-                <div className="absolute left-3 z-10 pointer-events-none flex h-8 w-8 items-center justify-center rounded-lg bg-purple-50 text-purple-600">
-                  <Share2 size={16} />
-                </div>
                 <select
                   value={courseBranch}
-                  onChange={(e) => setCourseBranch(e.target.value)}
-                  className="w-full appearance-none rounded-xl border border-gray-200 bg-white py-2.5 pl-14 pr-8 text-xs sm:text-sm font-medium text-gray-700 shadow-2xs focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 cursor-pointer"
+                  onChange={(e) => {
+                    setCourseBranch(e.target.value);
+                    setErrorMsg("");
+                  }}
+                  className={selectFieldClass(!!courseBranch)}
                 >
-                  <option>Computer Science Engineering</option>
-                  <option>Electronics & Communication Engineering</option>
-                  <option>Electrical Engineering</option>
-                  <option>VLSI Design</option>
-                  <option>Computer Applications</option>
-                  <option>Master of Computer Applications</option>
-                  <option>Civil Engineering</option>
-                  <option>Mechanical Engineering</option>
+                  <option value="">Select Course / Branch</option>
+                  <option value="Computer Science Engineering">Computer Science Engineering</option>
+                  <option value="Electronics & Communication Engineering">Electronics & Communication Engineering</option>
+                  <option value="Electrical Engineering">Electrical Engineering</option>
+                  <option value="VLSI Design">VLSI Design</option>
+                  <option value="Computer Applications">Computer Applications</option>
+                  <option value="Master of Computer Applications">Master of Computer Applications</option>
                 </select>
-                <ChevronDown size={15} className="pointer-events-none absolute right-3 text-gray-400" />
+                <ChevronDown size={14} className="pointer-events-none absolute right-3 text-[#0da651]" />
               </div>
             </div>
 
@@ -264,20 +274,21 @@ export default function AddSubject({ onNavigate, subjectsList = [], setSubjectsL
                 Year <span className="text-rose-500">*</span>
               </label>
               <div className="relative flex items-center">
-                <div className="absolute left-3 z-10 pointer-events-none flex h-8 w-8 items-center justify-center rounded-lg bg-amber-50 text-amber-600">
-                  <Calendar size={16} />
-                </div>
                 <select
                   value={year}
-                  onChange={(e) => setYear(e.target.value)}
-                  className="w-full appearance-none rounded-xl border border-gray-200 bg-white py-2.5 pl-14 pr-8 text-xs sm:text-sm font-medium text-gray-700 shadow-2xs focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 cursor-pointer"
+                  onChange={(e) => {
+                    setYear(e.target.value);
+                    setErrorMsg("");
+                  }}
+                  className={selectFieldClass(!!year)}
                 >
-                  <option>First Year</option>
-                  <option>Second Year</option>
-                  <option>Third Year</option>
-                  <option>Fourth Year</option>
+                  <option value="">Select Year</option>
+                  <option value="1st Year">1st Year</option>
+                  <option value="2nd Year">2nd Year</option>
+                  <option value="3rd Year">3rd Year</option>
+                  <option value="4th Year">4th Year</option>
                 </select>
-                <ChevronDown size={15} className="pointer-events-none absolute right-3 text-gray-400" />
+                <ChevronDown size={14} className="pointer-events-none absolute right-3 text-[#0da651]" />
               </div>
             </div>
 
@@ -287,36 +298,40 @@ export default function AddSubject({ onNavigate, subjectsList = [], setSubjectsL
                 Semester <span className="text-rose-500">*</span>
               </label>
               <div className="relative flex items-center">
-                <div className="absolute left-3 z-10 pointer-events-none flex h-8 w-8 items-center justify-center rounded-lg bg-rose-50 text-rose-500">
-                  <CalendarDays size={16} />
-                </div>
                 <select
                   value={semester}
-                  onChange={(e) => setSemester(e.target.value)}
-                  className="w-full appearance-none rounded-xl border border-gray-200 bg-white py-2.5 pl-14 pr-8 text-xs sm:text-sm font-medium text-gray-700 shadow-2xs focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 cursor-pointer"
+                  onChange={(e) => {
+                    setSemester(e.target.value);
+                    setErrorMsg("");
+                  }}
+                  className={selectFieldClass(!!semester)}
                 >
-                  <option>I - First Semester</option>
-                  <option>II - Second Semester</option>
-                  <option>III - Third Semester</option>
-                  <option>IV - Fourth Semester</option>
-                  <option>V - Fifth Semester</option>
-                  <option>VI - Sixth Semester</option>
-                  <option>VII - Seventh Semester</option>
-                  <option>VIII - Eighth Semester</option>
+                  <option value="">Select Semester</option>
+                  <option value="Semester 1">Semester 1</option>
+                  <option value="Semester 2">Semester 2</option>
+                  <option value="Semester 3">Semester 3</option>
+                  <option value="Semester 4">Semester 4</option>
+                  <option value="Semester 5">Semester 5</option>
+                  <option value="Semester 6">Semester 6</option>
+                  <option value="Semester 7">Semester 7</option>
+                  <option value="Semester 8">Semester 8</option>
                 </select>
-                <ChevronDown size={15} className="pointer-events-none absolute right-3 text-gray-400" />
+                <ChevronDown size={14} className="pointer-events-none absolute right-3 text-[#0da651]" />
               </div>
             </div>
           </div>
         </div>
 
-        {/* Card 2: Enter Subject Details */}
-        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-6 space-y-5">
-          <div className="flex items-center gap-2.5 border-b border-gray-100 pb-3">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-100 text-emerald-700">
-              <Pencil size={15} />
+        {/* Card 2: Step 2 - Enter Subject Details */}
+        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-5 sm:p-6 space-y-5">
+          <div className="flex items-center gap-3 mb-4 pb-3 border-b border-gray-100">
+            <div className="w-8 h-8 rounded-full bg-emerald-100/70 flex items-center justify-center text-[#0da651]">
+              <Pencil size={18} />
             </div>
-            <h3 className="text-sm font-bold text-gray-800 tracking-tight">Enter Subject Details</h3>
+            <div>
+              <h3 className="text-base font-bold text-gray-800">2. Enter Subject Details</h3>
+              <p className="text-xs text-gray-400 mt-0.5">Provide official course code and subject title for the selected stream</p>
+            </div>
           </div>
 
           <form onSubmit={handleAddSubjectToQueue} className="space-y-4">
@@ -327,15 +342,15 @@ export default function AddSubject({ onNavigate, subjectsList = [], setSubjectsL
                   Subject Code <span className="text-rose-500">*</span>
                 </label>
                 <div className="relative flex items-center">
-                  <div className="absolute left-3 z-10 pointer-events-none flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-100/80 text-[#0da651] font-bold text-sm">
-                    #
-                  </div>
                   <input
                     type="text"
                     value={subjectCode}
-                    onChange={(e) => setSubjectCode(e.target.value)}
-                    placeholder="Enter subject code (e.g. CS301)"
-                    className="w-full rounded-xl border border-gray-200 bg-white py-2.5 pl-14 pr-4 text-xs sm:text-sm font-medium text-gray-800 placeholder-gray-400 shadow-2xs focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+                    onChange={(e) => {
+                      setSubjectCode(e.target.value);
+                      setErrorMsg("");
+                    }}
+                    placeholder="Enter subject code (e.g. CS501)"
+                    className={inputFieldClass}
                   />
                 </div>
               </div>
@@ -346,15 +361,15 @@ export default function AddSubject({ onNavigate, subjectsList = [], setSubjectsL
                   Subject Name <span className="text-rose-500">*</span>
                 </label>
                 <div className="relative flex items-center">
-                  <div className="absolute left-3 z-10 pointer-events-none flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100/80 text-blue-600">
-                    <BookOpen size={16} />
-                  </div>
                   <input
                     type="text"
                     value={subjectName}
-                    onChange={(e) => setSubjectName(e.target.value)}
-                    placeholder="Enter subject name"
-                    className="w-full rounded-xl border border-gray-200 bg-white py-2.5 pl-14 pr-4 text-xs sm:text-sm font-medium text-gray-800 placeholder-gray-400 shadow-2xs focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+                    onChange={(e) => {
+                      setSubjectName(e.target.value);
+                      setErrorMsg("");
+                    }}
+                    placeholder="Enter subject name (e.g. Algorithms)"
+                    className={inputFieldClass}
                   />
                 </div>
               </div>
@@ -363,86 +378,115 @@ export default function AddSubject({ onNavigate, subjectsList = [], setSubjectsL
               <div className="md:col-span-2">
                 <button
                   type="submit"
-                  className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-[#0da651] px-4 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-md shadow-emerald-600/20 hover:bg-emerald-700 active:scale-[0.99] transition-all cursor-pointer"
+                  className="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-[#0da651] px-4 py-2 text-xs sm:text-sm font-bold text-white hover:bg-emerald-700 active:scale-[0.99] transition-all cursor-pointer"
                 >
-                  <Plus size={16} className="stroke-[3]" />
-                  Add Subject
+                  <Plus size={16} className="stroke-[2.5]" />
+                  Add
                 </button>
               </div>
             </div>
 
+            {/* Error Message Alert */}
             {errorMsg && (
-              <p className="text-xs text-rose-500 font-medium">{errorMsg}</p>
+              <div className="flex items-center gap-2 text-xs font-semibold text-rose-600 bg-rose-50 border border-rose-200 px-3.5 py-2 rounded-xl">
+                <AlertCircle size={15} className="shrink-0" />
+                <span>{errorMsg}</span>
+              </div>
             )}
 
             {/* Tip Notice Banner */}
-            <div className="bg-[#fffbeb] border border-[#fef08a] rounded-xl p-3 flex items-center gap-3 text-xs text-amber-900 shadow-2xs">
+            <div className="bg-[#fffbeb] border border-[#fef08a] rounded-xl p-3 flex items-center gap-3 text-xs text-amber-900">
               <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-amber-200/60 text-amber-700">
                 <Lightbulb size={14} />
               </div>
               <p className="font-medium text-amber-800">
-                Enter subject code and name, then click on Add Subject to include it in the list.
+                First choose the 4 filters above, enter subject code and name, then click on &quot;Add Subject&quot; to list it below.
               </p>
             </div>
           </form>
 
           {/* Queue Count */}
-          <div className="flex items-center justify-end pt-2">
+          <div className="flex items-center justify-between pt-1">
+            <h4 className="text-xs font-bold text-gray-700 uppercase tracking-wider">
+              Pending Subjects Queue ({queuedSubjects.length})
+            </h4>
             <p className="text-xs text-gray-500 font-medium">
               Total Subjects Added:{" "}
-              <span className="font-bold text-[#0da651] text-sm">{queuedSubjects.length}</span>
+              <span className="font-extrabold text-[#0da651] text-sm">{queuedSubjects.length}</span>
             </p>
           </div>
 
           {/* Dashed Queue Box Container */}
-          <div className="border-2 border-dashed border-emerald-300/70 rounded-2xl p-6 bg-[#f7fcf9] min-h-[180px] flex flex-col items-center justify-center">
+          <div className="border-2 border-dashed border-emerald-300/70 rounded-2xl p-5 bg-[#f7fcf9] min-h-[160px] flex flex-col items-center justify-center">
             {queuedSubjects.length === 0 ? (
-              <div className="text-center py-4 space-y-3">
-                {/* Folder Graphic */}
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-100/60 text-[#0da651] shadow-inner">
-                  <FolderOpen size={36} className="stroke-[1.8]" />
+              <div className="text-center py-4 space-y-2">
+                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-100/60 text-[#0da651]">
+                  <FolderOpen size={30} className="stroke-[1.8]" />
                 </div>
                 <div>
                   <h4 className="text-sm font-bold text-gray-800">No subjects added yet!</h4>
-                  <p className="text-xs text-gray-500 mt-1">
-                    Enter the subject details above and click on Add Subject.
+                  <p className="text-xs text-gray-500 mt-0.5">
+                    Select Program, Course, Year &amp; Semester above, enter Subject Code &amp; Name, then click &quot;Add Subject&quot;.
                   </p>
                 </div>
               </div>
             ) : (
               <div className="w-full space-y-3">
-                <h4 className="text-xs font-bold text-gray-700 uppercase tracking-wider">
-                  Pending Subjects to Save ({queuedSubjects.length})
-                </h4>
                 <div className="overflow-x-auto rounded-xl border border-emerald-200/80 bg-white">
                   <table className="w-full text-left text-xs">
-                    <thead className="bg-emerald-50/60 text-emerald-900 font-semibold border-b border-emerald-200/60">
-                      <tr>
-                        <th className="py-2.5 px-4">Code</th>
-                        <th className="py-2.5 px-4">Subject Name</th>
-                        <th className="py-2.5 px-4">Program</th>
-                        <th className="py-2.5 px-4">Year & Semester</th>
-                        <th className="py-2.5 px-4 text-right">Action</th>
+                    <thead>
+                      <tr className="bg-gradient-to-r from-[#0da651] via-[#0e9f4e] to-[#09803d] text-white text-xs font-bold uppercase tracking-wider">
+                        <th className="py-3 px-4">Code</th>
+                        <th className="py-3 px-4">Subject Name</th>
+                        <th className="py-3 px-4">Program</th>
+                        <th className="py-3 px-4 text-center">Year</th>
+                        <th className="py-3 px-4 text-center">Semester</th>
+                        <th className="py-3 px-4">Department / Branch</th>
+                        <th className="py-3 px-4 text-right">Action</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
-                      {queuedSubjects.map((item) => (
-                        <tr key={item.id} className="hover:bg-emerald-50/30">
-                          <td className="py-2.5 px-4 font-bold text-emerald-700">{item.code}</td>
-                          <td className="py-2.5 px-4 font-medium text-gray-800">{item.name}</td>
-                          <td className="py-2.5 px-4 text-gray-600">{item.program} ({item.department})</td>
-                          <td className="py-2.5 px-4 text-gray-600">{item.year} - {item.semester}</td>
-                          <td className="py-2.5 px-4 text-right">
-                            <button
-                              onClick={() => handleRemoveQueued(item.id)}
-                              className="text-rose-500 hover:text-rose-700 p-1 rounded-md hover:bg-rose-50"
-                              title="Remove"
-                            >
-                              <Trash2 size={15} />
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
+                      {queuedSubjects.map((item) => {
+                        const yrNum = item.year ? item.year.toString().replace(/[^0-9]/g, "") : item.year;
+                        const smNum = item.semester ? item.semester.toString().replace(/[^0-9]/g, "") : item.semester;
+
+                        return (
+                          <tr key={item.id} className="hover:bg-emerald-50/30 transition-colors">
+                            <td className="py-3 px-4 font-extrabold text-emerald-700">
+                              <span className="inline-block px-2.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-bold text-[#0da651]">
+                                {item.code}
+                              </span>
+                            </td>
+                            <td className="py-3 px-4 font-bold text-gray-800 text-xs sm:text-sm">
+                              {item.name}
+                            </td>
+                            <td className="py-3 px-4 font-semibold text-gray-700">
+                              <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-bold border ${programBadges[item.program] || "bg-slate-100 text-slate-700"}`}>
+                                {item.program}
+                              </span>
+                            </td>
+                            <td className="py-3 px-4 text-center font-bold text-gray-700">
+                              {yrNum}
+                            </td>
+                            <td className="py-3 px-4 text-center font-bold text-blue-600">
+                              {smNum}
+                            </td>
+                            <td className="py-3 px-4 text-gray-700 font-semibold">
+                              {formatDept(item.department)}
+                            </td>
+                            <td className="py-3 px-4 text-right">
+                              <button
+                                type="button"
+                                onClick={() => handleRemoveQueued(item.id)}
+                                className="text-rose-500 hover:text-rose-700 p-1.5 rounded-lg hover:bg-rose-50 transition-colors cursor-pointer"
+                                title="Remove subject"
+                              >
+                                <Trash2 size={15} />
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
                     </tbody>
                   </table>
                 </div>
@@ -451,12 +495,12 @@ export default function AddSubject({ onNavigate, subjectsList = [], setSubjectsL
           </div>
         </div>
 
-        {/* Bottom Form Actions */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
+        {/* Bottom Form Actions Card */}
+        <section className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-4 sm:px-6 sm:py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
           <button
             type="button"
             onClick={handleClearForm}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border border-rose-200 bg-white px-5 py-2.5 text-xs sm:text-sm font-semibold text-rose-600 shadow-2xs hover:bg-rose-50 hover:border-rose-300 transition-all cursor-pointer"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border border-rose-200 bg-rose-50/50 px-5 py-2.5 text-xs sm:text-sm font-semibold text-rose-600 hover:bg-rose-100/70 hover:border-rose-300 transition-all cursor-pointer"
           >
             <Trash2 size={16} />
             Clear Form
@@ -466,20 +510,20 @@ export default function AddSubject({ onNavigate, subjectsList = [], setSubjectsL
             <button
               type="button"
               onClick={() => onNavigate?.("subjects")}
-              className="flex-1 sm:flex-none inline-flex items-center justify-center rounded-xl border border-gray-200 bg-white px-6 py-2.5 text-xs sm:text-sm font-semibold text-gray-700 shadow-2xs hover:bg-gray-50 transition-all cursor-pointer"
+              className="flex-1 sm:flex-none inline-flex items-center justify-center rounded-xl border border-gray-200 bg-gray-50/80 px-6 py-2.5 text-xs sm:text-sm font-semibold text-gray-700 hover:bg-gray-100 transition-all cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="button"
               onClick={handleSubmitAndSave}
-              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 rounded-xl bg-[#0da651] px-6 py-2.5 text-xs sm:text-sm font-semibold text-white shadow-md shadow-emerald-600/20 hover:bg-emerald-700 transition-all cursor-pointer"
+              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 rounded-xl bg-[#0da651] px-6 py-2.5 text-xs sm:text-sm font-bold text-white hover:bg-emerald-700 active:scale-[0.99] transition-all cursor-pointer"
             >
               <Send size={16} />
-              Submit & Save Subjects
+              Save and Submit
             </button>
           </div>
-        </div>
+        </section>
       </main>
     </div>
   );

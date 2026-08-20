@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import {
   Users,
   UserCheck,
@@ -16,6 +16,7 @@ import {
   Eye,
   Mail,
   MoreVertical,
+  MoreHorizontal,
   Bell,
   HelpCircle,
   TrendingUp,
@@ -26,9 +27,77 @@ import {
   Menu,
   Building2,
   BookOpen,
-  GraduationCap
+  GraduationCap,
+  ArrowLeft,
 } from "lucide-react";
 import AdminProfile from "../../components/admin/AdminProfile";
+import SemesterAttendanceDetail from "../student/SemesterAttendanceDetail";
+
+const defaultStudentSubjects = {
+  1: [
+    { code: "CS101", name: "Programming in C", attended: 58, total: 60, percentage: 96 },
+    { code: "MA101", name: "Engineering Mathematics I", attended: 54, total: 60, percentage: 90 },
+    { code: "PH101", name: "Engineering Physics", attended: 52, total: 60, percentage: 86 },
+    { code: "EE101", name: "Basic Electrical Engineering", attended: 56, total: 60, percentage: 93 },
+    { code: "CS191", name: "C Programming Lab", attended: 30, total: 30, percentage: 100 },
+  ],
+  2: [
+    { code: "CS201", name: "Data Structures & OOP", attended: 55, total: 60, percentage: 91 },
+    { code: "MA201", name: "Engineering Mathematics II", attended: 50, total: 60, percentage: 83 },
+    { code: "EC201", name: "Digital Electronics", attended: 54, total: 60, percentage: 90 },
+    { code: "CH201", name: "Engineering Chemistry", attended: 51, total: 60, percentage: 85 },
+  ],
+  3: [
+    { code: "CS301", name: "Data Structures & Algorithms", attended: 57, total: 60, percentage: 95 },
+    { code: "CS302", name: "Computer Organization & Arch", attended: 47, total: 60, percentage: 78 },
+    { code: "CS303", name: "Database Management Systems", attended: 53, total: 60, percentage: 88 },
+    { code: "CS304", name: "Operating Systems", attended: 37, total: 60, percentage: 62 },
+    { code: "CS305", name: "Discrete Mathematics", attended: 55, total: 60, percentage: 91 },
+  ],
+  4: [
+    { code: "CS401", name: "Design & Analysis of Algorithms", attended: 56, total: 60, percentage: 93 },
+    { code: "CS402", name: "Software Engineering", attended: 52, total: 60, percentage: 86 },
+    { code: "CS403", name: "Formal Language & Automata", attended: 48, total: 60, percentage: 80 },
+    { code: "CS404", name: "Computer Networks", attended: 54, total: 60, percentage: 90 },
+  ],
+  5: [
+    { code: "CS501", name: "Design & Analysis of Algorithms", attended: 57, total: 60, percentage: 95 },
+    { code: "CS502", name: "Compiler Design", attended: 47, total: 60, percentage: 78 },
+    { code: "CS503", name: "Database Management Systems", attended: 53, total: 60, percentage: 88 },
+    { code: "CS504", name: "Operating Systems", attended: 37, total: 60, percentage: 62 },
+    { code: "CS505", name: "Computer Networks", attended: 55, total: 60, percentage: 91 },
+    { code: "CS506", name: "Software Engineering", attended: 27, total: 60, percentage: 45 },
+  ],
+  6: [
+    { code: "CS601", name: "Artificial Intelligence", attended: 55, total: 60, percentage: 91 },
+    { code: "CS602", name: "Web Technologies", attended: 58, total: 60, percentage: 96 },
+    { code: "CS603", name: "Cloud Computing", attended: 52, total: 60, percentage: 86 },
+    { code: "CS604", name: "Information Security", attended: 50, total: 60, percentage: 83 },
+  ],
+  7: [
+    { code: "CS701", name: "Machine Learning", attended: 56, total: 60, percentage: 93 },
+    { code: "CS702", name: "Internet of Things (IoT)", attended: 54, total: 60, percentage: 90 },
+    { code: "CS703", name: "Big Data Analytics", attended: 51, total: 60, percentage: 85 },
+  ],
+  8: [
+    { code: "CS801", name: "Major Project & Internship", attended: 60, total: 60, percentage: 100 },
+    { code: "CS802", name: "Distributed Systems", attended: 56, total: 60, percentage: 93 },
+  ],
+};
+
+const formatDept = (dept) => {
+  if (!dept) return "";
+  const d = dept.toLowerCase().trim();
+  if (d.includes("computer science") || d === "cs" || d === "cse") return "CSE";
+  if (d.includes("electronics") || d.includes("communication") || d === "ece") return "ECE";
+  if (d.includes("electrical") || d === "ee") return "EE";
+  if (d.includes("master of computer applications") || d === "mca") return "MCA";
+  if (d.includes("computer applications") || d === "ca" || d === "bca") return "BCA";
+  if (d.includes("vlsi")) return "VLSI";
+  if (d.includes("civil") || d === "ce") return "CE";
+  if (d.includes("mechanical") || d === "me") return "ME";
+  return dept.toUpperCase();
+};
 
 const defaultStudentsAttendance = [
   {
@@ -38,8 +107,10 @@ const defaultStudentsAttendance = [
     initials: "AJ",
     avatarBg: "bg-emerald-500",
     rollNo: "CS2021001",
-    department: "Computer Science",
+    department: "CSE",
     program: "B.Tech",
+    year: "3",
+    semester: "5",
     course: "Data Structures",
     courseCode: "CS301",
     percentage: 95,
@@ -54,8 +125,10 @@ const defaultStudentsAttendance = [
     initials: "BS",
     avatarBg: "bg-blue-500",
     rollNo: "CS2021002",
-    department: "Computer Science",
+    department: "CSE",
     program: "B.Tech",
+    year: "2",
+    semester: "3",
     course: "Algorithms",
     courseCode: "CS302",
     percentage: 78,
@@ -70,8 +143,10 @@ const defaultStudentsAttendance = [
     initials: "CW",
     avatarBg: "bg-purple-500",
     rollNo: "CS2021003",
-    department: "Computer Science",
+    department: "CSE",
     program: "B.Tech",
+    year: "3",
+    semester: "5",
     course: "Database Systems",
     courseCode: "CS303",
     percentage: 88,
@@ -86,8 +161,10 @@ const defaultStudentsAttendance = [
     initials: "DB",
     avatarBg: "bg-rose-500",
     rollNo: "CS2021004",
-    department: "Computer Science",
+    department: "CSE",
     program: "B.Tech",
+    year: "1",
+    semester: "1",
     course: "Operating Systems",
     courseCode: "CS304",
     percentage: 62,
@@ -102,8 +179,10 @@ const defaultStudentsAttendance = [
     initials: "EM",
     avatarBg: "bg-teal-500",
     rollNo: "CS2021005",
-    department: "Computer Science",
+    department: "CSE",
     program: "B.Tech",
+    year: "4",
+    semester: "7",
     course: "Computer Networks",
     courseCode: "CS305",
     percentage: 91,
@@ -118,8 +197,10 @@ const defaultStudentsAttendance = [
     initials: "FL",
     avatarBg: "bg-pink-500",
     rollNo: "CS2021006",
-    department: "Computer Science",
+    department: "CSE",
     program: "B.Tech",
+    year: "2",
+    semester: "3",
     course: "Software Engineering",
     courseCode: "CS306",
     percentage: 45,
@@ -134,8 +215,10 @@ const defaultStudentsAttendance = [
     initials: "GT",
     avatarBg: "bg-indigo-500",
     rollNo: "CS2021007",
-    department: "Electronics",
+    department: "ECE",
     program: "B.Tech",
+    year: "3",
+    semester: "5",
     course: "Digital Signal Processing",
     courseCode: "EC301",
     percentage: 84,
@@ -150,8 +233,10 @@ const defaultStudentsAttendance = [
     initials: "HW",
     avatarBg: "bg-orange-500",
     rollNo: "CS2021008",
-    department: "Electrical",
+    department: "EE",
     program: "B.Tech",
+    year: "4",
+    semester: "7",
     course: "Power Systems",
     courseCode: "EE301",
     percentage: 96,
@@ -166,8 +251,10 @@ const defaultStudentsAttendance = [
     initials: "IC",
     avatarBg: "bg-violet-500",
     rollNo: "CS2021009",
-    department: "Computer Applications",
+    department: "BCA",
     program: "BCA",
+    year: "2",
+    semester: "3",
     course: "Web Development",
     courseCode: "BC301",
     percentage: 90,
@@ -182,8 +269,10 @@ const defaultStudentsAttendance = [
     initials: "JD",
     avatarBg: "bg-cyan-500",
     rollNo: "CS2021010",
-    department: "Computer Applications",
+    department: "MCA",
     program: "MCA",
+    year: "1",
+    semester: "1",
     course: "Cloud Computing",
     courseCode: "MC301",
     percentage: 58,
@@ -215,9 +304,17 @@ export default function Attendances({ onNavigate, onOpenSidebar }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
 
-  const [viewStudentModal, setViewStudentModal] = useState(null);
+  const [viewingStudent, setViewingStudent] = useState(null);
+  const [selectedStudentSem, setSelectedStudentSem] = useState(5);
   const [emailModal, setEmailModal] = useState(null);
   const [toastMsg, setToastMsg] = useState("");
+  const [activeMenuId, setActiveMenuId] = useState(null);
+
+  useEffect(() => {
+    const handleCloseMenus = () => setActiveMenuId(null);
+    window.addEventListener("click", handleCloseMenus);
+    return () => window.removeEventListener("click", handleCloseMenus);
+  }, []);
 
   const showToast = (msg) => {
     setToastMsg(msg);
@@ -227,26 +324,58 @@ export default function Attendances({ onNavigate, onOpenSidebar }) {
   // Filtered Students
   const filteredData = useMemo(() => {
     return defaultStudentsAttendance.filter((s) => {
-      if (selectedDept !== "All Departments" && s.department !== selectedDept) return false;
+      if (selectedDept !== "All Departments" && formatDept(s.department) !== selectedDept) return false;
       if (selectedProgram !== "All Programs" && s.program !== selectedProgram) return false;
+      if (selectedSem !== "All Semesters") {
+        const selSemNum = selectedSem.replace(/[^0-9]/g, "");
+        const studentSemNum = s.semester ? s.semester.toString().replace(/[^0-9]/g, "") : "";
+        if (selSemNum && studentSemNum && selSemNum !== studentSemNum) return false;
+      }
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
         return (
           s.name.toLowerCase().includes(q) ||
           s.email.toLowerCase().includes(q) ||
           s.rollNo.toLowerCase().includes(q) ||
-          s.department.toLowerCase().includes(q)
+          formatDept(s.department).toLowerCase().includes(q) ||
+          s.program.toLowerCase().includes(q)
         );
       }
       return true;
     });
-  }, [selectedDept, selectedProgram, searchQuery]);
+  }, [selectedDept, selectedProgram, selectedSem, searchQuery]);
 
   const totalPages = Math.ceil(filteredData.length / itemsPerPage) || 1;
   const currentStudents = useMemo(() => {
     const start = (currentPage - 1) * itemsPerPage;
     return filteredData.slice(start, start + itemsPerPage);
   }, [filteredData, currentPage, itemsPerPage]);
+
+  // Semester attendance data for currently selected student in detail view
+  const allSemestersData = useMemo(() => {
+    return [1, 2, 3, 4, 5, 6, 7, 8].map((sem) => {
+      const subjects = defaultStudentSubjects[sem] || defaultStudentSubjects[5];
+      const totalAttended = subjects.reduce((sum, sub) => sum + sub.attended, 0);
+      const totalClasses = subjects.reduce((sum, sub) => sum + sub.total, 0);
+      const pct = Math.round((totalAttended / totalClasses) * 100);
+
+      return {
+        semester: sem,
+        name: `Semester ${sem}`,
+        academicYear: "2024 - 2025",
+        totalHeld: totalClasses,
+        attended: totalAttended,
+        attendance: pct,
+        leavesApproved: 2,
+        absent: Math.max(0, totalClasses - totalAttended - 2),
+        subjects: subjects,
+      };
+    });
+  }, [viewingStudent]);
+
+  const currentSemData = useMemo(() => {
+    return allSemestersData.find((s) => s.semester === selectedStudentSem) || allSemestersData[4];
+  }, [allSemestersData, selectedStudentSem]);
 
   const handleExport = () => {
     const csvContent =
@@ -304,444 +433,400 @@ export default function Attendances({ onNavigate, onOpenSidebar }) {
 
       {/* Scrollable Main Body */}
       <main className="flex-1 overflow-y-auto p-6 space-y-6">
-        {/* Metric Cards Row */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {/* Card 1: Total Students */}
-          <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 space-y-4 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-300/40 transition-all duration-200">
-            <div className="flex items-center justify-between">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-50 text-[#0da651] border border-emerald-100/60 shadow-2xs">
-                <Users size={20} />
-              </div>
-              <div className="text-right">
-                <p className="text-2xl font-bold text-gray-800 tracking-tight">2,847</p>
-                <p className="text-xs font-medium text-gray-500 mt-0.5">Total Students</p>
-              </div>
-            </div>
-            <div className="flex items-center justify-between pt-1">
-              <div className="flex items-center gap-1 text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">
-                <TrendingUp size={13} />
-                <span>12.5%</span>
-                <span className="text-[10px] text-gray-400 font-normal ml-0.5">vs last month</span>
-              </div>
-              {/* Sparkline SVG */}
-              <svg width="60" height="20" viewBox="0 0 60 20" fill="none">
-                <path d="M2 15 L15 12 L28 16 L42 6 L58 4" stroke="#10b981" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </div>
-          </div>
-
-          {/* Card 2: Average Attendance */}
-          <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 space-y-4 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-300/40 transition-all duration-200">
-            <div className="flex items-center justify-between">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 border border-blue-100/60 shadow-2xs">
-                <UserCheck size={20} />
-              </div>
-              <div className="text-right">
-                <p className="text-2xl font-bold text-gray-800 tracking-tight">89.4%</p>
-                <p className="text-xs font-medium text-gray-500 mt-0.5">Average Attendance</p>
-              </div>
-            </div>
-            <div className="flex items-center justify-between pt-1">
-              <div className="flex items-center gap-1 text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">
-                <TrendingUp size={13} />
-                <span>5.3%</span>
-                <span className="text-[10px] text-gray-400 font-normal ml-0.5">vs last month</span>
-              </div>
-              {/* Sparkline SVG */}
-              <svg width="60" height="20" viewBox="0 0 60 20" fill="none">
-                <path d="M2 14 L15 17 L28 10 L42 14 L58 6" stroke="#3b82f6" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </div>
-          </div>
-
-          {/* Card 3: At Risk Students */}
-          <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 space-y-4 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-300/40 transition-all duration-200">
-            <div className="flex items-center justify-between">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-amber-50 text-amber-600 border border-amber-100/60 shadow-2xs">
-                <AlertCircle size={20} />
-              </div>
-              <div className="text-right">
-                <p className="text-2xl font-bold text-gray-800 tracking-tight">245</p>
-                <p className="text-xs font-medium text-gray-500 mt-0.5">At Risk Students</p>
-              </div>
-            </div>
-            <div className="flex items-center justify-between pt-1">
-              <div className="flex items-center gap-1 text-xs font-semibold text-rose-600 bg-rose-50 px-2 py-0.5 rounded-md">
-                <TrendingDown size={13} />
-                <span>3.8%</span>
-                <span className="text-[10px] text-gray-400 font-normal ml-0.5">vs last month</span>
-              </div>
-              {/* Sparkline SVG */}
-              <svg width="60" height="20" viewBox="0 0 60 20" fill="none">
-                <path d="M2 6 L15 10 L28 8 L42 15 L58 12" stroke="#f59e0b" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </div>
-          </div>
-
-          {/* Card 4: Highest Attendance */}
-          <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 space-y-4 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-300/40 transition-all duration-200">
-            <div className="flex items-center justify-between">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-purple-50 text-purple-600 border border-purple-100/60 shadow-2xs">
-                <Calendar size={20} />
-              </div>
-              <div className="text-right">
-                <p className="text-2xl font-bold text-gray-800 tracking-tight">95.1%</p>
-                <p className="text-xs font-medium text-gray-500 mt-0.5">Highest Attendance</p>
-              </div>
-            </div>
-            <div className="flex items-center justify-between pt-1">
-              <div className="flex items-center gap-1 text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">
-                <TrendingUp size={13} />
-                <span>7.1%</span>
-                <span className="text-[10px] text-gray-400 font-normal ml-0.5">vs last month</span>
-              </div>
-              {/* Sparkline SVG */}
-              <svg width="60" height="20" viewBox="0 0 60 20" fill="none">
-                <path d="M2 16 L15 14 L28 10 L42 12 L58 4" stroke="#8b5cf6" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </div>
-          </div>
-        </div>
-
-        {/* Filter & Action Controls Bar */}
-        <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 flex-1">
-            {/* Search Box */}
-            <div className="relative flex items-center md:col-span-1">
-              <Search size={15} className="absolute left-3 text-gray-400" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search students..."
-                className="w-full rounded-xl border border-gray-200 bg-gray-50/50 py-2 pl-9 pr-3 text-xs sm:text-sm font-medium text-gray-700 focus:bg-white focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
-              />
-            </div>
-
-            {/* Department Filter */}
-            <div className="relative flex items-center">
-              <select
-                value={selectedDept}
-                onChange={(e) => setSelectedDept(e.target.value)}
-                className="w-full appearance-none rounded-xl border border-gray-200 bg-gray-50/50 py-2 px-3 pr-8 text-xs sm:text-sm font-medium text-gray-700 focus:bg-white focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 cursor-pointer"
-              >
-                <option>All Departments</option>
-                <option>Computer Science</option>
-                <option>Electronics</option>
-                <option>Electrical</option>
-                <option>Computer Applications</option>
-              </select>
-              <ChevronDown size={14} className="pointer-events-none absolute right-3 text-gray-400" />
-            </div>
-
-            {/* Program Filter */}
-            <div className="relative flex items-center">
-              <select
-                value={selectedProgram}
-                onChange={(e) => setSelectedProgram(e.target.value)}
-                className="w-full appearance-none rounded-xl border border-gray-200 bg-gray-50/50 py-2 px-3 pr-8 text-xs sm:text-sm font-medium text-gray-700 focus:bg-white focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 cursor-pointer"
-              >
-                <option>All Programs</option>
-                <option>B.Tech</option>
-                <option>M.Tech</option>
-                <option>BCA</option>
-                <option>MCA</option>
-              </select>
-              <ChevronDown size={14} className="pointer-events-none absolute right-3 text-gray-400" />
-            </div>
-
-            {/* Semester Filter */}
-            <div className="relative flex items-center">
-              <select
-                value={selectedSem}
-                onChange={(e) => setSelectedSem(e.target.value)}
-                className="w-full appearance-none rounded-xl border border-gray-200 bg-gray-50/50 py-2 px-3 pr-8 text-xs sm:text-sm font-medium text-gray-700 focus:bg-white focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 cursor-pointer"
-              >
-                <option>All Semesters</option>
-                <option>I Semester</option>
-                <option>III Semester</option>
-                <option>V Semester</option>
-                <option>VII Semester</option>
-              </select>
-              <ChevronDown size={14} className="pointer-events-none absolute right-3 text-gray-400" />
-            </div>
-          </div>
-
-          {/* Right Action Buttons */}
-          <div className="flex items-center gap-3 shrink-0">
-            {/* Export Button */}
-            <button
-              onClick={handleExport}
-              className="inline-flex items-center gap-1.5 rounded-xl border border-emerald-300 bg-emerald-50/50 px-3.5 py-2 text-xs font-semibold text-[#0da651] hover:bg-emerald-100 shadow-2xs transition-all cursor-pointer"
-            >
-              <Download size={15} />
-              Export
-            </button>
-
-            {/* Filters Button */}
-            <button
-              onClick={() => showToast("Filters applied")}
-              className="inline-flex items-center gap-1.5 rounded-xl border border-gray-200 bg-white px-3.5 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50 shadow-2xs transition-all cursor-pointer"
-            >
-              <Filter size={15} />
-              Filters
-            </button>
-          </div>
-        </div>
-
-        {/* Student Attendance Table */}
-        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 overflow-hidden flex flex-col">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="border-b border-gray-100 bg-gray-50/40 text-[11px] font-bold tracking-wider uppercase text-gray-500">
-                  <th className="py-4 px-6">STUDENT ↕</th>
-                  <th className="py-4 px-6">ROLL NO. ↕</th>
-                  <th className="py-4 px-6">DEPARTMENT ↕</th>
-                  <th className="py-4 px-6">PROGRAM ↕</th>
-                  <th className="py-4 px-6">ATTENDANCE ↕</th>
-                  <th className="py-4 px-6">STATUS</th>
-                  <th className="py-4 px-6 text-right">ACTIONS</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100 text-xs sm:text-sm">
-                {currentStudents.length === 0 ? (
-                  <tr>
-                    <td colSpan={7} className="py-12 text-center text-gray-400">
-                      No student attendance records found.
-                    </td>
-                  </tr>
-                ) : (
-                  currentStudents.map((s) => (
-                    <tr key={s.id} className="hover:bg-gray-50/60 transition-colors">
-                      {/* Student Info */}
-                      <td className="py-4 px-6">
-                        <div className="flex items-center gap-3">
-                          <div className={`flex h-9 w-9 items-center justify-center rounded-full text-xs font-bold text-white shadow-2xs ${s.avatarBg}`}>
-                            {s.initials}
-                          </div>
-                          <div>
-                            <p className="font-bold text-gray-800 text-sm leading-tight">{s.name}</p>
-                            <p className="text-[11px] text-gray-400 font-normal">{s.email}</p>
-                          </div>
-                        </div>
-                      </td>
-
-                      {/* Roll No */}
-                      <td className="py-4 px-6 font-semibold text-gray-600 font-mono text-xs">
-                        {s.rollNo}
-                      </td>
-
-                      {/* Department */}
-                      <td className="py-4 px-6 font-medium text-gray-600">
-                        {s.department}
-                      </td>
-
-                      {/* Program */}
-                      <td className="py-4 px-6 font-medium text-gray-600">
-                        {s.program}
-                      </td>
-
-                      {/* Attendance Progress */}
-                      <td className="py-4 px-6">
-                        <div className="w-36 space-y-1">
-                          <div className="flex items-center justify-between text-xs font-bold">
-                            <span className="text-gray-800">{s.percentage}%</span>
-                            <span className="text-[10px] text-gray-400 font-medium">({s.attended}/{s.total})</span>
-                          </div>
-                          <div className="h-2 w-full rounded-full bg-gray-100 overflow-hidden">
-                            <div
-                              className={`h-full rounded-full ${progressColors[s.status] || "bg-emerald-500"}`}
-                              style={{ width: `${s.percentage}%` }}
-                            />
-                          </div>
-                        </div>
-                      </td>
-
-                      {/* Status Pill Badge */}
-                      <td className="py-4 px-6">
-                        <span className={`inline-flex items-center px-3 py-1 rounded-full text-[11px] font-bold ${statusStyles[s.status] || "bg-gray-100 text-gray-700"}`}>
-                          {s.status}
-                        </span>
-                      </td>
-
-                      {/* Actions */}
-                      <td className="py-4 px-6 text-right">
-                        <div className="flex items-center justify-end gap-2">
-                          {/* View Button */}
-                          <button
-                            onClick={() => setViewStudentModal(s)}
-                            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-emerald-300 bg-white text-emerald-600 text-xs font-semibold hover:bg-emerald-50 transition-all cursor-pointer shadow-2xs"
-                          >
-                            <Eye size={14} />
-                            View
-                          </button>
-
-                          {/* Email Button */}
-                          <button
-                            onClick={() => setEmailModal(s)}
-                            className="flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-500 hover:bg-gray-50 hover:text-rose-600 transition-all cursor-pointer shadow-2xs"
-                            title="Send Email Notice"
-                          >
-                            <Mail size={14} />
-                          </button>
-
-                          {/* More Options */}
-                          <button
-                            onClick={() => showToast(`Options for ${s.name}`)}
-                            className="flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-400 hover:bg-gray-50 hover:text-gray-700 transition-all cursor-pointer shadow-2xs"
-                          >
-                            <MoreVertical size={14} />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
-
-          {/* Footer Pagination Bar */}
-          <div className="border-t border-gray-100 bg-white px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-medium text-gray-500">
-            <div>
-              Showing {currentStudents.length > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0} to{" "}
-              {Math.min(currentPage * itemsPerPage, filteredData.length)} of {filteredData.length} students
-            </div>
-
-            <div className="flex items-center gap-3">
-              {/* Items Per Page Select */}
-              <div className="flex items-center gap-1.5 text-xs text-gray-600">
-                <select
-                  value={itemsPerPage}
-                  onChange={(e) => {
-                    setItemsPerPage(Number(e.target.value));
-                    setCurrentPage(1);
-                  }}
-                  className="rounded-lg border border-gray-200 bg-white px-2 py-1 text-xs font-semibold focus:outline-none cursor-pointer"
-                >
-                  <option value={5}>5 per page</option>
-                  <option value={10}>10 per page</option>
-                  <option value={20}>20 per page</option>
-                </select>
-              </div>
-
-              {/* Pagination Controls */}
-              <div className="flex items-center gap-1">
-                <button
-                  disabled={currentPage === 1}
-                  onClick={() => setCurrentPage(1)}
-                  className="flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
-                >
-                  <ChevronsLeft size={14} />
-                </button>
-                <button
-                  disabled={currentPage === 1}
-                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                  className="flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
-                >
-                  <ChevronLeft size={14} />
-                </button>
-
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
-                  <button
-                    key={pageNum}
-                    onClick={() => setCurrentPage(pageNum)}
-                    className={`flex h-8 w-8 items-center justify-center rounded-lg font-semibold transition-all ${
-                      currentPage === pageNum
-                        ? "bg-[#0da651] text-white shadow-sm"
-                        : "border border-gray-200 bg-white text-gray-700 hover:bg-gray-50"
-                    }`}
-                  >
-                    {pageNum}
-                  </button>
-                ))}
-
-                <button
-                  disabled={currentPage === totalPages}
-                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                  className="flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
-                >
-                  <ChevronRight size={14} />
-                </button>
-                <button
-                  disabled={currentPage === totalPages}
-                  onClick={() => setCurrentPage(totalPages)}
-                  className="flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
-                >
-                  <ChevronsRight size={14} />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
-
-      {/* View Student Attendance Modal */}
-      {viewStudentModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4">
-          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-5 animate-in fade-in zoom-in-95 duration-150">
-            <div className="flex items-center justify-between border-b border-gray-100 pb-4">
+        {viewingStudent ? (
+          <div className="space-y-5 animate-in fade-in duration-200">
+            {/* Student Info Chip Bar above Semester Attendance Detail */}
+            <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 font-['Roboto',sans-serif]">
               <div className="flex items-center gap-3">
-                <div className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold text-white ${viewStudentModal.avatarBg}`}>
-                  {viewStudentModal.initials}
+                <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-sm font-bold text-white shadow-2xs ${viewingStudent.avatarBg}`}>
+                  {viewingStudent.initials}
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-gray-900">{viewStudentModal.name}</h3>
-                  <p className="text-xs text-gray-400">{viewStudentModal.rollNo} • {viewStudentModal.department}</p>
+                  <div className="flex items-center gap-2">
+                    <h2 className="text-base font-bold text-gray-900">{viewingStudent.name}</h2>
+                    <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-50 text-[#0da651] border border-emerald-200">
+                      {viewingStudent.status}
+                    </span>
+                  </div>
+                  <p className="text-xs text-gray-500 font-medium mt-0.5">
+                    Roll: <strong className="text-gray-800 font-semibold">{viewingStudent.rollNo}</strong> &bull; Dept: <strong className="text-gray-800 font-semibold">{formatDept(viewingStudent.department)}</strong> &bull; Program: <strong className="text-gray-800 font-semibold">{viewingStudent.program}</strong> &bull; Year: <strong className="text-gray-800 font-semibold">{viewingStudent.year}</strong>
+                  </p>
                 </div>
               </div>
-              <button
-                onClick={() => setViewStudentModal(null)}
-                className="text-gray-400 hover:text-gray-600 p-1"
-              >
-                <X size={18} />
-              </button>
-            </div>
 
-            <div className="grid grid-cols-2 gap-3 text-xs">
-              <div className="bg-gray-50 p-3 rounded-xl">
-                <p className="text-gray-400">Course</p>
-                <p className="font-bold text-gray-800 mt-1">{viewStudentModal.course} ({viewStudentModal.courseCode})</p>
-              </div>
-              <div className="bg-gray-50 p-3 rounded-xl">
-                <p className="text-gray-400">Program</p>
-                <p className="font-bold text-gray-800 mt-1">{viewStudentModal.program}</p>
-              </div>
-              <div className="bg-gray-50 p-3 rounded-xl">
-                <p className="text-gray-400">Total Classes</p>
-                <p className="font-bold text-gray-800 mt-1">{viewStudentModal.total} Sessions</p>
-              </div>
-              <div className="bg-gray-50 p-3 rounded-xl">
-                <p className="text-gray-400">Attended</p>
-                <p className="font-bold text-emerald-600 mt-1">{viewStudentModal.attended} Sessions</p>
+              <div className="flex items-center self-end sm:self-center">
+                <button
+                  type="button"
+                  onClick={() => setEmailModal(viewingStudent)}
+                  className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-blue-600 via-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl text-xs sm:text-sm font-bold active:scale-95 transition-all cursor-pointer"
+                >
+                  <Mail size={15} className="stroke-[2.4]" />
+                  <span>Send Mail</span>
+                </button>
               </div>
             </div>
 
-            <div>
-              <div className="flex justify-between text-xs font-bold mb-1">
-                <span>Overall Attendance</span>
-                <span className="text-[#0da651]">{viewStudentModal.percentage}%</span>
+            {/* Semester Attendance Detail view from Student Portal */}
+            <SemesterAttendanceDetail
+              semester={currentSemData}
+              allSemesters={allSemestersData}
+              onBack={() => setViewingStudent(null)}
+              onSelectSemester={(sem) => setSelectedStudentSem(sem.semester)}
+              onDownload={(sem) => showToast(`Downloading attendance report for ${viewingStudent.name} (Semester ${sem.semester})...`)}
+            />
+          </div>
+        ) : (
+          <>
+            {/* Metric Cards Row with Left Colored Border Labels */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {/* Card 1: Total Students - Purple Left Accent Border */}
+              <div className="bg-white p-5 rounded-2xl border border-slate-200/90 border-l-[3.5px] border-l-indigo-600 shadow-md shadow-slate-200/50 flex items-center gap-4 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-300/40 transition-all duration-200">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-indigo-50 text-indigo-600 border border-indigo-100/60 shadow-2xs">
+                  <Users size={22} />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-[11px] font-bold text-gray-500 uppercase tracking-wider truncate">TOTAL STUDENTS</p>
+                  <p className="text-2xl font-bold text-gray-900 tracking-tight my-0.5">2,847</p>
+                  <p className="text-xs text-gray-400 font-normal truncate">Enrolled in department</p>
+                </div>
               </div>
-              <div className="h-3 w-full rounded-full bg-gray-100 overflow-hidden">
-                <div
-                  className={`h-full rounded-full ${progressColors[viewStudentModal.status]}`}
-                  style={{ width: `${viewStudentModal.percentage}%` }}
+
+              {/* Card 2: Average Attendance - Green Left Accent Border */}
+              <div className="bg-white p-5 rounded-2xl border border-slate-200/90 border-l-[3.5px] border-l-emerald-500 shadow-md shadow-slate-200/50 flex items-center gap-4 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-300/40 transition-all duration-200">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-100/60 shadow-2xs">
+                  <CheckCircle2 size={22} />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-[11px] font-bold text-gray-500 uppercase tracking-wider truncate">AVERAGE ATTENDANCE</p>
+                  <p className="text-2xl font-bold text-gray-900 tracking-tight my-0.5">89.4%</p>
+                  <p className="text-xs text-gray-400 font-normal truncate">Overall active rate</p>
+                </div>
+              </div>
+
+              {/* Card 3: At Risk Students - Orange/Amber Left Accent Border */}
+              <div className="bg-white p-5 rounded-2xl border border-slate-200/90 border-l-[3.5px] border-l-amber-500 shadow-md shadow-slate-200/50 flex items-center gap-4 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-300/40 transition-all duration-200">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-amber-50 text-amber-600 border border-amber-100/60 shadow-2xs">
+                  <TrendingUp size={22} />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-[11px] font-bold text-gray-500 uppercase tracking-wider truncate">STUDENTS AT RISK</p>
+                  <p className="text-2xl font-bold text-gray-900 tracking-tight my-0.5">245</p>
+                  <p className="text-xs text-gray-400 font-normal truncate">Below 75% threshold</p>
+                </div>
+              </div>
+
+              {/* Card 4: Highest Attendance - Blue Left Accent Border */}
+              <div className="bg-white p-5 rounded-2xl border border-slate-200/90 border-l-[3.5px] border-l-blue-500 shadow-md shadow-slate-200/50 flex items-center gap-4 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-300/40 transition-all duration-200">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 border border-blue-100/60 shadow-2xs">
+                  <CalendarCheck size={22} />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-[11px] font-bold text-gray-500 uppercase tracking-wider truncate">HIGHEST ATTENDANCE</p>
+                  <p className="text-2xl font-bold text-gray-900 tracking-tight my-0.5">95.1%</p>
+                  <p className="text-xs text-gray-400 font-normal truncate">Top performing batch</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Filter & Action Controls Bar */}
+            <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
+              {/* Expanded Search Box */}
+              <div className="relative flex-1 min-w-[220px]">
+                <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Search students..."
+                  className="w-full rounded-xl border border-gray-200 bg-gray-50/50 py-2.5 pl-10 pr-3 text-xs sm:text-sm font-medium text-gray-700 focus:bg-white focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
                 />
               </div>
+
+              {/* Right Group: Filters + Export Button */}
+              <div className="flex flex-wrap sm:flex-nowrap items-center gap-2.5 shrink-0">
+                {/* Department Filter */}
+                <div className="relative min-w-[130px] sm:w-auto">
+                  <select
+                    value={selectedDept}
+                    onChange={(e) => setSelectedDept(e.target.value)}
+                    className="w-full appearance-none rounded-xl border border-gray-200 bg-gray-50/50 py-2.5 px-3 pr-8 text-xs sm:text-sm font-medium text-gray-700 focus:bg-white focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 cursor-pointer"
+                  >
+                    <option>All Departments</option>
+                    <option>CSE</option>
+                    <option>ECE</option>
+                    <option>EE</option>
+                    <option>BCA</option>
+                    <option>MCA</option>
+                  </select>
+                  <ChevronDown size={14} className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                </div>
+
+                {/* Program Filter */}
+                <div className="relative min-w-[125px] sm:w-auto">
+                  <select
+                    value={selectedProgram}
+                    onChange={(e) => setSelectedProgram(e.target.value)}
+                    className="w-full appearance-none rounded-xl border border-gray-200 bg-gray-50/50 py-2.5 px-3 pr-8 text-xs sm:text-sm font-medium text-gray-700 focus:bg-white focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 cursor-pointer"
+                  >
+                    <option>All Programs</option>
+                    <option>B.Tech</option>
+                    <option>M.Tech</option>
+                    <option>BCA</option>
+                    <option>MCA</option>
+                  </select>
+                  <ChevronDown size={14} className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                </div>
+
+                {/* Semester Filter */}
+                <div className="relative min-w-[130px] sm:w-auto">
+                  <select
+                    value={selectedSem}
+                    onChange={(e) => setSelectedSem(e.target.value)}
+                    className="w-full appearance-none rounded-xl border border-gray-200 bg-gray-50/50 py-2.5 px-3 pr-8 text-xs sm:text-sm font-medium text-gray-700 focus:bg-white focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 cursor-pointer"
+                  >
+                    <option>All Semesters</option>
+                    <option>I Semester</option>
+                    <option>III Semester</option>
+                    <option>V Semester</option>
+                    <option>VII Semester</option>
+                  </select>
+                  <ChevronDown size={14} className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                </div>
+
+                {/* Export Button */}
+                <button
+                  onClick={handleExport}
+                  className="inline-flex items-center gap-1.5 rounded-xl border border-emerald-300 bg-emerald-50/60 px-3.5 py-2.5 text-xs font-semibold text-[#0da651] hover:bg-emerald-100 shadow-2xs transition-all cursor-pointer shrink-0"
+                >
+                  <Download size={15} />
+                  Export
+                </button>
+              </div>
             </div>
 
-            <div className="flex justify-end pt-2">
-              <button
-                onClick={() => setViewStudentModal(null)}
-                className="px-5 py-2 text-xs font-semibold text-white bg-[#0da651] rounded-xl hover:bg-emerald-700 shadow-sm"
-              >
-                Close
-              </button>
+            {/* Student Attendance Table */}
+            <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 overflow-hidden flex flex-col font-['Roboto',sans-serif]">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="bg-gradient-to-r from-[#0da651] via-[#0e9f4e] to-[#09803d] text-white text-xs font-bold uppercase tracking-wider">
+                      <th className="py-3.5 px-6 text-center">STUDENT</th>
+                      <th className="py-3.5 px-6 text-left">ROLL NO.</th>
+                      <th className="py-3.5 px-6 text-center">DEPARTMENT</th>
+                      <th className="py-3.5 px-6 text-center">PROGRAM</th>
+                      <th className="py-3.5 px-6 text-center">YEAR</th>
+                      <th className="py-3.5 px-6 text-center">SEMESTER</th>
+                      <th className="py-3.5 px-6 text-center">ATTENDANCE</th>
+                      <th className="py-3.5 px-6 text-center">STATUS</th>
+                      <th className="py-3.5 px-6 text-center">ACTIONS</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100 text-xs sm:text-sm">
+                    {currentStudents.length === 0 ? (
+                      <tr>
+                        <td colSpan={9} className="py-12 text-center text-gray-400">
+                          No student attendance records found.
+                        </td>
+                      </tr>
+                    ) : (
+                      currentStudents.map((s) => {
+                        const yearNum = s.year ? s.year.toString().replace(/[^0-9]/g, "") : "3";
+                        const semNum = s.semester ? s.semester.toString().replace(/[^0-9]/g, "") : "5";
+
+                        return (
+                          <tr key={s.id} className="hover:bg-gray-50/60 transition-colors">
+                            {/* Student Info */}
+                            <td className="py-4 px-6 text-center">
+                              <div className="flex items-center justify-center gap-3">
+                                <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white shadow-2xs ${s.avatarBg}`}>
+                                  {s.initials}
+                                </div>
+                                <div className="text-left">
+                                  <p className="font-bold text-gray-800 text-sm leading-tight">{s.name}</p>
+                                  <p className="text-[11px] text-gray-400 font-normal">{s.email}</p>
+                                </div>
+                              </div>
+                            </td>
+
+                            {/* Roll No */}
+                            <td className="py-4 px-6 text-left font-semibold text-gray-700 text-sm">
+                              {s.rollNo}
+                            </td>
+
+                            {/* Department */}
+                            <td className="py-4 px-6 text-center font-semibold text-gray-700">
+                              {formatDept(s.department)}
+                            </td>
+
+                            {/* Program */}
+                            <td className="py-4 px-6 text-center font-medium text-gray-600">
+                              {s.program}
+                            </td>
+
+                            {/* Year (Number only) */}
+                            <td className="py-4 px-6 text-center font-bold text-gray-700">
+                              {yearNum}
+                            </td>
+
+                            {/* Semester (Number only) */}
+                            <td className="py-4 px-6 text-center">
+                              <span className="text-xs font-bold text-primary">
+                                {semNum}
+                              </span>
+                            </td>
+
+                            {/* Attendance Progress */}
+                            <td className="py-4 px-6 text-center">
+                              <div className="w-36 space-y-1 mx-auto">
+                                <div className="flex items-center justify-between text-xs font-bold">
+                                  <span className="text-gray-800">{s.percentage}%</span>
+                                  <span className="text-[10px] text-gray-400 font-medium">({s.attended}/{s.total})</span>
+                                </div>
+                                <div className="h-2 w-full rounded-full bg-gray-100 overflow-hidden">
+                                  <div
+                                    className={`h-full rounded-full ${progressColors[s.status] || "bg-emerald-500"}`}
+                                    style={{ width: `${s.percentage}%` }}
+                                  />
+                                </div>
+                              </div>
+                            </td>
+
+                            {/* Status Pill Badge */}
+                            <td className="py-4 px-6 text-center">
+                              <span className={`inline-flex items-center px-3 py-1 rounded-full text-[11px] font-bold ${statusStyles[s.status] || "bg-gray-100 text-gray-700"}`}>
+                                {s.status}
+                              </span>
+                            </td>
+
+                            {/* Actions */}
+                            <td className="py-4 px-6 text-center">
+                              <div className="relative inline-flex items-center justify-center">
+                                {/* 3 Dots Action Button */}
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    setActiveMenuId(activeMenuId === s.id ? null : s.id);
+                                  }}
+                                  className="p-1.5 hover:bg-gray-100 rounded-full transition-colors cursor-pointer text-gray-400 hover:text-gray-600"
+                                  aria-label="More actions"
+                                >
+                                  <MoreVertical size={18} />
+                                </button>
+
+                                {/* Dropdown Popup Menu */}
+                                {activeMenuId === s.id && (
+                                  <div
+                                    onClick={(e) => e.stopPropagation()}
+                                    className="absolute right-0 top-full mt-1 w-44 bg-white rounded-2xl border border-gray-200/90 shadow-xl shadow-slate-300/40 p-1.5 z-40 text-left animate-in fade-in zoom-in-95 duration-150 space-y-0.5"
+                                  >
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        setActiveMenuId(null);
+                                        setViewingStudent(s);
+                                        const sem = parseInt(s.semester ? s.semester.toString().replace(/[^0-9]/g, "") : "5") || 5;
+                                        setSelectedStudentSem(sem);
+                                      }}
+                                      className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-emerald-50 hover:text-[#0da651] rounded-xl transition-colors cursor-pointer"
+                                    >
+                                      <Eye size={14} className="text-emerald-600" />
+                                      View Attendance
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        setActiveMenuId(null);
+                                        setEmailModal(s);
+                                      }}
+                                      className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-xl transition-colors cursor-pointer"
+                                    >
+                                      <Mail size={14} className="text-blue-500" />
+                                      Send Email Notice
+                                    </button>
+                                  </div>
+                                )}
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })
+                    )}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Footer Pagination Bar matching other admin pages exactly */}
+              <div className="flex flex-col sm:flex-row items-center justify-between px-5 py-3 border-t border-gray-100 bg-white gap-3 font-['Roboto',sans-serif]">
+                <div className="flex items-center gap-2 text-xs text-gray-500">
+                  <span>Show</span>
+                  <div className="relative">
+                    <select
+                      value={itemsPerPage}
+                      onChange={(e) => {
+                        setItemsPerPage(Number(e.target.value));
+                        setCurrentPage(1);
+                      }}
+                      className="appearance-none border border-gray-200 rounded px-2.5 py-1 pr-6 hover:bg-gray-50 text-xs text-gray-700 cursor-pointer focus:outline-none"
+                    >
+                      <option value={5}>5</option>
+                      <option value={10}>10</option>
+                      <option value={20}>20</option>
+                    </select>
+                    <ChevronDown size={11} className="pointer-events-none absolute right-1.5 top-1/2 -translate-y-1/2 text-gray-400" />
+                  </div>
+                  <span>per page</span>
+                </div>
+
+                <div className="flex items-center gap-1">
+                  <button
+                    disabled={currentPage === 1}
+                    onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                    className="p-1.5 rounded hover:bg-gray-100 transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                  >
+                    <ChevronLeft size={14} className="text-gray-500" />
+                  </button>
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                    <button
+                      key={pageNum}
+                      onClick={() => setCurrentPage(pageNum)}
+                      className={`w-7 h-7 text-xs rounded font-medium transition-colors cursor-pointer ${
+                        currentPage === pageNum
+                          ? "bg-[#0da651] text-white shadow-sm"
+                          : "text-gray-500 hover:bg-gray-100"
+                      }`}
+                    >
+                      {pageNum}
+                    </button>
+                  ))}
+                  <button
+                    disabled={currentPage === totalPages}
+                    onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                    className="p-1.5 rounded hover:bg-gray-100 transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                  >
+                    <ChevronRight size={14} className="text-gray-500" />
+                  </button>
+                </div>
+
+                <div className="flex items-center gap-2 text-xs text-gray-500">
+                  <span>Go to page</span>
+                  <input
+                    type="number"
+                    min={1}
+                    max={totalPages}
+                    value={currentPage}
+                    onChange={(e) => {
+                      const val = Number(e.target.value);
+                      if (val >= 1 && val <= totalPages) setCurrentPage(val);
+                    }}
+                    className="w-12 border border-gray-200 rounded px-2 py-1 text-center focus:outline-none focus:ring-1 focus:ring-emerald-400"
+                  />
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          </>
+        )}
+      </main>
 
       {/* Email Notice Modal */}
       {emailModal && (

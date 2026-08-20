@@ -117,7 +117,7 @@ export default function Dashboard({ onNavigate, onOpenSidebar }) {
 
       <main className="flex-1 p-3.5 sm:p-4.5 space-y-3 overflow-y-auto">
         {/* Compact Hero Banner */}
-        <div className="rounded-2xl overflow-hidden relative min-h-[170px] shadow-md shadow-slate-200/50 border border-slate-200/80 flex items-center">
+        <div className="rounded-2xl overflow-hidden relative min-h-[160px] shadow-md shadow-slate-200/50 border border-slate-200/80 flex items-center">
           <img src={adminHeroImage} alt="Dashboard hero" className="absolute inset-0 w-full h-full object-cover pointer-events-none" />
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/45 to-transparent" />
           <div className="relative z-10 ml-5 p-3.5 sm:p-4 flex flex-col justify-center">
