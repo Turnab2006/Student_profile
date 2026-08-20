@@ -203,7 +203,7 @@ export default function MentorDashboard({ user, onLogout }) {
         );
       }
       if (activeTab === 'notices') {
-        return <MentorNotices user={user} />;
+        return <MentorNotices user={user} onNavigate={handleNavigate} />;
       }
       if (activeTab === 'activities') {
         return <MentorActivities user={user} />;

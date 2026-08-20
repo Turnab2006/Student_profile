@@ -35,8 +35,10 @@ import {
   Info,
   BarChart2,
   Download,
-  Plus
+  Plus,
+  IdCard
 } from 'lucide-react';
+import StudentAttendance from '../student/StudentAttendance';
 
 function FigmaViewIcon({ size = 18, className }) {
   return (
@@ -343,7 +345,7 @@ export default function MentorAttendance({ initialUpload = false }) {
   const [deptDropdownOpen, setDeptDropdownOpen] = useState(false);
   const [selectedProgram, setSelectedProgram] = useState('All Programs');
   const [programDropdownOpen, setProgramDropdownOpen] = useState(false);
-  const [viewMode, setViewMode] = useState('list'); // 'list' or 'grid'
+  const [viewMode, setViewMode] = useState('grid'); // 'list' or 'grid'
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -605,439 +607,15 @@ export default function MentorAttendance({ initialUpload = false }) {
     setTimeout(() => setSuccessToast(''), 4000);
   };
 
-  // IF SEMESTER ATTENDANCE FULL PAGE VIEW IS ACTIVE (MATCHING USER SCREENSHOT DESIGN)
+  // IF SEMESTER ATTENDANCE FULL PAGE VIEW IS ACTIVE (MATCHING EXACT STUDENT PORTAL ATTENDANCE VIEW)
   if (selectedMenteeSemesterView) {
-    const menteeFirstName = selectedMenteeSemesterView.name ? selectedMenteeSemesterView.name.split(' ')[0] : 'Tanuka';
     return (
-      <div className="flex flex-col gap-5 min-h-[calc(100vh-100px)] animate-fade-in">
-        {/* SUCCESS TOAST NOTIFICATION */}
-        {successToast && (
-          <div className="fixed top-6 right-6 z-50 bg-[#1e1548] text-white px-5 py-3.5 rounded-2xl shadow-xl border border-purple-400/30 flex items-center gap-3 animate-slide-in">
-            <div className="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
-              <CheckCircle2 size={20} />
-            </div>
-            <span className="text-sm font-semibold">{successToast}</span>
-            <button
-              onClick={() => setSuccessToast('')}
-              className="ml-2 text-slate-400 hover:text-white"
-            >
-              <X size={18} />
-            </button>
-          </div>
-        )}
-
-        {/* TOP BAR: BACK BUTTON & EXPORT EXCEL BUTTON */}
-        <div className="flex items-center justify-between gap-4">
-          <button
-            type="button"
-            onClick={() => setSelectedMenteeSemesterView(null)}
-            className="w-10 h-10 rounded-xl border border-slate-200/80 bg-white hover:bg-[#f0eaff] text-[#7656f4] flex items-center justify-center transition-all cursor-pointer shadow-2xs active:scale-95"
-            title="Back to Attendance Roster"
-          >
-            <ArrowLeft size={20} />
-          </button>
-
-          <button
-            type="button"
-            onClick={() => handleExportExcel(selectedMenteeSemesterView.name)}
-            className="bg-white border border-[#7656f4]/40 hover:border-[#7656f4] text-[#7656f4] hover:bg-[#f0eaff]/40 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2 transition-all cursor-pointer shadow-2xs active:scale-98"
-          >
-            <Download size={16} />
-            <span>Export Excel</span>
-          </button>
-        </div>
-
-        {/* MAIN CARD CONTAINER */}
-        <div className="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-7 shadow-2xs flex flex-col gap-6">
-          {/* HEADER ROW: ICON + TITLE + FILTER + DROPDOWN */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="flex items-center gap-3.5">
-              <div className="w-10 h-10 rounded-full bg-[#f0eaff] text-[#7656f4] flex items-center justify-center font-bold flex-shrink-0">
-                <User size={20} />
-              </div>
-              <div>
-                <h2 className="text-base sm:text-lg font-bold text-[#1e1548]">
-                  {menteeFirstName}'s Semester Attendance
-                </h2>
-                <p className="text-xs sm:text-sm text-slate-400 font-medium">
-                  View and manage your semester-wise attendance records
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3 self-end sm:self-auto">
-              {/* Filter Button */}
-              <button
-                type="button"
-                className="bg-white border border-slate-200 rounded-xl px-4 py-2 text-xs font-bold text-slate-700 flex items-center gap-2 hover:bg-slate-50 transition-all shadow-2xs cursor-pointer"
-              >
-                <Filter size={15} className="text-slate-500" />
-                <span>Filter</span>
-              </button>
-
-              {/* All Semesters Dropdown */}
-              <div className="relative">
-                <button
-                  type="button"
-                  onClick={() => setSemFilterDropdownOpen(!semFilterDropdownOpen)}
-                  className="bg-white border border-slate-200 rounded-xl px-4 py-2 text-xs font-bold text-slate-700 flex items-center gap-2 hover:bg-slate-50 transition-all shadow-2xs cursor-pointer whitespace-nowrap"
-                >
-                  <span>{selectedSemFilter}</span>
-                  <ChevronDown size={15} className={`text-slate-400 transition-transform ${semFilterDropdownOpen ? 'rotate-180' : ''}`} />
-                </button>
-
-                {semFilterDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-44 bg-white border border-slate-200 rounded-2xl shadow-xl z-30 py-2 animate-scale-up">
-                    {['All Semesters', 'Year 1', 'Year 2', 'Year 3', 'Year 4'].map((opt) => (
-                      <button
-                        key={opt}
-                        onClick={() => {
-                          setSelectedSemFilter(opt);
-                          setSemFilterDropdownOpen(false);
-                        }}
-                        className={`w-full text-left px-4 py-2 text-xs font-semibold flex items-center justify-between hover:bg-slate-50 transition-colors ${
-                          selectedSemFilter === opt ? 'text-[#7656f4] bg-[#f0eaff]/40' : 'text-slate-700'
-                        }`}
-                      >
-                        <span>{opt}</span>
-                        {selectedSemFilter === opt && <Check size={14} className="text-[#7656f4]" />}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* TABLE OF SEMESTERS */}
-          <div className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="bg-[#f8f6fe] border-b border-slate-200/80 text-[12px] font-bold text-[#7656f4] uppercase tracking-wider">
-                    <th className="py-3.5 px-6">SEMESTER</th>
-                    <th className="py-3.5 px-5">YEAR</th>
-                    <th className="py-3.5 px-5">
-                      <div className="flex items-center gap-1 cursor-pointer">
-                        <span>ATTENDANCE</span>
-                        <FigmaCaretSortIcon size={13} className="text-[#7656f4]" />
-                      </div>
-                    </th>
-                    <th className="py-3.5 px-5">STATUS</th>
-                    <th className="py-3.5 px-6 text-right">ACTION</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100">
-                  {filteredSemesters.map((sem) => (
-                    <tr key={sem.id} className="hover:bg-[#fbfafd] transition-colors">
-                      {/* SEMESTER */}
-                      <td className="py-4 px-6">
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-lg border border-purple-200/60 bg-[#f0eaff]/60 text-[#7656f4] flex items-center justify-center flex-shrink-0">
-                            <Calendar size={16} />
-                          </div>
-                          <span className="font-bold text-[#1e1548] text-sm">{sem.sem}</span>
-                        </div>
-                      </td>
-
-                      {/* YEAR */}
-                      <td className="py-4 px-5">
-                        <span className={`inline-block px-3 py-1 rounded-md text-xs font-bold ${sem.yearColor}`}>
-                          {sem.year}
-                        </span>
-                      </td>
-
-                      {/* ATTENDANCE */}
-                      <td className="py-4 px-5 min-w-[210px]">
-                        <div className="flex items-center gap-3">
-                          <span className="text-sm font-extrabold text-[#1e1548] min-w-[45px]">{sem.percentage}</span>
-                          <div className="w-24 sm:w-28 bg-slate-100 h-2 rounded-full overflow-hidden flex-shrink-0">
-                            <div
-                              className={`${sem.barColor || 'bg-emerald-500'} h-full rounded-full transition-all`}
-                              style={{ width: `${sem.rawPct}%` }}
-                            />
-                          </div>
-                          <span className="text-xs font-medium text-slate-400">{sem.fraction}</span>
-                        </div>
-                      </td>
-
-                      {/* STATUS */}
-                      <td className="py-4 px-5">
-                        <span className={`inline-block px-3 py-1 rounded-lg text-xs font-bold ${sem.statusBadge || 'bg-emerald-50 text-emerald-600 border border-emerald-200/60'}`}>
-                          {sem.status}
-                        </span>
-                      </td>
-
-                      {/* ACTION */}
-                      <td className="py-4 px-6 text-right">
-                        <div className="flex items-center justify-end gap-2.5 relative">
-                          {/* View Details Button */}
-                          <button
-                            type="button"
-                            onClick={() => setSemesterDetailSubjectModal(sem)}
-                            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#7656f4] border border-[#7656f4]/30 bg-[#f6f2fe] hover:bg-[#f0eaff] px-3.5 py-2 rounded-xl transition-all cursor-pointer shadow-2xs active:scale-95"
-                          >
-                            <Eye size={14} className="text-[#7656f4]" />
-                            <span>View Details</span>
-                          </button>
-
-                          {/* Download Button */}
-                          <button
-                            type="button"
-                            onClick={() => handleDownloadSingleSem(sem.sem)}
-                            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#7656f4] border border-[#7656f4]/30 bg-[#f6f2fe] hover:bg-[#f0eaff] px-3.5 py-2 rounded-xl transition-all cursor-pointer shadow-2xs active:scale-95"
-                          >
-                            <Download size={14} className="text-[#7656f4]" />
-                            <span>Download</span>
-                          </button>
-
-                          {/* Options Menu Button */}
-                          <button
-                            type="button"
-                            onClick={() => setActiveSemActionMenuId(activeSemActionMenuId === sem.id ? null : sem.id)}
-                            className="p-1 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer"
-                          >
-                            <MoreVertical size={16} />
-                          </button>
-
-                          {activeSemActionMenuId === sem.id && (
-                            <div className="absolute right-0 top-10 w-44 bg-white border border-slate-200 rounded-xl shadow-xl z-40 py-1 text-left animate-scale-up">
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  setSemesterDetailSubjectModal(sem);
-                                  setActiveSemActionMenuId(null);
-                                }}
-                                className="w-full px-3.5 py-2 text-xs font-semibold text-slate-700 hover:bg-[#f0eaff]/50 hover:text-[#7656f4] flex items-center gap-2 transition-colors cursor-pointer"
-                              >
-                                <Eye size={14} />
-                                <span>View Details</span>
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  handleDownloadSingleSem(sem.sem);
-                                  setActiveSemActionMenuId(null);
-                                }}
-                                className="w-full px-3.5 py-2 text-xs font-semibold text-slate-700 hover:bg-[#f0eaff]/50 hover:text-[#7656f4] flex items-center gap-2 transition-colors cursor-pointer"
-                              >
-                                <Download size={14} />
-                                <span>Download Report</span>
-                              </button>
-                            </div>
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* CARD FOOTER */}
-          <div className="flex items-center justify-between pt-1 text-xs text-slate-500 font-medium">
-            <div>
-              Showing 1 to {filteredSemesters.length} of {filteredSemesters.length} semesters
-            </div>
-            <div className="flex items-center gap-1.5">
-              <button
-                type="button"
-                className="w-7 h-7 rounded-lg border border-slate-200 text-slate-400 flex items-center justify-center hover:bg-slate-50 transition-colors cursor-pointer"
-              >
-                <ChevronLeft size={15} />
-              </button>
-              <button
-                type="button"
-                className="w-7 h-7 rounded-lg bg-[#7656f4] text-white font-bold text-xs flex items-center justify-center shadow-xs"
-              >
-                1
-              </button>
-              <button
-                type="button"
-                className="w-7 h-7 rounded-lg border border-slate-200 text-slate-400 flex items-center justify-center hover:bg-slate-50 transition-colors cursor-pointer"
-              >
-                <ChevronRight size={15} />
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* MODAL: VIEW ATTENDANCE (SEMESTER SUBJECT BREAKDOWN) */}
-        {semesterDetailSubjectModal && (
-          <div className="fixed inset-0 z-50 bg-slate-900/30 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6 animate-fade-in">
-            <div className="bg-white rounded-3xl border border-slate-100 shadow-2xl max-w-4xl w-full p-6 sm:p-8 animate-scale-up flex flex-col gap-6 max-h-[90vh] overflow-y-auto">
-              {/* MODAL TOP HEADER */}
-              <div className="flex items-center justify-between gap-4 pb-2">
-                <div className="flex items-center gap-3.5">
-                  <div className="w-10 h-10 rounded-full bg-[#f0eaff] text-[#7656f4] flex items-center justify-center font-bold flex-shrink-0 shadow-2xs">
-                    <Eye size={20} />
-                  </div>
-                  <div>
-                    <h2 className="text-xl font-bold text-[#1e1548]">View Attendance</h2>
-                    <p className="text-xs text-slate-400 font-medium mt-0.5">
-                      Detailed attendance record for the selected semester
-                    </p>
-                  </div>
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() => setSemesterDetailSubjectModal(null)}
-                  className="w-8 h-8 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-600 flex items-center justify-center transition-colors cursor-pointer"
-                  title="Close"
-                >
-                  <X size={20} />
-                </button>
-              </div>
-
-              {/* BOX 1: MENTEE PROFILE & TOTAL ATTENDANCE HEADER */}
-              <div className="bg-[#fcfbfe] border border-slate-200/80 rounded-2xl p-5 sm:p-6 shadow-2xs flex flex-col md:flex-row items-center justify-between gap-6">
-                <div className="flex flex-col sm:flex-row items-center gap-5 w-full md:w-auto">
-                  <img
-                    src={selectedMenteeSemesterView?.avatar || 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=300'}
-                    alt={selectedMenteeSemesterView?.name || 'Student'}
-                    className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl object-cover flex-shrink-0 shadow-sm border border-slate-200/60"
-                  />
-                  <div className="flex flex-col gap-2 text-center sm:text-left">
-                    <h3 className="text-xl font-extrabold text-[#7656f4]">
-                      {selectedMenteeSemesterView?.name || 'Arjun Mukherjee'}
-                    </h3>
-                    <div className="flex flex-col gap-2 text-xs font-semibold">
-                      <div className="flex items-center justify-center sm:justify-start gap-3">
-                        <FileText size={15} className="text-[#7656f4] flex-shrink-0" />
-                        <span className="text-[#7656f4] font-bold min-w-[130px]">College Roll No.</span>
-                        <span className="font-bold text-slate-900 ml-2">{selectedMenteeSemesterView?.rollNo || 'CSE2024031'}</span>
-                      </div>
-                      <div className="flex items-center justify-center sm:justify-start gap-3">
-                        <Calendar size={15} className="text-[#7656f4] flex-shrink-0" />
-                        <span className="text-[#7656f4] font-bold min-w-[130px]">Academic Year</span>
-                        <span className="font-bold text-slate-900 ml-2">
-                          {semesterDetailSubjectModal?.year === 'Year 1'
-                            ? '1st Year'
-                            : semesterDetailSubjectModal?.year === 'Year 2'
-                            ? '2nd Year'
-                            : semesterDetailSubjectModal?.year === 'Year 3'
-                            ? '3rd Year'
-                            : semesterDetailSubjectModal?.year === 'Year 4'
-                            ? '4th Year'
-                            : '1st Year'}
-                        </span>
-                      </div>
-                      <div className="flex items-center justify-center sm:justify-start gap-3">
-                        <BookOpen size={15} className="text-[#7656f4] flex-shrink-0" />
-                        <span className="text-[#7656f4] font-bold min-w-[130px]">Semester</span>
-                        <span className="font-bold text-slate-900 ml-2">{semesterDetailSubjectModal?.sem || 'Semester 1'}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="hidden md:block w-px h-24 bg-slate-200/80" />
-
-                <div className="flex flex-col items-center justify-center w-full md:w-auto">
-                  <span className="text-xs font-bold text-slate-500 mb-1">Total Attendance</span>
-                  <span className="text-3xl sm:text-4xl font-extrabold text-[#7656f4] mb-2">
-                    {semesterDetailSubjectModal?.percentage || '91.6%'}
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 bg-[#dcfce7] text-[#16a34a] border border-emerald-200/80 text-xs font-bold px-3 py-1 rounded-full shadow-2xs">
-                    <CheckCircle2 size={14} />
-                    <span>{semesterDetailSubjectModal?.status || 'Good'}</span>
-                  </span>
-                </div>
-              </div>
-
-              {/* BOX 2: SUBJECTS / PAPERS TABLE */}
-              <div className="bg-[#fcfbfe] border border-slate-200/80 rounded-2xl p-5 sm:p-6 shadow-2xs flex flex-col gap-4">
-                <div className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-2xs">
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse">
-                      <thead>
-                        <tr className="bg-[#f8f6fe] border-b border-slate-200/80 text-[12px] font-bold text-[#7656f4] uppercase tracking-wider">
-                          <th className="py-3.5 px-4 text-center w-12">
-                            <div className="flex items-center justify-center gap-1">
-                              <BookOpen size={15} className="text-[#7656f4]" />
-                              <span>#</span>
-                            </div>
-                          </th>
-                          <th className="py-3.5 px-5">Paper Code</th>
-                          <th className="py-3.5 px-5">Paper Name</th>
-                          <th className="py-3.5 px-4 text-center">Total Lectures</th>
-                          <th className="py-3.5 px-4 text-center">Total Attended</th>
-                          <th className="py-3.5 px-4 text-center">Attendance (%)</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-slate-100 text-xs">
-                        {[
-                          { code: 'RCC-PCC-CSE-301', name: 'Data Structure & Algorithms', total: 30, attended: 19, pct: '63.33%' },
-                          { code: 'RCC-PCC-CSE-301', name: 'Data Structure & Algorithms', total: 30, attended: 19, pct: '63.33%' },
-                          { code: 'RCC-PCC-CSE-301', name: 'Data Structure & Algorithms', total: 30, attended: 19, pct: '63.33%' },
-                          { code: 'RCC-PCC-CSE-301', name: 'Data Structure & Algorithms', total: 30, attended: 19, pct: '63.33%' },
-                          { code: 'RCC-PCC-CSE-301', name: 'Data Structure & Algorithms', total: 30, attended: 19, pct: '63.33%' },
-                          { code: 'RCC-PCC-CSE-301', name: 'Data Structure & Algorithms', total: 30, attended: 19, pct: '63.33%' },
-                        ].map((paper, idx) => (
-                          <tr key={idx} className="hover:bg-[#fbfafd] transition-colors">
-                            <td className="py-3.5 px-4 text-center">
-                              <span className="w-6 h-6 rounded-md bg-slate-100 text-slate-700 font-bold inline-flex items-center justify-center text-xs">
-                                {idx + 1}.
-                              </span>
-                            </td>
-                            <td className="py-3.5 px-5 font-extrabold text-slate-900">{paper.code}</td>
-                            <td className="py-3.5 px-5 font-semibold text-slate-800 text-sm">{paper.name}</td>
-                            <td className="py-3.5 px-4 text-center font-bold text-slate-700">{paper.total}</td>
-                            <td className="py-3.5 px-4 text-center font-bold text-slate-700">{paper.attended}</td>
-                            <td className="py-3.5 px-4 text-center">
-                              <span className="inline-block px-3 py-1 rounded-full bg-[#f0eaff] text-[#7656f4] font-extrabold text-xs">
-                                {paper.pct}
-                              </span>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-
-                {/* BOX 3: OVERALL SUMMARY FOOTER */}
-                <div className="bg-[#f8f6fe] border border-slate-200/80 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-2xs">
-                  <div className="flex items-center gap-2">
-                    <BarChart2 size={18} className="text-[#7656f4]" />
-                    <span className="text-xs font-bold text-[#7656f4]">Overall Summary</span>
-                  </div>
-
-                  <div className="flex items-center gap-8 text-xs">
-                    <div className="flex flex-col items-center">
-                      <span className="text-[11px] font-semibold text-slate-500">Total Lectures</span>
-                      <span className="text-sm font-extrabold text-[#1e1548]">180</span>
-                    </div>
-                    <div className="flex flex-col items-center">
-                      <span className="text-[11px] font-semibold text-slate-500">Total Attended</span>
-                      <span className="text-sm font-extrabold text-[#1e1548]">114</span>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col items-center">
-                    <span className="text-[11px] font-semibold text-slate-500 mb-0.5">Overall Attendance</span>
-                    <span className="inline-block px-4 py-1.5 rounded-lg bg-[#7656f4] text-white font-extrabold text-xs shadow-2xs">
-                      63.33%
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* MODAL FOOTER BUTTON */}
-              <div className="flex items-center justify-end pt-1">
-                <button
-                  type="button"
-                  onClick={() => setSemesterDetailSubjectModal(null)}
-                  className="px-6 py-2 rounded-xl border border-[#7656f4] text-[#7656f4] bg-white hover:bg-[#f0eaff]/40 text-sm font-bold shadow-2xs cursor-pointer active:scale-95 transition-all"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
+      <div className="w-full animate-in fade-in duration-200">
+        <StudentAttendance
+          studentName={selectedMenteeSemesterView.name}
+          onBack={() => setSelectedMenteeSemesterView(null)}
+          userRole="mentor"
+        />
       </div>
     );
   }
@@ -1099,20 +677,18 @@ export default function MentorAttendance({ initialUpload = false }) {
             <div className="flex flex-col items-center gap-2 cursor-pointer relative" onClick={() => setUploadStep(1)}>
               <div className="flex items-center gap-2.5">
                 <div
-                  className={`w-7 h-7 rounded-full font-bold text-xs flex items-center justify-center transition-all ${
-                    uploadStep >= 1
+                  className={`w-7 h-7 rounded-full font-bold text-xs flex items-center justify-center transition-all ${uploadStep >= 1
                       ? 'bg-[#7656f4] text-white shadow-xs'
                       : 'border border-slate-300 text-slate-400 bg-white'
-                  }`}
+                    }`}
                 >
                   {uploadStep > 1 ? <Check size={14} strokeWidth={3} /> : '1'}
                 </div>
                 <span
-                  className={`text-sm whitespace-nowrap transition-all ${
-                    uploadStep === 1 || uploadStep > 1
+                  className={`text-sm whitespace-nowrap transition-all ${uploadStep === 1 || uploadStep > 1
                       ? 'font-bold text-[#7656f4]'
                       : 'font-medium text-slate-500 hover:text-slate-700'
-                  }`}
+                    }`}
                 >
                   Select Academic Details
                 </span>
@@ -1128,22 +704,20 @@ export default function MentorAttendance({ initialUpload = false }) {
             <div className="flex flex-col items-center gap-2 cursor-pointer relative" onClick={() => setUploadStep(2)}>
               <div className="flex items-center gap-2.5">
                 <div
-                  className={`w-7 h-7 rounded-full font-bold text-xs flex items-center justify-center transition-all ${
-                    uploadStep === 2
+                  className={`w-7 h-7 rounded-full font-bold text-xs flex items-center justify-center transition-all ${uploadStep === 2
                       ? 'bg-[#7656f4] text-white shadow-xs'
                       : uploadStep > 2
-                      ? 'bg-[#7656f4] text-white shadow-xs'
-                      : 'border border-slate-300 text-slate-400 bg-white'
-                  }`}
+                        ? 'bg-[#7656f4] text-white shadow-xs'
+                        : 'border border-slate-300 text-slate-400 bg-white'
+                    }`}
                 >
                   {uploadStep > 2 ? <Check size={14} strokeWidth={3} /> : '2'}
                 </div>
                 <span
-                  className={`text-sm whitespace-nowrap transition-all ${
-                    uploadStep === 2 || uploadStep > 2
+                  className={`text-sm whitespace-nowrap transition-all ${uploadStep === 2 || uploadStep > 2
                       ? 'font-bold text-[#7656f4]'
                       : 'font-medium text-slate-500 hover:text-slate-700'
-                  }`}
+                    }`}
                 >
                   Enter Attendance Details
                 </span>
@@ -1159,20 +733,18 @@ export default function MentorAttendance({ initialUpload = false }) {
             <div className="flex flex-col items-center gap-2 cursor-pointer relative" onClick={() => setUploadStep(3)}>
               <div className="flex items-center gap-2.5">
                 <div
-                  className={`w-7 h-7 rounded-full font-bold text-xs flex items-center justify-center transition-all ${
-                    uploadStep === 3
+                  className={`w-7 h-7 rounded-full font-bold text-xs flex items-center justify-center transition-all ${uploadStep === 3
                       ? 'bg-[#7656f4] text-white shadow-xs'
                       : 'border border-slate-300 text-slate-400 bg-white'
-                  }`}
+                    }`}
                 >
                   3
                 </div>
                 <span
-                  className={`text-sm whitespace-nowrap transition-all ${
-                    uploadStep === 3
+                  className={`text-sm whitespace-nowrap transition-all ${uploadStep === 3
                       ? 'font-bold text-[#7656f4]'
                       : 'font-medium text-slate-500 hover:text-slate-700'
-                  }`}
+                    }`}
                 >
                   Review &amp; Upload
                 </span>
@@ -1728,9 +1300,8 @@ export default function MentorAttendance({ initialUpload = false }) {
                       setDeptDropdownOpen(false);
                       setCurrentPage(1);
                     }}
-                    className={`w-full text-left px-4 py-2 text-xs font-semibold flex items-center justify-between hover:bg-slate-50 transition-colors ${
-                      selectedDept === dept ? 'text-[#7656f4] bg-[#f0eaff]/40' : 'text-slate-700'
-                    }`}
+                    className={`w-full text-left px-4 py-2 text-xs font-semibold flex items-center justify-between hover:bg-slate-50 transition-colors ${selectedDept === dept ? 'text-[#7656f4] bg-[#f0eaff]/40' : 'text-slate-700'
+                      }`}
                   >
                     <span>{dept}</span>
                     {selectedDept === dept && <Check size={14} className="text-[#7656f4]" />}
@@ -1765,9 +1336,8 @@ export default function MentorAttendance({ initialUpload = false }) {
                       setProgramDropdownOpen(false);
                       setCurrentPage(1);
                     }}
-                    className={`w-full text-left px-4 py-2 text-xs font-semibold flex items-center justify-between hover:bg-slate-50 transition-colors ${
-                      selectedProgram === prog ? 'text-[#7656f4] bg-[#f0eaff]/40' : 'text-slate-700'
-                    }`}
+                    className={`w-full text-left px-4 py-2 text-xs font-semibold flex items-center justify-between hover:bg-slate-50 transition-colors ${selectedProgram === prog ? 'text-[#7656f4] bg-[#f0eaff]/40' : 'text-slate-700'
+                      }`}
                   >
                     <span>{prog}</span>
                     {selectedProgram === prog && <Check size={14} className="text-[#7656f4]" />}
@@ -1777,34 +1347,7 @@ export default function MentorAttendance({ initialUpload = false }) {
             )}
           </div>
 
-          {/* Filters Action Button */}
-          <button
-            type="button"
-            className="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 flex items-center gap-2 hover:bg-slate-50 transition-all shadow-2xs cursor-pointer"
-          >
-            <Filter size={17} className="text-slate-500" />
-            <span>Filters</span>
-          </button>
-        </div>
-      </div>
-
-      {/* META INFORMATIONAL ROW */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-slate-500 font-medium px-1">
-        <div>
-          Showing{' '}
-          <span className="font-bold text-[#7656f4]">
-            {totalCount === 0 ? 0 : startIndex + 1}
-          </span>{' '}
-          to{' '}
-          <span className="font-bold text-[#7656f4]">
-            {displayEndIndex}
-          </span>{' '}
-          of <span className="font-bold text-[#7656f4]">{totalCount}</span> mentees
-        </div>
-
-        {/* View mode toggle (Grid vs List) */}
-        <div className="flex items-center gap-2">
-          <span className="text-sm text-slate-500 font-medium mr-1">View:</span>
+          {/* View mode toggle (Grid vs List) in place of Filters */}
           <div className="flex items-center gap-1 bg-white border border-slate-200 rounded-xl p-1 shadow-2xs">
             <button
               type="button"
@@ -1893,8 +1436,6 @@ export default function MentorAttendance({ initialUpload = false }) {
                           <div className="w-10 h-10 rounded-full bg-[#7656f4] text-white font-bold text-sm flex items-center justify-center shadow-xs">
                             {mentee.initials || 'TS'}
                           </div>
-                          {/* Green Online Dot */}
-                          <span className="w-3 h-3 bg-emerald-500 border-2 border-white rounded-full absolute bottom-0 right-0" />
                         </div>
                         <div className="flex flex-col">
                           <span className="font-bold text-[#1e1548] text-sm">{mentee.name}</span>
@@ -2012,123 +1553,96 @@ export default function MentorAttendance({ initialUpload = false }) {
           </div>
         </div>
       ) : (
-        /* GRID VIEW CARDS */
+        /* GRID VIEW CARDS (SAME CARD AS RESULT SECTION WITHOUT IMAGES) */
         paginatedMentees.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {paginatedMentees.map((mentee) => (
               <div
                 key={mentee.id}
-                className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-2xs hover:shadow-md transition-all flex flex-col justify-between group relative overflow-hidden"
+                className="bg-white rounded-2xl p-4 sm:p-5 border border-gray-100 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
               >
-                {/* Header section with Avatar, Name, Roll No & Menu */}
                 <div>
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex items-center gap-3.5">
-                      {/* Avatar with Online Status Indicator */}
-                      <div className="relative flex-shrink-0">
-                        <img
-                          src={mentee.avatar}
-                          alt={mentee.name}
-                          className="w-14 h-14 rounded-full object-cover border-2 border-white shadow-sm"
-                        />
-                        <span
-                          className="w-3.5 h-3.5 bg-emerald-500 border-2 border-white rounded-full absolute bottom-0 right-0"
-                          title="Online"
-                        />
-                      </div>
-
-                      {/* Mentee Name & Roll Number Pill Badge */}
-                      <div className="flex flex-col">
-                        <h3 className="text-[16px] font-bold text-[#7656f4] leading-snug">
-                          {mentee.name}
-                        </h3>
-                        <div className="mt-1">
-                          <span className="bg-[#f0eaff] text-[#7656f4] text-[11.5px] font-bold px-2.5 py-0.5 rounded-md inline-block">
-                            {mentee.rollNo}
-                          </span>
-                        </div>
-                      </div>
+                  {/* Mentee Header */}
+                  <div className="flex items-start justify-between gap-2 mb-4">
+                    <div>
+                      <h3 className="text-base font-bold text-gray-900 leading-snug">
+                        {mentee.name}
+                      </h3>
+                      <span className="inline-flex items-center gap-1 bg-[#f6f2fe] text-[#7656f4] text-[11px] font-semibold px-2 py-0.5 rounded-md mt-0.5">
+                        <IdCard size={13} className="text-[#7656f4]" />
+                        {mentee.rollNo}
+                      </span>
                     </div>
 
-                    {/* Three-dots Menu Icon */}
-                    <div className="relative">
-                      <button
-                        type="button"
-                        onClick={() => setActiveActionMenuId(activeActionMenuId === mentee.id ? null : mentee.id)}
-                        className="p-1 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100 transition-colors cursor-pointer"
-                        title="More Options"
-                      >
-                        <MoreVertical size={18} />
-                      </button>
-
-                      {activeActionMenuId === mentee.id && (
-                        <div className="absolute right-0 top-8 w-44 bg-white border border-slate-200 rounded-xl shadow-xl z-40 py-1 text-left animate-scale-up">
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setSelectedMenteeSemesterView(mentee);
-                              setActiveActionMenuId(null);
-                            }}
-                            className="w-full px-3.5 py-2 text-xs font-semibold text-slate-700 hover:bg-[#f0eaff]/50 hover:text-[#7656f4] flex items-center gap-2 transition-colors cursor-pointer"
-                          >
-                            <Eye size={14} />
-                            <span>View Details</span>
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              startUploadFlow(mentee);
-                              setActiveActionMenuId(null);
-                            }}
-                            className="w-full px-3.5 py-2 text-xs font-semibold text-slate-700 hover:bg-[#f0eaff]/50 hover:text-[#7656f4] flex items-center gap-2 transition-colors cursor-pointer"
-                          >
-                            <UploadCloud size={14} />
-                            <span>Upload Attendance</span>
-                          </button>
-                        </div>
-                      )}
+                    <div className="text-right shrink-0">
+                      <div className={`px-2.5 py-0.5 rounded-lg text-base font-extrabold inline-block ${mentee.statusBg} ${mentee.statusText}`}>
+                        {mentee.attendanceRate}%
+                      </div>
+                      <span className="block text-[10px] text-gray-400 font-medium mt-0.5">
+                        {mentee.status}
+                      </span>
                     </div>
                   </div>
 
-                  {/* Middle Details Section */}
-                  <div className="my-4 pt-3.5 pb-3.5 border-t border-b border-slate-100 space-y-2 text-[13px] text-slate-600 font-medium">
-                    <div className="flex items-center gap-2.5">
-                      <Building2 size={16} className="text-[#7656f4] flex-shrink-0" />
-                      <span className="truncate">{mentee.department}</span>
+                  {/* Key-Value Details */}
+                  <div className="space-y-2 py-2.5 border-t border-b border-gray-50 my-3">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-gray-400 font-medium flex items-center gap-1.5">
+                        <Building2 size={15} className="text-[#7656f4]" />
+                        Department
+                      </span>
+                      <span className="font-bold text-gray-800">{mentee.department}</span>
                     </div>
 
-                    <div className="flex items-center gap-2.5">
-                      <PhoneCall size={16} className="text-[#7656f4] flex-shrink-0" />
-                      <span>{mentee.phone}</span>
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-gray-400 font-medium flex items-center gap-1.5">
+                        <PhoneCall size={15} className="text-[#7656f4]" />
+                        Phone
+                      </span>
+                      <span className="font-bold text-gray-800">{mentee.phone}</span>
                     </div>
 
-                    <div className="flex items-center gap-2.5">
-                      <Mail size={16} className="text-[#7656f4] flex-shrink-0" />
-                      <span className="truncate">{mentee.email}</span>
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-gray-400 font-medium flex items-center gap-1.5">
+                        <Mail size={15} className="text-[#7656f4]" />
+                        Email
+                      </span>
+                      <span className="font-bold text-gray-800 truncate max-w-[170px]">{mentee.email}</span>
+                    </div>
+                  </div>
+
+                  {/* Attendance Progress */}
+                  <div className="pb-2">
+                    <div className="flex items-center justify-between text-xs mb-1.5">
+                      <span className="font-semibold text-gray-500 text-[11.5px]">Attendance Progress</span>
+                      <span className="text-[11px] font-semibold text-gray-400">{mentee.attendanceFraction || ''}</span>
+                    </div>
+                    <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                      <div
+                        className="bg-[#7656f4] h-full rounded-full transition-all"
+                        style={{ width: `${mentee.attendanceRate}%` }}
+                      />
                     </div>
                   </div>
                 </div>
 
-                {/* Bottom Action Buttons: View & Upload */}
-                <div className="flex items-center gap-2.5 pt-1">
-                  {/* View Button */}
+                {/* Action Buttons */}
+                <div className="grid grid-cols-2 gap-2 mt-2 pt-1">
                   <button
                     type="button"
                     onClick={() => setSelectedMenteeSemesterView(mentee)}
-                    className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl border-[1.5px] border-[#7656f4] text-[#7656f4] hover:bg-[#f0eaff]/50 text-xs font-bold transition-all shadow-2xs cursor-pointer active:scale-98"
+                    className="bg-[#f6f2fe] border border-[#7656f4]/30 text-[#7656f4] hover:bg-purple-100 py-[10.5px] px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                   >
-                    <FigmaViewIcon size={17} />
-                    <span>View</span>
+                    <Eye size={16} />
+                    <span>View Details</span>
                   </button>
-
-                  {/* Upload Button */}
                   <button
                     type="button"
                     onClick={() => startUploadFlow(mentee)}
-                    className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-[#7656f4] hover:bg-[#6242e2] text-white text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-98"
+                    className="bg-[#7656f4] hover:bg-[#6242e2] text-white py-[10.5px] px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-xs cursor-pointer"
                   >
-                    <FigmaUploadCloudPlusIcon size={17} />
-                    <span>Upload</span>
+                    <UploadCloud size={16} />
+                    <span>Upload Attendance</span>
                   </button>
                 </div>
               </div>
@@ -2194,11 +1708,10 @@ export default function MentorAttendance({ initialUpload = false }) {
           <button
             type="button"
             onClick={() => setCurrentPage(1)}
-            className={`w-8 h-8 rounded-lg font-bold text-xs flex items-center justify-center transition-all cursor-pointer ${
-              currentPage === 1
+            className={`w-8 h-8 rounded-lg font-bold text-xs flex items-center justify-center transition-all cursor-pointer ${currentPage === 1
                 ? 'bg-[#7656f4] text-white shadow-xs'
                 : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
-            }`}
+              }`}
           >
             1
           </button>
@@ -2208,11 +1721,10 @@ export default function MentorAttendance({ initialUpload = false }) {
             <button
               type="button"
               onClick={() => setCurrentPage(2)}
-              className={`w-8 h-8 rounded-lg font-bold text-xs flex items-center justify-center transition-all cursor-pointer ${
-                currentPage === 2
+              className={`w-8 h-8 rounded-lg font-bold text-xs flex items-center justify-center transition-all cursor-pointer ${currentPage === 2
                   ? 'bg-[#7656f4] text-white shadow-xs'
                   : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
-              }`}
+                }`}
             >
               2
             </button>
@@ -2223,11 +1735,10 @@ export default function MentorAttendance({ initialUpload = false }) {
             <button
               type="button"
               onClick={() => setCurrentPage(3)}
-              className={`w-8 h-8 rounded-lg font-bold text-xs flex items-center justify-center transition-all cursor-pointer ${
-                currentPage === 3
+              className={`w-8 h-8 rounded-lg font-bold text-xs flex items-center justify-center transition-all cursor-pointer ${currentPage === 3
                   ? 'bg-[#7656f4] text-white shadow-xs'
                   : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
-              }`}
+                }`}
             >
               3
             </button>
@@ -2243,11 +1754,10 @@ export default function MentorAttendance({ initialUpload = false }) {
             <button
               type="button"
               onClick={() => setCurrentPage(10)}
-              className={`w-8 h-8 rounded-lg font-bold text-xs flex items-center justify-center transition-all cursor-pointer ${
-                currentPage === 10
+              className={`w-8 h-8 rounded-lg font-bold text-xs flex items-center justify-center transition-all cursor-pointer ${currentPage === 10
                   ? 'bg-[#7656f4] text-white shadow-xs'
                   : 'bg-[#f4effe] text-[#7656f4] hover:bg-[#eadefe]'
-              }`}
+                }`}
             >
               10
             </button>
@@ -2436,11 +1946,10 @@ export default function MentorAttendance({ initialUpload = false }) {
                         <span className="text-slate-400">{log.date}</span>
                       </div>
                       <span
-                        className={`px-2.5 py-1 rounded-md font-bold text-[11px] ${
-                          log.status === 'Present'
+                        className={`px-2.5 py-1 rounded-md font-bold text-[11px] ${log.status === 'Present'
                             ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                             : 'bg-rose-50 text-rose-700 border border-rose-200'
-                        }`}
+                          }`}
                       >
                         {log.status}
                       </span>
@@ -2464,4 +1973,5 @@ export default function MentorAttendance({ initialUpload = false }) {
     </div>
   );
 }
+
 

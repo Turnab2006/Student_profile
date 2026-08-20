@@ -198,7 +198,7 @@ export default function MentorMentees({ onNavigate }) {
   const [selectedYear, setSelectedYear] = useState('all');
   const [selectedMentor, setSelectedMentor] = useState('All Mentors');
   const [sortBy, setSortBy] = useState('Name (A-Z)');
-  const [viewMode, setViewMode] = useState('list'); // 'list' | 'grid'
+  const [viewMode, setViewMode] = useState('grid'); // 'list' | 'grid'
 
   // Pagination State
   const [currentPage, setCurrentPage] = useState(1);
@@ -426,8 +426,8 @@ export default function MentorMentees({ onNavigate }) {
             onClick={() => setViewMode('list')}
             title="List View"
             className={`p-1.5 rounded-lg transition-all cursor-pointer ${viewMode === 'list'
-                ? 'bg-white text-[#7656f4] shadow-sm border border-[#e2d9fd] font-bold'
-                : 'text-slate-400 hover:text-slate-600'
+              ? 'bg-white text-[#7656f4] shadow-sm border border-[#e2d9fd] font-bold'
+              : 'text-slate-400 hover:text-slate-600'
               }`}
           >
             <List size={18} />
@@ -437,8 +437,8 @@ export default function MentorMentees({ onNavigate }) {
             onClick={() => setViewMode('grid')}
             title="Grid View"
             className={`p-1.5 rounded-lg transition-all cursor-pointer ${viewMode === 'grid'
-                ? 'bg-white text-[#7656f4] shadow-sm border border-[#e2d9fd] font-bold'
-                : 'text-slate-400 hover:text-slate-600'
+              ? 'bg-white text-[#7656f4] shadow-sm border border-[#e2d9fd] font-bold'
+              : 'text-slate-400 hover:text-slate-600'
               }`}
           >
             <LayoutGrid size={18} />
@@ -623,8 +623,8 @@ export default function MentorMentees({ onNavigate }) {
                     key={pageNum}
                     onClick={() => setCurrentPage(pageNum)}
                     className={`w-8 h-8 rounded-xl text-[13px] font-bold transition-all flex items-center justify-center cursor-pointer ${validCurrentPage === pageNum
-                        ? 'bg-[#7656f4] text-white shadow-sm shadow-[#7656f4]/20'
-                        : 'text-slate-600 hover:text-[#7656f4] hover:bg-[#f0eaff]'
+                      ? 'bg-[#7656f4] text-white shadow-sm shadow-[#7656f4]/20'
+                      : 'text-slate-600 hover:text-[#7656f4] hover:bg-[#f0eaff]'
                       }`}
                   >
                     {pageNum}

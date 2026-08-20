@@ -426,9 +426,14 @@ export default function MentorResults({ initialUpload = false }) {
   const filteredMentees = useMemo(() => {
     return mockMentees
       .filter((mentee) => {
+        const query = searchQuery.trim().toLowerCase();
         const matchesSearch =
-          mentee.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          mentee.rollNo.toLowerCase().includes(searchQuery.toLowerCase());
+          !query ||
+          mentee.name.toLowerCase().includes(query) ||
+          mentee.rollNo.toLowerCase().includes(query) ||
+          (mentee.email && mentee.email.toLowerCase().includes(query)) ||
+          (mentee.phone && mentee.phone.toLowerCase().includes(query)) ||
+          (mentee.department && mentee.department.toLowerCase().includes(query));
         const matchesDept =
           departmentFilter === 'All' || mentee.department === departmentFilter;
         return matchesSearch && matchesDept;
@@ -957,11 +962,11 @@ export default function MentorResults({ initialUpload = false }) {
 
   return (
     <div className="flex flex-col gap-5">
-      {/* Filter, Search & Upload Action Section */}
-      <div className="bg-white p-3.5 sm:p-4 rounded-2xl border border-gray-100 shadow-xs flex flex-col md:flex-row items-center justify-between gap-3">
-        {/* Search Input */}
-        <div className="relative w-full md:flex-1">
-          <Search size={21} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+      {/* FILTER & SEARCH CONTROL BAR */}
+      <div className="bg-white rounded-2xl p-3 sm:p-4 border border-slate-200/80 shadow-2xs flex flex-col md:flex-row items-center justify-between gap-3">
+        {/* Search input field */}
+        <div className="relative flex-1 w-full">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={19} />
           <input
             type="text"
             value={searchQuery}
@@ -969,111 +974,104 @@ export default function MentorResults({ initialUpload = false }) {
               setSearchQuery(e.target.value);
               setCurrentPage(1);
             }}
-            placeholder="Search mentee by name or Roll number..."
-            className="w-full bg-[#f8fafc] border border-gray-200/60 rounded-xl pl-10 pr-4 py-2.5 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-[#7656f4] focus:bg-white transition-colors"
+            placeholder="Search mentee by name, college roll number, email or phone"
+            className="w-full bg-[#f8f9fc] border border-slate-200/60 rounded-xl pl-11 pr-4 py-2.5 text-sm font-medium text-slate-800 placeholder:text-slate-400 outline-none focus:border-[#7656f4] focus:bg-white transition-all shadow-inner"
           />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery('')}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+            >
+              <X size={16} />
+            </button>
+          )}
         </div>
 
-        {/* Filters & Dropdowns & Upload Action */}
-        <div className="flex flex-wrap items-center gap-2.5 w-full md:w-auto">
-          <button
-            type="button"
-            className="bg-[#f8fafc] hover:bg-purple-50 text-[#7656f4] border border-purple-200/60 px-3.5 py-2.5 rounded-xl text-sm font-medium flex items-center gap-2 transition-colors cursor-pointer"
-          >
-            <Filter size={18} className="text-[#7656f4]" />
-            <span className="text-[#7656f4]">Filters</span>
-          </button>
-
+        {/* Right side control buttons */}
+        <div className="flex flex-wrap items-center gap-3 w-full md:w-auto justify-between md:justify-end">
+          {/* Department Filter */}
           <div className="relative">
-            <select
-              value={departmentFilter}
-              onChange={(e) => {
-                setDepartmentFilter(e.target.value);
-                setCurrentPage(1);
-              }}
-              className="bg-[#f8fafc] hover:bg-gray-100 text-gray-700 border border-gray-200/60 pl-3.5 pr-8 py-2.5 rounded-xl text-sm font-medium appearance-none outline-none transition-colors cursor-pointer"
-            >
-              <option value="All">All Departments</option>
-              <option value="CSE">CSE</option>
-              <option value="ECE">ECE</option>
-              <option value="IT">IT</option>
-              <option value="ME">ME</option>
-              <option value="EE">EE</option>
-            </select>
-            <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+            <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-xl pl-3.5 pr-8 py-2.5 text-sm font-semibold text-slate-700 shadow-2xs hover:border-slate-300 transition-all cursor-pointer">
+              <Building2 size={18} className="text-slate-500 shrink-0" />
+              <select
+                value={departmentFilter}
+                onChange={(e) => {
+                  setDepartmentFilter(e.target.value);
+                  setCurrentPage(1);
+                }}
+                className="bg-transparent text-slate-700 font-semibold appearance-none outline-none cursor-pointer"
+              >
+                <option value="All">All Departments</option>
+                <option value="CSE">CSE</option>
+                <option value="ECE">ECE</option>
+                <option value="IT">IT</option>
+                <option value="ME">ME</option>
+                <option value="EE">EE</option>
+              </select>
+            </div>
+            <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
           </div>
 
+          {/* Academic Year Filter */}
           <div className="relative">
-            <div className="flex items-center gap-1.5 bg-[#f8fafc] hover:bg-gray-100 text-gray-700 border border-gray-200/60 pl-3 pr-8 py-2.5 rounded-xl text-sm font-medium transition-colors cursor-pointer">
-              <CalendarDays size={17} className="text-gray-500 shrink-0" />
+            <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-xl pl-3.5 pr-8 py-2.5 text-sm font-semibold text-slate-700 shadow-2xs hover:border-slate-300 transition-all cursor-pointer">
+              <CalendarDays size={18} className="text-slate-500 shrink-0" />
               <select
                 value={academicYear}
                 onChange={(e) => setAcademicYear(e.target.value)}
-                className="bg-transparent text-gray-700 appearance-none outline-none cursor-pointer"
+                className="bg-transparent text-slate-700 font-semibold appearance-none outline-none cursor-pointer"
               >
                 <option value="2024-25">Academic Year 2024-25</option>
                 <option value="2023-24">Academic Year 2023-24</option>
                 <option value="2022-23">Academic Year 2022-23</option>
               </select>
             </div>
-            <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-          </div>
-
-          <button
-            type="button"
-            onClick={() => handleOpenUpload(null)}
-            className="bg-[#7656f4] hover:bg-[#6242e2] text-white font-semibold text-sm px-4 py-[12.5px] rounded-xl shadow-xs flex items-center justify-center gap-2 transition-all cursor-pointer shrink-0 ml-auto md:ml-0"
-          >
-            <UploadCloud size={18} />
-            <span>Upload Result</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Sub-header Toolbar: Counter, View Toggle, Sort */}
-      <div className="flex flex-wrap items-center justify-between gap-3 px-1">
-        <p className="text-sm font-medium text-gray-500">
-          Showing {showingStart} to {showingEnd} of {filteredMentees.length} mentees
-        </p>
-
-        <div className="flex items-center gap-3">
-          {/* View Mode Toggle */}
-          <div className="flex items-center bg-gray-100/80 p-1 rounded-xl gap-1 border border-gray-200/60">
-            <button
-              type="button"
-              onClick={() => setViewMode('grid')}
-              className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
-                viewMode === 'grid' ? 'bg-[#f0eaff] text-[#7656f4] shadow-xs font-bold' : 'text-gray-400 hover:text-gray-600'
-              }`}
-              title="Grid View"
-            >
-              <LayoutGrid size={21} />
-            </button>
-            <button
-              type="button"
-              onClick={() => setViewMode('list')}
-              className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
-                viewMode === 'list' ? 'bg-[#f0eaff] text-[#7656f4] shadow-xs font-bold' : 'text-gray-400 hover:text-gray-600'
-              }`}
-              title="List View"
-            >
-              <List size={21} />
-            </button>
+            <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
           </div>
 
           {/* Sort Dropdown */}
           <div className="relative">
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="bg-white border border-gray-200/80 text-gray-700 pl-3.5 pr-8 py-2 rounded-xl text-sm font-medium appearance-none outline-none cursor-pointer shadow-xs hover:border-gray-300 transition-colors"
+            <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-xl pl-3.5 pr-8 py-2.5 text-sm font-semibold text-slate-700 shadow-2xs hover:border-slate-300 transition-all cursor-pointer">
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="bg-transparent text-slate-700 font-semibold appearance-none outline-none cursor-pointer"
+              >
+                <option value="name">Sort by: Name (A - Z)</option>
+                <option value="roll">Sort by: Roll Number</option>
+                <option value="result-desc">Sort by: Highest Result</option>
+                <option value="result-asc">Sort by: Lowest Result</option>
+              </select>
+            </div>
+            <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+          </div>
+
+          {/* View mode toggle (Grid vs List) */}
+          <div className="flex items-center gap-1 bg-white border border-slate-200 rounded-xl p-1 shadow-2xs">
+            <button
+              type="button"
+              onClick={() => setViewMode('grid')}
+              className={`p-1.5 rounded-lg transition-all cursor-pointer ${
+                viewMode === 'grid'
+                  ? 'bg-[#f0eaff] text-[#7656f4] border border-[#7656f4]/40 shadow-xs'
+                  : 'text-slate-400 hover:text-slate-600'
+              }`}
+              title="Grid View"
             >
-              <option value="name">Sort by: Name (A - Z)</option>
-              <option value="roll">Sort by: Roll Number</option>
-              <option value="result-desc">Sort by: Highest Result</option>
-              <option value="result-asc">Sort by: Lowest Result</option>
-            </select>
-            <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+              <LayoutGrid size={18} />
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewMode('list')}
+              className={`p-1.5 rounded-lg transition-all cursor-pointer ${
+                viewMode === 'list'
+                  ? 'bg-[#f0eaff] text-[#7656f4] border border-[#7656f4]/40 shadow-xs'
+                  : 'text-slate-400 hover:text-slate-600'
+              }`}
+              title="List View"
+            >
+              <List size={18} />
+            </button>
           </div>
         </div>
       </div>
@@ -1257,11 +1255,10 @@ export default function MentorResults({ initialUpload = false }) {
               key={pageNum}
               type="button"
               onClick={() => setCurrentPage(pageNum)}
-              className={`w-8 h-8 flex items-center justify-center rounded-lg text-sm font-bold transition-colors cursor-pointer ${
-                currentPage === pageNum
+              className={`w-8 h-8 flex items-center justify-center rounded-lg text-sm font-bold transition-colors cursor-pointer ${currentPage === pageNum
                   ? 'bg-[#7656f4] text-white shadow-xs'
                   : 'border border-gray-200 text-gray-700 hover:bg-gray-50'
-              }`}
+                }`}
             >
               {pageNum}
             </button>

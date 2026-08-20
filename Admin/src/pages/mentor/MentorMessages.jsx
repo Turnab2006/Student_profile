@@ -571,42 +571,51 @@ export default function MentorMessages({ hideHeader = false }) {
         {/* ========================================================================= */}
         <div className="lg:col-span-8 xl:col-span-8 w-full bg-white rounded-3xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex flex-col overflow-hidden h-[calc(100vh-125px)] sm:h-[calc(100vh-110px)] min-h-[550px] relative">
           
-          {/* Top Header Bar with Active Mentee Summary */}
-          <div className="p-3.5 sm:p-4 bg-white border-b border-slate-100 flex items-center justify-between gap-3 shrink-0 shadow-2xs">
-            <div className="flex items-center gap-3 min-w-0">
+          {/* Top Header Bar with Active Mentee Summary - Styled with Blue Gradient & Dot Grid Background */}
+          <div className="p-3.5 sm:p-4 bg-gradient-to-r from-[#1d4ed8] via-[#2563eb] to-[#3b82f6] border-b border-blue-400/30 flex items-center justify-between gap-3 shrink-0 shadow-sm relative overflow-hidden text-white z-10">
+            {/* Subtle Decorative White Dot Matrix Pattern */}
+            <div
+              className="absolute inset-0 pointer-events-none opacity-20"
+              style={{
+                backgroundImage: "radial-gradient(#ffffff 1.2px, transparent 1.2px)",
+                backgroundSize: "14px 14px",
+              }}
+            />
+
+            <div className="flex items-center gap-3 min-w-0 relative z-10">
               <div className="relative shrink-0">
                 <img
                   src={activeContact.avatar}
                   alt={activeContact.name}
-                  className="h-10 w-10 rounded-full object-cover ring-2 ring-slate-100 shadow-sm"
+                  className="h-10 w-10 rounded-full object-cover ring-2 ring-white/90 shadow-sm"
                   onError={(e) => {
                     e.target.style.display = "none";
                     if (e.target.nextSibling) e.target.nextSibling.style.display = "flex";
                   }}
                 />
-                <div className="hidden h-10 w-10 rounded-full bg-blue-100 text-[#2384FD] font-bold text-sm items-center justify-center">
+                <div className="hidden h-10 w-10 rounded-full bg-white/20 text-white font-bold text-sm items-center justify-center">
                   {activeContact.initials}
                 </div>
-                <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-emerald-500 ring-2 ring-white shadow-2xs" />
+                <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-emerald-400 ring-2 ring-white shadow-2xs" />
               </div>
 
               <div className="overflow-hidden min-w-0">
-                <h3 className="text-base sm:text-lg font-black tracking-tight bg-gradient-to-r from-[#2384FD] via-[#1d61e7] to-[#1e40af] bg-clip-text text-transparent truncate">
+                <h3 className="text-base sm:text-lg font-bold tracking-tight text-white truncate drop-shadow-xs">
                   {activeContact.name}
                 </h3>
-                <p className="text-[11px] sm:text-xs font-medium text-emerald-600 flex items-center gap-1.5 truncate mt-0.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
+                <p className="text-[11px] sm:text-xs font-medium text-blue-100 flex items-center gap-1.5 truncate mt-0.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0 shadow-xs" />
                   <span>{activeContact.role} &bull; {activeContact.department}</span>
                 </p>
               </div>
             </div>
 
             {/* Mobile Contact Switcher Dropdown */}
-            <div className="lg:hidden">
+            <div className="lg:hidden relative z-10">
               <select
                 value={activeContactId}
                 onChange={(e) => setActiveContactId(e.target.value)}
-                className="bg-slate-50 text-slate-800 text-xs font-bold px-3 py-1.5 rounded-xl border border-slate-200 outline-none cursor-pointer"
+                className="bg-white/20 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-xl border border-white/30 outline-none cursor-pointer"
               >
                 {contacts.map((c) => (
                   <option key={c.id} value={c.id} className="text-slate-900">

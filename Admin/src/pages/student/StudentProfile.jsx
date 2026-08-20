@@ -880,7 +880,7 @@ export default function StudentProfile({
                   }`}
                   onClick={() => handleSetShowDigitalCard(false)}
                 >
-                  {userRole === "mentor" ? "View Mentee" : "Student Profile"}
+                  {userRole === "mentor" ? "View Mentee" : "View Students"}
                 </span>
                 {isDigitalCard && (
                   <>
