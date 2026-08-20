@@ -180,14 +180,35 @@ export default function Mentors({ onNavigate, onOpenSidebar }) {
 
         {/* Table */}
         <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 overflow-hidden">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 px-4 sm:px-5 py-3 border-b border-gray-100">
-            <p className="text-xs text-gray-500 shrink-0">Showing {visibleMentors.length} of {mentors.length} mentors</p>
-            <div className="flex items-center gap-2 justify-between sm:justify-end w-full sm:w-auto">
-              <FilterDropdown value={sortBy} onChange={setSortBy} options={[{ value: "name-asc", label: "Sort by: Name (A-Z)" }, { value: "name-desc", label: "Sort by: Name (Z-A)" }, { value: "students-desc", label: "Sort by: Students (High-Low)" }, { value: "students-asc", label: "Sort by: Students (Low-High)" }, { value: "dept-asc", label: "Sort by: Department (A-Z)" }, { value: "dept-desc", label: "Sort by: Department (Z-A)" }]} />
-              <button className="p-2 border border-gray-200 rounded-lg hover:bg-gray-50 shrink-0">
-                <SlidersHorizontal size={14} className="text-gray-500" />
+          {/* Table meta row with solid green gradient */}
+          <div className="relative overflow-hidden bg-gradient-to-r from-[#0da651] via-[#0e9f4e] to-[#09803d] px-4 sm:px-5 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-white border-b border-emerald-600/30">
+            <div className="relative z-10 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-300 animate-pulse shrink-0" />
+              <p className="text-xs font-semibold text-white tracking-wide">
+                Showing <span className="font-bold text-white bg-white/20 px-2 py-0.5 rounded-md border border-white/20">{visibleMentors.length}</span> of <span className="font-bold text-white">{mentors.length}</span> mentors
+              </p>
+            </div>
+            <div className="relative z-10 flex items-center gap-2 justify-between sm:justify-end w-full sm:w-auto">
+              <div className="relative">
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="appearance-none w-[210px] pl-3.5 pr-8 py-1.5 bg-[#eaf8ee] hover:bg-[#dff3e5] text-[#085a2b] font-bold text-xs rounded-lg border border-emerald-300/80 shadow-xs focus:outline-none focus:ring-2 focus:ring-emerald-200 cursor-pointer transition-colors"
+                >
+                  <option value="name-asc" className="bg-white text-gray-800">Sort by: Name (A-Z)</option>
+                  <option value="name-desc" className="bg-white text-gray-800">Sort by: Name (Z-A)</option>
+                  <option value="students-desc" className="bg-white text-gray-800">Sort by: Students (High-Low)</option>
+                  <option value="students-asc" className="bg-white text-gray-800">Sort by: Students (Low-High)</option>
+                  <option value="dept-asc" className="bg-white text-gray-800">Sort by: Department (A-Z)</option>
+                  <option value="dept-desc" className="bg-white text-gray-800">Sort by: Department (Z-A)</option>
+                </select>
+                <ChevronDown size={13} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-[#0da651]" />
+              </div>
+              <button className="p-1.5 bg-[#eaf8ee] hover:bg-[#dff3e5] text-[#085a2b] border border-emerald-300/80 rounded-lg transition-colors cursor-pointer shrink-0 shadow-xs" aria-label="Table options">
+                <SlidersHorizontal size={14} />
               </button>
             </div>
+            <div className="absolute right-0 top-0 bottom-0 w-40 bg-gradient-to-l from-white/10 to-transparent pointer-events-none" />
           </div>
 
           <div className="overflow-x-auto">

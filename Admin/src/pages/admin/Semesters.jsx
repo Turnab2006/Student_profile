@@ -17,7 +17,25 @@ import {
   School,
   BookOpen,
   Filter,
+  PieChart,
+  LineChart,
 } from "lucide-react";
+import {
+  ResponsiveContainer,
+  AreaChart,
+  Area,
+  BarChart,
+  Bar,
+  PieChart as RechartsPieChart,
+  Pie,
+  Cell,
+  RadialBarChart,
+  RadialBar,
+  XAxis,
+  YAxis,
+  Tooltip as RechartsTooltip,
+  CartesianGrid,
+} from "recharts";
 import AdminProfile from "../../components/admin/AdminProfile";
 
 const summaryCards = [
@@ -26,57 +44,100 @@ const summaryCards = [
     value: "4",
     subtext: "B.Tech, M.Tech, BCA, MCA",
     icon: GraduationCap,
-    bg: "bg-emerald-50 text-emerald-600 border-emerald-100",
+    cardBg: "bg-[#f2faf5] border-emerald-200/90 hover:bg-[#eaf7ef] hover:border-emerald-300",
+    iconBg: "bg-white text-[#0da651] border-emerald-200/80 shadow-2xs",
     badge: "4 Degree Programs",
-    badgeBg: "bg-emerald-100/80 text-emerald-700",
+    badgeBg: "bg-emerald-100/90 text-emerald-800 border-emerald-200/80",
+    subtextColor: "text-emerald-800/80",
   },
   {
     label: "Academic Sessions",
     value: "3",
     subtext: "2022 - 2025 Active Terms",
     icon: CalendarDays,
-    bg: "bg-violet-50 text-violet-600 border-violet-100",
+    cardBg: "bg-[#f7f5fd] border-violet-200/90 hover:bg-[#f1edfc] hover:border-violet-300",
+    iconBg: "bg-white text-violet-600 border-violet-200/80 shadow-2xs",
     badge: "Session 2024-25",
-    badgeBg: "bg-violet-100/80 text-violet-700",
+    badgeBg: "bg-violet-100/90 text-violet-800 border-violet-200/80",
+    subtextColor: "text-violet-800/80",
   },
   {
     label: "Departments",
     value: "8",
     subtext: "Engineering & Sciences",
     icon: School,
-    bg: "bg-orange-50 text-orange-500 border-orange-100",
+    cardBg: "bg-[#fff8f2] border-orange-200/90 hover:bg-[#fff2e7] hover:border-orange-300",
+    iconBg: "bg-white text-orange-500 border-orange-200/80 shadow-2xs",
     badge: "8 Active Depts",
-    badgeBg: "bg-orange-100/80 text-orange-700",
+    badgeBg: "bg-orange-100/90 text-orange-800 border-orange-200/80",
+    subtextColor: "text-orange-800/80",
   },
   {
     label: "Total Students",
     value: "2,847",
     subtext: "Enrolled Across Batches",
     icon: Users,
-    bg: "bg-blue-50 text-blue-600 border-blue-100",
+    cardBg: "bg-[#f2f7ff] border-blue-200/90 hover:bg-[#e7f0ff] hover:border-blue-300",
+    iconBg: "bg-white text-blue-600 border-blue-200/80 shadow-2xs",
     badge: "+12.5% Growth",
-    badgeBg: "bg-blue-100/80 text-blue-700",
+    badgeBg: "bg-blue-100/90 text-blue-800 border-blue-200/80",
+    subtextColor: "text-blue-800/80",
   },
 ];
 
+const programStyles = {
+  "B.Tech": {
+    cardBg: "bg-[#f2faf5] border-emerald-200/90 hover:bg-[#eaf7ef] hover:border-emerald-300",
+    badgeBg: "bg-emerald-100/90 text-emerald-800 border-emerald-200/80 font-bold",
+    avatarBg: "bg-emerald-100 text-emerald-700",
+  },
+  "M.Tech": {
+    cardBg: "bg-[#fff8f2] border-orange-200/90 hover:bg-[#fff2e7] hover:border-orange-300",
+    badgeBg: "bg-orange-100/90 text-orange-800 border-orange-200/80 font-bold",
+    avatarBg: "bg-orange-100 text-orange-700",
+  },
+  "BCA": {
+    cardBg: "bg-[#f7f5fd] border-violet-200/90 hover:bg-[#f1edfc] hover:border-violet-300",
+    badgeBg: "bg-violet-100/90 text-violet-800 border-violet-200/80 font-bold",
+    avatarBg: "bg-violet-100 text-violet-700",
+  },
+  "MCA": {
+    cardBg: "bg-[#f2f7ff] border-blue-200/90 hover:bg-[#e7f0ff] hover:border-blue-300",
+    badgeBg: "bg-blue-100/90 text-blue-800 border-blue-200/80 font-bold",
+    avatarBg: "bg-blue-100 text-blue-700",
+  },
+};
+
 const overviewData = [
-  { label: "B.Tech", value: 1894, percent: 66.6, color: "#1bb15e" },
-  { label: "M.Tech", value: 432, percent: 15.2, color: "#ff8a66" },
-  { label: "BCA", value: 286, percent: 10.0, color: "#a66cff" },
-  { label: "MCA", value: 235, percent: 8.2, color: "#4d8cff" },
+  { label: "B.Tech", value: 1894, percent: 66.6, color: "#1bb15e", cardBg: "bg-[#f2faf5] border-emerald-200/80" },
+  { label: "M.Tech", value: 432, percent: 15.2, color: "#ff8a66", cardBg: "bg-[#fff8f2] border-orange-200/80" },
+  { label: "BCA", value: 286, percent: 10.0, color: "#a66cff", cardBg: "bg-[#f7f5fd] border-violet-200/80" },
+  { label: "MCA", value: 235, percent: 8.2, color: "#4d8cff", cardBg: "bg-[#f2f7ff] border-blue-200/80" },
 ];
 
 const sessions = [
   {
-    year: "2023-2024",
+    year: "2024-2025",
     current: true,
+    dateRange: "01 Aug 2024 - 31 Jul 2025",
+    totalStudents: 2847,
+    programs: [
+      { name: "B.Tech", students: 1894 },
+      { name: "M.Tech", students: 432 },
+      { name: "BCA", students: 286 },
+      { name: "MCA", students: 235 },
+    ],
+  },
+  {
+    year: "2023-2024",
+    current: false,
     dateRange: "01 Aug 2023 - 31 Jul 2024",
     totalStudents: 1710,
     programs: [
-      { name: "B.Tech", students: 1142, accent: "bg-emerald-50 text-emerald-700" },
-      { name: "M.Tech", students: 298, accent: "bg-violet-50 text-violet-700" },
-      { name: "BCA", students: 152, accent: "bg-orange-50 text-orange-600" },
-      { name: "MCA", students: 118, accent: "bg-blue-50 text-blue-700" },
+      { name: "B.Tech", students: 1142 },
+      { name: "M.Tech", students: 298 },
+      { name: "BCA", students: 152 },
+      { name: "MCA", students: 118 },
     ],
   },
   {
@@ -85,10 +146,10 @@ const sessions = [
     dateRange: "01 Aug 2022 - 31 Jul 2023",
     totalStudents: 1514,
     programs: [
-      { name: "B.Tech", students: 1032, accent: "bg-emerald-50 text-emerald-700" },
-      { name: "M.Tech", students: 246, accent: "bg-violet-50 text-violet-700" },
-      { name: "BCA", students: 134, accent: "bg-orange-50 text-orange-600" },
-      { name: "MCA", students: 102, accent: "bg-blue-50 text-blue-700" },
+      { name: "B.Tech", students: 1032 },
+      { name: "M.Tech", students: 246 },
+      { name: "BCA", students: 134 },
+      { name: "MCA", students: 102 },
     ],
   },
   {
@@ -97,10 +158,22 @@ const sessions = [
     dateRange: "01 Aug 2021 - 31 Jul 2022",
     totalStudents: 1376,
     programs: [
-      { name: "B.Tech", students: 956, accent: "bg-emerald-50 text-emerald-700" },
-      { name: "M.Tech", students: 210, accent: "bg-violet-50 text-violet-700" },
-      { name: "BCA", students: 118, accent: "bg-orange-50 text-orange-600" },
-      { name: "MCA", students: 92, accent: "bg-blue-50 text-blue-700" },
+      { name: "B.Tech", students: 956 },
+      { name: "M.Tech", students: 210 },
+      { name: "BCA", students: 118 },
+      { name: "MCA", students: 92 },
+    ],
+  },
+  {
+    year: "2020-2021",
+    current: false,
+    dateRange: "01 Aug 2020 - 31 Jul 2021",
+    totalStudents: 1220,
+    programs: [
+      { name: "B.Tech", students: 840 },
+      { name: "M.Tech", students: 190 },
+      { name: "BCA", students: 105 },
+      { name: "MCA", students: 85 },
     ],
   },
 ];
@@ -120,44 +193,192 @@ function FilterSelect({ label, options }) {
   );
 }
 
-function SummaryCard({ icon: Icon, label, value, subtext, bg, badge, badgeBg }) {
+function SummaryCard({ icon: Icon, label, value, subtext, cardBg, iconBg, badge, badgeBg, subtextColor }) {
   return (
-    <div className="rounded-2xl border border-gray-100 bg-gray-50/50 p-3.5 sm:p-4 hover:bg-white hover:border-green-200 hover:shadow-xs transition-all flex flex-col justify-between">
+    <div className={`rounded-2xl border p-3.5 sm:p-4 hover:shadow-xs transition-all flex flex-col justify-between ${cardBg}`}>
       <div className="flex items-center justify-between gap-2">
-        <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border ${bg}`}>
+        <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border ${iconBg}`}>
           <Icon size={19} />
         </div>
-        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${badgeBg}`}>
+        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${badgeBg}`}>
           {badge}
         </span>
       </div>
       <div className="mt-3">
-        <p className="text-2xl font-extrabold tracking-tight text-gray-800 leading-tight">{value}</p>
-        <p className="text-xs font-bold text-gray-700 mt-1">{label}</p>
-        <p className="text-[11px] text-gray-400 font-medium mt-0.5">{subtext}</p>
+        <p className="text-2xl font-extrabold tracking-tight text-gray-900 leading-tight">{value}</p>
+        <p className="text-xs font-bold text-gray-800 mt-1">{label}</p>
+        <p className={`text-[11px] font-semibold mt-0.5 ${subtextColor}`}>{subtext}</p>
       </div>
     </div>
   );
 }
 
-function DonutChart() {
-  const gradient = useMemo(
-    () =>
-      `conic-gradient(${overviewData[0].color} 0 ${overviewData[0].percent}%, ${overviewData[1].color} ${overviewData[0].percent}% ${overviewData[0].percent + overviewData[1].percent}%, ${overviewData[2].color} ${overviewData[0].percent + overviewData[1].percent}% ${overviewData[0].percent + overviewData[1].percent + overviewData[2].percent}%, ${overviewData[3].color} ${overviewData[0].percent + overviewData[1].percent + overviewData[2].percent}% 100%)`,
-    []
-  );
+function ChartTooltip({ active, payload, label }) {
+  if (active && payload && payload.length) {
+    return (
+      <div className="rounded-xl border border-gray-200/90 bg-white/95 backdrop-blur-md p-2.5 shadow-xl text-xs space-y-1.5 min-w-[130px] z-50">
+        {label && <p className="font-bold text-gray-800 border-b border-gray-100 pb-1">{label}</p>}
+        {payload.map((entry, index) => {
+          const color = entry.color || entry.payload?.fill || entry.payload?.color || "#0da651";
+          const name = entry.name || entry.dataKey || entry.payload?.name;
+          const val = entry.value ?? entry.payload?.students ?? entry.payload?.value ?? 0;
+          return (
+            <div key={`tip-${index}`} className="flex items-center justify-between gap-3 text-[11px]">
+              <div className="flex items-center gap-1.5">
+                <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: color }} />
+                <span className="font-semibold text-gray-600">{name}:</span>
+              </div>
+              <span className="font-extrabold text-gray-900">{typeof val === "number" ? val.toLocaleString() : val}</span>
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+  return null;
+}
+
+function ShadcnDonutChart() {
+  const data = [
+    { name: "B.Tech", value: 1894, color: "#1bb15e", percent: 66.6 },
+    { name: "M.Tech", value: 432, color: "#ff8a66", percent: 15.2 },
+    { name: "BCA", value: 286, color: "#a66cff", percent: 10.0 },
+    { name: "MCA", value: 235, color: "#4d8cff", percent: 8.2 },
+  ];
 
   return (
-    <div className="flex flex-col items-center justify-center gap-3">
-      <div className="relative h-44 w-44">
-        <div
-          className="absolute inset-0 rounded-full"
-          style={{ background: gradient }}
-        />
-        <div className="absolute inset-4 rounded-full bg-white shadow-inner flex flex-col items-center justify-center text-center">
-          <p className="text-[32px] font-semibold leading-none text-gray-800">2,847</p>
-          <p className="mt-1 text-xs text-gray-500">Total Students</p>
-        </div>
+    <div className="relative w-full h-44 flex items-center justify-center">
+      <ResponsiveContainer width="100%" height="100%">
+        <RechartsPieChart>
+          <RechartsTooltip content={<ChartTooltip />} />
+          <Pie
+            data={data}
+            cx="50%"
+            cy="50%"
+            innerRadius={50}
+            outerRadius={75}
+            paddingAngle={3}
+            dataKey="value"
+            stroke="#ffffff"
+            strokeWidth={2}
+          >
+            {data.map((entry) => (
+              <Cell key={entry.name} fill={entry.color} />
+            ))}
+          </Pie>
+        </RechartsPieChart>
+      </ResponsiveContainer>
+      <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none text-center">
+        <p className="text-xl font-extrabold text-gray-900 leading-none">2,847</p>
+        <p className="text-[10px] font-semibold text-gray-500 mt-1">Total Students</p>
+      </div>
+    </div>
+  );
+}
+
+function ShadcnAreaChart() {
+  const data = [
+    { year: "2021-22", "B.Tech": 956, "M.Tech": 210, BCA: 118, MCA: 92 },
+    { year: "2022-23", "B.Tech": 1032, "M.Tech": 246, BCA: 134, MCA: 102 },
+    { year: "2023-24", "B.Tech": 1142, "M.Tech": 298, BCA: 152, MCA: 118 },
+    { year: "2024-25", "B.Tech": 1894, "M.Tech": 432, BCA: 286, MCA: 235 },
+  ];
+
+  return (
+    <div className="w-full h-44 flex items-center justify-center px-1">
+      <ResponsiveContainer width="100%" height="100%">
+        <AreaChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+          <defs>
+            <linearGradient id="areaBtech" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#1bb15e" stopOpacity={0.4} />
+              <stop offset="95%" stopColor="#1bb15e" stopOpacity={0.02} />
+            </linearGradient>
+            <linearGradient id="areaMtech" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#ff8a66" stopOpacity={0.4} />
+              <stop offset="95%" stopColor="#ff8a66" stopOpacity={0.02} />
+            </linearGradient>
+            <linearGradient id="areaBca" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#a66cff" stopOpacity={0.4} />
+              <stop offset="95%" stopColor="#a66cff" stopOpacity={0.02} />
+            </linearGradient>
+            <linearGradient id="areaMca" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#4d8cff" stopOpacity={0.4} />
+              <stop offset="95%" stopColor="#4d8cff" stopOpacity={0.02} />
+            </linearGradient>
+          </defs>
+          <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+          <XAxis dataKey="year" tick={{ fontSize: 10, fill: "#64748b", fontWeight: 600 }} axisLine={false} tickLine={false} />
+          <YAxis tick={{ fontSize: 10, fill: "#94a3b8" }} axisLine={false} tickLine={false} tickFormatter={(v) => `${v >= 1000 ? v / 1000 + "k" : v}`} />
+          <RechartsTooltip content={<ChartTooltip />} />
+          <Area type="monotone" dataKey="B.Tech" stackId="1" stroke="#1bb15e" strokeWidth={2} fillOpacity={1} fill="url(#areaBtech)" />
+          <Area type="monotone" dataKey="M.Tech" stackId="1" stroke="#ff8a66" strokeWidth={2} fillOpacity={1} fill="url(#areaMtech)" />
+          <Area type="monotone" dataKey="BCA" stackId="1" stroke="#a66cff" strokeWidth={2} fillOpacity={1} fill="url(#areaBca)" />
+          <Area type="monotone" dataKey="MCA" stackId="1" stroke="#4d8cff" strokeWidth={2} fillOpacity={1} fill="url(#areaMca)" />
+        </AreaChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+function ShadcnBarChart() {
+  const data = [
+    { name: "B.Tech", students: 1894, fill: "#1bb15e" },
+    { name: "M.Tech", students: 432, fill: "#ff8a66" },
+    { name: "BCA", students: 286, fill: "#a66cff" },
+    { name: "MCA", students: 235, fill: "#4d8cff" },
+  ];
+
+  return (
+    <div className="w-full h-44 flex items-center justify-center px-1">
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+          <XAxis dataKey="name" tick={{ fontSize: 11, fill: "#475569", fontWeight: 700 }} axisLine={false} tickLine={false} />
+          <YAxis tick={{ fontSize: 10, fill: "#94a3b8" }} axisLine={false} tickLine={false} tickFormatter={(v) => `${v >= 1000 ? v / 1000 + "k" : v}`} />
+          <RechartsTooltip content={<ChartTooltip />} cursor={{ fill: "#f8fafc", opacity: 0.8 }} />
+          <Bar dataKey="students" radius={[6, 6, 0, 0]} maxBarSize={48}>
+            {data.map((entry) => (
+              <Cell key={entry.name} fill={entry.fill} />
+            ))}
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  );
+}
+
+function ShadcnRadialChart() {
+  const data = [
+    { name: "MCA", students: 235, fill: "#4d8cff" },
+    { name: "BCA", students: 286, fill: "#a66cff" },
+    { name: "M.Tech", students: 432, fill: "#ff8a66" },
+    { name: "B.Tech", students: 1894, fill: "#1bb15e" },
+  ];
+
+  return (
+    <div className="relative w-full h-44 flex items-center justify-center">
+      <ResponsiveContainer width="100%" height="100%">
+        <RadialBarChart
+          cx="50%"
+          cy="50%"
+          innerRadius="25%"
+          outerRadius="100%"
+          barSize={7}
+          data={data}
+          startAngle={90}
+          endAngle={-270}
+        >
+          <RadialBar
+            background={{ fill: "#f1f5f9" }}
+            dataKey="students"
+            cornerRadius={8}
+          />
+          <RechartsTooltip content={<ChartTooltip />} />
+        </RadialBarChart>
+      </ResponsiveContainer>
+      <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none text-center">
+        <p className="text-xl font-extrabold text-gray-900 leading-none">2,847</p>
+        <p className="text-[10px] font-semibold text-gray-500 mt-1">Total Enrolled</p>
       </div>
     </div>
   );
@@ -298,6 +519,7 @@ function UpdateModal({ onClose }) {
 
 export default function Semesters({ onNavigate, onOpenSidebar }) {
   const [showModal, setShowModal] = useState(false);
+  const [chartType, setChartType] = useState("donut"); // "donut" | "line"
 
   return (
     <div className="flex-1 h-full flex flex-col overflow-hidden bg-[#f6f8fb]">
@@ -325,31 +547,33 @@ export default function Semesters({ onNavigate, onOpenSidebar }) {
 
       <main className="flex-1 overflow-y-auto p-3 sm:p-4 lg:p-5 relative">
         <div className="max-w-[1500px] mx-auto space-y-4">
-          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:flex lg:flex-wrap">
-              <FilterSelect label="Program" options={["All Programs", "B.Tech", "M.Tech", "BCA", "MCA"]} />
-              <FilterSelect label="Session" options={["All Academic Sessions", "2024 - 2025", "2023 - 2024", "2022 - 2023"]} />
+          {/* Top Bar with Action */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h2 className="text-base sm:text-lg font-bold text-gray-800 tracking-tight">Academic Management</h2>
+              <p className="text-xs text-gray-400 mt-0.5">Overview of academic programs, sessions, and student distributions</p>
             </div>
             <button
               type="button"
               onClick={() => setShowModal(true)}
-              className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-green-600 transition-colors"
+              className="inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-green-600 transition-colors cursor-pointer w-full sm:w-auto shrink-0"
             >
               <Plus size={15} />
               Update Academic Session
             </button>
           </div>
 
-          <div className="grid grid-cols-1 xl:grid-cols-[1.2fr_1fr] gap-4 items-stretch">
+          <div className="grid grid-cols-1 xl:grid-cols-[1fr_1.35fr] gap-4 items-stretch">
+            {/* Academic Summary Section */}
             <section className="rounded-2xl border border-slate-200/90 bg-white shadow-md shadow-slate-200/50 p-4 sm:p-5 h-full flex flex-col justify-between">
               <div>
-                <div className="flex items-start justify-between gap-4 mb-5">
-                  <div>
-                    <h2 className="text-sm font-semibold text-gray-800">Academic Summary</h2>
-                    <p className="text-xs text-gray-400 mt-0.5">Overview of your institution's academics</p>
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-[#0da651] border border-emerald-100/80 shrink-0">
+                    <GraduationCap size={20} />
                   </div>
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-light text-primary">
-                    <GraduationCap size={18} />
+                  <div>
+                    <h2 className="text-base font-bold text-gray-800">Academic Summary</h2>
+                    <p className="text-xs text-gray-400 mt-0.5">Overview of your institution&apos;s academics</p>
                   </div>
                 </div>
 
@@ -369,42 +593,66 @@ export default function Semesters({ onNavigate, onOpenSidebar }) {
               </div>
             </section>
 
+            {/* Student Overview Section */}
             <section className="rounded-2xl border border-slate-200/90 bg-white shadow-md shadow-slate-200/50 p-4 sm:p-5 h-full flex flex-col justify-between">
               <div>
-                <div className="flex items-start justify-between gap-4 mb-5">
-                  <div>
-                    <h2 className="text-sm font-semibold text-gray-800">Student Overview</h2>
-                    <p className="text-xs text-gray-400 mt-0.5">Students across all programs and sessions</p>
+                <div className="flex items-center justify-between gap-3 mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-[#0da651] border border-emerald-100/80 shrink-0">
+                      <Users size={20} />
+                    </div>
+                    <div>
+                      <h2 className="text-base font-bold text-gray-800">Student Overview</h2>
+                      <p className="text-xs text-gray-400 mt-0.5">Students across all programs and sessions</p>
+                    </div>
                   </div>
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-light text-primary">
-                    <Users size={18} />
+
+                  {/* Chart Type Selector Dropdown */}
+                  <div className="relative shrink-0">
+                    <select
+                      value={chartType}
+                      onChange={(e) => setChartType(e.target.value)}
+                      className="appearance-none pl-3 pr-7 py-1.5 bg-[#eaf8ee] hover:bg-[#dff3e5] text-[#085a2b] font-bold text-xs rounded-lg border border-emerald-300/80 shadow-xs focus:outline-none focus:ring-2 focus:ring-emerald-200 cursor-pointer transition-colors"
+                    >
+                      <option value="donut" className="bg-white text-gray-800 font-medium">Donut Chart</option>
+                      <option value="area" className="bg-white text-gray-800 font-medium">Area Chart</option>
+                      <option value="bar" className="bg-white text-gray-800 font-medium">Bar Chart</option>
+                      <option value="radial" className="bg-white text-gray-800 font-medium">Radial Chart</option>
+                    </select>
+                    <ChevronDown size={13} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-[#0da651]" />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-5 items-center pt-2">
-                  <DonutChart />
-                  <div className="space-y-3">
-                    {overviewData.map((item) => (
-                      <div key={item.label} className="space-y-1">
-                        <div className="flex items-center justify-between text-xs sm:text-sm">
-                          <div className="flex items-center gap-2">
-                            <span className="h-2.5 w-2.5 rounded-full shrink-0" style={{ backgroundColor: item.color }} />
-                            <span className="font-semibold text-gray-700">{item.label}</span>
-                          </div>
-                          <p className="font-bold text-gray-800">
-                            {item.value.toLocaleString()}{" "}
-                            <span className="text-[11px] font-normal text-gray-400">({item.percent}%)</span>
-                          </p>
+                {/* Dynamic Chart (Area, Bar, Radial, Donut) */}
+                <div className="flex justify-center py-2 transition-all">
+                  {chartType === "donut" && <ShadcnDonutChart />}
+                  {chartType === "area" && <ShadcnAreaChart />}
+                  {chartType === "bar" && <ShadcnBarChart />}
+                  {chartType === "radial" && <ShadcnRadialChart />}
+                </div>
+
+                {/* Progress bars in 2 rows, each row containing 2 progress bars */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-3 pt-2">
+                  {overviewData.map((item) => (
+                    <div key={item.label} className={`space-y-1.5 p-2.5 rounded-xl border hover:shadow-2xs transition-all ${item.cardBg || "bg-gray-50/70 border-gray-100"}`}>
+                      <div className="flex items-center justify-between text-xs sm:text-sm">
+                        <div className="flex items-center gap-2">
+                          <span className="h-2.5 w-2.5 rounded-full shrink-0" style={{ backgroundColor: item.color }} />
+                          <span className="font-bold text-gray-700">{item.label}</span>
                         </div>
-                        <div className="h-1.5 w-full rounded-full bg-gray-100 overflow-hidden">
-                          <div
-                            className="h-full rounded-full transition-all duration-500"
-                            style={{ width: `${item.percent}%`, backgroundColor: item.color }}
-                          />
-                        </div>
+                        <p className="font-extrabold text-gray-800 text-xs sm:text-sm">
+                          {item.value.toLocaleString()}{" "}
+                          <span className="text-[11px] font-normal text-gray-400">({item.percent}%)</span>
+                        </p>
                       </div>
-                    ))}
-                  </div>
+                      <div className="h-1.5 w-full rounded-full bg-gray-200/80 overflow-hidden">
+                        <div
+                          className="h-full rounded-full transition-all duration-500"
+                          style={{ width: `${item.percent}%`, backgroundColor: item.color }}
+                        />
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
 
@@ -419,16 +667,21 @@ export default function Semesters({ onNavigate, onOpenSidebar }) {
             </section>
           </div>
 
+          {/* Academic Sessions List Section with moved Filters */}
           <section className="rounded-2xl border border-slate-200/90 bg-white shadow-md shadow-slate-200/50 p-4 sm:p-5">
-            <div className="flex items-start justify-between gap-4 mb-5">
-              <div>
-                <h2 className="text-sm font-semibold text-gray-800">Academic Sessions</h2>
-                <p className="text-xs text-gray-400 mt-0.5">Manage academic sessions and view program-wise student count</p>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5 pb-3 border-b border-gray-100">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-[#0da651] border border-emerald-100/80 shrink-0">
+                  <CalendarDays size={20} />
+                </div>
+                <div>
+                  <h2 className="text-base font-bold text-gray-800">Academic Sessions</h2>
+                  <p className="text-xs text-gray-400 mt-0.5">Manage academic sessions and view program-wise student count</p>
+                </div>
               </div>
-              <button type="button" className="inline-flex items-center gap-2 rounded-lg border border-gray-200 px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 shrink-0">
-                <Filter size={14} />
-                Filters
-              </button>
+              <div className="flex flex-wrap items-center gap-2.5">
+                <FilterSelect label="Session" options={["All Academic Sessions", "2024 - 2025", "2023 - 2024", "2022 - 2023", "2021 - 2022", "2020 - 2021"]} />
+              </div>
             </div>
 
             <div className="space-y-4">
@@ -452,13 +705,24 @@ export default function Semesters({ onNavigate, onOpenSidebar }) {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
-                      {session.programs.map((program) => (
-                        <div key={program.name} className="rounded-xl border border-gray-100 bg-white px-3 py-3 text-center shadow-sm">
-                          <p className="text-xs font-semibold text-gray-800">{program.name}</p>
-                          <p className={`mt-2 inline-flex rounded-full px-2.5 py-1 text-[11px] font-semibold ${program.accent}`}>{program.students} Students</p>
-                        </div>
-                      ))}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+                      {session.programs.map((program) => {
+                        const style = programStyles[program.name] || {
+                          cardBg: "bg-gray-50/70 border-gray-100",
+                          badgeBg: "bg-gray-100 text-gray-700 border-gray-200",
+                        };
+                        return (
+                          <div
+                            key={program.name}
+                            className={`rounded-xl border p-3 text-center transition-all ${style.cardBg}`}
+                          >
+                            <p className="text-xs font-bold text-gray-800">{program.name}</p>
+                            <p className={`mt-2 inline-flex items-center justify-center rounded-full px-2.5 py-0.5 text-[11px] border ${style.badgeBg}`}>
+                              {program.students} Students
+                            </p>
+                          </div>
+                        );
+                      })}
                     </div>
 
                     <div className="flex items-center justify-between xl:justify-end gap-3">
@@ -473,20 +737,6 @@ export default function Semesters({ onNavigate, onOpenSidebar }) {
                   </div>
                 </div>
               ))}
-            </div>
-
-            <div className="mt-5 flex items-center justify-center gap-2">
-              <button type="button" className="h-8 w-8 rounded-lg border border-gray-200 bg-white text-gray-600 hover:bg-gray-50">
-                <ChevronLeft size={14} className="mx-auto" />
-              </button>
-              {[1, 2, 3].map((page) => (
-                <button key={page} type="button" className={`h-8 w-8 rounded-lg text-sm font-medium ${page === 1 ? "bg-primary text-white" : "border border-gray-200 bg-white text-gray-600 hover:bg-gray-50"}`}>
-                  {page}
-                </button>
-              ))}
-              <button type="button" className="h-8 w-8 rounded-lg border border-gray-200 bg-white text-gray-600 hover:bg-gray-50">
-                <ChevronRight size={14} className="mx-auto" />
-              </button>
             </div>
           </section>
         </div>
