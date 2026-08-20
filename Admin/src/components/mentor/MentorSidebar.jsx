@@ -151,7 +151,7 @@ export default function MentorSidebar({
             <div className="space-y-1">
               {group.items.map((item) => {
                 const Icon = item.icon;
-                const isActive = activeTab === item.id;
+                const isActive = activeTab === item.id || (item.id === 'mentees' && (activeTab === 'student-profile' || activeTab === 'view-mentee'));
                 return (
                   <button
                     key={item.id}
