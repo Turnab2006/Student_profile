@@ -324,8 +324,8 @@ select {
 }
 
 .mentor-profile-photo {
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   border-radius: 14px;
   object-fit: cover;
   border: 3px solid rgba(255, 255, 255, 0.9);
@@ -349,8 +349,8 @@ select {
 
 .mentor-profile-heading h2 {
   margin: 0;
-  font-size: 21px;
-  font-weight: 800;
+  font-size: 25px;
+  font-weight: 550;
   letter-spacing: -0.02em;
   color: #ffffff;
 }
