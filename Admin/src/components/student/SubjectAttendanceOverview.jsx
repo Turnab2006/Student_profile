@@ -13,7 +13,11 @@ export default function SubjectAttendanceOverview({
   title = "Subject Attendance Overview",
   showHeader = true,
   cardClassName = "bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 lg:p-6 shadow-md shadow-slate-200/60 space-y-3.5",
+  isMentor = false,
+  userRole = null,
+  theme = null,
 }) {
+  const isMentorMode = isMentor || userRole === 'mentor' || theme === 'purple';
   const [showAttendanceInfo, setShowAttendanceInfo] = useState(false);
 
   // Default subject dataset matching the reference mockup
@@ -33,7 +37,7 @@ export default function SubjectAttendanceOverview({
       {/* Header matching Profile Result Tab style (text-sm sm:text-base font-bold text-slate-800 with border-b) */}
       {showHeader && (
         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-          <div className="flex items-center gap-2.5 text-blue-600">
+          <div className={`flex items-center gap-2.5 ${isMentorMode ? "text-[#7656f4]" : "text-blue-600"}`}>
             <BookOpen size={18} className="stroke-[2.2]" />
             <h3 className="text-sm sm:text-base font-bold text-slate-800 flex items-center gap-2">
               <span>{title}</span>
@@ -49,7 +53,11 @@ export default function SubjectAttendanceOverview({
             <button
               type="button"
               onClick={() => setShowAttendanceInfo(!showAttendanceInfo)}
-              className="h-5 w-5 rounded-full flex items-center justify-center transition-all cursor-pointer bg-blue-50 hover:bg-blue-600 hover:text-white text-blue-600 border border-blue-200/70 hover:border-blue-600 shadow-2xs hover:shadow-xs"
+              className={`h-5 w-5 rounded-full flex items-center justify-center transition-all cursor-pointer shadow-2xs hover:shadow-xs ${
+                isMentorMode
+                  ? "bg-[#f0eaff] hover:bg-[#7656f4] hover:text-white text-[#7656f4] border border-purple-200/70 hover:border-[#7656f4]"
+                  : "bg-blue-50 hover:bg-blue-600 hover:text-white text-blue-600 border border-blue-200/70 hover:border-blue-600"
+              }`}
               aria-label="Subject Attendance Information"
             >
               <Info size={11} className="stroke-[2.4]" />
@@ -67,7 +75,7 @@ export default function SubjectAttendanceOverview({
               <div className="absolute -top-1.5 right-2 sm:right-3 w-3 h-3 bg-slate-900 rotate-45 border-t border-r border-slate-700/80" />
 
               <div className="relative flex items-start gap-2.5">
-                <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-blue-500 text-white mt-0.5 shadow-2xs">
+                <div className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-white mt-0.5 shadow-2xs ${isMentorMode ? "bg-[#7656f4]" : "bg-blue-500"}`}>
                   <Info size={11} className="stroke-[2.5]" />
                 </div>
                 <div className="space-y-0.5">
@@ -88,34 +96,34 @@ export default function SubjectAttendanceOverview({
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse min-w-[720px]">
           <thead>
-            <tr className="bg-[#f0f6ff]/90 text-xs font-bold text-[#1d61e7] rounded-2xl overflow-hidden">
+            <tr className={`${isMentorMode ? "bg-[#f8f6fe] text-[#7656f4]" : "bg-[#f0f6ff]/90 text-[#1d61e7]"} text-xs font-bold rounded-2xl overflow-hidden`}>
               <th className="py-4 px-5 rounded-l-2xl">
                 <div className="flex items-center gap-1.5">
-                  <Hash size={14} className="text-[#1d61e7] stroke-[2.4]" />
+                  <Hash size={14} className={`${isMentorMode ? "text-[#7656f4]" : "text-[#1d61e7]"} stroke-[2.4]`} />
                   <span>SUBJECT CODE</span>
                 </div>
               </th>
               <th className="py-4 px-5">
                 <div className="flex items-center gap-1.5">
-                  <BookOpen size={14} className="text-[#1d61e7] stroke-[2.4]" />
+                  <BookOpen size={14} className={`${isMentorMode ? "text-[#7656f4]" : "text-[#1d61e7]"} stroke-[2.4]`} />
                   <span>SUBJECT NAME</span>
                 </div>
               </th>
               <th className="py-4 px-5">
                 <div className="flex items-center gap-1.5">
-                  <Clock size={14} className="text-[#1d61e7] stroke-[2.4]" />
+                  <Clock size={14} className={`${isMentorMode ? "text-[#7656f4]" : "text-[#1d61e7]"} stroke-[2.4]`} />
                   <span>ATTENDANCE %</span>
                 </div>
               </th>
               <th className="py-4 px-5 text-center">
                 <div className="flex items-center justify-center gap-1.5">
-                  <Calendar size={14} className="text-[#1d61e7] stroke-[2.4]" />
+                  <Calendar size={14} className={`${isMentorMode ? "text-[#7656f4]" : "text-[#1d61e7]"} stroke-[2.4]`} />
                   <span>CLASSES ATTENDED</span>
                 </div>
               </th>
               <th className="py-4 px-5 rounded-r-2xl">
                 <div className="flex items-center gap-1.5">
-                  <Award size={14} className="text-[#1d61e7] stroke-[2.4]" />
+                  <Award size={14} className={`${isMentorMode ? "text-[#7656f4]" : "text-[#1d61e7]"} stroke-[2.4]`} />
                   <span>STATUS</span>
                 </div>
               </th>
@@ -155,7 +163,7 @@ export default function SubjectAttendanceOverview({
               return (
                 <tr key={subCode} className="hover:bg-slate-50/70 transition-colors">
                   {/* 1. Subject Code */}
-                  <td className="py-4 px-5 font-extrabold text-blue-600 text-sm tracking-tight">
+                  <td className={`py-4 px-5 font-extrabold text-sm tracking-tight ${isMentorMode ? "text-[#7656f4]" : "text-blue-600"}`}>
                     {subCode}
                   </td>
 
@@ -202,3 +210,4 @@ export default function SubjectAttendanceOverview({
     </div>
   );
 }
+

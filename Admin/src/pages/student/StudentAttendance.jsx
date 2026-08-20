@@ -12,7 +12,8 @@ import {
   CheckCircle,
   CalendarCheck,
   Printer,
-  Eye
+  Eye,
+  ArrowLeft
 } from "lucide-react";
 import SemesterAttendanceDetail from "./SemesterAttendanceDetail";
 
@@ -204,7 +205,12 @@ export default function StudentAttendance({
   hideHeader = false,
   activeSemester = null,
   onSelectSemester = null,
+  onBack = null,
+  studentName = null,
+  userRole = null,
+  theme = null,
 }) {
+  const isMentor = userRole === 'mentor' || theme === 'purple';
   const [selectedFilter, setSelectedFilter] = useState("all");
   const [toastMessage, setToastMessage] = useState(null);
   const [internalActiveSemester, setInternalActiveSemester] = useState(null);
@@ -285,6 +291,9 @@ export default function StudentAttendance({
           onBack={() => setActiveDetailSemester(null)}
           onSelectSemester={setActiveDetailSemester}
           onDownload={handleDownload}
+          userRole={userRole}
+          theme={isMentor ? 'purple' : 'blue'}
+          isMentor={isMentor}
         />
       ) : (
         /* Main Semester Attendance Card Container */
@@ -293,12 +302,29 @@ export default function StudentAttendance({
           {/* Card Header with Icon, Title, and Filter Dropdown */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-xl bg-[#eef5ff] text-[#1d61e7] shrink-0 shadow-2xs">
+              {onBack && (
+                <button
+                  type="button"
+                  onClick={onBack}
+                  className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-xl bg-white border border-slate-200 hover:bg-[#f0eaff] text-slate-700 hover:text-[#7656f4] shadow-2xs transition-all cursor-pointer mr-1 shrink-0 active:scale-95"
+                  title="Back to All Mentees"
+                >
+                  <ArrowLeft size={19} className="stroke-[2.2]" />
+                </button>
+              )}
+              <div className={`flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-xl shrink-0 shadow-2xs ${isMentor ? 'bg-[#f0eaff] text-[#7656f4]' : 'bg-[#eef5ff] text-[#1d61e7]'}`}>
                 <Users size={20} className="stroke-[2.2]" />
               </div>
-              <h2 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight">
-                Semester Attendance
-              </h2>
+              <div>
+                <h2 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight">
+                  {studentName ? `${studentName}'s Semester Attendance` : "Semester Attendance"}
+                </h2>
+                {studentName && (
+                  <p className="text-xs text-slate-400 font-medium">
+                    View and track semester-wise attendance records
+                  </p>
+                )}
+              </div>
             </div>
 
             {/* Dropdown Filter */}
@@ -308,7 +334,7 @@ export default function StudentAttendance({
                 onClick={() => setFilterDropdownOpen((prev) => !prev)}
                 className="flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs sm:text-sm font-semibold text-slate-700 shadow-2xs transition-all cursor-pointer"
               >
-                <Calendar size={14} className="text-[#1d61e7]" />
+                <Calendar size={14} className={isMentor ? "text-[#7656f4]" : "text-[#1d61e7]"} />
                 <span>
                   {selectedFilter === "all"
                     ? "All Semesters"
@@ -333,7 +359,7 @@ export default function StudentAttendance({
                       setSelectedFilter("all");
                       setFilterDropdownOpen(false);
                     }}
-                    className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold ${selectedFilter === "all" ? "bg-blue-50 text-blue-600" : "text-slate-700 hover:bg-slate-50"
+                    className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold ${selectedFilter === "all" ? (isMentor ? "bg-[#f0eaff] text-[#7656f4]" : "bg-blue-50 text-blue-600") : "text-slate-700 hover:bg-slate-50"
                       }`}
                   >
                     All Semesters
@@ -344,7 +370,7 @@ export default function StudentAttendance({
                       setSelectedFilter("year1");
                       setFilterDropdownOpen(false);
                     }}
-                    className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold ${selectedFilter === "year1" ? "bg-blue-50 text-blue-600" : "text-slate-700 hover:bg-slate-50"
+                    className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold ${selectedFilter === "year1" ? (isMentor ? "bg-[#f0eaff] text-[#7656f4]" : "bg-blue-50 text-blue-600") : "text-slate-700 hover:bg-slate-50"
                       }`}
                   >
                     Year 1 (Sem 1 & 2)
@@ -355,7 +381,7 @@ export default function StudentAttendance({
                       setSelectedFilter("year2");
                       setFilterDropdownOpen(false);
                     }}
-                    className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold ${selectedFilter === "year2" ? "bg-blue-50 text-blue-600" : "text-slate-700 hover:bg-slate-50"
+                    className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold ${selectedFilter === "year2" ? (isMentor ? "bg-[#f0eaff] text-[#7656f4]" : "bg-blue-50 text-blue-600") : "text-slate-700 hover:bg-slate-50"
                       }`}
                   >
                     Year 2 (Sem 3 & 4)
@@ -366,7 +392,7 @@ export default function StudentAttendance({
                       setSelectedFilter("year3");
                       setFilterDropdownOpen(false);
                     }}
-                    className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold ${selectedFilter === "year3" ? "bg-blue-50 text-blue-600" : "text-slate-700 hover:bg-slate-50"
+                    className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold ${selectedFilter === "year3" ? (isMentor ? "bg-[#f0eaff] text-[#7656f4]" : "bg-blue-50 text-blue-600") : "text-slate-700 hover:bg-slate-50"
                       }`}
                   >
                     Year 3 (Sem 5 & 6)
@@ -377,7 +403,7 @@ export default function StudentAttendance({
                       setSelectedFilter("year4");
                       setFilterDropdownOpen(false);
                     }}
-                    className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold ${selectedFilter === "year4" ? "bg-blue-50 text-blue-600" : "text-slate-700 hover:bg-slate-50"
+                    className={`w-full text-left px-3 py-1.5 rounded-lg text-xs font-semibold ${selectedFilter === "year4" ? (isMentor ? "bg-[#f0eaff] text-[#7656f4]" : "bg-blue-50 text-blue-600") : "text-slate-700 hover:bg-slate-50"
                       }`}
                   >
                     Year 4 (Sem 7 & 8)
@@ -393,9 +419,9 @@ export default function StudentAttendance({
           {/* 4 Top KPI Cards matching Profile and Dashboard standard */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
 
-            {/* 1. Total Semesters (Light Blue Squircle) */}
-            <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-3.5 hover:border-blue-200 transition-colors">
-              <div className="h-12 w-12 rounded-xl bg-blue-50 text-[#1d61e7] flex items-center justify-center shrink-0 border border-blue-100/80 shadow-2xs">
+            {/* 1. Total Semesters (Light Blue / Purple Squircle) */}
+            <div className={`bg-white p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-3.5 ${isMentor ? 'hover:border-purple-200' : 'hover:border-blue-200'} transition-colors`}>
+              <div className={`h-12 w-12 rounded-xl flex items-center justify-center shrink-0 shadow-2xs ${isMentor ? 'bg-[#f0eaff] text-[#7656f4] border border-purple-100/80' : 'bg-blue-50 text-[#1d61e7] border border-blue-100/80'}`}>
                 <Calendar size={24} className="stroke-[2.2]" />
               </div>
               <div className="overflow-hidden">
@@ -456,7 +482,7 @@ export default function StudentAttendance({
           <div className="overflow-x-auto">
             <table className="w-full text-left border-separate border-spacing-y-2.5 min-w-[800px]">
               <thead>
-                <tr className="bg-[#f0f6ff]/90 text-xs font-bold text-[#1d61e7] rounded-2xl overflow-hidden">
+                <tr className={`${isMentor ? 'bg-[#f8f6fe] text-[#7656f4]' : 'bg-[#f0f6ff]/90 text-[#1d61e7]'} text-xs font-bold rounded-2xl overflow-hidden`}>
                   <th className="py-4 px-5 rounded-l-2xl text-center w-16">
                     #
                   </th>
@@ -469,7 +495,7 @@ export default function StudentAttendance({
                   <th className="py-4 px-5 text-center">
                     <div className="flex items-center justify-center gap-1.5">
                       <span>Attendance (%)</span>
-                      <Info size={14} className="text-[#1d61e7] stroke-[2.4]" />
+                      <Info size={14} className={`${isMentor ? 'text-[#7656f4]' : 'text-[#1d61e7]'} stroke-[2.4]`} />
                     </div>
                   </th>
                   <th className="py-4 px-5 text-center">
@@ -492,7 +518,7 @@ export default function StudentAttendance({
                   >
                     {/* Number badge */}
                     <td className="py-4 px-5 rounded-l-2xl text-center">
-                      <span className={`mx-auto flex h-7 w-7 items-center justify-center rounded-full ${sem.circleBadgeClass} text-xs font-extrabold shadow-2xs`}>
+                      <span className={`mx-auto flex h-7 w-7 items-center justify-center rounded-full ${isMentor ? 'bg-[#ede9fe] text-[#7656f4]' : sem.circleBadgeClass} text-xs font-extrabold shadow-2xs`}>
                         {sem.id}
                       </span>
                     </td>
@@ -527,7 +553,11 @@ export default function StudentAttendance({
                           e.stopPropagation();
                           setActiveDetailSemester(sem);
                         }}
-                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-blue-50/90 hover:bg-blue-600 text-blue-600 hover:text-white border border-blue-200/70 hover:border-blue-600 text-xs font-bold transition-all shadow-2xs hover:shadow-xs active:scale-95 cursor-pointer"
+                        className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all shadow-2xs hover:shadow-xs active:scale-95 cursor-pointer ${
+                          isMentor
+                            ? 'bg-[#f6f2fe] hover:bg-[#7656f4] text-[#7656f4] hover:text-white border border-[#7656f4]/30 hover:border-[#7656f4]'
+                            : 'bg-blue-50/90 hover:bg-blue-600 text-blue-600 hover:text-white border border-blue-200/70 hover:border-blue-600'
+                        }`}
                         title={`View ${sem.semester}th Semester breakdown`}
                       >
                         <Eye size={13} className="stroke-[2.4]" />
@@ -543,7 +573,11 @@ export default function StudentAttendance({
                           e.stopPropagation();
                           handleDownload(sem);
                         }}
-                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl border border-blue-200 bg-white hover:bg-blue-50 text-[#1d61e7] text-xs font-bold transition-all shadow-2xs active:scale-95 cursor-pointer"
+                        className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl border text-xs font-bold transition-all shadow-2xs active:scale-95 cursor-pointer ${
+                          isMentor
+                            ? 'border-purple-200 bg-white hover:bg-[#f0eaff] text-[#7656f4]'
+                            : 'border-blue-200 bg-white hover:bg-blue-50 text-[#1d61e7]'
+                        }`}
                       >
                         <Download size={13} className="stroke-[2.5]" />
                         <span>Download</span>
@@ -557,7 +591,7 @@ export default function StudentAttendance({
 
           {/* Note Footer matching screenshot */}
           <div className="flex items-center gap-2.5 p-3.5 rounded-2xl bg-[#f8fafc] text-xs text-slate-500 font-medium border border-slate-100/90">
-            <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-blue-50 text-[#1d61e7]">
+            <div className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${isMentor ? 'bg-[#f0eaff] text-[#7656f4]' : 'bg-blue-50 text-[#1d61e7]'}`}>
               <Info size={13} className="stroke-[2.4]" />
             </div>
             <p className="leading-relaxed">
@@ -570,3 +604,4 @@ export default function StudentAttendance({
     </div>
   );
 }
+

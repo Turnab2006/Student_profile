@@ -156,7 +156,14 @@ export const initialNoticesData = [
   }
 ];
 
-export default function StudentNotices({ onNavigate, hideHeader = false }) {
+export default function StudentNotices({
+  onNavigate,
+  hideHeader = false,
+  userRole = null,
+  theme = null,
+  isMentor = false,
+}) {
+  const isMentorMode = isMentor || userRole === 'mentor' || theme === 'purple';
   const [notices] = useState(initialNoticesData);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPriority, setSelectedPriority] = useState("all"); // 'all' | 'High' | 'Medium' | 'Low'

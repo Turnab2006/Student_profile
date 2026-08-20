@@ -238,10 +238,11 @@ export default function MentorMentees({ onNavigate }) {
       const text = searchTerm.trim().toLowerCase();
       const matchesSearch =
         !text ||
-        m.name.toLowerCase().includes(text) ||
-        m.rollNo.toLowerCase().includes(text) ||
-        m.studentEmail.toLowerCase().includes(text) ||
-        m.phone.includes(text);
+        (m.name && m.name.toLowerCase().includes(text)) ||
+        (m.rollNo && m.rollNo.toLowerCase().includes(text)) ||
+        (m.studentEmail && m.studentEmail.toLowerCase().includes(text)) ||
+        (m.email && m.email.toLowerCase().includes(text)) ||
+        (m.phone && m.phone.includes(text));
 
       const matchesDept =
         selectedDepartment === 'all' ||

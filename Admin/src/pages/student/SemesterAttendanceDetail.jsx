@@ -18,7 +18,11 @@ export default function SemesterAttendanceDetail({
   onBack,
   onSelectSemester,
   onDownload,
+  userRole = null,
+  theme = null,
+  isMentor = false,
 }) {
+  const isMentorMode = isMentor || userRole === 'mentor' || theme === 'purple';
   const semNum = Number(semester?.semester) || 1;
 
   // Helper for ordinal semester title (e.g. 1st, 2nd, 3rd, 5th Semester Attendance)
@@ -37,8 +41,12 @@ export default function SemesterAttendanceDetail({
   return (
     <div className="space-y-5 font-['Roboto',sans-serif] w-full animate-in fade-in duration-200">
 
-      {/* Top Header Card with Primary Blue Gradient Background */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-[#1d4ed8] via-[#2563eb] to-[#3b82f6] rounded-2xl border border-blue-400/30 shadow-lg shadow-blue-700/15 p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-['Roboto',sans-serif]">
+      {/* Top Header Card with Blue / Purple Gradient Background */}
+      <div className={`relative overflow-hidden ${
+        isMentorMode
+          ? "bg-gradient-to-r from-[#5b32e8] via-[#7656f4] to-[#9073fa] border-purple-400/30 shadow-purple-700/15"
+          : "bg-gradient-to-r from-[#1d4ed8] via-[#2563eb] to-[#3b82f6] border-blue-400/30 shadow-blue-700/15"
+      } rounded-2xl border shadow-lg p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-['Roboto',sans-serif]`}>
 
         {/* Soft light gradient highlight on the right side for optimal button contrast */}
         <div className="absolute right-0 top-0 bottom-0 w-1/2 bg-gradient-to-l from-white/12 via-white/5 to-transparent pointer-events-none" />
@@ -58,7 +66,7 @@ export default function SemesterAttendanceDetail({
             <h1 className="text-xl sm:text-xl font-bold text-white tracking-tight leading-tight drop-shadow-xs">
               {getOrdinalSemester(semNum)}
             </h1>
-            <p className="text-xs sm:text-xs text-blue-100/90 font-medium mt-0.5">
+            <p className={`text-xs sm:text-xs ${isMentorMode ? "text-purple-100/90" : "text-blue-100/90"} font-medium mt-0.5`}>
               Academic Year {semester?.academicYear || "2024 - 2025"} &bull; Total Classes Held: <strong className="text-white font-bold">{semester?.totalHeld || 60}</strong>
             </p>
           </div>
@@ -93,19 +101,21 @@ export default function SemesterAttendanceDetail({
             </div>
           )}
 
-          {/* Download Report Button (High-contrast White CTA with Primary Blue Text) */}
+          {/* Download Report Button (High-contrast White CTA) */}
           <button
             type="button"
             onClick={() => onDownload && onDownload(semester)}
-            className="inline-flex items-center gap-2 px-4 py-2.5 bg-white hover:bg-blue-50 text-[#1d4ed8] rounded-xl text-xs sm:text-sm font-extrabold transition-all shadow-md shadow-blue-950/20 hover:shadow-lg active:scale-95 cursor-pointer"
+            className={`inline-flex items-center gap-2 px-4 py-2.5 bg-white ${
+              isMentorMode ? "hover:bg-purple-50 text-[#7656f4] shadow-purple-950/20" : "hover:bg-blue-50 text-[#1d4ed8] shadow-blue-950/20"
+            } rounded-xl text-xs sm:text-sm font-extrabold transition-all shadow-md hover:shadow-lg active:scale-95 cursor-pointer`}
           >
-            <Download size={15} className="stroke-[2.5] text-[#1d4ed8]" />
+            <Download size={15} className={`stroke-[2.5] ${isMentorMode ? "text-[#7656f4]" : "text-[#1d4ed8]"}`} />
             <span>Download PDF</span>
           </button>
         </div>
       </div>
 
-      {/* Top 4 Metric KPI Cards for this Semester - Same font size and styling as Profile */}
+      {/* Top 4 Metric KPI Cards for this Semester */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         {/* 1. Overall Attendance (Emerald Theme) */}
         <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-3.5 hover:border-emerald-200 transition-colors">
@@ -121,9 +131,11 @@ export default function SemesterAttendanceDetail({
           </div>
         </div>
 
-        {/* 2. Present Classes (Blue Theme) */}
-        <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-3.5 hover:border-blue-200 transition-colors">
-          <div className="h-12 w-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 border border-blue-100/80 shadow-2xs">
+        {/* 2. Present Classes (Blue / Purple Theme) */}
+        <div className={`bg-white p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-3.5 ${isMentorMode ? "hover:border-purple-200" : "hover:border-blue-200"} transition-colors`}>
+          <div className={`h-12 w-12 rounded-xl flex items-center justify-center shrink-0 shadow-2xs ${
+            isMentorMode ? "bg-[#f0eaff] text-[#7656f4] border border-purple-100/80" : "bg-blue-50 text-blue-600 border border-blue-100/80"
+          }`}>
             <UserCheck size={24} className="stroke-[2.2]" />
           </div>
           <div className="overflow-hidden">
@@ -131,7 +143,7 @@ export default function SemesterAttendanceDetail({
             <p className="text-xl sm:text-2xl font-extrabold text-slate-800 mt-0.5">
               {semester?.attended || 212} / {semester?.totalHeld || 240}
             </p>
-            <p className="text-[11px] text-blue-600 font-medium truncate">Recorded lectures</p>
+            <p className={`text-[11px] ${isMentorMode ? "text-[#7656f4]" : "text-blue-600"} font-medium truncate`}>Recorded lectures</p>
           </div>
         </div>
 
@@ -149,7 +161,7 @@ export default function SemesterAttendanceDetail({
           </div>
         </div>
 
-        {/* 4. Absence Status (Rose Theme with Black/Slate Number as others) */}
+        {/* 4. Absence Status (Rose Theme) */}
         <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-3.5 hover:border-rose-200 transition-colors">
           <div className="h-12 w-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center shrink-0 border border-rose-100/80 shadow-2xs">
             <UserX size={24} className="stroke-[2.2]" />
@@ -170,8 +182,10 @@ export default function SemesterAttendanceDetail({
         title="Subject Attendance Overview"
         showHeader={true}
         cardClassName="bg-white rounded-3xl border border-slate-200/90 p-5 sm:p-7 shadow-md shadow-slate-200/60 space-y-5"
+        isMentor={isMentorMode}
       />
 
     </div>
   );
 }
+

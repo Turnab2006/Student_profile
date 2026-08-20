@@ -3,7 +3,13 @@ import StudentNotices from '../student/StudentNotices';
 export default function MentorNotices({ user, onNavigate }) {
   return (
     <div className="w-full">
-      <StudentNotices onNavigate={onNavigate} hideHeader={true} />
+      <StudentNotices
+        onNavigate={onNavigate}
+        hideHeader={true}
+        userRole="mentor"
+        theme="purple"
+        isMentor={true}
+      />
     </div>
   );
 }

@@ -615,6 +615,7 @@ export default function MentorAttendance({ initialUpload = false }) {
           studentName={selectedMenteeSemesterView.name}
           onBack={() => setSelectedMenteeSemesterView(null)}
           userRole="mentor"
+          theme="purple"
         />
       </div>
     );
