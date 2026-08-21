@@ -1,0 +1,261 @@
+/* Contact Section Stylesheet */
+.trackademy-landing-root .contact-section {
+    padding: 4.5rem 0;
+    background-color: #f9fafb;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+
+.trackademy-landing-root .contact-container {
+    max-width: 80rem; /* 1280px */
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    width: 100%;
+}
+
+/* Main Grid Layout */
+.trackademy-landing-root .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3.5rem;
+    align-items: center;
+}
+
+/* Left / Info Column */
+.trackademy-landing-root .contact-info-col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.trackademy-landing-root .contact-label-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.3rem 1rem;
+    border-radius: 9999px;
+    background-color: #e3ebff;
+    border: 1px solid #E4E7EC;
+    margin-bottom: 0.8rem;
+}
+
+.trackademy-landing-root .contact-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #4776e4;
+    letter-spacing: -0.01em;
+}
+
+.trackademy-landing-root .contact-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: #101828;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin: 0.5rem 0 1rem 0;
+}
+
+.trackademy-landing-root .contact-description {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #475467;
+    margin-bottom: 2.5rem;
+    max-width: 32rem;
+}
+
+/* Contact Info Item List */
+.trackademy-landing-root .contact-info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.trackademy-landing-root .contact-info-item {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.trackademy-landing-root .contact-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.25rem;
+    height: 3.25rem;
+    border-radius: 0.75rem;
+    background-color: #e3ebff;
+    color: #4776e4;
+    flex-shrink: 0;
+}
+
+.trackademy-landing-root .contact-icon-wrapper svg {
+    width: 1.375rem;
+    height: 1.375rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.trackademy-landing-root .contact-info-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.trackademy-landing-root .contact-info-label {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #101828;
+    margin: 0;
+}
+
+.trackademy-landing-root .contact-info-value {
+    font-size: 0.95rem;
+    color: #475467;
+    margin: 0;
+}
+
+/* Right / Form Card */
+.trackademy-landing-root .contact-form-card {
+    background-color: #ffffff;
+    border: 1px solid #E4E7EC;
+    border-radius: 1.25rem;
+    box-shadow: 0px 20px 24px -4px rgba(16, 24, 40, 0.04), 0px 8px 8px -4px rgba(16, 24, 40, 0.02);
+    padding: 2rem 1.5rem;
+    width: 100%;
+}
+
+.trackademy-landing-root .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+/* Inner row */
+.trackademy-landing-root .contact-form-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    width: 100%;
+}
+
+.trackademy-landing-root .contact-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.trackademy-landing-root .contact-form-group label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #101828;
+}
+
+.trackademy-landing-root .contact-input,
+.trackademy-landing-root .contact-textarea {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    font-size: 0.9375rem;
+    font-family: inherit;
+    color: #111827;
+    background-color: #ffffff;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.trackademy-landing-root .contact-input::placeholder,
+.trackademy-landing-root .contact-textarea::placeholder {
+    color: #9ca3af;
+}
+
+.trackademy-landing-root .contact-input:focus,
+.trackademy-landing-root .contact-textarea:focus {
+    border-color: #4999ff;
+    box-shadow: 0 0 0 3px rgba(73, 153, 255, 0.15);
+    outline: none;
+}
+
+.trackademy-landing-root .contact-textarea {
+    min-height: 8rem;
+    resize: vertical;
+}
+
+/* Submit Button */
+.trackademy-landing-root .contact-btn-submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.75rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    font-family: inherit;
+    color: #ffffff;
+    background-color: #147FEB;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease, transform 0.1s ease;
+    margin-top: 0.5rem;
+    width: 100%;
+}
+
+.trackademy-landing-root .contact-btn-submit:hover,
+.trackademy-landing-root .contact-btn-submit:focus {
+    background-color: #0f6ecc;
+    outline: none;
+}
+
+.trackademy-landing-root .contact-btn-submit:active {
+    transform: scale(0.98);
+}
+
+.trackademy-landing-root .contact-btn-submit svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 0.15s ease;
+}
+
+.trackademy-landing-root .contact-btn-submit:hover svg {
+    transform: translate(2px, -2px);
+}
+
+/* ===== Responsive Breakpoints ===== */
+@media (min-width: 768px) {
+    .trackademy-landing-root .contact-form-card {
+        padding: 2.5rem;
+    }
+
+    .trackademy-landing-root .contact-form-row {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (min-width: 1024px) {
+    .trackademy-landing-root .contact-section {
+        padding: 6rem 0;
+    }
+
+    .trackademy-landing-root .contact-grid {
+        grid-template-columns: 1fr 1.2fr;
+        gap: 5rem;
+    }
+
+    .trackademy-landing-root .contact-title {
+        font-size: 2.75rem;
+    }
+}

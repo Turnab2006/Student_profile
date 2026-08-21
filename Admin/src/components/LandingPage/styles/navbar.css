@@ -1,0 +1,345 @@
+.trackademy-landing-root .navbar {
+    font-family: "Roboto", sans-serif;
+    background: rgba(255, 255, 255, 0.90);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 1.5rem 0 1rem 0;
+    transition: background 0.3s ease, backdrop-filter 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+}
+
+.trackademy-landing-root .navbar.scrolled {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.06);
+    border-bottom: 1px solid rgba(200, 200, 200, 0.3);
+}
+
+.trackademy-landing-root .nav-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+}
+
+.trackademy-landing-root .logo a {
+    display: inline-flex;
+    align-items: center;
+}
+
+.trackademy-landing-root .logo img {
+    height: 25px;
+    width: auto;
+}
+
+.trackademy-landing-root .desktop-menu {
+    display: flex;
+}
+
+.trackademy-landing-root .nav-menu {
+    display: flex;
+    gap: 2.5rem;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.trackademy-landing-root .nav-link {
+    text-decoration: none;
+    color: var(--tlp-text-color, #2d2d2d);
+    font-weight: 500;
+    font-size: 16px;
+    transition: color 0.3s ease;
+    line-height: normal;
+}
+
+.trackademy-landing-root .nav-link:hover,
+.trackademy-landing-root .nav-link.active {
+    color: var(--tlp-primary-color, #4999FF);
+}
+
+.trackademy-landing-root .login-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    isolation: isolate;
+    background: transparent;
+    color: var(--tlp-primary-color, #4999FF);
+    border: 2px solid var(--tlp-primary-color, #4999FF);
+    padding: 6px 18px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    gap: 8px;
+    text-decoration: none;
+    line-height: normal;
+}
+
+.trackademy-landing-root .login-btn::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: #6E99FF;
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.trackademy-landing-root .login-btn:hover::before {
+    transform: translateX(0);
+}
+
+.trackademy-landing-root .login-btn:hover {
+    background: var(--tlp-primary-color, #4999FF);
+    color: white;
+}
+
+.trackademy-landing-root .arrow {
+    font-size: 1.2rem;
+    line-height: 1;
+    display: inline-block;
+}
+
+.trackademy-landing-root .menu-toggle {
+    display: none;
+    width: 44px;
+    height: 44px;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    color: #111;
+}
+
+.trackademy-landing-root .mobile-menu-panel {
+    display: none;
+}
+
+.trackademy-landing-root .mobile-menu-backdrop {
+    display: none;
+}
+
+@media (max-width: 1024px) {
+
+    .trackademy-landing-root .nav-link,
+    .trackademy-landing-root .login-btn {
+        font-size: 16px;
+    }
+
+    .trackademy-landing-root .nav-menu {
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .trackademy-landing-root .navbar {
+        padding: 0;
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+    }
+
+    .trackademy-landing-root .menu-toggle {
+        display: inline-flex;
+        margin-left: auto;
+    }
+
+    .trackademy-landing-root .nav-wrapper {
+        padding: 0.75rem 0;
+    }
+
+    .trackademy-landing-root .desktop-menu {
+        display: none;
+    }
+
+    .trackademy-landing-root .mobile-menu-panel {
+        display: flex;
+        position: fixed;
+        inset: 0;
+        z-index: 200;
+        height: 100vh;
+        padding: 1rem 0.75rem 1rem;
+        flex-direction: column;
+        background: #ffffff;
+        overflow: hidden;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transform: translateY(100%);
+        transition:
+            opacity 0.32s ease,
+            transform 0.32s ease,
+            visibility 0s linear 0.32s;
+    }
+
+    .trackademy-landing-root .mobile-menu-backdrop {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: 190;
+        background: rgba(0, 0, 0, 0.46);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition:
+            opacity 0.22s ease,
+            visibility 0s linear 0.22s;
+    }
+
+    .trackademy-landing-root .mobile-menu-backdrop.open {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transition:
+            opacity 0.22s ease,
+            visibility 0s linear 0s;
+    }
+
+    .trackademy-landing-root .mobile-menu-backdrop.closing {
+        opacity: 0;
+        visibility: visible;
+        pointer-events: none;
+        transition:
+            opacity 0.22s ease 0.14s,
+            visibility 0s linear 0.36s;
+    }
+
+    .trackademy-landing-root .mobile-menu-panel.open {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transform: translateY(0);
+        transition:
+            opacity 0.32s ease,
+            transform 0.32s ease,
+            visibility 0s linear 0s;
+        transition-delay: 0.08s;
+    }
+
+    .trackademy-landing-root .mobile-menu-panel.closing {
+        opacity: 0;
+        visibility: visible;
+        pointer-events: none;
+        transform: translateY(100%);
+        transition-delay: 0.14s;
+    }
+
+    .trackademy-landing-root .mobile-menu-panel:not(.open):not(.closing) {
+        transition-delay: 0s;
+    }
+
+    .trackademy-landing-root .mobile-menu-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        padding: 0 0.25rem 1rem;
+        border-bottom: 1px solid #d7d7d7;
+        flex: 0 0 auto;
+        transform: translateY(-8px);
+        opacity: 0;
+        transition: transform 0.28s ease, opacity 0.28s ease;
+    }
+
+    .trackademy-landing-root .mobile-menu-body {
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 auto;
+        min-height: 0;
+        padding: 0.9rem 0.25rem 0;
+    }
+
+    .trackademy-landing-root .mobile-menu-panel.open .mobile-menu-top {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .trackademy-landing-root .mobile-close {
+        width: 44px;
+        height: 44px;
+        border: 0;
+        background: transparent;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #111;
+        cursor: pointer;
+        flex: 0 0 auto;
+    }
+
+    .trackademy-landing-root .mobile-menu-links {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        padding: 0 0.25rem;
+        margin-top: 0;
+        flex: 0 0 auto;
+        min-height: 0;
+        overflow-y: auto;
+    }
+
+    .trackademy-landing-root .mobile-menu-link {
+        display: block;
+        padding: 1.15rem 1.2rem;
+        border-bottom: 1px solid #d4d4d4;
+        font-size: 18px;
+        font-weight: 600;
+        color: #111;
+        text-decoration: none;
+        background: transparent;
+    }
+
+    .trackademy-landing-root .mobile-menu-link.active {
+        background: #edf3ff;
+        color: #3d66d6;
+        border-radius: 10px;
+        border-bottom-color: transparent;
+        margin: 0.25rem 0 0.25rem;
+    }
+
+    .trackademy-landing-root .mobile-login-btn {
+        display: inline-flex;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        padding: 12px;
+        border-radius: 8px;
+        background: #6e99ff;
+        color: #fff;
+        font-size: 18px;
+        font-weight: 500;
+        text-decoration: none;
+        flex: 0 0 auto;
+        margin-top: 0.9rem;
+        border: none;
+        cursor: pointer;
+    }
+
+    .trackademy-landing-root .mobile-menu-footer {
+        margin-top: auto;
+        padding-top: 2rem;
+        padding-bottom: 1rem;
+        text-align: center;
+        color: #808080;
+        font-size: 14px;
+        flex: 0 0 auto;
+    }
+}

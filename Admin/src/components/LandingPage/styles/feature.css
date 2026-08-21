@@ -1,0 +1,174 @@
+/* Feature Section Styles */
+.trackademy-landing-root .feature-section {
+    padding: 3rem 0;
+    background-color: #ffffff;
+    width: 100%;
+}
+
+.trackademy-landing-root .feature-container {
+    padding: 0 1rem;
+    margin: 0 auto;
+    max-width: 80rem;
+    width: 100%;
+}
+
+.trackademy-landing-root .feature-header {
+    text-align: center;
+}
+
+.trackademy-landing-root .feature-label-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.3rem 1rem;
+    border-radius: 9999px;
+    background-color: #e3ebff;
+    border: 1px solid #E4E7EC;
+}
+
+.trackademy-landing-root .feature-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #4776e4;
+    letter-spacing: -0.01em;
+    font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.trackademy-landing-root .feature-title {
+    margin-top: 0.75rem;
+    font-size: 1.875rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: #111827;
+    font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.trackademy-landing-root .feature-subtitle {
+    margin-top: 1rem;
+    line-height: 1.75;
+    color: #4b5563;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 1rem;
+}
+
+.trackademy-landing-root .feature-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    margin-top: 60px;
+    text-align: center;
+    row-gap: 3rem;
+}
+
+/* Feature Card */
+.trackademy-landing-root .feature-card {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.trackademy-landing-root .feature-card__icon-slot {
+    width: 60px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.trackademy-landing-root .feature-card__icon {
+    display: block;
+}
+
+.trackademy-landing-root .feature-card__title {
+    margin-top: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #111827;
+    font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.trackademy-landing-root .feature-card__description {
+    margin-top: 0;
+    font-size: 1rem;
+    color: #4b5563;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    line-height: 1.5;
+}
+
+/* ===== Responsive: 640px ===== */
+@media (min-width: 640px) {
+    .trackademy-landing-root .feature-section {
+        padding: 4rem 0;
+    }
+
+    .trackademy-landing-root .feature-container {
+        padding: 0 1.5rem;
+    }
+
+    .trackademy-landing-root .feature-title {
+        font-size: 2.25rem;
+    }
+
+    .trackademy-landing-root .feature-subtitle {
+        margin: 2rem 0;
+    }
+
+    .trackademy-landing-root .feature-grid {
+        margin-top: 4rem;
+        grid-template-columns: repeat(2, 1fr);
+        column-gap: 3rem;
+    }
+}
+
+/* ===== Responsive: 768px ===== */
+@media (min-width: 768px) {
+    .trackademy-landing-root .feature-grid {
+        grid-template-columns: repeat(3, 1fr);
+        column-gap: 0;
+        row-gap: 0;
+    }
+
+    .trackademy-landing-root .feature-card {
+        padding: 2rem;
+    }
+
+    .trackademy-landing-root .feature-card--border-left {
+        border-left: 1px solid #e5e7eb;
+    }
+
+    .trackademy-landing-root .feature-card--border-top {
+        border-top: 1px solid #e5e7eb;
+    }
+}
+
+/* ===== Responsive: 1024px ===== */
+@media (min-width: 1024px) {
+    .trackademy-landing-root .feature-section {
+        padding: 6rem 0;
+    }
+
+    .trackademy-landing-root .feature-header {
+        text-align: center;
+        padding: 0 160px;
+    }
+
+    .trackademy-landing-root .feature-subtitle {
+        font-size: 1.3rem;
+    }
+
+    .trackademy-landing-root .feature-label {
+        font-size: 1rem;
+    }
+
+    .trackademy-landing-root .feature-card {
+        padding: 2.5rem 3rem;
+    }
+}
+
+/* ===== Responsive: 1280px ===== */
+@media (min-width: 1280px) {
+    .trackademy-landing-root .feature-title {
+        font-size: 2.25rem;
+    }
+}
