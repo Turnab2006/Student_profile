@@ -13,9 +13,9 @@ import {
 } from "lucide-react";
 
 export default function AdminProfile({
-  name = "Admin User",
-  role = "Super admin",
-  avatar = "A",
+  name = "John Doe",
+  role = "Super Admin",
+  avatar = "JD",
   onNavigate,
 }) {
   const [profileOpen, setProfileOpen] = useState(false);

@@ -229,7 +229,7 @@ export default function TicketHistory({ onNavigate, onOpenSidebar, isMentor = fa
               </nav>
             </div>
           </div>
-          <AdminProfile name="Admin User" role="Super Admin" avatar="A" onNavigate={onNavigate} />
+          <AdminProfile name="John Doe" role="Super Admin" avatar="JD" onNavigate={onNavigate} />
         </header>
       )}
 

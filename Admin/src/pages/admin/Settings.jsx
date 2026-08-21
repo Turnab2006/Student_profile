@@ -44,9 +44,9 @@ export default function Settings({ onNavigate, onOpenSidebar }) {
 
   // Form states
   const [profileData, setProfileData] = useState({
-    fullName: "Tuhina Roy",
-    username: "tuhina_admin",
-    email: "tuhina.roy@trackademy.edu",
+    fullName: "John Doe",
+    username: "john_doe",
+    email: "john.doe@trackademy.edu",
     phone: "+91 98301 23456",
     designation: "Super Administrator",
     instituteName: "Trackademy Institute of Higher Learning",
@@ -134,7 +134,7 @@ export default function Settings({ onNavigate, onOpenSidebar }) {
             </p>
           </div>
         </div>
-        <AdminProfile name="Admin User" role="Super Admin" avatar="A" onNavigate={onNavigate} />
+        <AdminProfile name="John Doe" role="Super Admin" avatar="JD" onNavigate={onNavigate} />
       </header>
 
       {/* Main Container */}

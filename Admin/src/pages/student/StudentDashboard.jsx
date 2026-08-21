@@ -29,16 +29,16 @@ import StudentActivities from "./StudentActivities";
 import StudentNotices from "./StudentNotices";
 import StudentSettings from "./StudentSettings";
 import StudentSupport from "./StudentSupport";
-import { tuhinaStudentData, tanukaStudentData } from "../../data/studentProfileData";
+import { tanukaStudentData, STUDENT_PORTAL_DATA } from "../../data/studentProfileData";
 
 const semesterAttendanceData = {
-  1: { percentage: 91, attended: 98, absent: 10 },
+  1: { percentage: 92, attended: 102, absent: 8 },
   2: { percentage: 94, attended: 106, absent: 7 },
-  3: { percentage: 89, attended: 96, absent: 12 },
-  4: { percentage: 93, attended: 104, absent: 8 },
-  5: { percentage: 95, attended: 112, absent: 6 },
-  6: { percentage: 92, attended: 102, absent: 9 },
-  7: { percentage: 90, attended: 99, absent: 11 },
+  3: { percentage: 95, attended: 110, absent: 6 },
+  4: { percentage: 94, attended: 108, absent: 7 },
+  5: { percentage: 95, attended: 114, absent: 6 },
+  6: { percentage: 93, attended: 104, absent: 8 },
+  7: { percentage: 91, attended: 100, absent: 10 },
   8: { percentage: 96, attended: 108, absent: 4 },
 };
 
@@ -78,8 +78,8 @@ const statCardsConfig = [
   {
     key: "credits",
     label: "Credit Points",
-    value: "45",
-    note: "Earn more to grow",
+    value: String(tanukaStudentData.creditPointsEarned || 75),
+    note: "75 / 100 Target",
     icon: Star,
     cardClass: "bg-white text-emerald-700 border border-emerald-200 border-l-4 border-l-emerald-500",
     valueClass: "text-[#111827]",
@@ -359,8 +359,8 @@ export default function StudentDashboard({ onLogout }) {
                   {/* Avatar Image centered on mobile */}
                   <div className="w-[110px] h-[110px] sm:w-[130px] sm:h-[130px] rounded-[18px] overflow-hidden shrink-0 border-2 border-white ring-2 ring-white/80 shadow-md mx-auto md:mx-0">
                     <img
-                      src="/tuhina_avatar.jpg"
-                      alt="Tuhina Banerjee"
+                      src={tanukaStudentData.avatar}
+                      alt={tanukaStudentData.name}
                       className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                       onError={(e) => {
                         e.target.style.display = "none";
@@ -368,17 +368,17 @@ export default function StudentDashboard({ onLogout }) {
                       }}
                     />
                     <div className="hidden w-full h-full bg-gradient-to-br from-blue-100 to-indigo-100 items-center justify-center text-3xl font-bold text-blue-700">
-                      TB
+                      {tanukaStudentData.initials}
                     </div>
                   </div>
 
                   {/* Content - middle aligned on mobile */}
                   <div className="flex-1 min-w-0 flex flex-col items-center md:items-start text-center md:text-left w-full">
                     <h2 className="text-2xl sm:text-[26px] font-bold text-white tracking-tight leading-tight">
-                      Tanuka Saha
+                      {tanukaStudentData.name}
                     </h2>
                     <p className="text-xs sm:text-[13px] text-blue-100/90 font-medium mt-1 mb-3">
-                      B.Tech | Computer Science &amp; Engineering
+                      {tanukaStudentData.program} | {tanukaStudentData.department}
                     </p>
 
                     {/* User Info Area with Frosted Glass Background - spread to entire width */}
@@ -390,14 +390,14 @@ export default function StudentDashboard({ onLogout }) {
                             <Mail size={14} className="text-blue-200 shrink-0 stroke-[1.8]" />
                             <span>
                               <strong className="font-bold text-white">Email :</strong>{" "}
-                              <span className="text-blue-100 font-normal">tanukas@gmail.com</span>
+                              <span className="text-blue-100 font-normal">{tanukaStudentData.email}</span>
                             </span>
                           </div>
                           <div className="flex items-center justify-center md:justify-start gap-2 text-xs sm:text-[13px] text-white">
                             <Phone size={14} className="text-blue-200 shrink-0 stroke-[1.8]" />
                             <span>
                               <strong className="font-bold text-white">Phone :</strong>{" "}
-                              <span className="text-blue-100 font-normal">+91-9999999999</span>
+                              <span className="text-blue-100 font-normal">{tanukaStudentData.phone}</span>
                             </span>
                           </div>
                         </div>
@@ -408,14 +408,14 @@ export default function StudentDashboard({ onLogout }) {
                             <User size={14} className="text-blue-200 shrink-0 stroke-[1.8]" />
                             <span>
                               <strong className="font-bold text-white">College Roll :</strong>{" "}
-                              <span className="text-blue-100 font-normal">CSE2024012</span>
+                              <span className="text-blue-100 font-normal">{tanukaStudentData.collegeRollNo}</span>
                             </span>
                           </div>
                           <div className="flex items-center justify-center md:justify-start gap-2 text-xs sm:text-[13px] text-white">
                             <GraduationCap size={14} className="text-blue-200 shrink-0 stroke-[1.8]" />
                             <span>
                               <strong className="font-bold text-white">University Roll :</strong>{" "}
-                              <span className="text-blue-100 font-normal">11700124178</span>
+                              <span className="text-blue-100 font-normal">{tanukaStudentData.universityRollNo}</span>
                             </span>
                           </div>
                         </div>

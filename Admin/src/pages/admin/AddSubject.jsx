@@ -281,7 +281,7 @@ export default function AddSubject({ onNavigate, subjectsList = [], setSubjectsL
             </nav>
           </div>
         </div>
-        <AdminProfile name="Admin User" role="Super Admin" avatar="A" onNavigate={onNavigate} />
+        <AdminProfile name="John Doe" role="Super Admin" avatar="JD" onNavigate={onNavigate} />
       </header>
 
       {/* Main Content Area */}

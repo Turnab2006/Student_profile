@@ -1,15 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
 import { Menu, Bell, HelpCircle, ChevronDown, Settings, LogOut, Megaphone, AlertTriangle, CheckCircle2 } from 'lucide-react';
+import { MENTOR_DETAILS } from '../../data/mentorData';
 
 export default function MentorNavbar({
   activeTab = 'dashboard',
-  user = {
-    name: 'Kaushik Chatterjee',
-    firstName: 'Kaushik',
-    role: 'Senior Mentor',
-    avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=320&q=80',
-    initials: 'K',
-  },
+  user = MENTOR_DETAILS,
   onSelectTab,
   onLogout,
   onOpenSidebar,
@@ -20,11 +15,11 @@ export default function MentorNavbar({
   const containerRef = useRef(null);
 
   const currentUser = {
-    name: user?.name || 'Kaushik Chatterjee',
-    firstName: user?.firstName || user?.name?.split(' ')[0] || 'Kaushik',
-    role: user?.role || 'Senior Mentor',
-    avatar: user?.avatar,
-    initials: user?.initials || (user?.name ? user.name.charAt(0) : 'K'),
+    name: user?.name || user?.fullName || MENTOR_DETAILS.fullName,
+    firstName: user?.firstName || (user?.name || user?.fullName || MENTOR_DETAILS.name).split(' ')[0],
+    role: user?.role || user?.designation || MENTOR_DETAILS.role,
+    avatar: user?.avatar || MENTOR_DETAILS.avatar,
+    initials: user?.initials || MENTOR_DETAILS.initials,
   };
 
   const pageMeta = {

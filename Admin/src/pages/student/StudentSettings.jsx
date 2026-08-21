@@ -28,6 +28,7 @@ import {
   Calendar,
   Globe
 } from "lucide-react";
+import { tanukaStudentData } from "../../data/studentProfileData";
 import tuhinaAvatar from "../../assets/tuhina_avatar.jpg";
 
 export default function StudentSettings({ hideHeader = false }) {
@@ -38,19 +39,19 @@ export default function StudentSettings({ hideHeader = false }) {
   // Profile Form States
   const [avatarPreview, setAvatarPreview] = useState(tuhinaAvatar || "/tuhina_avatar.jpg");
   const [profileData, setProfileData] = useState({
-    fullName: "Tuhina Banerjee",
-    rollNo: "CSE2024012",
-    regNo: "MAKAUT-2024-009182",
-    department: "Computer Science & Engineering",
-    batch: "2024 - 2028",
-    semester: "Semester 4",
-    institutionalEmail: "cse202413@recruit.org.in",
-    personalEmail: "tuhinabanerjee134@gmail.com",
-    abcId: "9284-1823-9012",
-    bloodGroup: "O+",
-    phone: "+91 91239 30828",
-    emergencyPhone: "+91 98301 99887",
-    address: "Flat 4B, Greenwood Residency, Action Area II, New Town, Kolkata - 700156",
+    fullName: tanukaStudentData.name,
+    rollNo: tanukaStudentData.rollNo,
+    regNo: tanukaStudentData.registrationNo,
+    department: tanukaStudentData.department,
+    batch: tanukaStudentData.batch,
+    semester: tanukaStudentData.semester,
+    institutionalEmail: tanukaStudentData.studentEmail,
+    personalEmail: tanukaStudentData.email,
+    abcId: tanukaStudentData.abcId,
+    bloodGroup: tanukaStudentData.additionalDetails.bloodGroup,
+    phone: tanukaStudentData.phone,
+    emergencyPhone: tanukaStudentData.additionalDetails.emergencyContact,
+    address: tanukaStudentData.addressDetails.fullAddress,
   });
 
   // Password / Security States

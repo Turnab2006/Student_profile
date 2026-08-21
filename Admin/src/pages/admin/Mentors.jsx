@@ -140,7 +140,7 @@ export default function Mentors({ onNavigate, onOpenSidebar }) {
             <p className="text-xs text-gray-400 mt-0.5 truncate hidden sm:block">Manage mentor accounts and profiles</p>
           </div>
         </div>
-        <AdminProfile name="Admin User" role="Super Admin" avatar="A" onNavigate={onNavigate} />
+        <AdminProfile name="John Doe" role="Super Admin" avatar="JD" onNavigate={onNavigate} />
       </header>
 
       <main className="flex-1 overflow-y-auto p-6 space-y-4">

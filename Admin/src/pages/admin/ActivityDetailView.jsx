@@ -398,7 +398,6 @@ export default function ActivityDetailView({
           <div className="flex items-center gap-2">
             <button
               type="button"
-              onClick={() => setShowRegisterModal(true)}
               className="flex items-center gap-2 px-5 py-2.5 bg-[#7656f4] hover:bg-[#6242e2] text-white rounded-xl text-xs font-bold transition-all cursor-pointer shadow-sm hover:shadow active:scale-95"
             >
               <UserPlus size={15} />
@@ -588,7 +587,6 @@ export default function ActivityDetailView({
                 ) : isMentor ? (
                   <button
                     type="button"
-                    onClick={() => setShowRegisterModal(true)}
                     className="flex items-center justify-center gap-2 px-6 h-12 bg-[#7656f4] hover:bg-[#6242e2] text-white font-bold text-sm rounded-xl shadow-sm hover:shadow active:scale-95 transition-all cursor-pointer"
                   >
                     <UserPlus size={17} className="stroke-[2.3]" />

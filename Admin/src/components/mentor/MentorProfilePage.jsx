@@ -31,6 +31,7 @@ import {
   Trophy,
   X
 } from 'lucide-react';
+import { MENTOR_DETAILS } from '../../data/mentorData';
 
 function Barcode({ value, width = 1.25, height = 38, fontSize = 11, font = 'Roboto, sans-serif' }) {
   const svgRef = useRef(null);
@@ -59,14 +60,15 @@ function Barcode({ value, width = 1.25, height = 38, fontSize = 11, font = 'Robo
   return <svg ref={svgRef} className="max-w-full" />;
 }
 
-function DigitalMentorIDSection({ mentor, onBack, showToast }) {
+function DigitalMentorIDSection({ mentor = MENTOR_DETAILS, onBack, showToast }) {
+  const currentMentor = mentor || MENTOR_DETAILS;
   const [isCardFlipped, setIsCardFlipped] = useState(false);
-  const empId = mentor.empId || '1102456';
-  const department = mentor.department || 'Computer Science & Engineering';
-  const designation = mentor.designation || 'Assistant Professor & Senior Mentor';
-  const phone = mentor.phone || '+91 98365 24102';
-  const collegeEmail = mentor.collegeEmail || 'kawshik.chattarji@rcciit.faculty.in';
-  const fullAddress = mentor.location || 'Room 304, Academic Block, RCCIIT Campus, Kolkata, West Bengal - 700015';
+  const empId = currentMentor.empId || currentMentor.employeeId || MENTOR_DETAILS.empId;
+  const department = currentMentor.department || MENTOR_DETAILS.department;
+  const designation = currentMentor.designation || MENTOR_DETAILS.designation;
+  const phone = currentMentor.phone || MENTOR_DETAILS.phone;
+  const collegeEmail = currentMentor.collegeEmail || currentMentor.email || MENTOR_DETAILS.collegeEmail;
+  const fullAddress = currentMentor.location || MENTOR_DETAILS.location;
 
   return (
     <div className="w-full space-y-3.5 pb-8 animate-in fade-in duration-200">
@@ -529,32 +531,8 @@ export default function MentorProfilePage({ mentorData: propMentorData }) {
     }, 3500);
   };
 
-  // Mentor data populated with all fields from Admin "Add Mentor" page
-  const mentor = propMentorData || {
-    firstName: 'Kawshik',
-    middleName: '',
-    lastName: 'Chattarji',
-    fullName: 'Prof. Kawshik Chattarji',
-    avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=320&q=80',
-    empId: '1102456',
-    gender: 'Male',
-    department: 'Computer Science & Engineering',
-    designation: 'Assistant Professor & Senior Mentor',
-    qualification: 'M.Tech in Computer Science, Ph.D (Pursuing)',
-    experience: '6 Years',
-    joiningDate: '15 Apr 2022',
-    status: 'Active',
-    aadharNumber: '1234 5678 9012',
-    phone: '+91 98365 24102',
-    collegeEmail: 'kawshik.chattarji@rcciit.faculty.in',
-    personalEmail: 'kawshik.chattarji123@gmail.com',
-    location: 'Room 304, Academic Block, RCCIIT Campus, Kolkata',
-    assignedMenteesCount: '25 Students',
-    avgAttendance: '92%',
-    creditsIssued: '120 Pts',
-    coreSubjects: 'Data Structures & Algorithms, Computer Networks, Software Engineering, Machine Learning',
-    officeHours: 'Mon - Fri (2:00 PM - 4:00 PM)',
-  };
+  // Mentor data populated with all fields from centralized MENTOR_DETAILS dataset
+  const mentor = propMentorData || MENTOR_DETAILS;
 
   return (
     <div className="w-full space-y-3.5 pb-8 font-['Roboto',sans-serif]">

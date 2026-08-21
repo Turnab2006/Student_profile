@@ -896,7 +896,7 @@ export default function StudentProfile({
           {userRole === "mentor" ? (
             <MentorProfileHeaderWidget user={user} onNavigate={onNavigate} onLogout={onLogout} />
           ) : (
-            <AdminProfile name="Admin User" role="Super Admin" avatar="A" onNavigate={onNavigate} />
+            <AdminProfile name="John Doe" role="Super Admin" avatar="JD" onNavigate={onNavigate} />
           )}
         </header>
       )}
@@ -998,13 +998,13 @@ export default function StudentProfile({
                       {/* Divider 2 */}
                       <div className="h-4 w-[1px] bg-white/25 self-center" />
 
-                      {/* Course: B.Tech */}
+                      {/* Course: BTech */}
                       <div className="flex items-center gap-2">
                         <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/20 text-white shadow-2xs border border-white/25 shrink-0 backdrop-blur-xs">
                           <GraduationCap size={14} className="stroke-[2.2]" />
                         </div>
                         <span className="font-semibold text-white">
-                          {student.course || "B.Tech"}
+                          {student.course || "BTech"}
                         </span>
                       </div>
 
@@ -1112,7 +1112,7 @@ export default function StudentProfile({
                         <GraduationCap size={13} className="stroke-[2.2]" />
                       </div>
                       <span className="font-semibold text-white">
-                        {student.course || "B.Tech"}
+                        {student.course || "BTech"}
                       </span>
                     </div>
 
@@ -1253,15 +1253,15 @@ export default function StudentProfile({
                       </div>
                     </div>
 
-                    {/* 4. ABCD ID / ABC ID */}
+                    {/* 4. ABC ID */}
                     <div className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
                       <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
                         <ShieldCheck size={18} />
                       </div>
                       <div className="overflow-hidden">
-                        <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">ABCD ID</p>
+                        <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">ABC ID</p>
                         <p className="text-xs sm:text-sm font-bold text-slate-800 tracking-wider truncate">
-                          {student.academicDetails?.abcId || "ABCD1234567890"}
+                          {student.academicDetails?.abcId || student.abcId || "9284-1823-9012"}
                         </p>
                       </div>
                     </div>

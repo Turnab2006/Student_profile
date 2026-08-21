@@ -30,53 +30,10 @@ import MentorSupport from './MentorSupport';
 import MentorSettings from './MentorSettings';
 import StudentProfile from '../student/StudentProfile';
 import { initialStudentData } from '../../data/studentProfileData';
+import { MENTOR_DETAILS, getMentorDashboardStats } from '../../data/mentorData';
+import { STUDENTS_DATA } from '../../data/studentsData';
 
-const stats = [
-  {
-    key: 'mentees',
-    label: 'Total Mentees',
-    value: '25',
-    note: 'Assigned students',
-    icon: Users,
-    cardClass: 'bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#7656f4]',
-    valueClass: 'text-[#111827]',
-    iconWrap: 'bg-[#F3EEFF] text-[#7656f4]',
-    pageKey: 'mentees',
-  },
-  {
-    key: 'attendance',
-    label: 'Attendance Rate',
-    value: '92%',
-    note: 'Classes recorded',
-    icon: CheckCircle2,
-    cardClass: 'bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#22C55E]',
-    valueClass: 'text-[#111827]',
-    iconWrap: 'bg-[#EAFBF1] text-[#22C55E]',
-    pageKey: 'attendance',
-  },
-  {
-    key: 'results',
-    label: 'Results Published',
-    value: '18',
-    note: 'Published results',
-    icon: TrendingUp,
-    cardClass: 'bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#F59E0B]',
-    valueClass: 'text-[#111827]',
-    iconWrap: 'bg-[#FFF5E8] text-[#F59E0B]',
-    pageKey: 'results',
-  },
-  {
-    key: 'credits',
-    label: 'Credit Points Issued',
-    value: '120',
-    note: 'Total points issued',
-    icon: Star,
-    cardClass: 'bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#3B82F6]',
-    valueClass: 'text-[#111827]',
-    iconWrap: 'bg-[#EEF5FF] text-[#3B82F6]',
-    pageKey: 'credit-points',
-  },
-];
+const stats = getMentorDashboardStats(STUDENTS_DATA);
 
 const tabTitles = {
   mentees: 'Mentees Portal',
@@ -180,7 +137,7 @@ export default function MentorDashboard({ user, onLogout }) {
       if (activeTab === 'profile') {
         return (
           <div className="p-2 sm:px-5 sm:py-2.5 pb-10">
-            <MentorProfilePage />
+            <MentorProfilePage mentorData={user || MENTOR_DETAILS} />
           </div>
         );
       }
@@ -234,7 +191,7 @@ export default function MentorDashboard({ user, onLogout }) {
       <main className="space-y-2.5 p-2 sm:px-5 sm:py-2.5">
         {/* Top Section: Mentor Profile Hero Card */}
         <section className="w-full">
-          <MentorProfileCard />
+          <MentorProfileCard mentor={user || MENTOR_DETAILS} />
         </section>
 
         {/* Stats Section: 4 Stat Cards */}
@@ -244,7 +201,7 @@ export default function MentorDashboard({ user, onLogout }) {
 
         {/* Bottom 3 Columns: Total Mentees, Quick Actions, Real-time Calendar */}
         <section className="grid gap-2.5 sm:grid-cols-2 xl:grid-cols-[1fr_1fr_1fr]">
-          <MentorMenteeChart onNavigate={handleNavigate} />
+          <MentorMenteeChart onNavigate={handleNavigate} mentees={STUDENTS_DATA} />
           <MentorQuickActions onNavigate={handleNavigate} />
           <MentorCalendar />
         </section>

@@ -62,11 +62,11 @@ const stats = [
 
 // Top 5 recent activities
 const activities = [
-  { name: "Henry Vecna", action: "registered as new student", detail: "Computer Science & Engineering", badge: "Student", badgeColor: "bg-emerald-100 text-emerald-600", time: "2 min ago", avatar: "HV", avatarBg: "bg-emerald-100" },
-  { name: "Harry Potter", action: "registered as new mentor", detail: "Computer Science & Engineering", badge: "Mentor", badgeColor: "bg-purple-100 text-purple-600", time: "3 min ago", avatar: "HP", avatarBg: "bg-purple-100" },
-  { name: "Admin", action: "published a new notice", detail: "Exam Routine for upcoming semester", badge: "Notice", badgeColor: "bg-blue-100 text-blue-600", time: "7 min ago", avatar: "AD", avatarBg: "bg-blue-100" },
-  { name: "Admin", action: "published a new event", detail: "Regalia 2026 - Cultural Event", badge: "Activity", badgeColor: "bg-amber-100 text-amber-600", time: "8 min ago", avatar: "AD", avatarBg: "bg-amber-100" },
-  { name: "Admin", action: "updated semester syllabus", detail: "Semester 5 course materials", badge: "Semester", badgeColor: "bg-rose-100 text-rose-600", time: "10 min ago", avatar: "AD", avatarBg: "bg-rose-100" },
+  { name: "Tanuka Saha", action: "registered as new student", detail: "Computer Science & Engineering • Roll: CSE2024012", badge: "Student", badgeColor: "bg-emerald-100 text-emerald-700", time: "2 min ago", avatar: "TS", avatarBg: "bg-emerald-100" },
+  { name: "Prof. Kaushik Chatterjee", action: "registered as new faculty mentor", detail: "Department of Computer Science & Engineering", badge: "Mentor", badgeColor: "bg-purple-100 text-purple-700", time: "15 min ago", avatar: "KC", avatarBg: "bg-purple-100" },
+  { name: "Admin", action: "published a new notice", detail: "Mid-Semester Examination Schedule & Room Allocations", badge: "Notice", badgeColor: "bg-blue-100 text-blue-700", time: "35 min ago", avatar: "AD", avatarBg: "bg-blue-100" },
+  { name: "Admin", action: "published a new event", detail: "TECHNOVATE 2026 - AI & Robotics Hackathon", badge: "Activity", badgeColor: "bg-amber-100 text-amber-700", time: "1 hr ago", avatar: "AD", avatarBg: "bg-amber-100" },
+  { name: "Admin", action: "approved credit points requests", detail: "Approved 120 MAR points for Batch 2024-2028 mentees", badge: "Credits", badgeColor: "bg-rose-100 text-rose-700", time: "2 hrs ago", avatar: "AD", avatarBg: "bg-rose-100" },
 ];
 
 const quickActions = [
@@ -109,7 +109,7 @@ export default function Dashboard({ onNavigate, onOpenSidebar }) {
             <p className="text-xs text-gray-400 mt-0.5 truncate hidden sm:block">Welcome back, Admin! Here&apos;s what&apos;s happening today.</p>
           </div>
         </div>
-        <AdminProfile name="Admin User" role="Super Admin" avatar="A" onNavigate={onNavigate} />
+        <AdminProfile name="John Doe" role="Super Admin" avatar="JD" onNavigate={onNavigate} />
       </header>
 
       <main className="flex-1 p-3.5 sm:p-4.5 space-y-3 overflow-y-auto">

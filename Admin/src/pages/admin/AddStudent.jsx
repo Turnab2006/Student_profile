@@ -344,7 +344,7 @@ export default function AddStudent({ onNavigate, onOpenSidebar }) {
               </nav>
             </div>
           </div>
-          <AdminProfile name="Admin User" role="Super Admin" avatar="A" onNavigate={onNavigate} />
+          <AdminProfile name="John Doe" role="Super Admin" avatar="JD" onNavigate={onNavigate} />
         </header>
 
         <main className="flex-1 overflow-y-auto p-4 sm:p-6">
@@ -572,7 +572,7 @@ export default function AddStudent({ onNavigate, onOpenSidebar }) {
               </nav>
             </div>
           </div>
-          <AdminProfile name="Admin User" role="Super Admin" avatar="A" onNavigate={onNavigate} />
+          <AdminProfile name="John Doe" role="Super Admin" avatar="JD" onNavigate={onNavigate} />
         </header>
 
         <main className="flex-1 overflow-y-auto p-4 sm:p-6">
@@ -833,7 +833,7 @@ export default function AddStudent({ onNavigate, onOpenSidebar }) {
             </nav>
           </div>
         </div>
-        <AdminProfile name="Admin User" role="Super Admin" avatar="A" onNavigate={onNavigate} />
+        <AdminProfile name="John Doe" role="Super Admin" avatar="JD" onNavigate={onNavigate} />
       </header>
 
       <main className="flex-1 overflow-y-auto p-4 sm:p-6">

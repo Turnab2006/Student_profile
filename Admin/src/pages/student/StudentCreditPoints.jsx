@@ -155,6 +155,7 @@ export const initialCreditHistoryData = [
 
 export default function StudentCreditPoints({ hideHeader = false }) {
   const [historyList, setHistoryList] = useState(initialCreditHistoryData);
+  const [activeTab, setActiveTab] = useState("pending"); // 'pending' | 'approved' | 'failed'
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [categoryFilter, setCategoryFilter] = useState("all");
@@ -188,6 +189,10 @@ export default function StudentCreditPoints({ hideHeader = false }) {
 
   const pendingCount = useMemo(() => {
     return historyList.filter((item) => item.status === "Pending").length;
+  }, [historyList]);
+
+  const approvedCount = useMemo(() => {
+    return historyList.filter((item) => item.status === "Approved").length;
   }, [historyList]);
 
   const failedCount = useMemo(() => {
@@ -234,6 +239,14 @@ export default function StudentCreditPoints({ hideHeader = false }) {
         item.category.toLowerCase().includes(q) ||
         item.semester.toLowerCase().includes(q);
 
+      // Match Tab Filter
+      const matchesTab =
+        activeTab === "all" ||
+        (activeTab === "approved" && item.status === "Approved") ||
+        (activeTab === "pending" && item.status === "Pending") ||
+        (activeTab === "failed" && item.status === "Approval Failed");
+
+      // Match Optional Dropdown Status Filter
       const matchesStatus =
         statusFilter === "all" ||
         (statusFilter === "approved" && item.status === "Approved") ||
@@ -243,9 +256,9 @@ export default function StudentCreditPoints({ hideHeader = false }) {
       const matchesCategory =
         categoryFilter === "all" || item.category.toLowerCase() === categoryFilter.toLowerCase();
 
-      return matchesQuery && matchesStatus && matchesCategory;
+      return matchesQuery && matchesTab && matchesStatus && matchesCategory;
     });
-  }, [historyList, searchQuery, statusFilter, categoryFilter]);
+  }, [historyList, searchQuery, activeTab, statusFilter, categoryFilter]);
 
   const sortedHistory = useMemo(() => {
     return [...filteredHistory].sort((a, b) => {
@@ -405,6 +418,84 @@ export default function StudentCreditPoints({ hideHeader = false }) {
         </div>
       </div>
 
+      {/* Primary Tab Navigation for Credit Point Requests (Compact height & left aligned) */}
+      <div className="bg-white p-1.5 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 flex items-center justify-start gap-1.5 sm:gap-2 overflow-x-auto scrollbar-none">
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab("pending");
+            setStatusFilter("all");
+          }}
+          className={`flex items-center gap-2 py-1.5 px-3.5 sm:px-4 rounded-xl text-xs sm:text-[13px] font-bold transition-all cursor-pointer shrink-0 ${
+            activeTab === "pending"
+              ? "bg-amber-500 text-white shadow-sm shadow-amber-500/20"
+              : "text-slate-600 hover:text-slate-900 hover:bg-amber-50/60"
+          }`}
+        >
+          <Clock size={15} />
+          <span>Pending Requests</span>
+          <span
+            className={`px-2 py-0.5 rounded-full text-[11px] font-extrabold ${
+              activeTab === "pending"
+                ? "bg-white/20 text-white"
+                : "bg-amber-100 text-amber-700"
+            }`}
+          >
+            {pendingCount}
+          </span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab("approved");
+            setStatusFilter("all");
+          }}
+          className={`flex items-center gap-2 py-1.5 px-3.5 sm:px-4 rounded-xl text-xs sm:text-[13px] font-bold transition-all cursor-pointer shrink-0 ${
+            activeTab === "approved"
+              ? "bg-emerald-600 text-white shadow-sm shadow-emerald-500/20"
+              : "text-slate-600 hover:text-slate-900 hover:bg-emerald-50/60"
+          }`}
+        >
+          <CheckCircle2 size={15} />
+          <span>Accepted Requests</span>
+          <span
+            className={`px-2 py-0.5 rounded-full text-[11px] font-extrabold ${
+              activeTab === "approved"
+                ? "bg-white/20 text-white"
+                : "bg-emerald-100 text-emerald-700"
+            }`}
+          >
+            {approvedCount}
+          </span>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => {
+            setActiveTab("failed");
+            setStatusFilter("all");
+          }}
+          className={`flex items-center gap-2 py-1.5 px-3.5 sm:px-4 rounded-xl text-xs sm:text-[13px] font-bold transition-all cursor-pointer shrink-0 ${
+            activeTab === "failed"
+              ? "bg-rose-600 text-white shadow-sm shadow-rose-500/20"
+              : "text-slate-600 hover:text-slate-900 hover:bg-rose-50/60"
+          }`}
+        >
+          <XCircle size={15} />
+          <span>Rejected Requests</span>
+          <span
+            className={`px-2 py-0.5 rounded-full text-[11px] font-extrabold ${
+              activeTab === "failed"
+                ? "bg-white/20 text-white"
+                : "bg-rose-100 text-rose-700"
+            }`}
+          >
+            {failedCount}
+          </span>
+        </button>
+      </div>
+
       {/* History Filter Box Container matching image style */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white px-4 py-2.5 sm:px-5 sm:py-3 rounded-[20px] border border-slate-200/90 shadow-md shadow-slate-200/50 font-['Roboto',sans-serif]">
         {/* Left Column: Search Bar */}
@@ -507,14 +598,71 @@ export default function StudentCreditPoints({ hideHeader = false }) {
         </div>
       </div>
 
+      {/* Context Banner For Active Tab */}
+      {activeTab === "pending" && (
+        <div className="bg-amber-50/90 border border-amber-200/90 rounded-2xl p-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-amber-900 text-xs sm:text-sm font-medium animate-in fade-in duration-150">
+          <div className="flex items-center gap-2.5">
+            <Clock size={18} className="text-amber-600 shrink-0" />
+            <span>
+              Showing <strong>{sortedHistory.length} pending credit claim{sortedHistory.length === 1 ? "" : "s"}</strong> currently awaiting faculty mentor review.
+            </span>
+          </div>
+          <span className="text-xs font-bold text-amber-700 bg-amber-100/90 px-2.5 py-1 rounded-lg shrink-0">
+            Pending Points: +{pendingPoints} Pts
+          </span>
+        </div>
+      )}
+
+      {activeTab === "approved" && (
+        <div className="bg-emerald-50/90 border border-emerald-200/90 rounded-2xl p-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-emerald-900 text-xs sm:text-sm font-medium animate-in fade-in duration-150">
+          <div className="flex items-center gap-2.5">
+            <CheckCircle2 size={18} className="text-emerald-600 shrink-0" />
+            <span>
+              Showing <strong>{sortedHistory.length} accepted activit{sortedHistory.length === 1 ? "y" : "ies"}</strong> contributing to your academic MAR points.
+            </span>
+          </div>
+          <span className="text-xs font-bold text-emerald-700 bg-emerald-100/90 px-2.5 py-1 rounded-lg shrink-0">
+            Total Approved: {totalEarnedPoints} / 100 Pts
+          </span>
+        </div>
+      )}
+
+      {activeTab === "failed" && (
+        <div className="bg-rose-50/90 border border-rose-200/90 rounded-2xl p-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-rose-900 text-xs sm:text-sm font-medium animate-in fade-in duration-150">
+          <div className="flex items-center gap-2.5">
+            <AlertCircle size={18} className="text-rose-600 shrink-0" />
+            <span>
+              Showing <strong>{sortedHistory.length} rejected request{sortedHistory.length === 1 ? "" : "s"}</strong> with mentor review remarks and guidance.
+            </span>
+          </div>
+          <span className="text-xs font-bold text-rose-700 bg-rose-100/90 px-2.5 py-1 rounded-lg shrink-0">
+            Action Required
+          </span>
+        </div>
+      )}
+
       {/* Credit Points History Showcase */}
       {viewMode === "grid" ? (
         <div className="space-y-4">
           {sortedHistory.length === 0 ? (
             <div className="py-16 text-center text-gray-400 text-sm bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50">
               <Award size={36} className="mx-auto text-gray-300 mb-2" />
-              <p className="font-semibold text-gray-600">No credit point records found</p>
-              <p className="text-xs text-gray-400 mt-1">Try adjusting your search query or status/category filters.</p>
+              <p className="font-semibold text-gray-600">
+                {activeTab === "pending"
+                  ? "No pending credit requests"
+                  : activeTab === "approved"
+                  ? "No accepted credit requests found"
+                  : activeTab === "failed"
+                  ? "No rejected requests found"
+                  : "No credit point records found"}
+              </p>
+              <p className="text-xs text-gray-400 mt-1">
+                {activeTab === "pending"
+                  ? "All submitted activity requests have been processed by your mentor."
+                  : activeTab === "failed"
+                  ? "Great job! None of your activity claim requests have been rejected."
+                  : "Try adjusting your search query or category filters."}
+              </p>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

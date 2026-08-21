@@ -25,6 +25,7 @@ import Semesters from "./pages/admin/Semesters";
 import Subjects from "./pages/admin/Subjects";
 import AddSubject from "./pages/admin/AddSubject";
 import Attendances from "./pages/admin/Attendances";
+import CreditPoints from "./pages/admin/CreditPoints";
 
 // Mentor Site
 import MentorDashboard from "./pages/mentor/MentorDashboard";
@@ -51,6 +52,7 @@ function AdminLayout({ subjectsList, setSubjectsList, onLogout }) {
     subjects: "/admin/subjects",
     "add-subject": "/admin/subjects/add",
     attendances: "/admin/attendances",
+    "credit-points": "/admin/credit-points",
     activities: "/admin/activities",
     "add-activity": "/admin/activities/add",
     notices: "/admin/notices",
@@ -71,6 +73,7 @@ function AdminLayout({ subjectsList, setSubjectsList, onLogout }) {
     if (path.includes("/admin/subjects/add")) return "add-subject";
     if (path.includes("/admin/subjects")) return "subjects";
     if (path.includes("/admin/attendances")) return "attendances";
+    if (path.includes("/admin/credit-points")) return "credit-points";
     if (path.includes("/admin/activities/add")) return "add-activity";
     if (path.includes("/admin/activities")) return "activities";
     if (path.includes("/admin/notices/add")) return "add-notice";
@@ -112,6 +115,7 @@ function AdminLayout({ subjectsList, setSubjectsList, onLogout }) {
       case "subjects":        return <Subjects onNavigate={handleAdminNavigate} subjectsList={subjectsList} setSubjectsList={setSubjectsList} onOpenSidebar={handleOpenSidebar} />;
       case "add-subject":     return <AddSubject onNavigate={handleAdminNavigate} subjectsList={subjectsList} setSubjectsList={setSubjectsList} onOpenSidebar={handleOpenSidebar} />;
       case "attendances":     return <Attendances onNavigate={handleAdminNavigate} onOpenSidebar={handleOpenSidebar} />;
+      case "credit-points":   return <CreditPoints onNavigate={handleAdminNavigate} onOpenSidebar={handleOpenSidebar} />;
       case "settings":        return <Settings onNavigate={handleAdminNavigate} onOpenSidebar={handleOpenSidebar} />;
       case "support":         return <Support onNavigate={handleAdminNavigate} onOpenSidebar={handleOpenSidebar} />;
       case "ticket-history":  return <TicketHistory onNavigate={handleAdminNavigate} onOpenSidebar={handleOpenSidebar} />;
@@ -176,6 +180,7 @@ export default function App() {
             subjects: "/admin/subjects",
             "add-subject": "/admin/subjects/add",
             attendances: "/admin/attendances",
+            "credit-points": "/admin/credit-points",
             activities: "/admin/activities",
             "add-activity": "/admin/activities/add",
             notices: "/admin/notices",

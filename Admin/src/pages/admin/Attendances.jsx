@@ -32,6 +32,7 @@ import {
 } from "lucide-react";
 import AdminProfile from "../../components/admin/AdminProfile";
 import SemesterAttendanceDetail from "../student/SemesterAttendanceDetail";
+import { STUDENTS_DATA } from "../../data/studentsData";
 
 const defaultStudentSubjects = {
   1: [
@@ -99,188 +100,26 @@ const formatDept = (dept) => {
   return dept.toUpperCase();
 };
 
-const defaultStudentsAttendance = [
-  {
-    id: "1",
-    name: "Alice Johnson",
-    email: "alice.j@edusmart.edu",
-    initials: "AJ",
-    avatarBg: "bg-emerald-500",
-    rollNo: "CS2021001",
-    department: "CSE",
-    program: "B.Tech",
-    year: "3",
-    semester: "5",
-    course: "Data Structures",
-    courseCode: "CS301",
-    percentage: 95,
-    attended: 57,
-    total: 60,
-    status: "Excellent", // Excellent, Good, Very Good, At Risk
-  },
-  {
-    id: "2",
-    name: "Bob Smith",
-    email: "bob.s@edusmart.edu",
-    initials: "BS",
-    avatarBg: "bg-blue-500",
-    rollNo: "CS2021002",
-    department: "CSE",
-    program: "B.Tech",
-    year: "2",
-    semester: "3",
-    course: "Algorithms",
-    courseCode: "CS302",
-    percentage: 78,
-    attended: 47,
-    total: 60,
-    status: "Good",
-  },
-  {
-    id: "3",
-    name: "Carol Williams",
-    email: "carol.w@edusmart.edu",
-    initials: "CW",
-    avatarBg: "bg-purple-500",
-    rollNo: "CS2021003",
-    department: "CSE",
-    program: "B.Tech",
-    year: "3",
-    semester: "5",
-    course: "Database Systems",
-    courseCode: "CS303",
-    percentage: 88,
-    attended: 53,
-    total: 60,
-    status: "Very Good",
-  },
-  {
-    id: "4",
-    name: "David Brown",
-    email: "david.b@edusmart.edu",
-    initials: "DB",
-    avatarBg: "bg-rose-500",
-    rollNo: "CS2021004",
-    department: "CSE",
-    program: "B.Tech",
-    year: "1",
-    semester: "1",
-    course: "Operating Systems",
-    courseCode: "CS304",
-    percentage: 62,
-    attended: 37,
-    total: 60,
-    status: "At Risk",
-  },
-  {
-    id: "5",
-    name: "Eva Martinez",
-    email: "eva.m@edusmart.edu",
-    initials: "EM",
-    avatarBg: "bg-teal-500",
-    rollNo: "CS2021005",
-    department: "CSE",
-    program: "B.Tech",
-    year: "4",
-    semester: "7",
-    course: "Computer Networks",
-    courseCode: "CS305",
-    percentage: 91,
-    attended: 55,
-    total: 60,
-    status: "Excellent",
-  },
-  {
-    id: "6",
-    name: "Frank Lee",
-    email: "frank.l@edusmart.edu",
-    initials: "FL",
-    avatarBg: "bg-pink-500",
-    rollNo: "CS2021006",
-    department: "CSE",
-    program: "B.Tech",
-    year: "2",
-    semester: "3",
-    course: "Software Engineering",
-    courseCode: "CS306",
-    percentage: 45,
-    attended: 27,
-    total: 60,
-    status: "At Risk",
-  },
-  {
-    id: "7",
-    name: "Grace Taylor",
-    email: "grace.t@edusmart.edu",
-    initials: "GT",
-    avatarBg: "bg-indigo-500",
-    rollNo: "CS2021007",
-    department: "ECE",
-    program: "B.Tech",
-    year: "3",
-    semester: "5",
-    course: "Digital Signal Processing",
-    courseCode: "EC301",
-    percentage: 84,
-    attended: 50,
-    total: 60,
-    status: "Good",
-  },
-  {
-    id: "8",
-    name: "Henry Wilson",
-    email: "henry.w@edusmart.edu",
-    initials: "HW",
-    avatarBg: "bg-orange-500",
-    rollNo: "CS2021008",
-    department: "EE",
-    program: "B.Tech",
-    year: "4",
-    semester: "7",
-    course: "Power Systems",
-    courseCode: "EE301",
-    percentage: 96,
-    attended: 58,
-    total: 60,
-    status: "Excellent",
-  },
-  {
-    id: "9",
-    name: "Isabella Clark",
-    email: "isabella.c@edusmart.edu",
-    initials: "IC",
-    avatarBg: "bg-violet-500",
-    rollNo: "CS2021009",
-    department: "BCA",
-    program: "BCA",
-    year: "2",
-    semester: "3",
-    course: "Web Development",
-    courseCode: "BC301",
-    percentage: 90,
-    attended: 54,
-    total: 60,
-    status: "Excellent",
-  },
-  {
-    id: "10",
-    name: "Jack Davis",
-    email: "jack.d@edusmart.edu",
-    initials: "JD",
-    avatarBg: "bg-cyan-500",
-    rollNo: "CS2021010",
-    department: "MCA",
-    program: "MCA",
-    year: "1",
-    semester: "1",
-    course: "Cloud Computing",
-    courseCode: "MC301",
-    percentage: 58,
-    attended: 35,
-    total: 60,
-    status: "At Risk",
-  },
-];
+const defaultStudentsAttendance = STUDENTS_DATA.map((s, idx) => ({
+  id: s.id || String(idx + 1),
+  name: s.name,
+  email: s.email,
+  initials: s.initials,
+  avatarBg: s.avatarBg,
+  avatarText: s.avatarText || "text-teal-700",
+  rollNo: s.rollNo || s.roll,
+  department: s.deptCode || s.dept,
+  deptCode: s.deptCode,
+  program: s.program,
+  year: String(s.yearNum || s.year),
+  semester: String(s.semNum || s.semester),
+  course: s.course || "Core Subject",
+  courseCode: s.courseCode || "CS501",
+  percentage: s.percentage || s.attendanceRate || 90,
+  attended: s.attended || 54,
+  total: s.total || 60,
+  status: s.attendanceStatus || (s.percentage >= 90 ? "Excellent" : s.percentage >= 80 ? "Very Good" : s.percentage >= 70 ? "Good" : "At Risk"),
+}));
 
 const statusStyles = {
   Excellent: "bg-emerald-100/80 text-emerald-700 border border-emerald-200/80",
@@ -434,7 +273,7 @@ export default function Attendances({ onNavigate, onOpenSidebar }) {
           </div>
         </div>
 
-        <AdminProfile name="Admin User" role="Super Admin" avatar="A" onNavigate={onNavigate} />
+        <AdminProfile name="John Doe" role="Super Admin" avatar="JD" onNavigate={onNavigate} />
       </header>
 
       {/* Scrollable Main Body */}
@@ -648,15 +487,15 @@ export default function Attendances({ onNavigate, onOpenSidebar }) {
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="bg-gradient-to-r from-[#0da651] via-[#0e9f4e] to-[#09803d] text-white text-xs font-bold uppercase tracking-wider">
-                      <th className="py-3.5 px-6 text-center">STUDENT</th>
-                      <th className="py-3.5 px-6 text-left">ROLL NO.</th>
-                      <th className="py-3.5 px-6 text-center">DEPARTMENT</th>
-                      <th className="py-3.5 px-6 text-center">PROGRAM</th>
-                      <th className="py-3.5 px-6 text-center">YEAR</th>
-                      <th className="py-3.5 px-6 text-center">SEMESTER</th>
-                      <th className="py-3.5 px-6 text-center">ATTENDANCE</th>
-                      <th className="py-3.5 px-6 text-center">STATUS</th>
-                      <th className="py-3.5 px-6 text-center">ACTIONS</th>
+                      <th className="py-3.5 px-4 text-left">STUDENT</th>
+                      <th className="py-3.5 px-3 text-center">ROLL NO.</th>
+                      <th className="py-3.5 px-3 text-center">DEPARTMENT</th>
+                      <th className="py-3.5 px-3 text-center">PROGRAM</th>
+                      <th className="py-3.5 px-3 text-center">YEAR</th>
+                      <th className="py-3.5 px-3 text-center">SEMESTER</th>
+                      <th className="py-3.5 px-3 text-center">ATTENDANCE</th>
+                      <th className="py-3.5 px-3 text-center">STATUS</th>
+                      <th className="py-3.5 px-3 text-center">ACTIONS</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100 text-xs sm:text-sm">
@@ -673,49 +512,49 @@ export default function Attendances({ onNavigate, onOpenSidebar }) {
 
                         return (
                           <tr key={s.id} className="hover:bg-gray-50/60 transition-colors">
-                            {/* Student Info */}
-                            <td className="py-4 px-6 text-center">
-                              <div className="flex items-center justify-center gap-3">
-                                <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white shadow-2xs ${s.avatarBg}`}>
+                            {/* Student Info (Left aligned, style like student page) */}
+                            <td className="py-3 px-4 text-left align-middle">
+                              <div
+                                onClick={() => onNavigate?.("student-profile")}
+                                className="flex items-center gap-2.5 cursor-pointer group"
+                              >
+                                <div className={`w-8 h-8 rounded-full ${s.avatarBg || "bg-teal-100"} ${s.avatarText || "text-teal-700"} text-xs font-bold flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform`}>
                                   {s.initials}
                                 </div>
-                                <div className="text-left">
-                                  <p className="font-bold text-gray-800 text-sm leading-tight">{s.name}</p>
-                                  <p className="text-[11px] text-gray-400 font-normal">{s.email}</p>
-                                </div>
+                                <span className="font-medium text-primary text-xs group-hover:underline">{s.name}</span>
                               </div>
                             </td>
 
-                            {/* Roll No */}
-                            <td className="py-4 px-6 text-left font-semibold text-gray-700 text-sm">
+                            {/* Roll No (Center aligned) */}
+                            <td className="py-3 px-3 text-center align-middle text-xs text-gray-600 font-mono">
                               {s.rollNo}
                             </td>
 
-                            {/* Department */}
-                            <td className="py-4 px-6 text-center font-semibold text-gray-700">
+                            {/* Department (Center aligned) */}
+                            <td className="py-3 px-3 text-center align-middle text-xs font-semibold text-gray-700">
                               {formatDept(s.department)}
                             </td>
 
-                            {/* Program */}
-                            <td className="py-4 px-6 text-center font-medium text-gray-600">
+                            {/* Program (Center aligned) */}
+                            <td className="py-3 px-3 text-center align-middle text-xs text-gray-600">
                               {s.program}
                             </td>
 
-                            {/* Year (Number only) */}
-                            <td className="py-4 px-6 text-center font-bold text-gray-700">
+                            {/* Year (Center aligned, number only) */}
+                            <td className="py-3 px-3 text-center align-middle text-xs text-gray-600 font-medium">
                               {yearNum}
                             </td>
 
-                            {/* Semester (Number only) */}
-                            <td className="py-4 px-6 text-center">
-                              <span className="text-xs font-bold text-primary">
+                            {/* Semester (Center aligned, number only) */}
+                            <td className="py-3 px-3 text-center align-middle">
+                              <span className="text-xs font-medium text-gray-600">
                                 {semNum}
                               </span>
                             </td>
 
-                            {/* Attendance Progress */}
-                            <td className="py-4 px-6 text-center">
-                              <div className="w-36 space-y-1 mx-auto">
+                            {/* Attendance Progress (Center aligned) */}
+                            <td className="py-3 px-3 text-center align-middle">
+                              <div className="w-32 space-y-1 mx-auto">
                                 <div className="flex items-center justify-between text-xs font-bold">
                                   <span className="text-gray-800">{s.percentage}%</span>
                                   <span className="text-[10px] text-gray-400 font-medium">({s.attended}/{s.total})</span>
@@ -729,15 +568,15 @@ export default function Attendances({ onNavigate, onOpenSidebar }) {
                               </div>
                             </td>
 
-                            {/* Status Pill Badge */}
-                            <td className="py-4 px-6 text-center">
-                              <span className={`inline-flex items-center px-3 py-1 rounded-full text-[11px] font-bold ${statusStyles[s.status] || "bg-gray-100 text-gray-700"}`}>
+                            {/* Status Pill Badge (Center aligned) */}
+                            <td className="py-3 px-3 text-center align-middle">
+                              <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold ${statusStyles[s.status] || "bg-gray-100 text-gray-700"}`}>
                                 {s.status}
                               </span>
                             </td>
 
-                            {/* Actions */}
-                            <td className="py-4 px-6 text-center">
+                            {/* Actions (Center aligned) */}
+                            <td className="py-3 px-3 text-center align-middle">
                               <div className="relative inline-flex items-center justify-center">
                                 {/* 3 Dots Action Button */}
                                 <button

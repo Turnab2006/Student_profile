@@ -34,7 +34,7 @@ const PORTAL_ROLES = {
     inputFocusClass: 'focus:border-purple-600 focus:ring-purple-600/20'
   },
   admin: {
-    email: 'admin@trackademy.edu',
+    email: 'john.doe@trackademy.edu',
     password: 'adminpassword123',
     name: 'Administrator',
     color: 'emerald',

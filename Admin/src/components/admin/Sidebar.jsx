@@ -5,6 +5,7 @@ import {
   BookOpen,
   Grid,
   ClipboardList,
+  Award,
   Bell,
   Megaphone,
   Settings,
@@ -25,9 +26,10 @@ const navSections = [
   {
     label: "ACADEMICS",
     items: [
-      { id: "semesters",   label: "Semesters",   icon: BookOpen },
-      { id: "subjects",    label: "Subjects",    icon: Grid },
-      { id: "attendances", label: "Attendances", icon: ClipboardList },
+      { id: "semesters",     label: "Semesters",     icon: BookOpen },
+      { id: "subjects",      label: "Subjects",      icon: Grid },
+      { id: "attendances",   label: "Attendances",   icon: ClipboardList },
+      { id: "credit-points", label: "Credit Points", icon: Award },
     ],
   },
   {

@@ -12,9 +12,9 @@ import {
 } from "lucide-react";
 
 export default function AdminProfile({
-  name = "Admin User",
+  name = "John Doe",
   role = "Super Admin",
-  avatar = "A",
+  avatar = "JD",
   onNavigate,
 }) {
   const [profileOpen, setProfileOpen] = useState(false);

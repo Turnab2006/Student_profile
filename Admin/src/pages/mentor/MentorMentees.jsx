@@ -88,80 +88,40 @@ function ActionMessageIcon({ size = 18, className = "text-[#7656f4]" }) {
   );
 }
 
-const customMenteeRecords = [
-  { name: 'Tanuka Saha', rollNo: 'CSE2024012', department: 'Computer Science & Engineering', mentorEmail: 'arindam.roy@trackademy.in', phone: '+91 9123930828', studentEmail: 'cse202413@recruit.org.in', avatar: '/tuhina_avatar.jpg' },
-  { name: 'Aarav Sharma', rollNo: 'IT2024002', department: 'Information Technology', mentorEmail: 'arindam.roy@trackademy.in', phone: '+91 9128449997', studentEmail: 'it2024002@recruit.org.in', avatar: '/aarav_sharma_avatar.png' },
-  { name: 'Aarav Sharma 2', rollNo: 'IT2024022', department: 'Information Technology', mentorEmail: 'arindam.roy@trackademy.in', phone: '+91 9997921760', studentEmail: 'it2024022@recruit.org.in', avatar: '/aarav_sharma_avatar.png' },
-  { name: 'Aarav Sharma 3', rollNo: 'IT2024042', department: 'Information Technology', mentorEmail: 'arindam.roy@trackademy.in', phone: '+91 9323772077', studentEmail: 'it2024042@recruit.org.in', avatar: '/aarav_sharma_avatar.png' },
-  { name: 'Amitav Basu', rollNo: 'ECE2024018', department: 'Electronics & Comm. Engineering', mentorEmail: 'arindam.roy@trackademy.in', phone: '+91 9417720899', studentEmail: 'ece2024018@recruit.org.in' },
-  { name: 'Amitav Basu 2', rollNo: 'ECE2024038', department: 'Electronics & Comm. Engineering', mentorEmail: 'arindam.roy@trackademy.in', phone: '+91 9676268411', studentEmail: 'ece2024038@recruit.org.in' },
-  { name: 'Ananya Das', rollNo: 'ME2024005', department: 'Mechanical Engineering', mentorEmail: 'arindam.roy@trackademy.in', phone: '+91 9472612618', studentEmail: 'me2024005@recruit.org.in' },
-  { name: 'Ananya Das 2', rollNo: 'ME2024025', department: 'Mechanical Engineering', mentorEmail: 'arindam.roy@trackademy.in', phone: '+91 9652496638', studentEmail: 'me2024025@recruit.org.in' },
-  { name: 'Ananya Das 3', rollNo: 'ME2024045', department: 'Mechanical Engineering', mentorEmail: 'arindam.roy@trackademy.in', phone: '+91 9371847237', studentEmail: 'me2024045@recruit.org.in' },
-  { name: 'Arpan Ghosh', rollNo: 'IT2024012', department: 'Information Technology', mentorEmail: 'arindam.roy@trackademy.in', phone: '+91 9916430472', studentEmail: 'it2024012@recruit.org.in' },
-  { name: 'Arpan Ghosh 2', rollNo: 'IT2024032', department: 'Information Technology', mentorEmail: 'arindam.roy@trackademy.in', phone: '+91 9621720096', studentEmail: 'it2024032@recruit.org.in' }
-];
+import { STUDENTS_DATA, DEPT_BADGE_COLORS } from '../../data/studentsData';
+import { MENTOR_DETAILS } from '../../data/mentorData';
 
-const initialMentees = Array.from({ length: 50 }, (_, i) => {
-  if (i < customMenteeRecords.length) {
-    const rec = customMenteeRecords[i];
-    const avatarId = (i % 70) + 1;
-    const avatarGender = (i % 2 === 0) ? 'women' : 'men';
-    return {
-      id: `MNT-${1000 + i}`,
-      name: rec.name,
-      rollNo: rec.rollNo,
-      department: rec.department,
-      mentorEmail: rec.mentorEmail,
-      phone: rec.phone,
-      studentEmail: rec.studentEmail,
-      avatar: rec.avatar || `https://randomuser.me/api/portraits/${avatarGender}/${avatarId}.jpg`,
-      isOnline: i % 3 !== 0,
-      attendance: `${88 + (i % 12)}%`,
-      credits: 90 + (i * 3) % 80,
-      status: 'Active',
-      year: `${(i % 4) + 1}rd Year`
-    };
-  }
-
-  const names = [
-    'Riya Sen', 'Vikram Roy', 'Sohan Mukherjee', 'Priya Roy', 'Rahul Verma',
-    'Sneha Banerjee', 'Dev Kumar', 'Ishita Bose', 'Meera Nair', 'Karan Patel',
-    'Pooja Gupta', 'Subhajit Dutta', 'Taniya Chatterji', 'Nandini Das', 'Rohan Mehta'
-  ];
-  const depts = [
-    'Computer Science & Engineering',
-    'Information Technology',
-    'Electronics & Comm. Engineering',
-    'Electrical Engineering',
-    'Mechanical Engineering'
-  ];
-  const prefixes = ['CSE', 'IT', 'ECE', 'EE', 'ME'];
-
-  const nameIdx = i % names.length;
-  const deptIdx = i % depts.length;
-  const prefix = prefixes[deptIdx];
-  const rollNum = `${prefix}2024${String(i + 1).padStart(3, '0')}`;
-
-  const avatarId = (i % 70) + 1;
-  const avatarGender = (i % 2 === 0) ? 'women' : 'men';
-
-  return {
-    id: `MNT-${1000 + i}`,
-    name: `${names[nameIdx]} ${Math.floor(i / 15) + 1}`,
-    rollNo: rollNum,
-    department: depts[deptIdx],
-    mentorEmail: 'arindam.roy@trackademy.in',
-    phone: `+91 9${Math.floor(100000000 + Math.random() * 900000000)}`,
-    studentEmail: `${rollNum.toLowerCase()}@recruit.org.in`,
-    avatar: `https://randomuser.me/api/portraits/${avatarGender}/${avatarId}.jpg`,
-    isOnline: i % 3 !== 0,
-    attendance: `${85 + (i % 15)}%`,
-    credits: 80 + (i * 3) % 100,
-    status: 'Active',
-    year: `${(i % 4) + 1}rd Year`
-  };
-});
+const initialMentees = STUDENTS_DATA.map((s, i) => ({
+  id: s.id || `MNT-${1000 + i}`,
+  name: s.name,
+  rollNo: s.roll || s.rollNo,
+  roll: s.roll || s.rollNo,
+  department: s.dept,
+  deptCode: s.deptCode,
+  program: s.program,
+  mentor: s.mentor || MENTOR_DETAILS.fullName,
+  mentorEmail: MENTOR_DETAILS.collegeEmail,
+  phone: s.phone,
+  studentEmail: s.email,
+  email: s.email,
+  avatar: s.avatar,
+  avatarBg: s.avatarBg,
+  avatarText: s.avatarText,
+  initials: s.initials,
+  isOnline: i % 3 !== 0,
+  attendance: `${s.percentage || s.attendanceRate || 92}%`,
+  attendanceNum: s.percentage || s.attendanceRate || 92,
+  credits: s.totalEarned || 95,
+  target: s.target || 100,
+  status: s.status || 'Active',
+  year: s.yearStr || `${s.year} Year`,
+  yearNum: s.yearNum,
+  semester: s.semester,
+  semNum: s.semNum,
+  gender: s.gender,
+  activitiesCount: s.activitiesCount || (s.activities ? s.activities.length : 5),
+  activities: s.activities || [],
+}));
 
 const DEPARTMENTS = [
   'All Departments',
@@ -169,7 +129,8 @@ const DEPARTMENTS = [
   'Information Technology',
   'Electronics & Comm. Engineering',
   'Electrical Engineering',
-  'Mechanical Engineering'
+  'Mechanical Engineering',
+  'Computer Applications',
 ];
 
 export default function MentorMentees({ onNavigate }) {
@@ -247,7 +208,14 @@ export default function MentorMentees({ onNavigate }) {
       const matchesDept =
         selectedDepartment === 'all' ||
         selectedDepartment === 'All Departments' ||
-        m.department === selectedDepartment;
+        m.department === selectedDepartment ||
+        m.deptCode === selectedDepartment ||
+        (selectedDepartment === 'Computer Science & Engineering' && (m.deptCode === 'CSE' || m.department.includes('Computer Science'))) ||
+        (selectedDepartment === 'Electrical Engineering' && (m.deptCode === 'EE' || m.department.includes('Electrical'))) ||
+        (selectedDepartment === 'Electronics & Comm. Engineering' && (m.deptCode === 'ECE' || m.department.includes('Electronics'))) ||
+        (selectedDepartment === 'Information Technology' && (m.deptCode === 'IT' || m.department.includes('Information Technology'))) ||
+        (selectedDepartment === 'Mechanical Engineering' && (m.deptCode === 'ME' || m.department.includes('Mechanical'))) ||
+        (selectedDepartment === 'Computer Applications' && (m.deptCode === 'BCA' || m.department.includes('Computer Applications')));
 
       const matchesProgram =
         selectedProgram === 'all' ||
@@ -257,7 +225,9 @@ export default function MentorMentees({ onNavigate }) {
       const matchesYear =
         selectedYear === 'all' ||
         selectedYear === 'All Years' ||
-        m.year === selectedYear;
+        m.year === selectedYear ||
+        String(m.yearNum) === selectedYear ||
+        (m.year && m.year.includes(selectedYear));
 
       return matchesSearch && matchesDept && matchesProgram && matchesYear;
     }).sort((a, b) => {

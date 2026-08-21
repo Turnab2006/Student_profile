@@ -344,7 +344,7 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
               )}
             </div>
           </div>
-          <AdminProfile name="Admin User" role="Super Admin" avatar="A" onNavigate={onNavigate} />
+          <AdminProfile name="John Doe" role="Super Admin" avatar="JD" onNavigate={onNavigate} />
         </header>
       )}
 
@@ -632,63 +632,67 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                                 </span>
                               </div>
                             </div>
-                          </div>
-
-                          {/* View Button & Register Button at the Bottom of the Card in a Single Row */}
+                          </div>                          {/* View Button & Register Button at the Bottom of the Card */}
                           <div className="pt-3 border-t border-slate-100 mt-auto">
-                            <div className="grid grid-cols-2 gap-2">
+                            {!isMentor && !isStudent ? (
+                              /* Admin Portal: Full-width View Details button only (no Register button) */
                               <button
                                 type="button"
                                 onClick={() => setViewingActivity(a)}
-                                className={`w-full flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer shadow-2xs group/btn ${
-                                  isStudent
-                                    ? "bg-blue-50 hover:bg-blue-100 text-[#2563eb] border border-blue-200/80 hover:border-blue-300"
-                                    : isMentor
-                                    ? "bg-[#f6f2fe] hover:bg-purple-100 text-[#7656f4] border border-[#7656f4]/25 hover:border-[#7656f4]/40"
-                                    : "bg-emerald-50 hover:bg-emerald-100 text-[#0da651] border border-emerald-200/80 hover:border-emerald-300"
-                                }`}
+                                className="w-full flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer shadow-2xs group/btn bg-emerald-50 hover:bg-emerald-100 text-[#0da651] border border-emerald-200/80 hover:border-emerald-300"
                               >
                                 <Eye size={14} className="group-hover/btn:scale-110 transition-transform stroke-[2.2]" />
                                 <span>View Details</span>
                               </button>
-                              
-                              {isStudent ? (
+                            ) : (
+                              /* Student & Mentor Portals: View Details + Register buttons */
+                              <div className="grid grid-cols-2 gap-2">
                                 <button
                                   type="button"
-                                  onClick={() => handleStudentRegisterToggle(a)}
-                                  className={`w-full flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer shadow-xs active:scale-95 text-white ${
-                                    studentRegisteredIds.includes(a.id)
-                                      ? "bg-emerald-600 hover:bg-emerald-700"
-                                      : "bg-[#2563eb] hover:bg-[#1d4ed8]"
+                                  onClick={() => setViewingActivity(a)}
+                                  className={`w-full flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer shadow-2xs group/btn ${
+                                    isStudent
+                                      ? "bg-blue-50 hover:bg-blue-100 text-[#2563eb] border border-blue-200/80 hover:border-blue-300"
+                                      : "bg-[#f6f2fe] hover:bg-purple-100 text-[#7656f4] border border-[#7656f4]/25 hover:border-[#7656f4]/40"
                                   }`}
                                 >
-                                  {studentRegisteredIds.includes(a.id) ? (
-                                    <>
-                                      <Check size={14} className="stroke-[2.5]" />
-                                      <span>Registered</span>
-                                    </>
-                                  ) : (
-                                    <>
-                                      <UserPlus size={14} className="stroke-[2.2]" />
-                                      <span>Register</span>
-                                    </>
-                                  )}
+                                  <Eye size={14} className="group-hover/btn:scale-110 transition-transform stroke-[2.2]" />
+                                  <span>View Details</span>
                                 </button>
-                              ) : (
-                                <button
-                                  type="button"
-                                  onClick={() => handleOpenRegisterModal(a)}
-                                  className={`w-full flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer shadow-xs active:scale-95 text-white ${
-                                    isMentor
-                                      ? "bg-[#7656f4] hover:bg-[#6242e2]"
-                                      : "bg-[#0da651] hover:bg-[#0c9548]"
-                                  }`}
-                                >
-                                  <UserPlus size={14} className="stroke-[2.2]" />
-                                  <span>Register</span>
-                                </button>
-                              )}
-                            </div>
+                                
+                                {isStudent ? (
+                                  <button
+                                    type="button"
+                                    onClick={() => handleStudentRegisterToggle(a)}
+                                    className={`w-full flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer shadow-xs active:scale-95 text-white ${
+                                      studentRegisteredIds.includes(a.id)
+                                        ? "bg-emerald-600 hover:bg-emerald-700"
+                                        : "bg-[#2563eb] hover:bg-[#1d4ed8]"
+                                    }`}
+                                  >
+                                    {studentRegisteredIds.includes(a.id) ? (
+                                      <>
+                                        <Check size={14} className="stroke-[2.5]" />
+                                        <span>Registered</span>
+                                      </>
+                                    ) : (
+                                      <>
+                                        <UserPlus size={14} className="stroke-[2.2]" />
+                                        <span>Register</span>
+                                      </>
+                                    )}
+                                  </button>
+                                ) : (
+                                  <button
+                                    type="button"
+                                    className="w-full flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer shadow-xs active:scale-95 text-white bg-[#7656f4] hover:bg-[#6242e2]"
+                                  >
+                                    <UserPlus size={14} className="stroke-[2.2]" />
+                                    <span>Register</span>
+                                  </button>
+                                )}
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -876,19 +880,14 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                                         </>
                                       )}
                                     </button>
-                                  ) : (
+                                  ) : isMentor ? (
                                     <button
                                       type="button"
-                                      onClick={() => handleOpenRegisterModal(a)}
-                                      className={`text-[11px] font-bold px-3 py-1.5 rounded-xl transition-all flex items-center gap-1 cursor-pointer text-white shadow-2xs active:scale-95 ${
-                                        isMentor
-                                          ? "bg-[#7656f4] hover:bg-[#6242e2]"
-                                          : "bg-[#0da651] hover:bg-[#0c9548]"
-                                      }`}
+                                      className="text-[11px] font-bold px-3 py-1.5 rounded-xl transition-all flex items-center gap-1 cursor-pointer text-white shadow-2xs active:scale-95 bg-[#7656f4] hover:bg-[#6242e2]"
                                     >
                                       <UserPlus size={12} /> Register
                                     </button>
-                                  )}
+                                  ) : null}
 
                                   {!isMentor && !isStudent && (
                                     <div className="relative">

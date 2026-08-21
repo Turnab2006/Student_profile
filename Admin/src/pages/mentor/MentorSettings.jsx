@@ -27,6 +27,7 @@ import {
   Activity,
   AlertCircle
 } from "lucide-react";
+import { MENTOR_DETAILS } from "../../data/mentorData";
 
 export default function MentorSettings({ hideHeader = false, onNavigate }) {
   const [activeTab, setActiveTab] = useState("profile");
@@ -34,22 +35,22 @@ export default function MentorSettings({ hideHeader = false, onNavigate }) {
   const fileInputRef = useRef(null);
 
   // Profile Form States
-  const defaultAvatar = "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=320&q=80";
+  const defaultAvatar = MENTOR_DETAILS.avatar;
   const [avatarPreview, setAvatarPreview] = useState(defaultAvatar);
   
   const [profileData, setProfileData] = useState({
-    fullName: "Prof. Kaushik Chatterjee",
-    employeeId: "EPM202001",
-    designation: "Associate Professor & Mentor Coordinator",
-    department: "Computer Science & Engineering",
-    joiningDate: "July 15, 2018",
-    institutionalEmail: "kaushik.c@trackademy.edu",
-    personalEmail: "kaushik.chatterjee.prof@gmail.com",
-    availabilityStatus: "Active", // "Active" | "On-Leave" | "Inactive"
-    phone: "+91 91639 26383",
-    officeLocation: "Room 304, 3rd Floor, Tech Block",
-    consultationHours: "Mon, Wed, Fri • 2:00 PM - 4:30 PM",
-    specialization: "Artificial Intelligence, Distributed Systems, Cloud Computing",
+    fullName: MENTOR_DETAILS.fullName,
+    employeeId: MENTOR_DETAILS.empId,
+    designation: MENTOR_DETAILS.designation,
+    department: MENTOR_DETAILS.department,
+    joiningDate: MENTOR_DETAILS.joiningDateFormatted,
+    institutionalEmail: MENTOR_DETAILS.institutionalEmail,
+    personalEmail: MENTOR_DETAILS.personalEmail,
+    availabilityStatus: MENTOR_DETAILS.availabilityStatus,
+    phone: MENTOR_DETAILS.phone,
+    officeLocation: MENTOR_DETAILS.officeLocation,
+    consultationHours: MENTOR_DETAILS.consultationHours,
+    specialization: MENTOR_DETAILS.specialization,
   });
 
   // Password / Security States

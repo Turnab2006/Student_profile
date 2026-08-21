@@ -49,7 +49,7 @@ export default function MentorDetails({ mentor, onNavigate, onOpenSidebar }) {
             </div>
           </div>
         </div>
-        <AdminProfile name="Admin User" role="Super Admin" avatar="A" onNavigate={onNavigate} />
+        <AdminProfile name="John Doe" role="Super Admin" avatar="JD" onNavigate={onNavigate} />
       </header>
 
       <main className="flex-1 overflow-y-auto p-6">

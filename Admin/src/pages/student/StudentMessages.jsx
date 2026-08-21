@@ -9,10 +9,11 @@ import {
   Building2,
   ChevronDown
 } from "lucide-react";
-import { initialStudentData } from "../../data/studentProfileData";
+import { tanukaStudentData, initialStudentData } from "../../data/studentProfileData";
+import { MENTOR_DETAILS } from "../../data/mentorData";
 
 export default function StudentMessages({ hideHeader = false }) {
-  const [student] = useState(initialStudentData);
+  const [student] = useState(tanukaStudentData);
   const [messageInput, setMessageInput] = useState("");
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
@@ -52,7 +53,7 @@ export default function StudentMessages({ hideHeader = false }) {
     {
       id: "msg-2",
       sender: "mentor",
-      text: "Hello Arjun,\nI'm good, thank you! How can I help you today?",
+      text: `Hello ${student.firstName || "Tanuka"},\nI'm good, thank you! How can I help you today?`,
       time: "10:18 AM",
     },
     {
@@ -116,12 +117,12 @@ export default function StudentMessages({ hideHeader = false }) {
     }, 50);
   };
 
-  const mentorAvatar = student.mentorDetails?.avatar || "/rahul_sharma_avatar.png";
-  const mentorName = "Kawshik Chattarji";
-  const mentorRole = "Mentor";
-  const mentorDept = "Computer Science & Engineering";
-  const mentorEmail = "kawshik.chattarji@trackademy.in";
-  const mentorPhone = "+91 98305 10022";
+  const mentorAvatar = student.mentorDetails?.avatar || MENTOR_DETAILS.avatar;
+  const mentorName = student.mentorDetails?.fullName || student.mentorDetails?.name || MENTOR_DETAILS.fullName;
+  const mentorRole = student.mentorDetails?.designation || MENTOR_DETAILS.role;
+  const mentorDept = student.mentorDetails?.department || MENTOR_DETAILS.department;
+  const mentorEmail = student.mentorDetails?.email || MENTOR_DETAILS.collegeEmail;
+  const mentorPhone = student.mentorDetails?.phone || MENTOR_DETAILS.phone;
 
   return (
     <div className="p-2 sm:px-5 sm:py-3.5 space-y-3 font-['Roboto',sans-serif] w-full max-w-[1600px] mx-auto">

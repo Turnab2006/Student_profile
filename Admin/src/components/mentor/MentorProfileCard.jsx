@@ -1,6 +1,9 @@
 import { Check, CreditCard, PhoneCall, Mail } from 'lucide-react';
+import { MENTOR_DETAILS } from '../../data/mentorData';
 
-export default function MentorProfileCard() {
+export default function MentorProfileCard({ mentor = MENTOR_DETAILS }) {
+  const mentorData = mentor || MENTOR_DETAILS;
+
   return (
     <article className="mentor-profile-card">
       <div className="mentor-profile-bg-pattern">
@@ -19,15 +22,15 @@ export default function MentorProfileCard() {
 
       <div className="mentor-profile-photo-block">
         <img
-          src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=320&q=80"
-          alt="Kaushik Chatterjee"
+          src={mentorData.avatar}
+          alt={mentorData.fullName || mentorData.name}
           className="mentor-profile-photo"
         />
       </div>
 
       <div className="mentor-profile-content">
         <div className="mentor-profile-heading">
-          <h2>Kaushik Chatterjee</h2>
+          <h2>{mentorData.fullName || mentorData.name}</h2>
           <span className="mentor-verified-badge" title="Verified Mentor">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
@@ -45,20 +48,20 @@ export default function MentorProfileCard() {
           </span>
         </div>
 
-        <p className="mentor-profile-dept">Computer Science &amp; Engineering</p>
+        <p className="mentor-profile-dept">{mentorData.department}</p>
 
         <div className="mentor-profile-meta">
           <div className="mentor-meta-pill">
             <CreditCard size={15} />
-            <span>EPM202001</span>
+            <span>{mentorData.empId || mentorData.employeeId}</span>
           </div>
           <div className="mentor-meta-pill">
             <PhoneCall size={15} />
-            <span>+91 9163926383</span>
+            <span>{mentorData.phone}</span>
           </div>
           <div className="mentor-meta-pill">
             <Mail size={15} />
-            <span>kaushikchatterjee123@gmail.com</span>
+            <span>{mentorData.collegeEmail || mentorData.email}</span>
           </div>
         </div>
       </div>
