@@ -3,8 +3,12 @@
 
 /* Smooth Scrolling */
 html {
-    scroll-behavior: smooth;
-    scroll-padding-top: 90px;
+    scroll-behavior: smooth !important;
+}
+
+.trackademy-landing-root section[id],
+.trackademy-landing-root div[id] {
+    scroll-margin-top: 85px;
 }
 
 /* Root Scoping Container */

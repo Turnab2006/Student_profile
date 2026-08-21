@@ -159,15 +159,23 @@
 .trackademy-landing-root .overview-image-col {
     position: relative;
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem;
 }
 
 .trackademy-landing-root .overview-mockup {
     width: 100%;
-    border-radius: 12px;
+    border-radius: 16px;
     overflow: hidden;
-    background: #ffffff;
-    border: 1px solid #E4E7EC;
-    box-shadow: 0px 20px 24px -4px rgba(16, 24, 40, 0.08), 0px 8px 8px -4px rgba(16, 24, 40, 0.03);
+    background: #f8fafc;
+    border: 1px solid #E2E8F0;
+    box-shadow: 0px 16px 24px -4px rgba(16, 24, 40, 0.08), 0px 6px 8px -4px rgba(16, 24, 40, 0.03);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.85rem;
 }
 
 .trackademy-landing-root .overview-mockup img {
@@ -175,6 +183,10 @@
     height: auto;
     display: block;
     object-fit: cover;
+    object-position: top center;
+    border-radius: 10px;
+    background: #ffffff;
+    border: 1px solid #EAECF0;
 }
 
 /* ===== Responsive: 768px ===== */
@@ -185,7 +197,7 @@
 
     .trackademy-landing-root .overview-row {
         grid-template-columns: 1fr 1fr;
-        gap: 4rem;
+        gap: 3.5rem;
         align-items: center;
     }
 
@@ -201,25 +213,25 @@
 /* ===== Responsive: 1024px ===== */
 @media (min-width: 1024px) {
     .trackademy-landing-root .overview-section {
-        padding: 4rem 0;
+        padding: 4.5rem 0;
     }
 
     .trackademy-landing-root .overview-rows {
-        gap: 8rem;
-    }
-
-    .trackademy-landing-root .overview-row {
         gap: 6rem;
     }
 
+    .trackademy-landing-root .overview-row {
+        gap: 4rem;
+    }
+
     .trackademy-landing-root .overview-text-col {
-        max-width: 36rem;
-        padding-left: 4rem;
+        max-width: 34rem;
+        padding-left: 1.5rem;
     }
 
     .trackademy-landing-root .overview-row--reverse .overview-text-col {
         padding-left: 0;
-        padding-right: 4rem;
+        padding-right: 1.5rem;
     }
 
     .trackademy-landing-root .overview-row-title {
@@ -227,33 +239,37 @@
     }
 
     .trackademy-landing-root .overview-image-col {
-        height: 32rem;
+        height: auto;
         position: relative;
+        padding: 1rem;
     }
 
     .trackademy-landing-root .overview-mockup {
-        position: absolute;
-        top: 0;
-        height: 100%;
-        width: auto;
-        max-width: none;
+        position: relative;
+        top: auto;
+        height: auto;
+        width: 100%;
+        max-width: 100%;
         border-radius: 16px;
+        padding: 1rem;
     }
 
     .trackademy-landing-root .overview-mockup--left {
-        left: 0;
-        border-radius: 10px 0 0 10px;
+        left: auto;
+        border-radius: 16px;
     }
 
     .trackademy-landing-root .overview-mockup--right {
-        right: 0;
-        border-radius: 0 10px 10px 0;
+        right: auto;
+        border-radius: 16px;
     }
 
     .trackademy-landing-root .overview-mockup img {
-        height: 100%;
-        width: auto;
+        height: auto;
+        width: 100%;
         display: block;
-        object-fit: contain;
+        object-fit: cover;
+        object-position: top center;
+        border-radius: 10px;
     }
 }
