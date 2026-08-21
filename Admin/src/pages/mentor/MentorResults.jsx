@@ -839,41 +839,41 @@ export default function MentorResults({ initialUpload = false }) {
               <thead>
                 <tr className="bg-gradient-to-r from-[#7656f4] via-[#6845f2] to-[#5531dc] text-white text-xs font-bold uppercase tracking-wider select-none">
                   <th className="py-3.5 px-5 text-left">Student</th>
-                  <th className="py-3.5 px-4 text-left">Roll Number</th>
-                  <th className="py-3.5 px-4 text-left">Department</th>
-                  <th className="py-3.5 px-4 text-left">Year</th>
-                  <th className="py-3.5 px-4 text-left">Semester</th>
-                  <th className="py-3.5 px-4 text-left">Last Result</th>
-                  <th className="py-3.5 px-5 text-right">Actions</th>
+                  <th className="py-3.5 px-4 text-center">Roll Number</th>
+                  <th className="py-3.5 px-4 text-center">Department</th>
+                  <th className="py-3.5 px-4 text-center">Year</th>
+                  <th className="py-3.5 px-4 text-center">Semester</th>
+                  <th className="py-3.5 px-4 text-center">Last Result</th>
+                  <th className="py-3.5 px-5 text-center">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 text-sm">
                 {currentPageMentees.map((mentee) => (
                   <tr key={mentee.id} className="hover:bg-gray-50/60 transition-colors">
-                    <td className="py-3 px-4">
+                    <td className="py-3 px-5 text-left">
                       <div className="flex items-center gap-3">
                         <img
                           src={mentee.avatar}
                           alt={mentee.name}
-                          className="w-9 h-9 rounded-full object-cover border border-purple-100"
+                          className="w-9 h-9 rounded-full object-cover border border-purple-100 shrink-0"
                         />
                         <span className="font-bold text-gray-900">{mentee.name}</span>
                       </div>
                     </td>
-                    <td className="py-3 px-4">
-                      <span className="bg-[#f6f2fe] text-[#7656f4] text-xs font-semibold px-2 py-0.5 rounded-md">
+                    <td className="py-3 px-4 text-center">
+                      <span className="inline-block bg-[#f6f2fe] text-[#7656f4] text-xs font-semibold px-2 py-0.5 rounded-md">
                         {mentee.rollNo}
                       </span>
                     </td>
-                    <td className="py-3 px-4 font-semibold text-gray-700">{mentee.department}</td>
-                    <td className="py-3 px-4 text-gray-600 font-medium">{mentee.year || mentee.yearSem?.split('/')[0]?.trim()}</td>
-                    <td className="py-3 px-4 text-gray-600 font-medium">{mentee.semester || mentee.yearSem?.split('/')[1]?.trim()}</td>
-                    <td className="py-3 px-4">
-                      <span className="bg-emerald-50 text-emerald-600 font-extrabold text-xs px-2.5 py-1 rounded-lg border border-emerald-100">
+                    <td className="py-3 px-4 text-center font-semibold text-gray-700">{mentee.department}</td>
+                    <td className="py-3 px-4 text-center text-gray-600 font-medium">{mentee.year || mentee.yearSem?.split('/')[0]?.trim()}</td>
+                    <td className="py-3 px-4 text-center text-gray-600 font-medium">{mentee.semester || mentee.yearSem?.split('/')[1]?.trim()}</td>
+                    <td className="py-3 px-4 text-center">
+                      <span className="inline-block bg-emerald-50 text-emerald-600 font-extrabold text-xs px-2.5 py-1 rounded-lg border border-emerald-100">
                         {mentee.lastResult}
                       </span>
                     </td>
-                    <td className="py-3 px-4">
+                    <td className="py-3 px-4 text-center">
                       <div className="flex items-center justify-center gap-2">
                         <button
                           type="button"
