@@ -125,6 +125,32 @@ const PROGRAMS = [
   'Diploma'
 ];
 
+const YEARS = [
+  'All Years',
+  '1st Year',
+  '2nd Year',
+  '3rd Year',
+  '4th Year'
+];
+
+const SEMESTERS = [
+  'All Semesters',
+  '1st Sem',
+  '2nd Sem',
+  '3rd Sem',
+  '4th Sem',
+  '5th Sem',
+  '6th Sem',
+  '7th Sem',
+  '8th Sem'
+];
+
+const getAttendanceProgressBarColor = (rate) => {
+  if (rate >= 80) return 'bg-emerald-500';
+  if (rate >= 75) return 'bg-amber-400';
+  return 'bg-rose-500';
+};
+
 const initialMentees = [
   {
     id: 'MNT-1001',
@@ -134,6 +160,8 @@ const initialMentees = [
     rollNo: 'CSE2024012',
     department: 'Computer Science & Engineering',
     program: 'B.Tech',
+    year: '3rd Year',
+    semester: '5th Sem',
     course: 'Data Structures',
     courseCode: 'CS301',
     attendanceRate: 95,
@@ -155,6 +183,8 @@ const initialMentees = [
     rollNo: 'CSE2024015',
     department: 'Computer Science & Engineering',
     program: 'B.Tech',
+    year: '2nd Year',
+    semester: '3rd Sem',
     course: 'Algorithms',
     courseCode: 'CS302',
     attendanceRate: 78,
@@ -176,6 +206,8 @@ const initialMentees = [
     rollNo: 'CSE2024019',
     department: 'Computer Science & Engineering',
     program: 'B.Tech',
+    year: '3rd Year',
+    semester: '5th Sem',
     course: 'Database Systems',
     courseCode: 'CS303',
     attendanceRate: 88,
@@ -197,12 +229,13 @@ const initialMentees = [
     rollNo: 'CSE2024023',
     department: 'Computer Science & Engineering',
     program: 'B.Tech',
+    year: '2nd Year',
+    semester: '4th Sem',
     course: 'Operating Systems',
     courseCode: 'CS304',
     attendanceRate: 62,
     attendanceFraction: '(37/60)',
     status: 'At Risk',
-
     statusBg: 'bg-rose-50',
     statusText: 'text-rose-600',
     phone: '+91 9472612618',
@@ -219,6 +252,8 @@ const initialMentees = [
     rollNo: 'CSE2024027',
     department: 'Computer Science & Engineering',
     program: 'B.Tech',
+    year: '4th Year',
+    semester: '7th Sem',
     course: 'Computer Networks',
     courseCode: 'CS305',
     attendanceRate: 91,
@@ -240,6 +275,8 @@ const initialMentees = [
     rollNo: 'CSE2024031',
     department: 'Computer Science & Engineering',
     program: 'B.Tech',
+    year: '1st Year',
+    semester: '1st Sem',
     course: 'Software Engineering',
     courseCode: 'CS306',
     attendanceRate: 45,
@@ -261,6 +298,8 @@ const initialMentees = [
     rollNo: 'IT2024011',
     department: 'Information Technology',
     program: 'B.Tech',
+    year: '3rd Year',
+    semester: '5th Sem',
     course: 'Web Technology',
     courseCode: 'IT301',
     attendanceRate: 94,
@@ -282,6 +321,8 @@ const initialMentees = [
     rollNo: 'ECE2024018',
     department: 'Electronics & Comm. Engineering',
     program: 'B.Tech',
+    year: '2nd Year',
+    semester: '3rd Sem',
     course: 'Digital Electronics',
     courseCode: 'EC301',
     attendanceRate: 85,
@@ -303,6 +344,8 @@ const initialMentees = [
     rollNo: 'ME2024005',
     department: 'Mechanical Engineering',
     program: 'B.Tech',
+    year: '4th Year',
+    semester: '7th Sem',
     course: 'Thermodynamics',
     courseCode: 'ME301',
     attendanceRate: 96,
@@ -324,6 +367,8 @@ const initialMentees = [
     rollNo: 'EE2024022',
     department: 'Electrical Engineering',
     program: 'B.Tech',
+    year: '2nd Year',
+    semester: '3rd Sem',
     course: 'Power Systems',
     courseCode: 'EE301',
     attendanceRate: 72,
@@ -345,6 +390,10 @@ export default function MentorAttendance({ initialUpload = false }) {
   const [deptDropdownOpen, setDeptDropdownOpen] = useState(false);
   const [selectedProgram, setSelectedProgram] = useState('All Programs');
   const [programDropdownOpen, setProgramDropdownOpen] = useState(false);
+  const [selectedYear, setSelectedYear] = useState('All Years');
+  const [yearDropdownOpen, setYearDropdownOpen] = useState(false);
+  const [selectedSemester, setSelectedSemester] = useState('All Semesters');
+  const [semesterDropdownOpen, setSemesterDropdownOpen] = useState(false);
   const [viewMode, setViewMode] = useState('grid'); // 'list' or 'grid'
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
@@ -447,9 +496,17 @@ export default function MentorAttendance({ initialUpload = false }) {
       const matchesProgram =
         selectedProgram === 'All Programs' || mentee.program === selectedProgram;
 
-      return matchesSearch && matchesDept && matchesProgram;
+      const matchesYear =
+        selectedYear === 'All Years' || mentee.year === selectedYear;
+
+      const matchesSemester =
+        selectedSemester === 'All Semesters' ||
+        mentee.semester === selectedSemester ||
+        mentee.semester?.startsWith(selectedSemester.replace(' Sem', ''));
+
+      return matchesSearch && matchesDept && matchesProgram && matchesYear && matchesSemester;
     });
-  }, [searchQuery, selectedDept, selectedProgram]);
+  }, [searchQuery, selectedDept, selectedProgram, selectedYear, selectedSemester]);
 
   // Pagination Logic
   const totalCount = filteredMentees.length;
@@ -1283,6 +1340,8 @@ export default function MentorAttendance({ initialUpload = false }) {
               onClick={() => {
                 setDeptDropdownOpen(!deptDropdownOpen);
                 setProgramDropdownOpen(false);
+                setYearDropdownOpen(false);
+                setSemesterDropdownOpen(false);
               }}
               className="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 flex items-center gap-2.5 hover:border-slate-300 transition-all shadow-2xs cursor-pointer whitespace-nowrap"
             >
@@ -1319,6 +1378,8 @@ export default function MentorAttendance({ initialUpload = false }) {
               onClick={() => {
                 setProgramDropdownOpen(!programDropdownOpen);
                 setDeptDropdownOpen(false);
+                setYearDropdownOpen(false);
+                setSemesterDropdownOpen(false);
               }}
               className="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 flex items-center gap-2.5 hover:border-slate-300 transition-all shadow-2xs cursor-pointer whitespace-nowrap"
             >
@@ -1342,6 +1403,80 @@ export default function MentorAttendance({ initialUpload = false }) {
                   >
                     <span>{prog}</span>
                     {selectedProgram === prog && <Check size={14} className="text-[#7656f4]" />}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Year Filter Dropdown */}
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => {
+                setYearDropdownOpen(!yearDropdownOpen);
+                setDeptDropdownOpen(false);
+                setProgramDropdownOpen(false);
+                setSemesterDropdownOpen(false);
+              }}
+              className="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 flex items-center gap-2.5 hover:border-slate-300 transition-all shadow-2xs cursor-pointer whitespace-nowrap"
+            >
+              <Calendar size={17} className="text-slate-500" />
+              <span>{selectedYear}</span>
+              <ChevronDown size={16} className={`text-slate-400 transition-transform ${yearDropdownOpen ? 'rotate-180' : ''}`} />
+            </button>
+
+            {yearDropdownOpen && (
+              <div className="absolute right-0 mt-2 w-44 bg-white border border-slate-200 rounded-2xl shadow-xl z-30 py-2">
+                {YEARS.map((yr) => (
+                  <button
+                    key={yr}
+                    onClick={() => {
+                      setSelectedYear(yr);
+                      setYearDropdownOpen(false);
+                      setCurrentPage(1);
+                    }}
+                    className={`w-full text-left px-4 py-2 text-xs font-semibold flex items-center justify-between hover:bg-slate-50 transition-colors ${selectedYear === yr ? 'text-[#7656f4] bg-[#f0eaff]/40' : 'text-slate-700'}`}
+                  >
+                    <span>{yr}</span>
+                    {selectedYear === yr && <Check size={14} className="text-[#7656f4]" />}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Semester Filter Dropdown */}
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => {
+                setSemesterDropdownOpen(!semesterDropdownOpen);
+                setDeptDropdownOpen(false);
+                setProgramDropdownOpen(false);
+                setYearDropdownOpen(false);
+              }}
+              className="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 flex items-center gap-2.5 hover:border-slate-300 transition-all shadow-2xs cursor-pointer whitespace-nowrap"
+            >
+              <BookOpen size={17} className="text-slate-500" />
+              <span>{selectedSemester}</span>
+              <ChevronDown size={16} className={`text-slate-400 transition-transform ${semesterDropdownOpen ? 'rotate-180' : ''}`} />
+            </button>
+
+            {semesterDropdownOpen && (
+              <div className="absolute right-0 mt-2 w-48 bg-white border border-slate-200 rounded-2xl shadow-xl z-30 py-2 max-h-60 overflow-y-auto">
+                {SEMESTERS.map((sem) => (
+                  <button
+                    key={sem}
+                    onClick={() => {
+                      setSelectedSemester(sem);
+                      setSemesterDropdownOpen(false);
+                      setCurrentPage(1);
+                    }}
+                    className={`w-full text-left px-4 py-2 text-xs font-semibold flex items-center justify-between hover:bg-slate-50 transition-colors ${selectedSemester === sem ? 'text-[#7656f4] bg-[#f0eaff]/40' : 'text-slate-700'}`}
+                  >
+                    <span>{sem}</span>
+                    {selectedSemester === sem && <Check size={14} className="text-[#7656f4]" />}
                   </button>
                 ))}
               </div>
@@ -1380,61 +1515,78 @@ export default function MentorAttendance({ initialUpload = false }) {
 
       {/* MAIN VIEW CONTENT AREA (LIST VIEW vs GRID VIEW) */}
       {viewMode === 'list' ? (
-        /* DETAILED TABLE (FIGMA LIST VIEW) */
-        <div className="bg-white rounded-2xl border border-slate-200/80 shadow-2xs overflow-hidden">
-          <div className="overflow-x-auto max-h-[calc(100vh-280px)] overflow-y-auto">
+        /* DETAILED TABLE (ADMIN PORTAL TABLE STYLE) */
+        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 overflow-hidden font-['Roboto',sans-serif]">
+          <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-[#f8f6fe] border-b border-slate-200/80 text-[13px] font-bold text-[#7656f4] uppercase tracking-wider sticky top-0 z-10">
-                  <th className="py-3.5 px-5">
+                <tr className="bg-gradient-to-r from-[#7656f4] via-[#6845f2] to-[#5531dc] text-white text-xs font-bold uppercase tracking-wider select-none">
+                  <th className="py-3.5 px-5 text-left">
                     <div className="flex items-center gap-1 cursor-pointer">
                       <span>STUDENT</span>
-                      <FigmaCaretSortIcon size={13} className="text-[#7656f4]" />
+                      <FigmaCaretSortIcon size={13} className="text-purple-200" />
                     </div>
                   </th>
-                  <th className="py-3.5 px-4">
+                  <th className="py-3.5 px-4 text-left">
                     <div className="flex items-center gap-1 cursor-pointer">
                       <span>ROLL NO.</span>
-                      <FigmaCaretSortIcon size={13} className="text-[#7656f4]" />
+                      <FigmaCaretSortIcon size={13} className="text-purple-200" />
                     </div>
                   </th>
-                  <th className="py-3.5 px-4">
+                  <th className="py-3.5 px-4 text-left">
                     <div className="flex items-center gap-1 cursor-pointer">
                       <span>DEPARTMENT</span>
-                      <FigmaCaretSortIcon size={13} className="text-[#7656f4]" />
+                      <FigmaCaretSortIcon size={13} className="text-purple-200" />
                     </div>
                   </th>
-                  <th className="py-3.5 px-4">
+                  <th className="py-3.5 px-4 text-left">
                     <div className="flex items-center gap-1 cursor-pointer">
                       <span>PROGRAM</span>
-                      <FigmaCaretSortIcon size={13} className="text-[#7656f4]" />
+                      <FigmaCaretSortIcon size={13} className="text-purple-200" />
                     </div>
                   </th>
-                  <th className="py-3.5 px-4">
+                  <th className="py-3.5 px-4 text-left">
                     <div className="flex items-center gap-1 cursor-pointer">
-                      <span>COURSE</span>
-                      <FigmaCaretSortIcon size={13} className="text-[#7656f4]" />
+                      <span>YEAR</span>
+                      <FigmaCaretSortIcon size={13} className="text-purple-200" />
                     </div>
                   </th>
-                  <th className="py-3.5 px-4">
+                  <th className="py-3.5 px-4 text-left">
+                    <div className="flex items-center gap-1 cursor-pointer">
+                      <span>SEMESTER</span>
+                      <FigmaCaretSortIcon size={13} className="text-purple-200" />
+                    </div>
+                  </th>
+                  <th className="py-3.5 px-4 text-left">
                     <div className="flex items-center gap-1 cursor-pointer">
                       <span>ATTENDANCE</span>
-                      <FigmaCaretSortIcon size={13} className="text-[#7656f4]" />
+                      <FigmaCaretSortIcon size={13} className="text-purple-200" />
                     </div>
                   </th>
-                  <th className="py-3.5 px-4">STATUS</th>
+                  <th className="py-3.5 px-4 text-center">STATUS</th>
                   <th className="py-3.5 px-5 text-right">ACTIONS</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {paginatedMentees.map((mentee) => (
-                  <tr key={mentee.id} className="hover:bg-[#fbfafd] transition-colors">
+                  <tr key={mentee.id} className="hover:bg-purple-50/30 transition-colors">
                     {/* STUDENT */}
-                    <td className="py-3.5 px-5">
+                    <td className="py-4 px-5 text-left">
                       <div className="flex items-center gap-3">
                         <div className="relative flex-shrink-0">
-                          {/* Circle Avatar with Initials */}
-                          <div className="w-10 h-10 rounded-full bg-[#7656f4] text-white font-bold text-sm flex items-center justify-center shadow-xs">
+                          {/* Circle Avatar with Image & Initials Fallback */}
+                          {mentee.avatar ? (
+                            <img
+                              src={mentee.avatar}
+                              alt={mentee.name}
+                              className="w-10 h-10 rounded-full object-cover shadow-xs border border-purple-100"
+                              onError={(e) => {
+                                e.target.style.display = 'none';
+                                if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
+                              }}
+                            />
+                          ) : null}
+                          <div className={`w-10 h-10 rounded-full bg-[#7656f4] text-white font-bold text-sm items-center justify-center shadow-xs ${mentee.avatar ? 'hidden' : 'flex'}`}>
                             {mentee.initials || 'TS'}
                           </div>
                         </div>
@@ -1446,36 +1598,38 @@ export default function MentorAttendance({ initialUpload = false }) {
                     </td>
 
                     {/* ROLL NO. */}
-                    <td className="py-3.5 px-4">
+                    <td className="py-4 px-4 text-left">
                       <span className="font-bold text-[#1e1548] text-xs">{mentee.rollNo}</span>
                     </td>
 
                     {/* DEPARTMENT */}
-                    <td className="py-3.5 px-4 max-w-[200px]">
+                    <td className="py-4 px-4 text-left max-w-[200px]">
                       <span className="text-xs font-semibold text-slate-700 block leading-snug">
                         {mentee.department}
                       </span>
                     </td>
 
                     {/* PROGRAM */}
-                    <td className="py-3.5 px-4">
+                    <td className="py-4 px-4 text-left">
                       <span className="text-xs font-semibold text-slate-700">{mentee.program || 'B.Tech'}</span>
                     </td>
 
-                    {/* COURSE */}
-                    <td className="py-3.5 px-4">
-                      <div className="flex flex-col">
-                        <span className="font-bold text-slate-800 text-xs">{mentee.course || 'Data Structures'}</span>
-                        <span className="text-[11px] font-medium text-slate-400">{mentee.courseCode || 'CS301'}</span>
-                      </div>
+                    {/* YEAR */}
+                    <td className="py-4 px-4 text-left">
+                      <span className="text-xs font-semibold text-slate-700">{mentee.year || '2nd Year'}</span>
+                    </td>
+
+                    {/* SEMESTER */}
+                    <td className="py-4 px-4 text-left">
+                      <span className="text-xs font-bold text-[#7656f4]">{mentee.semester || '3rd Sem'}</span>
                     </td>
 
                     {/* ATTENDANCE */}
-                    <td className="py-3.5 px-4 min-w-[170px]">
+                    <td className="py-4 px-4 text-left min-w-[170px]">
                       <div className="flex items-center gap-3">
                         <div className="w-24 bg-slate-100 h-2 rounded-full overflow-hidden flex-shrink-0">
                           <div
-                            className="bg-[#7656f4] h-full rounded-full transition-all"
+                            className={`${getAttendanceProgressBarColor(mentee.attendanceRate)} h-full rounded-full transition-all`}
                             style={{ width: `${mentee.attendanceRate}%` }}
                           />
                         </div>
@@ -1487,7 +1641,7 @@ export default function MentorAttendance({ initialUpload = false }) {
                     </td>
 
                     {/* STATUS */}
-                    <td className="py-3.5 px-4">
+                    <td className="py-4 px-4 text-center">
                       <span
                         className={`inline-block px-3 py-1 rounded-lg text-xs font-bold ${mentee.statusBg} ${mentee.statusText}`}
                       >
@@ -1496,13 +1650,13 @@ export default function MentorAttendance({ initialUpload = false }) {
                     </td>
 
                     {/* ACTIONS */}
-                    <td className="py-3.5 px-5 text-right">
+                    <td className="py-4 px-5 text-right">
                       <div className="flex items-center justify-end gap-2 relative">
                         {/* View Square Icon Button */}
                         <button
                           type="button"
                           onClick={() => setSelectedMenteeSemesterView(mentee)}
-                          className="w-8 h-8 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-[#7656f4] flex items-center justify-center transition-all cursor-pointer shadow-2xs"
+                          className="w-8 h-8 rounded-lg border border-slate-200 bg-white hover:bg-[#f0eaff] text-[#7656f4] flex items-center justify-center transition-all cursor-pointer shadow-2xs"
                           title="View Details"
                         >
                           <Eye size={16} className="text-[#7656f4]" />
@@ -1552,241 +1706,339 @@ export default function MentorAttendance({ initialUpload = false }) {
               </tbody>
             </table>
           </div>
+
+          {/* Pagination inside the Table Area (Admin Portal Style) */}
+          <div className="flex flex-col sm:flex-row items-center justify-between px-5 py-3 border-t border-slate-100 bg-white gap-3 select-none">
+            {/* Left: Show X per page */}
+            <div className="flex items-center gap-2 text-xs text-slate-500">
+              <span>Show</span>
+              <div className="relative">
+                <select
+                  value={rowsPerPage}
+                  onChange={(e) => {
+                    setRowsPerPage(Number(e.target.value));
+                    setCurrentPage(1);
+                  }}
+                  className="border border-slate-200 rounded px-2.5 py-1 text-xs font-medium text-slate-700 bg-white focus:outline-none focus:ring-1 focus:ring-purple-300 cursor-pointer appearance-none pr-6"
+                >
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={15}>15</option>
+                  <option value={20}>20</option>
+                </select>
+                <ChevronDown size={11} className="absolute right-1.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+              </div>
+              <span>per page</span>
+            </div>
+
+            {/* Center: Page numbers */}
+            <div className="flex items-center gap-1">
+              <button
+                type="button"
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                className="p-1.5 rounded hover:bg-slate-100 disabled:opacity-40 disabled:hover:bg-transparent transition-colors cursor-pointer"
+                title="Previous Page"
+              >
+                <ChevronLeft size={14} className="text-slate-500" />
+              </button>
+
+              {Array.from({ length: totalPages }, (_, i) => i + 1)
+                .filter((p) => p === 1 || p === totalPages || Math.abs(p - currentPage) <= 1)
+                .reduce((acc, p, idx, arr) => {
+                  if (idx > 0 && p - arr[idx - 1] > 1) {
+                    acc.push('ellipsis-' + p);
+                  }
+                  acc.push(p);
+                  return acc;
+                }, [])
+                .map((item) =>
+                  typeof item === 'string' ? (
+                    <span key={item} className="text-xs text-slate-400 px-1">
+                      ...
+                    </span>
+                  ) : (
+                    <button
+                      key={item}
+                      type="button"
+                      onClick={() => setCurrentPage(item)}
+                      className={`w-7 h-7 text-xs rounded font-medium transition-colors cursor-pointer ${
+                        currentPage === item
+                          ? 'bg-[#7656f4] text-white font-bold'
+                          : 'text-slate-500 hover:bg-slate-100'
+                      }`}
+                    >
+                      {item}
+                    </button>
+                  )
+                )}
+
+              <button
+                type="button"
+                disabled={currentPage === totalPages || totalPages === 0}
+                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                className="p-1.5 rounded hover:bg-slate-100 disabled:opacity-40 disabled:hover:bg-transparent transition-colors cursor-pointer"
+                title="Next Page"
+              >
+                <ChevronRight size={14} className="text-slate-500" />
+              </button>
+            </div>
+
+            {/* Right: Go to page */}
+            <div className="flex items-center gap-2 text-xs text-slate-500">
+              <span>Go to page</span>
+              <input
+                type="number"
+                min={1}
+                max={totalPages}
+                value={currentPage}
+                onChange={(e) => {
+                  const val = Number(e.target.value);
+                  if (val >= 1 && val <= totalPages) {
+                    setCurrentPage(val);
+                  }
+                }}
+                className="w-12 border border-slate-200 rounded px-2 py-1 text-center focus:outline-none focus:ring-1 focus:ring-purple-300 text-xs font-medium text-slate-700"
+              />
+            </div>
+          </div>
         </div>
       ) : (
-        /* GRID VIEW CARDS (SAME CARD AS RESULT SECTION WITHOUT IMAGES) */
+        /* GRID VIEW CARDS */
         paginatedMentees.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-            {paginatedMentees.map((mentee) => (
-              <div
-                key={mentee.id}
-                className="bg-white rounded-2xl p-4 sm:p-5 border border-gray-100 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
-              >
-                <div>
-                  {/* Mentee Header */}
-                  <div className="flex items-start justify-between gap-2 mb-4">
-                    <div>
-                      <h3 className="text-base font-bold text-gray-900 leading-snug">
-                        {mentee.name}
-                      </h3>
-                      <span className="inline-flex items-center gap-1 bg-[#f6f2fe] text-[#7656f4] text-[11px] font-semibold px-2 py-0.5 rounded-md mt-0.5">
-                        <IdCard size={13} className="text-[#7656f4]" />
-                        {mentee.rollNo}
-                      </span>
-                    </div>
-
-                    <div className="text-right shrink-0">
-                      <div className={`px-2.5 py-0.5 rounded-lg text-base font-extrabold inline-block ${mentee.statusBg} ${mentee.statusText}`}>
-                        {mentee.attendanceRate}%
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+              {paginatedMentees.map((mentee) => (
+                <div
+                  key={mentee.id}
+                  className="bg-white rounded-2xl p-4 sm:p-5 border border-gray-100 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
+                >
+                  <div>
+                    {/* Mentee Header with Avatar Image */}
+                    <div className="flex items-start justify-between gap-3 mb-3.5">
+                      <div className="flex items-center gap-3">
+                        <div className="relative shrink-0">
+                          {mentee.avatar ? (
+                            <img
+                              src={mentee.avatar}
+                              alt={mentee.name}
+                              className="w-12 h-12 rounded-2xl object-cover ring-2 ring-purple-100 shadow-2xs"
+                              onError={(e) => {
+                                e.target.style.display = 'none';
+                                if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
+                              }}
+                            />
+                          ) : null}
+                          <div className={`w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#7656f4] to-[#9b82fa] text-white font-bold text-sm items-center justify-center shadow-2xs ${mentee.avatar ? 'hidden' : 'flex'}`}>
+                            {mentee.initials || 'TS'}
+                          </div>
+                        </div>
+                        <div>
+                          <h3 className="text-base font-bold text-gray-900 leading-snug">
+                            {mentee.name}
+                          </h3>
+                          <span className="inline-flex items-center gap-1 bg-[#f6f2fe] text-[#7656f4] text-[11px] font-semibold px-2 py-0.5 rounded-md mt-0.5">
+                            <IdCard size={13} className="text-[#7656f4]" />
+                            {mentee.rollNo}
+                          </span>
+                        </div>
                       </div>
-                      <span className="block text-[10px] text-gray-400 font-medium mt-0.5">
-                        {mentee.status}
-                      </span>
+
+                      <div className="text-right shrink-0">
+                        <div className={`px-2.5 py-0.5 rounded-lg text-base font-extrabold inline-block ${mentee.statusBg} ${mentee.statusText}`}>
+                          {mentee.attendanceRate}%
+                        </div>
+                        <span className="block text-[10px] text-gray-400 font-medium mt-0.5">
+                          {mentee.status}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Key-Value Details including Department, Year, Semester, Phone, Email */}
+                    <div className="space-y-2 py-2.5 border-t border-b border-gray-50 my-3">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-gray-400 font-medium flex items-center gap-1.5">
+                          <Building2 size={15} className="text-[#7656f4]" />
+                          Department
+                        </span>
+                        <span className="font-bold text-gray-800">{mentee.department}</span>
+                      </div>
+
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-gray-400 font-medium flex items-center gap-1.5">
+                          <Calendar size={15} className="text-[#7656f4]" />
+                          Year
+                        </span>
+                        <span className="font-bold text-gray-800">{mentee.year || '2nd Year'}</span>
+                      </div>
+
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-gray-400 font-medium flex items-center gap-1.5">
+                          <BookOpen size={15} className="text-[#7656f4]" />
+                          Semester
+                        </span>
+                        <span className="font-bold text-gray-800">{mentee.semester || '3rd Sem'}</span>
+                      </div>
+
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-gray-400 font-medium flex items-center gap-1.5">
+                          <PhoneCall size={15} className="text-[#7656f4]" />
+                          Phone
+                        </span>
+                        <span className="font-bold text-gray-800">{mentee.phone}</span>
+                      </div>
+
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-gray-400 font-medium flex items-center gap-1.5">
+                          <Mail size={15} className="text-[#7656f4]" />
+                          Email
+                        </span>
+                        <span className="font-bold text-gray-800 truncate max-w-[170px]">{mentee.email}</span>
+                      </div>
+                    </div>
+
+                    {/* Attendance Progress with Dynamic Color Bar */}
+                    <div className="pb-2">
+                      <div className="flex items-center justify-between text-xs mb-1.5">
+                        <span className="font-semibold text-gray-500 text-[11.5px]">Attendance Progress</span>
+                        <span className="text-[11px] font-semibold text-gray-400">{mentee.attendanceFraction || ''}</span>
+                      </div>
+                      <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                        <div
+                          className={`${getAttendanceProgressBarColor(mentee.attendanceRate)} h-full rounded-full transition-all`}
+                          style={{ width: `${mentee.attendanceRate}%` }}
+                        />
+                      </div>
                     </div>
                   </div>
 
-                  {/* Key-Value Details */}
-                  <div className="space-y-2 py-2.5 border-t border-b border-gray-50 my-3">
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="text-gray-400 font-medium flex items-center gap-1.5">
-                        <Building2 size={15} className="text-[#7656f4]" />
-                        Department
-                      </span>
-                      <span className="font-bold text-gray-800">{mentee.department}</span>
-                    </div>
-
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="text-gray-400 font-medium flex items-center gap-1.5">
-                        <PhoneCall size={15} className="text-[#7656f4]" />
-                        Phone
-                      </span>
-                      <span className="font-bold text-gray-800">{mentee.phone}</span>
-                    </div>
-
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="text-gray-400 font-medium flex items-center gap-1.5">
-                        <Mail size={15} className="text-[#7656f4]" />
-                        Email
-                      </span>
-                      <span className="font-bold text-gray-800 truncate max-w-[170px]">{mentee.email}</span>
-                    </div>
-                  </div>
-
-                  {/* Attendance Progress */}
-                  <div className="pb-2">
-                    <div className="flex items-center justify-between text-xs mb-1.5">
-                      <span className="font-semibold text-gray-500 text-[11.5px]">Attendance Progress</span>
-                      <span className="text-[11px] font-semibold text-gray-400">{mentee.attendanceFraction || ''}</span>
-                    </div>
-                    <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                      <div
-                        className="bg-[#7656f4] h-full rounded-full transition-all"
-                        style={{ width: `${mentee.attendanceRate}%` }}
-                      />
-                    </div>
+                  {/* Action Buttons */}
+                  <div className="grid grid-cols-2 gap-2 mt-2 pt-1">
+                    <button
+                      type="button"
+                      onClick={() => setSelectedMenteeSemesterView(mentee)}
+                      className="bg-[#f6f2fe] border border-[#7656f4]/30 text-[#7656f4] hover:bg-purple-100 py-[10.5px] px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                    >
+                      <Eye size={16} />
+                      <span>View Details</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => startUploadFlow(mentee)}
+                      className="bg-[#7656f4] hover:bg-[#6242e2] text-white py-[10.5px] px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-xs cursor-pointer"
+                    >
+                      <UploadCloud size={16} />
+                      <span>Upload Attendance</span>
+                    </button>
                   </div>
                 </div>
+              ))}
+            </div>
 
-                {/* Action Buttons */}
-                <div className="grid grid-cols-2 gap-2 mt-2 pt-1">
-                  <button
-                    type="button"
-                    onClick={() => setSelectedMenteeSemesterView(mentee)}
-                    className="bg-[#f6f2fe] border border-[#7656f4]/30 text-[#7656f4] hover:bg-purple-100 py-[10.5px] px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+            {/* Pagination for Grid View (Admin Portal Style) */}
+            <div className="bg-white rounded-2xl border border-slate-200/80 shadow-2xs flex flex-col sm:flex-row items-center justify-between px-5 py-3 gap-3 select-none">
+              {/* Left: Show X per page */}
+              <div className="flex items-center gap-2 text-xs text-slate-500">
+                <span>Show</span>
+                <div className="relative">
+                  <select
+                    value={rowsPerPage}
+                    onChange={(e) => {
+                      setRowsPerPage(Number(e.target.value));
+                      setCurrentPage(1);
+                    }}
+                    className="border border-slate-200 rounded px-2.5 py-1 text-xs font-medium text-slate-700 bg-white focus:outline-none focus:ring-1 focus:ring-purple-300 cursor-pointer appearance-none pr-6"
                   >
-                    <Eye size={16} />
-                    <span>View Details</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => startUploadFlow(mentee)}
-                    className="bg-[#7656f4] hover:bg-[#6242e2] text-white py-[10.5px] px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-xs cursor-pointer"
-                  >
-                    <UploadCloud size={16} />
-                    <span>Upload Attendance</span>
-                  </button>
+                    <option value={5}>5</option>
+                    <option value={10}>10</option>
+                    <option value={15}>15</option>
+                    <option value={20}>20</option>
+                  </select>
+                  <ChevronDown size={11} className="absolute right-1.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
                 </div>
+                <span>per page</span>
               </div>
-            ))}
+
+              {/* Center: Page numbers */}
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  className="p-1.5 rounded hover:bg-slate-100 disabled:opacity-40 disabled:hover:bg-transparent transition-colors cursor-pointer"
+                  title="Previous Page"
+                >
+                  <ChevronLeft size={14} className="text-slate-500" />
+                </button>
+
+                {Array.from({ length: totalPages }, (_, i) => i + 1)
+                  .filter((p) => p === 1 || p === totalPages || Math.abs(p - currentPage) <= 1)
+                  .reduce((acc, p, idx, arr) => {
+                    if (idx > 0 && p - arr[idx - 1] > 1) {
+                      acc.push('ellipsis-' + p);
+                    }
+                    acc.push(p);
+                    return acc;
+                  }, [])
+                  .map((item) =>
+                    typeof item === 'string' ? (
+                      <span key={item} className="text-xs text-slate-400 px-1">
+                        ...
+                      </span>
+                    ) : (
+                      <button
+                        key={item}
+                        type="button"
+                        onClick={() => setCurrentPage(item)}
+                        className={`w-7 h-7 text-xs rounded font-medium transition-colors cursor-pointer ${
+                          currentPage === item
+                            ? 'bg-[#7656f4] text-white font-bold'
+                            : 'text-slate-500 hover:bg-slate-100'
+                        }`}
+                      >
+                        {item}
+                      </button>
+                    )
+                  )}
+
+                <button
+                  type="button"
+                  disabled={currentPage === totalPages || totalPages === 0}
+                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  className="p-1.5 rounded hover:bg-slate-100 disabled:opacity-40 disabled:hover:bg-transparent transition-colors cursor-pointer"
+                  title="Next Page"
+                >
+                  <ChevronRight size={14} className="text-slate-500" />
+                </button>
+              </div>
+
+              {/* Right: Go to page */}
+              <div className="flex items-center gap-2 text-xs text-slate-500">
+                <span>Go to page</span>
+                <input
+                  type="number"
+                  min={1}
+                  max={totalPages}
+                  value={currentPage}
+                  onChange={(e) => {
+                    const val = Number(e.target.value);
+                    if (val >= 1 && val <= totalPages) {
+                      setCurrentPage(val);
+                    }
+                  }}
+                  className="w-12 border border-slate-200 rounded px-2 py-1 text-center focus:outline-none focus:ring-1 focus:ring-purple-300 text-xs font-medium text-slate-700"
+                />
+              </div>
+            </div>
           </div>
         ) : (
           <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center my-6">
             <AlertCircle size={40} className="mx-auto text-slate-300 mb-3" />
             <h3 className="text-lg font-bold text-slate-700">No Mentees Found</h3>
-            <p className="text-sm text-slate-400 mt-1">Try adjusting your search criteria or department filter.</p>
+            <p className="text-sm text-slate-400 mt-1">Try adjusting your search criteria or filter options.</p>
           </div>
         )
       )}
-
-      {/* FOOTER PAGINATION BAR (FIGMA STYLE) */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 pb-2 text-sm text-slate-500 font-medium">
-        {/* Left: Rows per page selector */}
-        <div className="flex items-center gap-2">
-          <span>Rows per page:</span>
-          <div className="relative">
-            <select
-              value={rowsPerPage}
-              onChange={(e) => {
-                setRowsPerPage(Number(e.target.value));
-                setCurrentPage(1);
-              }}
-              className="bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs font-bold text-slate-700 outline-none cursor-pointer appearance-none pr-8 shadow-2xs"
-            >
-              <option value={5}>5</option>
-              <option value={10}>10</option>
-              <option value={15}>15</option>
-              <option value={20}>20</option>
-            </select>
-            <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
-          </div>
-        </div>
-
-        {/* Right: Page navigation buttons with First/Last controls */}
-        <div className="flex items-center gap-1.5">
-          {/* First Page */}
-          <button
-            type="button"
-            onClick={() => setCurrentPage(1)}
-            disabled={currentPage === 1}
-            className="w-8 h-8 rounded-lg bg-[#f4effe] text-[#7656f4] flex items-center justify-center hover:bg-[#eadefe] disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-colors"
-            title="First Page"
-          >
-            <ChevronsLeft size={16} />
-          </button>
-
-          {/* Previous Page */}
-          <button
-            type="button"
-            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-            disabled={currentPage === 1}
-            className="w-8 h-8 rounded-lg bg-[#f4effe] text-[#7656f4] flex items-center justify-center hover:bg-[#eadefe] disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-colors"
-            title="Previous Page"
-          >
-            <ChevronLeft size={16} />
-          </button>
-
-          {/* Active Page 1 */}
-          <button
-            type="button"
-            onClick={() => setCurrentPage(1)}
-            className={`w-8 h-8 rounded-lg font-bold text-xs flex items-center justify-center transition-all cursor-pointer ${currentPage === 1
-                ? 'bg-[#7656f4] text-white shadow-xs'
-                : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
-              }`}
-          >
-            1
-          </button>
-
-          {/* Page 2 */}
-          {totalPages >= 2 && (
-            <button
-              type="button"
-              onClick={() => setCurrentPage(2)}
-              className={`w-8 h-8 rounded-lg font-bold text-xs flex items-center justify-center transition-all cursor-pointer ${currentPage === 2
-                  ? 'bg-[#7656f4] text-white shadow-xs'
-                  : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
-                }`}
-            >
-              2
-            </button>
-          )}
-
-          {/* Page 3 */}
-          {totalPages >= 3 && (
-            <button
-              type="button"
-              onClick={() => setCurrentPage(3)}
-              className={`w-8 h-8 rounded-lg font-bold text-xs flex items-center justify-center transition-all cursor-pointer ${currentPage === 3
-                  ? 'bg-[#7656f4] text-white shadow-xs'
-                  : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
-                }`}
-            >
-              3
-            </button>
-          )}
-
-          {/* Ellipsis */}
-          {totalPages > 4 && (
-            <span className="px-1 text-slate-400 font-bold text-xs">...</span>
-          )}
-
-          {/* Last Page 10 */}
-          {totalPages >= 10 && (
-            <button
-              type="button"
-              onClick={() => setCurrentPage(10)}
-              className={`w-8 h-8 rounded-lg font-bold text-xs flex items-center justify-center transition-all cursor-pointer ${currentPage === 10
-                  ? 'bg-[#7656f4] text-white shadow-xs'
-                  : 'bg-[#f4effe] text-[#7656f4] hover:bg-[#eadefe]'
-                }`}
-            >
-              10
-            </button>
-          )}
-
-          {/* Next Page */}
-          <button
-            type="button"
-            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-            disabled={currentPage === totalPages || totalPages === 0}
-            className="w-8 h-8 rounded-lg bg-[#f4effe] text-[#7656f4] flex items-center justify-center hover:bg-[#eadefe] disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-colors"
-            title="Next Page"
-          >
-            <ChevronRight size={16} />
-          </button>
-
-          {/* Last Page */}
-          <button
-            type="button"
-            onClick={() => setCurrentPage(totalPages)}
-            disabled={currentPage === totalPages || totalPages === 0}
-            className="w-8 h-8 rounded-lg bg-[#f4effe] text-[#7656f4] flex items-center justify-center hover:bg-[#eadefe] disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer transition-colors"
-            title="Last Page"
-          >
-            <ChevronsRight size={16} />
-          </button>
-        </div>
-      </div>
 
       {/* MODAL: ADD MENTEE */}
       {addMenteeModalOpen && (

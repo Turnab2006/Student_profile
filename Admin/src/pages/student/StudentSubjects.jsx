@@ -213,32 +213,30 @@ export default function StudentSubjects({ hideHeader = false }) {
         {/* Row 2 (Mobile) / Right Column (Desktop): Grid/List Buttons & Semester Filter side-by-side */}
         <div className="flex items-center justify-between sm:justify-end gap-2 sm:gap-3 w-full sm:w-auto">
           {/* View Mode Toggle Buttons ("Grid View" & "List View") */}
-          <div className="flex items-center p-1 bg-slate-100/90 rounded-2xl border border-slate-200/60 shrink-0">
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-1 shadow-2xs inline-flex items-center gap-1 shrink-0">
             <button
               type="button"
               onClick={() => setViewMode("grid")}
               title="Grid View"
-              className={`flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              className={`p-2 rounded-xl transition-all cursor-pointer ${
                 viewMode === "grid"
-                  ? "bg-[#2563eb] text-white"
-                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-200/50"
+                  ? "bg-blue-50 text-blue-600 border border-blue-200 shadow-2xs"
+                  : "text-slate-400 hover:text-slate-600 hover:bg-slate-50"
               }`}
             >
-              <LayoutGrid size={15} className="stroke-[2.2]" />
-              <span>Grid View</span>
+              <LayoutGrid size={18} />
             </button>
             <button
               type="button"
               onClick={() => setViewMode("list")}
               title="List View"
-              className={`flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              className={`p-2 rounded-xl transition-all cursor-pointer ${
                 viewMode === "list"
-                  ? "bg-[#2563eb] text-white"
-                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-200/50"
+                  ? "bg-blue-50 text-blue-600 border border-blue-200 shadow-2xs"
+                  : "text-slate-400 hover:text-slate-600 hover:bg-slate-50"
               }`}
             >
-              <List size={15} className="stroke-[2.2]" />
-              <span>List View</span>
+              <List size={18} />
             </button>
           </div>
 
@@ -249,56 +247,68 @@ export default function StudentSubjects({ hideHeader = false }) {
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               className="flex items-center justify-between gap-2 sm:gap-3 px-3 sm:px-4 py-2 bg-slate-50 hover:bg-slate-100/90 active:bg-slate-100 border border-slate-200/90 rounded-xl text-xs sm:text-sm font-bold text-slate-800 transition-all cursor-pointer shadow-2xs hover:shadow-xs min-w-[140px] sm:min-w-[170px]"
             >
-              <span>{selectedOpt.label}</span>
+              <div className="flex items-center gap-2">
+                <Calendar size={15} className="text-blue-600" />
+                <span>{selectedOpt.label}</span>
+              </div>
               <ChevronDown
-                size={15}
-                className={`text-slate-400 transition-transform duration-200 ${
-                  isDropdownOpen ? "rotate-180 text-blue-600" : ""
-                }`}
+                size={14}
+                className={`text-slate-500 transition-transform duration-200 ${isDropdownOpen ? "rotate-180" : ""}`}
               />
             </button>
 
-          {/* Custom Floating Dropdown Menu */}
-          {isDropdownOpen && (
-            <>
-              {/* Click-away Backdrop */}
-              <div
-                className="fixed inset-0 z-40"
-                onClick={() => setIsDropdownOpen(false)}
-              />
-
-              {/* Menu Container */}
-              <div className="absolute right-0 top-full mt-2 w-52 sm:w-56 p-1.5 rounded-2xl bg-white/95 backdrop-blur-md border border-slate-200/90 shadow-xl shadow-slate-300/40 z-50 animate-in fade-in zoom-in-95 duration-150 space-y-0.5">
-                {semesterOptions.map((opt) => {
-                  const isSelected = opt.value === selectedSemester;
-                  return (
-                    <button
-                      key={opt.value}
-                      type="button"
-                      onClick={() => {
-                        setSelectedSemester(opt.value);
-                        setIsDropdownOpen(false);
-                      }}
-                      className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
-                        isSelected
-                          ? "bg-blue-50 text-[#2563eb]"
-                          : "text-slate-700 hover:bg-slate-50 hover:text-slate-900"
-                      }`}
-                    >
-                      <span>{opt.label}</span>
-                      {isSelected && (
-                        <Check size={16} className="text-[#2563eb] stroke-[2.5]" />
-                      )}
-                    </button>
-                  );
-                })}
+            {/* Dropdown Menu */}
+            {isDropdownOpen && (
+              <div className="absolute right-0 top-full mt-2 w-56 bg-white border border-slate-200 rounded-2xl shadow-xl z-50 p-2 space-y-1 animate-in fade-in zoom-in-95 duration-150">
+                <p className="text-[10px] font-bold text-slate-400 px-3 py-1 uppercase tracking-wider">
+                  Select Semester
+                </p>
+                {semesterOptions.map((opt) => (
+                  <button
+                    key={opt.value}
+                    type="button"
+                    onClick={() => {
+                      setSelectedSemester(opt.value);
+                      setIsDropdownOpen(false);
+                    }}
+                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                      selectedSemester === opt.value
+                        ? "bg-blue-50 text-blue-600 font-bold"
+                        : "text-slate-700 hover:bg-slate-50 hover:text-slate-900"
+                    }`}
+                  >
+                    <span>{opt.label}</span>
+                    {selectedSemester === opt.value && <CheckCircle size={14} className="text-blue-600" />}
+                  </button>
+                ))}
               </div>
-            </>
-          )}
+            )}
           </div>
         </div>
 
       </div>
+
+      {/* Main Content: Mode 1 (Grid View) or Mode 2 (List View) */}
+
+      {/* Empty State when no subjects match search */}
+      {filteredSubjects.length === 0 && (
+        <div className="bg-white rounded-[24px] border border-slate-200/90 shadow-md shadow-slate-200/50 p-12 text-center space-y-3 animate-in fade-in duration-150">
+          <div className="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 mx-auto flex items-center justify-center">
+            <BookOpen size={26} />
+          </div>
+          <h3 className="text-base font-bold text-slate-800">No subjects found</h3>
+          <p className="text-xs text-slate-500 max-w-sm mx-auto">
+            No subjects matched your search for &quot;{searchQuery}&quot;. Try adjusting your keywords or clearing the search.
+          </p>
+          <button
+            type="button"
+            onClick={() => setSearchQuery("")}
+            className="px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-600 font-semibold text-xs rounded-xl transition-colors cursor-pointer"
+          >
+            Clear Search
+          </button>
+        </div>
+      )}
 
       {/* Mode 1: CARD VIEW GRID */}
       {viewMode === "grid" && (
@@ -316,11 +326,11 @@ export default function StudentSubjects({ hideHeader = false }) {
 
       {/* Mode 2: LIST VIEW TABLE */}
       {viewMode === "list" && filteredSubjects.length > 0 && (
-        <div className="bg-white rounded-[20px] border border-slate-200/90 shadow-md shadow-slate-200/50 p-4 sm:p-5 lg:p-6 overflow-hidden animate-in fade-in duration-150">
+        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 overflow-hidden font-['Roboto',sans-serif]">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse min-w-[960px]">
               <thead>
-                <tr className="bg-[#f0f6ff]/90 text-xs font-bold text-[#1d61e7] rounded-2xl overflow-hidden">
+                <tr className="bg-gradient-to-r from-[#2563eb] via-[#1d4ed8] to-[#1e40af] text-white text-xs font-bold uppercase tracking-wider select-none">
                   <th className="py-4 px-5 rounded-l-2xl whitespace-nowrap">
                     <div className="flex items-center gap-1.5">
                       <Hash size={14} className="text-[#1d61e7] stroke-[2.4]" />

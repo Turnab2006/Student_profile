@@ -406,30 +406,30 @@ export default function Subjects({ onNavigate, subjectsList = [], setSubjectsLis
               {/* Grid/List Buttons & Semester Filter */}
               <div className="flex items-center justify-between sm:justify-end gap-2 sm:gap-3 w-full sm:w-auto">
                 {/* View Mode Toggle Buttons */}
-                <div className="flex items-center p-1 bg-slate-100/90 rounded-2xl border border-slate-200/60 shrink-0">
+                <div className="bg-white border border-slate-200/90 rounded-2xl p-1 shadow-2xs inline-flex items-center gap-1 shrink-0">
                   <button
                     type="button"
                     onClick={() => setSubjectViewMode("grid")}
                     title="Grid View"
-                    className={`flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${subjectViewMode === "grid"
-                      ? "bg-[#0da651] text-white shadow-sm"
-                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-200/50"
-                      }`}
+                    className={`p-2 rounded-xl transition-all cursor-pointer ${
+                      subjectViewMode === "grid"
+                        ? "bg-emerald-50 text-[#0da651] border border-emerald-200 shadow-2xs"
+                        : "text-slate-400 hover:text-slate-600 hover:bg-slate-50"
+                    }`}
                   >
-                    <LayoutGrid size={15} className="stroke-[2.2]" />
-                    <span>Grid View</span>
+                    <LayoutGrid size={18} />
                   </button>
                   <button
                     type="button"
                     onClick={() => setSubjectViewMode("list")}
                     title="List View"
-                    className={`flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${subjectViewMode === "list"
-                      ? "bg-[#0da651] text-white shadow-sm"
-                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-200/50"
-                      }`}
+                    className={`p-2 rounded-xl transition-all cursor-pointer ${
+                      subjectViewMode === "list"
+                        ? "bg-emerald-50 text-[#0da651] border border-emerald-200 shadow-2xs"
+                        : "text-slate-400 hover:text-slate-600 hover:bg-slate-50"
+                    }`}
                   >
-                    <List size={15} className="stroke-[2.2]" />
-                    <span>List View</span>
+                    <List size={18} />
                   </button>
                 </div>
 

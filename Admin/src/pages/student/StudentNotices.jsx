@@ -516,17 +516,17 @@ export default function StudentNotices({
           </div>
 
           {/* Notices Table Card matching design */}
-          <div className="bg-white rounded-[24px] border border-slate-200/90 shadow-2xs overflow-hidden">
+          <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 overflow-hidden font-['Roboto',sans-serif]">
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="border-b border-slate-100 text-[11px] font-bold uppercase tracking-wider text-slate-400 bg-slate-50/50 select-none">
-                    <th className="py-4 px-6 min-w-[320px]">Notice</th>
-                    <th className="py-4 px-4 text-center min-w-[110px]">Priority</th>
-                    <th className="py-4 px-4 text-center min-w-[120px]">Category</th>
-                    <th className="py-4 px-5 min-w-[150px]">Published On</th>
-                    <th className="py-4 px-4 text-center min-w-[130px]">Attachments</th>
-                    <th className="py-4 px-6 text-right min-w-[100px]">Action</th>
+                  <tr className={`${isMentorMode ? 'bg-gradient-to-r from-[#7656f4] via-[#6845f2] to-[#5531dc]' : 'bg-gradient-to-r from-[#2563eb] via-[#1d4ed8] to-[#1e40af]'} text-white text-xs font-bold uppercase tracking-wider select-none`}>
+                    <th className="py-3.5 px-6 text-left min-w-[320px]">Notice</th>
+                    <th className="py-3.5 px-4 text-center min-w-[110px]">Priority</th>
+                    <th className="py-3.5 px-4 text-center min-w-[120px]">Category</th>
+                    <th className="py-3.5 px-5 text-left min-w-[150px]">Published On</th>
+                    <th className="py-3.5 px-4 text-center min-w-[130px]">Attachments</th>
+                    <th className="py-3.5 px-6 text-right min-w-[100px]">Action</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100/80 text-sm">
@@ -563,10 +563,10 @@ export default function StudentNotices({
                         <tr
                           key={notice.id}
                           onClick={() => setSelectedNoticeModal(notice)}
-                          className="hover:bg-blue-50/30 transition-colors cursor-pointer group"
+                          className={`transition-colors cursor-pointer group ${isMentorMode ? 'hover:bg-purple-50/40' : 'hover:bg-blue-50/40'}`}
                         >
                           {/* Notice Column */}
-                          <td className="py-4 px-6">
+                          <td className="py-4 px-6 text-left">
                             <div className="flex items-center gap-4">
                               <div
                                 className={`w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform ${notice.iconBg}`}
@@ -575,7 +575,7 @@ export default function StudentNotices({
                               </div>
 
                               <div className="space-y-1 min-w-0">
-                                <h3 className="text-sm font-bold text-blue-600 hover:text-blue-700 transition-colors leading-snug">
+                                <h3 className={`text-sm font-bold transition-colors leading-snug ${isMentorMode ? 'text-purple-700 hover:text-purple-900' : 'text-blue-600 hover:text-blue-700'}`}>
                                   {notice.title}
                                 </h3>
                                 <p className="text-xs text-slate-500 font-normal line-clamp-1 leading-relaxed max-w-md">
@@ -604,7 +604,7 @@ export default function StudentNotices({
                           </td>
 
                           {/* Published On Column */}
-                          <td className="py-4 px-5">
+                          <td className="py-4 px-5 text-left">
                             <div className="flex items-start gap-2 text-xs">
                               <Calendar size={14} className="text-slate-400 mt-0.5 shrink-0" />
                               <div>
@@ -624,9 +624,9 @@ export default function StudentNotices({
                               <button
                                 type="button"
                                 onClick={(e) => handleDownloadAttachment(notice, e)}
-                                className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:text-blue-700 hover:underline cursor-pointer transition-colors"
+                                className={`inline-flex items-center gap-1.5 text-xs font-semibold hover:underline cursor-pointer transition-colors ${isMentorMode ? 'text-purple-600 hover:text-purple-700' : 'text-blue-600 hover:text-blue-700'}`}
                               >
-                                <Paperclip size={13} className="text-blue-500 shrink-0" />
+                                <Paperclip size={13} className={isMentorMode ? 'text-purple-500 shrink-0' : 'text-blue-500 shrink-0'} />
                                 <span>Download</span>
                               </button>
                             ) : (
@@ -642,7 +642,7 @@ export default function StudentNotices({
                                 e.stopPropagation();
                                 setSelectedNoticeModal(notice);
                               }}
-                              className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-2.5 py-1.5 rounded-lg transition-colors cursor-pointer"
+                              className={`inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl border transition-all cursor-pointer shadow-2xs ${isMentorMode ? 'text-[#7656f4] bg-[#f6f2fe] hover:bg-[#7656f4] hover:text-white border-[#7656f4]/30' : 'text-blue-600 bg-blue-50 hover:bg-blue-600 hover:text-white border-blue-200/80'}`}
                             >
                               <Eye size={14} />
                               <span>View</span>

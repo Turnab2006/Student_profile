@@ -27,10 +27,21 @@ import {
   Compass,
   Calendar,
   Save,
+  UserPlus,
+  Check,
 } from "lucide-react";
 import AdminProfile from "../../components/admin/AdminProfile";
 import ActivityDetailView from "./ActivityDetailView";
 import { getStoredActivities, saveStoredActivities } from "../../data/activitiesData";
+
+const MENTEE_OPTIONS = [
+  { id: "MNT-01", name: "Tanuka Saha", roll: "CSE2024012", dept: "CSE", year: "2nd Year" },
+  { id: "MNT-02", name: "Turnab Roy", roll: "CSE2024025", dept: "CSE", year: "3rd Year" },
+  { id: "MNT-03", name: "Madhurima Chatterjee", roll: "ECE2024009", dept: "ECE", year: "2nd Year" },
+  { id: "MNT-04", name: "Nilankur Das", roll: "EE2024015", dept: "EE", year: "3rd Year" },
+  { id: "MNT-05", name: "Abhinandan Roy", roll: "CSE2024031", dept: "CSE", year: "2nd Year" },
+  { id: "MNT-06", name: "Subhamita Ganguly", roll: "IT2024004", dept: "IT", year: "2nd Year" },
+];
 
 // Category Badges & Color Tones
 const categoryBadgeStyles = {
@@ -66,13 +77,17 @@ const statusStyles = {
   Cancelled: "bg-rose-50 text-rose-700 border border-rose-200/80",
 };
 
-function FilterDropdown({ value, onChange, options }) {
+function FilterDropdown({ value, onChange, options, isMentor = false }) {
   return (
     <div className="relative">
       <select
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="appearance-none min-w-[135px] px-3.5 py-2.5 pr-8 border border-gray-200 rounded-xl text-xs sm:text-sm font-medium text-gray-700 bg-white hover:bg-gray-50/80 transition-colors whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 cursor-pointer shadow-2xs"
+        className={`appearance-none min-w-[135px] px-3.5 py-2.5 pr-8 border border-gray-200 rounded-xl text-xs sm:text-sm font-medium text-gray-700 bg-white hover:bg-gray-50/80 transition-colors whitespace-nowrap focus:outline-none cursor-pointer shadow-2xs ${
+          isMentor
+            ? "focus:ring-2 focus:ring-purple-500/20 focus:border-[#7656f4]"
+            : "focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+        }`}
       >
         {options.map((option) => (
           <option key={option.value} value={option.value}>
@@ -97,6 +112,10 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
   const [activeMenuId, setActiveMenuId] = useState(null);
   const [toastMsg, setToastMsg] = useState("");
 
+  // Registration Modal State for Mentor
+  const [registerModalActivity, setRegisterModalActivity] = useState(null);
+  const [selectedMenteesForReg, setSelectedMenteesForReg] = useState(MENTEE_OPTIONS.map((m) => m.id));
+
   useEffect(() => {
     setActivitiesList(getStoredActivities());
   }, []);
@@ -111,6 +130,43 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
   const showToast = (msg) => {
     setToastMsg(msg);
     setTimeout(() => setToastMsg(""), 3000);
+  };
+
+  const handleOpenRegisterModal = (activity) => {
+    setRegisterModalActivity(activity);
+    setSelectedMenteesForReg(MENTEE_OPTIONS.map((m) => m.id));
+  };
+
+  const handleToggleMenteeReg = (id) => {
+    setSelectedMenteesForReg((prev) =>
+      prev.includes(id) ? prev.filter((m) => m !== id) : [...prev, id]
+    );
+  };
+
+  const handleToggleSelectAllReg = () => {
+    if (selectedMenteesForReg.length === MENTEE_OPTIONS.length) {
+      setSelectedMenteesForReg([]);
+    } else {
+      setSelectedMenteesForReg(MENTEE_OPTIONS.map((m) => m.id));
+    }
+  };
+
+  const handleConfirmActivityRegistration = (e) => {
+    e.preventDefault();
+    if (!registerModalActivity) return;
+    if (selectedMenteesForReg.length === 0) {
+      showToast("Please select at least one mentee to register.");
+      return;
+    }
+    const updated = activitiesList.map((a) =>
+      a.id === registerModalActivity.id
+        ? { ...a, registered: (a.registered || 0) + selectedMenteesForReg.length }
+        : a
+    );
+    setActivitiesList(updated);
+    saveStoredActivities(updated);
+    showToast(`Successfully registered ${selectedMenteesForReg.length} mentees for ${registerModalActivity.title}!`);
+    setRegisterModalActivity(null);
   };
 
   const handleSaveActivities = (updated) => {
@@ -144,12 +200,19 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
   const ongoingActivities = activitiesList.filter((a) => a.status === "Ongoing").length;
   const completedActivities = activitiesList.filter((a) => a.status === "Completed").length;
 
-  const stats = [
-    { icon: <Megaphone size={22} className="text-blue-600" />, borderAccent: "border-l-blue-500", bg: "bg-blue-50", value: String(totalActivities), label: "TOTAL ACTIVITIES", sub: "All time" },
-    { icon: <CalendarCheck size={22} className="text-[#0da651]" />, borderAccent: "border-l-emerald-500", bg: "bg-emerald-50", value: String(upcomingActivities), label: "UPCOMING", sub: "Scheduled activities" },
-    { icon: <Clock size={22} className="text-amber-600" />, borderAccent: "border-l-amber-500", bg: "bg-amber-50", value: String(ongoingActivities), label: "ONGOING", sub: "In progress" },
-    { icon: <Trophy size={22} className="text-purple-600" />, borderAccent: "border-l-purple-500", bg: "bg-purple-50", value: String(completedActivities), label: "COMPLETED", sub: "Past activities" },
-  ];
+  const stats = isMentor
+    ? [
+        { icon: <Megaphone size={22} className="text-[#7656f4]" />, borderAccent: "border-l-[#7656f4]", bg: "bg-[#f0eaff]", value: String(totalActivities), label: "TOTAL ACTIVITIES", sub: "All time" },
+        { icon: <CalendarCheck size={22} className="text-emerald-600" />, borderAccent: "border-l-emerald-500", bg: "bg-emerald-50", value: String(upcomingActivities), label: "UPCOMING", sub: "Scheduled activities" },
+        { icon: <Clock size={22} className="text-amber-600" />, borderAccent: "border-l-amber-500", bg: "bg-amber-50", value: String(ongoingActivities), label: "ONGOING", sub: "In progress" },
+        { icon: <Trophy size={22} className="text-purple-600" />, borderAccent: "border-l-purple-500", bg: "bg-purple-50", value: String(completedActivities), label: "COMPLETED", sub: "Past activities" },
+      ]
+    : [
+        { icon: <Megaphone size={22} className="text-blue-600" />, borderAccent: "border-l-blue-500", bg: "bg-blue-50", value: String(totalActivities), label: "TOTAL ACTIVITIES", sub: "All time" },
+        { icon: <CalendarCheck size={22} className="text-[#0da651]" />, borderAccent: "border-l-emerald-500", bg: "bg-emerald-50", value: String(upcomingActivities), label: "UPCOMING", sub: "Scheduled activities" },
+        { icon: <Clock size={22} className="text-amber-600" />, borderAccent: "border-l-amber-500", bg: "bg-amber-50", value: String(ongoingActivities), label: "ONGOING", sub: "In progress" },
+        { icon: <Trophy size={22} className="text-purple-600" />, borderAccent: "border-l-purple-500", bg: "bg-purple-50", value: String(completedActivities), label: "COMPLETED", sub: "Past activities" },
+      ];
 
   const filteredActivities = activitiesList.filter((activity) => {
     const searchText = query.trim().toLowerCase();
@@ -250,6 +313,7 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
             onBack={() => setViewingActivity(null)}
             onEdit={(act) => handleEditActivity(act)}
             onDelete={(id) => handleDeleteActivity(id)}
+            isMentor={isMentor}
           />
         ) : (
           <>
@@ -282,7 +346,11 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                   onChange={(e) => setQuery(e.target.value)}
                   type="text"
                   placeholder="Search activities by title, type, venue..."
-                  className="w-full pl-10 pr-4 py-2.5 border border-gray-200 bg-gray-50/50 hover:bg-white focus:bg-white rounded-xl text-xs sm:text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
+                  className={`w-full pl-10 pr-4 py-2.5 border border-gray-200 bg-gray-50/50 hover:bg-white focus:bg-white rounded-xl text-xs sm:text-sm font-medium text-gray-700 focus:outline-none transition-all ${
+                    isMentor
+                      ? "focus:ring-2 focus:ring-purple-500/20 focus:border-[#7656f4]"
+                      : "focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                  }`}
                 />
               </div>
 
@@ -292,6 +360,7 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                 <FilterDropdown
                   value={typeFilter}
                   onChange={setTypeFilter}
+                  isMentor={isMentor}
                   options={[
                     { value: "all", label: "All Types" },
                     { value: "Technical", label: "Technical" },
@@ -308,6 +377,7 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                 <FilterDropdown
                   value={statusFilter}
                   onChange={setStatusFilter}
+                  isMentor={isMentor}
                   options={[
                     { value: "all", label: "All Status" },
                     { value: "Upcoming", label: "Upcoming" },
@@ -317,43 +387,51 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                   ]}
                 />
 
-                {/* Grid / List View Toggle - PLACED BEFORE CREATE ACTIVITY */}
-                <div className="flex items-center gap-1 bg-gray-50/80 border border-gray-200 p-1 rounded-xl shadow-2xs">
+                {/* Grid / List View Toggle */}
+                <div className="bg-white border border-slate-200/90 rounded-2xl p-1 shadow-2xs inline-flex items-center gap-1">
                   <button
                     type="button"
                     onClick={() => setView("grid")}
-                    className={`p-2 rounded-lg transition-all cursor-pointer ${view === "grid"
-                        ? "bg-white text-[#0da651] font-bold shadow-xs"
-                        : "text-gray-400 hover:text-gray-700"
-                      }`}
+                    className={`p-2 rounded-xl transition-all cursor-pointer ${
+                      view === "grid"
+                        ? isMentor
+                          ? "bg-[#f0eaff] text-[#7656f4] border border-[#7656f4]/30 shadow-2xs"
+                          : "bg-emerald-50 text-[#0da651] border border-emerald-200 shadow-2xs"
+                        : "text-slate-400 hover:text-slate-600 hover:bg-slate-50"
+                    }`}
                     title="Grid View"
                     aria-label="Grid View"
                   >
-                    <LayoutGrid size={16} />
+                    <LayoutGrid size={18} />
                   </button>
                   <button
                     type="button"
                     onClick={() => setView("list")}
-                    className={`p-2 rounded-lg transition-all cursor-pointer ${view === "list"
-                        ? "bg-white text-[#0da651] font-bold shadow-xs"
-                        : "text-gray-400 hover:text-gray-700"
-                      }`}
+                    className={`p-2 rounded-xl transition-all cursor-pointer ${
+                      view === "list"
+                        ? isMentor
+                          ? "bg-[#f0eaff] text-[#7656f4] border border-[#7656f4]/30 shadow-2xs"
+                          : "bg-emerald-50 text-[#0da651] border border-emerald-200 shadow-2xs"
+                        : "text-slate-400 hover:text-slate-600 hover:bg-slate-50"
+                    }`}
                     title="List View"
                     aria-label="List View"
                   >
-                    <List size={16} />
+                    <List size={18} />
                   </button>
                 </div>
 
-                {/* Create Activity Button */}
-                <button
-                  type="button"
-                  onClick={handleCreateActivity}
-                  className="flex items-center gap-2 px-4 py-2.5 bg-[#0da651] hover:bg-[#0c9548] text-white rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer shadow-sm hover:shadow active:scale-95 whitespace-nowrap shrink-0"
-                >
-                  <Plus size={16} className="stroke-[2.5]" />
-                  <span>Create Activity</span>
-                </button>
+                {/* Create Activity Button - Hidden for Mentors */}
+                {!isMentor && (
+                  <button
+                    type="button"
+                    onClick={handleCreateActivity}
+                    className="flex items-center gap-2 px-4 py-2.5 bg-[#0da651] hover:bg-[#0c9548] text-white rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer shadow-sm hover:shadow active:scale-95 whitespace-nowrap shrink-0"
+                  >
+                    <Plus size={16} className="stroke-[2.5]" />
+                    <span>Create Activity</span>
+                  </button>
+                )}
               </div>
             </div>
 
@@ -387,7 +465,7 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                               }}
                             />
                           ) : (
-                            <div className="w-full h-full bg-gradient-to-br from-emerald-700 via-teal-800 to-emerald-950 flex items-center justify-center">
+                            <div className={`w-full h-full ${isMentor ? 'bg-gradient-to-br from-[#5c37d8] via-[#4d2db7] to-[#1e1548]' : 'bg-gradient-to-br from-emerald-700 via-teal-800 to-emerald-950'} flex items-center justify-center`}>
                               {getActivityIcon(a.type, 36, "text-white/40")}
                             </div>
                           )}
@@ -406,49 +484,51 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                             </span>
                           </div>
 
-                          {/* 3-Dots Menu Button at Top-Right Corner of Poster */}
-                          <div className="absolute top-3 right-3 z-20">
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setActiveMenuId(activeMenuId === a.id ? null : a.id);
-                              }}
-                              className="w-8 h-8 rounded-full bg-black/50 hover:bg-black/80 text-white backdrop-blur-md flex items-center justify-center transition-all cursor-pointer shadow-md hover:scale-105 active:scale-95"
-                              title="More Options"
-                              aria-label="More Options"
-                            >
-                              <MoreVertical size={16} />
-                            </button>
-
-                            {/* 3-Dots Dropdown Menu */}
-                            {activeMenuId === a.id && (
-                              <div
-                                onClick={(e) => e.stopPropagation()}
-                                className="absolute right-0 top-full mt-1.5 w-36 bg-white rounded-2xl border border-gray-200/90 shadow-xl shadow-slate-400/30 p-1.5 z-40 text-left animate-in fade-in zoom-in-95 duration-150 space-y-0.5 font-['Roboto',sans-serif]"
+                          {/* 3-Dots Menu Button at Top-Right Corner of Poster - Hidden for Mentors */}
+                          {!isMentor && (
+                            <div className="absolute top-3 right-3 z-20">
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setActiveMenuId(activeMenuId === a.id ? null : a.id);
+                                }}
+                                className="w-8 h-8 rounded-full bg-black/50 hover:bg-black/80 text-white backdrop-blur-md flex items-center justify-center transition-all cursor-pointer shadow-md hover:scale-105 active:scale-95"
+                                title="More Options"
+                                aria-label="More Options"
                               >
-                                <button
-                                  type="button"
-                                  onClick={() => handleEditActivity(a)}
-                                  className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-emerald-50 hover:text-[#0da651] rounded-xl transition-colors cursor-pointer"
+                                <MoreVertical size={16} />
+                              </button>
+
+                              {/* 3-Dots Dropdown Menu */}
+                              {activeMenuId === a.id && (
+                                <div
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="absolute right-0 top-full mt-1.5 w-36 bg-white rounded-2xl border border-gray-200/90 shadow-xl shadow-slate-400/30 p-1.5 z-40 text-left animate-in fade-in zoom-in-95 duration-150 space-y-0.5 font-['Roboto',sans-serif]"
                                 >
-                                  <Edit size={14} className="text-emerald-600" />
-                                  <span>Edit</span>
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={() => {
-                                    setActiveMenuId(null);
-                                    handleDeleteActivity(a.id);
-                                  }}
-                                  className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-50 rounded-xl transition-colors cursor-pointer"
-                                >
-                                  <Trash2 size={14} className="text-red-500" />
-                                  <span>Delete</span>
-                                </button>
-                              </div>
-                            )}
-                          </div>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleEditActivity(a)}
+                                    className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-emerald-50 hover:text-[#0da651] rounded-xl transition-colors cursor-pointer"
+                                  >
+                                    <Edit size={14} className="text-emerald-600" />
+                                    <span>Edit</span>
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      setActiveMenuId(null);
+                                      handleDeleteActivity(a.id);
+                                    }}
+                                    className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-50 rounded-xl transition-colors cursor-pointer"
+                                  >
+                                    <Trash2 size={14} className="text-red-500" />
+                                    <span>Delete</span>
+                                  </button>
+                                </div>
+                              )}
+                            </div>
+                          )}
                         </div>
 
                         {/* Card Body */}
@@ -476,7 +556,7 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                             <div className="space-y-2 text-xs text-gray-600 mb-4">
                               {/* Date & Time */}
                               <div className="flex items-center gap-2">
-                                <CalendarDays size={14} className="text-[#0da651] shrink-0" />
+                                <CalendarDays size={14} className={`${isMentor ? 'text-[#7656f4]' : 'text-[#0da651]'} shrink-0`} />
                                 <span className="font-medium text-gray-700">
                                   {a.date} {a.time ? `at ${a.time}` : ""}
                                 </span>
@@ -484,7 +564,7 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
 
                               {/* Location / Venue */}
                               <div className="flex items-center gap-2">
-                                <MapPin size={14} className="text-[#0da651] shrink-0" />
+                                <MapPin size={14} className={`${isMentor ? 'text-[#7656f4]' : 'text-[#0da651]'} shrink-0`} />
                                 <span className="font-medium text-gray-700 truncate" title={a.venue || "Campus Venue"}>
                                   {a.venue || "Campus Venue"}
                                 </span>
@@ -492,7 +572,7 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
 
                               {/* Number of registered students - PLACED JUST AFTER LOCATION */}
                               <div className="flex items-center gap-2">
-                                <Users size={14} className="text-[#0da651] shrink-0" />
+                                <Users size={14} className={`${isMentor ? 'text-[#7656f4]' : 'text-[#0da651]'} shrink-0`} />
                                 <span className="font-medium text-gray-700">
                                   <strong className="text-gray-900 font-bold">{a.registered || 0}</strong> students registered
                                 </span>
@@ -500,16 +580,34 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                             </div>
                           </div>
 
-                          {/* View Button at the Bottom of the Card */}
+                          {/* View Button & Register Button at the Bottom of the Card in a Single Row */}
                           <div className="pt-3 border-t border-slate-100 mt-auto">
-                            <button
-                              type="button"
-                              onClick={() => setViewingActivity(a)}
-                              className="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-emerald-50 hover:bg-[#0da651] text-[#0da651] hover:text-white border border-emerald-200/80 hover:border-transparent rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer shadow-2xs group/btn"
-                            >
-                              <Eye size={14} className="group-hover/btn:scale-110 transition-transform stroke-[2.2]" />
-                              <span>View Details</span>
-                            </button>
+                            <div className="grid grid-cols-2 gap-2">
+                              <button
+                                type="button"
+                                onClick={() => setViewingActivity(a)}
+                                className={`w-full flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer shadow-2xs group/btn ${
+                                  isMentor
+                                    ? "bg-[#f6f2fe] hover:bg-purple-100 text-[#7656f4] border border-[#7656f4]/25 hover:border-[#7656f4]/40"
+                                    : "bg-emerald-50 hover:bg-emerald-100 text-[#0da651] border border-emerald-200/80 hover:border-emerald-300"
+                                }`}
+                              >
+                                <Eye size={14} className="group-hover/btn:scale-110 transition-transform stroke-[2.2]" />
+                                <span>View Details</span>
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleOpenRegisterModal(a)}
+                                className={`w-full flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer shadow-xs active:scale-95 text-white ${
+                                  isMentor
+                                    ? "bg-[#7656f4] hover:bg-[#6242e2]"
+                                    : "bg-[#0da651] hover:bg-[#0c9548]"
+                                }`}
+                              >
+                                <UserPlus size={14} className="stroke-[2.2]" />
+                                <span>Register</span>
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -527,6 +625,7 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                       <FilterDropdown
                         value={sortBy}
                         onChange={setSortBy}
+                        isMentor={isMentor}
                         options={[
                           { value: "newest", label: "Sort by: Newest" },
                           { value: "oldest", label: "Sort by: Oldest" },
@@ -540,13 +639,17 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                   <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse">
                       <thead>
-                        <tr className="bg-gradient-to-r from-[#0da651] via-[#0e9f4e] to-[#09803d] text-white text-xs font-bold uppercase tracking-wider">
+                        <tr className={`${
+                          isMentor
+                            ? "bg-gradient-to-r from-[#7656f4] via-[#6845f2] to-[#5531dc]"
+                            : "bg-gradient-to-r from-[#0da651] via-[#0e9f4e] to-[#09803d]"
+                        } text-white text-xs font-bold uppercase tracking-wider`}>
                           <th className="w-10 py-3.5 px-4 text-center">
                             <input
                               type="checkbox"
                               checked={allVisibleSelected}
                               onChange={toggleAll}
-                              className="rounded border-white/40 accent-emerald-800 cursor-pointer"
+                              className={`rounded border-white/40 cursor-pointer ${isMentor ? "accent-[#7656f4]" : "accent-emerald-800"}`}
                             />
                           </th>
                           <th className="py-3.5 px-4 text-left">ACTIVITY</th>
@@ -569,15 +672,20 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                           visibleActivities.map((a) => (
                             <tr
                               key={a.id}
-                              className={`hover:bg-gray-50/60 transition-colors ${selected.includes(a.id) ? "bg-emerald-50/30" : ""
-                                }`}
+                              className={`hover:bg-gray-50/60 transition-colors ${
+                                selected.includes(a.id)
+                                  ? isMentor
+                                    ? "bg-purple-50/40"
+                                    : "bg-emerald-50/30"
+                                  : ""
+                              }`}
                             >
                               <td className="px-4 py-3 text-center">
                                 <input
                                   type="checkbox"
                                   checked={selected.includes(a.id)}
                                   onChange={() => toggleOne(a.id)}
-                                  className="rounded border-gray-300 accent-primary cursor-pointer"
+                                  className={`rounded border-gray-300 cursor-pointer ${isMentor ? "accent-[#7656f4]" : "accent-primary"}`}
                                 />
                               </td>
                               <td className="px-4 py-3">
@@ -594,7 +702,7 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                                       }}
                                     />
                                   ) : (
-                                    <div className="w-16 h-11 rounded-xl bg-emerald-100 text-[#0da651] flex items-center justify-center font-bold text-xs shrink-0">
+                                    <div className={`w-16 h-11 rounded-xl ${isMentor ? 'bg-purple-100 text-[#7656f4]' : 'bg-emerald-100 text-[#0da651]'} flex items-center justify-center font-bold text-xs shrink-0`}>
                                       {getActivityIcon(a.type, 18)}
                                     </div>
                                   )}
@@ -618,7 +726,7 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                               <td className="px-4 py-3">
                                 <div className="flex flex-col text-xs text-gray-600">
                                   <div className="flex items-center gap-1.5 font-medium">
-                                    <CalendarDays size={13} className="text-[#0da651]" /> {a.date}
+                                    <CalendarDays size={13} className={`${isMentor ? 'text-[#7656f4]' : 'text-[#0da651]'}`} /> {a.date}
                                   </div>
                                   {a.time && (
                                     <div className="flex items-center gap-1.5 mt-0.5 text-gray-400">
@@ -629,7 +737,7 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                               </td>
                               <td className="px-4 py-3">
                                 <div className="flex items-center gap-1.5 text-xs text-gray-600 font-medium">
-                                  <MapPin size={13} className="text-[#0da651]" /> {a.venue || "Campus Venue"}
+                                  <MapPin size={13} className={`${isMentor ? 'text-[#7656f4]' : 'text-[#0da651]'}`} /> {a.venue || "Campus Venue"}
                                 </div>
                               </td>
                               <td className="px-4 py-3 text-center">
@@ -651,49 +759,66 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                                   <button
                                     type="button"
                                     onClick={() => setViewingActivity(a)}
-                                    className="text-[11px] font-bold text-[#0da651] bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-xl transition-colors flex items-center gap-1 cursor-pointer border border-emerald-200/60"
+                                    className={`text-[11px] font-bold px-3 py-1.5 rounded-xl transition-colors flex items-center gap-1 cursor-pointer border ${
+                                      isMentor
+                                        ? "text-[#7656f4] bg-[#f6f2fe] hover:bg-[#7656f4] hover:text-white border-[#7656f4]/30"
+                                        : "text-[#0da651] bg-emerald-50 hover:bg-[#0da651] hover:text-white border-emerald-200/60"
+                                    }`}
                                   >
                                     <Eye size={12} /> View
                                   </button>
-                                  <div className="relative">
-                                    <button
-                                      type="button"
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        setActiveMenuId(activeMenuId === a.id ? null : a.id);
-                                      }}
-                                      className="p-1.5 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
-                                      title="Actions"
-                                    >
-                                      <MoreVertical size={16} />
-                                    </button>
-                                    {activeMenuId === a.id && (
-                                      <div
-                                        onClick={(e) => e.stopPropagation()}
-                                        className="absolute right-0 top-full mt-1 w-36 bg-white rounded-2xl border border-gray-200 shadow-xl p-1.5 z-40 text-left space-y-0.5"
+                                  <button
+                                    type="button"
+                                    onClick={() => handleOpenRegisterModal(a)}
+                                    className={`text-[11px] font-bold px-3 py-1.5 rounded-xl transition-all flex items-center gap-1 cursor-pointer text-white shadow-2xs active:scale-95 ${
+                                      isMentor
+                                        ? "bg-[#7656f4] hover:bg-[#6242e2]"
+                                        : "bg-[#0da651] hover:bg-[#0c9548]"
+                                    }`}
+                                  >
+                                    <UserPlus size={12} /> Register
+                                  </button>
+                                  {!isMentor && (
+                                    <div className="relative">
+                                      <button
+                                        type="button"
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          setActiveMenuId(activeMenuId === a.id ? null : a.id);
+                                        }}
+                                        className="p-1.5 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer"
+                                        title="Actions"
                                       >
-                                        <button
-                                          type="button"
-                                          onClick={() => handleEditActivity(a)}
-                                          className="w-full flex items-center gap-2 px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-emerald-50 hover:text-[#0da651] rounded-xl transition-colors cursor-pointer"
+                                        <MoreVertical size={16} />
+                                      </button>
+                                      {activeMenuId === a.id && (
+                                        <div
+                                          onClick={(e) => e.stopPropagation()}
+                                          className="absolute right-0 top-full mt-1 w-36 bg-white rounded-2xl border border-gray-200 shadow-xl p-1.5 z-40 text-left space-y-0.5"
                                         >
-                                          <Edit size={13} className="text-emerald-600" />
-                                          <span>Edit</span>
-                                        </button>
-                                        <button
-                                          type="button"
-                                          onClick={() => {
-                                            setActiveMenuId(null);
-                                            handleDeleteActivity(a.id);
-                                          }}
-                                          className="w-full flex items-center gap-2 px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-50 rounded-xl transition-colors cursor-pointer"
-                                        >
-                                          <Trash2 size={13} className="text-red-500" />
-                                          <span>Delete</span>
-                                        </button>
-                                      </div>
-                                    )}
-                                  </div>
+                                          <button
+                                            type="button"
+                                            onClick={() => handleEditActivity(a)}
+                                            className="w-full flex items-center gap-2 px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-emerald-50 hover:text-[#0da651] rounded-xl transition-colors cursor-pointer"
+                                          >
+                                            <Edit size={13} className="text-emerald-600" />
+                                            <span>Edit</span>
+                                          </button>
+                                          <button
+                                            type="button"
+                                            onClick={() => {
+                                              setActiveMenuId(null);
+                                              handleDeleteActivity(a.id);
+                                            }}
+                                            className="w-full flex items-center gap-2 px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-50 rounded-xl transition-colors cursor-pointer"
+                                          >
+                                            <Trash2 size={13} className="text-red-500" />
+                                            <span>Delete</span>
+                                          </button>
+                                        </div>
+                                      )}
+                                    </div>
+                                  )}
                                 </div>
                               </td>
                             </tr>
@@ -708,6 +833,124 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
           </>
         )}
       </main>
+
+      {/* Registration Modal */}
+      {registerModalActivity && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in duration-200">
+          <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-100 shadow-2xl max-w-lg w-full overflow-hidden flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-200 font-['Roboto',sans-serif]">
+            {/* Modal Header */}
+            <div className={`p-6 border-b border-slate-100 flex items-center justify-between ${isMentor ? 'bg-gradient-to-r from-[#f6f2fe] to-white' : 'bg-gradient-to-r from-emerald-50 to-white'}`}>
+              <div className="flex items-center gap-3">
+                <div className={`w-10 h-10 rounded-2xl ${isMentor ? 'bg-[#7656f4] shadow-purple-500/20' : 'bg-[#0da651] shadow-emerald-500/20'} text-white flex items-center justify-center shadow-md`}>
+                  <UserPlus size={20} />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-gray-900 leading-tight">Register for Activity</h3>
+                  <p className="text-xs text-gray-500 mt-0.5 truncate max-w-[260px] sm:max-w-xs">{registerModalActivity.title}</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setRegisterModalActivity(null)}
+                className="w-8 h-8 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-500 flex items-center justify-center transition-colors cursor-pointer"
+              >
+                <X size={16} />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-6 space-y-5 overflow-y-auto flex-1 text-xs sm:text-sm font-['Roboto',sans-serif]">
+              {/* Event Brief Pill */}
+              <div className={`p-3.5 ${isMentor ? 'bg-[#f6f2fe] border-purple-100/80' : 'bg-emerald-50 border-emerald-100/80'} border rounded-2xl flex items-center justify-between gap-3 text-xs`}>
+                <div>
+                  <p className="font-bold text-gray-900">{registerModalActivity.title}</p>
+                  <p className="text-gray-500 mt-0.5">{registerModalActivity.date} &bull; {registerModalActivity.venue || "Campus Venue"}</p>
+                </div>
+                <span className={`px-2.5 py-1 rounded-lg ${isMentor ? 'bg-[#7656f4]' : 'bg-[#0da651]'} text-white font-bold text-[11px] shrink-0`}>
+                  15 MAR Points
+                </span>
+              </div>
+
+              {/* Mentee List Selection */}
+              <div className="space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <p className="text-xs font-bold text-gray-700 uppercase tracking-wider">
+                    Select Students to Register ({selectedMenteesForReg.length}/{MENTEE_OPTIONS.length})
+                  </p>
+                  <button
+                    type="button"
+                    onClick={handleToggleSelectAllReg}
+                    className={`text-xs font-bold ${isMentor ? 'text-[#7656f4]' : 'text-[#0da651]'} hover:underline cursor-pointer`}
+                  >
+                    {selectedMenteesForReg.length === MENTEE_OPTIONS.length ? "Deselect All" : "Select All"}
+                  </button>
+                </div>
+
+                <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
+                  {MENTEE_OPTIONS.map((mentee) => {
+                    const isSelected = selectedMenteesForReg.includes(mentee.id);
+                    return (
+                      <div
+                        key={mentee.id}
+                        onClick={() => handleToggleMenteeReg(mentee.id)}
+                        className={`flex items-center justify-between p-3 rounded-xl border transition-all cursor-pointer ${
+                          isSelected
+                            ? isMentor
+                              ? "border-[#7656f4] bg-purple-50/50 shadow-2xs"
+                              : "border-[#0da651] bg-emerald-50/50 shadow-2xs"
+                            : "border-slate-200/80 hover:bg-slate-50"
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div
+                            className={`w-5 h-5 rounded-md flex items-center justify-center border transition-all ${
+                              isSelected
+                                ? isMentor
+                                  ? "bg-[#7656f4] border-[#7656f4] text-white"
+                                  : "bg-[#0da651] border-[#0da651] text-white"
+                                : "border-gray-300 bg-white"
+                            }`}
+                          >
+                            {isSelected && <Check size={13} className="stroke-[3]" />}
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-gray-900">{mentee.name}</p>
+                            <p className="text-[11px] text-gray-400 font-medium">
+                              {mentee.roll} &bull; {mentee.dept} &bull; {mentee.year}
+                            </p>
+                          </div>
+                        </div>
+                        <span className={`text-[11px] font-semibold ${isMentor ? 'text-purple-700 bg-purple-100/60' : 'text-emerald-700 bg-emerald-100/60'} px-2 py-0.5 rounded-md`}>
+                          Student
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="p-4 sm:p-5 border-t border-slate-100 bg-slate-50/70 flex items-center justify-end gap-2.5">
+              <button
+                type="button"
+                onClick={() => setRegisterModalActivity(null)}
+                className="px-4 py-2.5 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-100 text-xs font-bold transition-all cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleConfirmActivityRegistration}
+                className={`flex items-center gap-2 px-5 py-2.5 ${isMentor ? 'bg-[#7656f4] hover:bg-[#6242e2] shadow-purple-500/20' : 'bg-[#0da651] hover:bg-[#0c9548] shadow-emerald-500/20'} text-white text-xs font-bold rounded-xl shadow-md active:scale-95 transition-all cursor-pointer`}
+              >
+                <UserPlus size={15} />
+                <span>Confirm Registration ({selectedMenteesForReg.length})</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -34,6 +34,9 @@ import {
   Calendar,
   Layers,
   TrendingUp,
+  UserPlus,
+  X,
+  Check,
 } from "lucide-react";
 import {
   ResponsiveContainer,
@@ -139,11 +142,21 @@ const YEAR_COLORS = {
   "4th Year": "#8b5cf6",
 };
 
+const MENTEE_OPTIONS = [
+  { id: "MNT-01", name: "Tanuka Saha", roll: "CSE2024012", dept: "CSE", year: "2nd Year" },
+  { id: "MNT-02", name: "Turnab Roy", roll: "CSE2024025", dept: "CSE", year: "3rd Year" },
+  { id: "MNT-03", name: "Madhurima Chatterjee", roll: "ECE2024009", dept: "ECE", year: "2nd Year" },
+  { id: "MNT-04", name: "Nilankur Das", roll: "EE2024015", dept: "EE", year: "3rd Year" },
+  { id: "MNT-05", name: "Abhinandan Roy", roll: "CSE2024031", dept: "CSE", year: "2nd Year" },
+  { id: "MNT-06", name: "Subhamita Ganguly", roll: "IT2024004", dept: "IT", year: "2nd Year" },
+];
+
 export default function ActivityDetailView({
   activity,
   onBack,
   onEdit,
   onDelete,
+  isMentor = false,
 }) {
   const [activeTab, setActiveTab] = useState("details"); // 'details' or 'students'
   const [searchQuery, setSearchQuery] = useState("");
@@ -154,9 +167,41 @@ export default function ActivityDetailView({
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [toastMsg, setToastMsg] = useState("");
 
+  // Registration Modal State
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const [selectedMentees, setSelectedMentees] = useState(MENTEE_OPTIONS.map((m) => m.id));
+  const [registrationCount, setRegistrationCount] = useState(activity.registered || 412);
+  const [isRegisteredSuccess, setIsRegisteredSuccess] = useState(false);
+
   const showToast = (msg) => {
     setToastMsg(msg);
     setTimeout(() => setToastMsg(""), 3000);
+  };
+
+  const handleToggleMentee = (id) => {
+    setSelectedMentees((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
+  };
+
+  const handleToggleSelectAll = () => {
+    if (selectedMentees.length === MENTEE_OPTIONS.length) {
+      setSelectedMentees([]);
+    } else {
+      setSelectedMentees(MENTEE_OPTIONS.map((m) => m.id));
+    }
+  };
+
+  const handleConfirmRegistration = (e) => {
+    e.preventDefault();
+    if (selectedMentees.length === 0) {
+      showToast("Please select at least one mentee to register.");
+      return;
+    }
+    setRegistrationCount((prev) => prev + selectedMentees.length);
+    setIsRegisteredSuccess(true);
+    setShowRegisterModal(false);
+    showToast(`Successfully registered ${selectedMentees.length} mentees for ${activity.title}!`);
   };
 
   // Generate participant dataset for this activity
@@ -281,7 +326,7 @@ export default function ActivityDetailView({
     <div className="space-y-6 animate-in fade-in duration-200 font-['Roboto',sans-serif]">
       {/* Toast Notification */}
       {toastMsg && (
-        <div className="fixed top-5 right-5 z-50 flex items-center gap-2 rounded-xl bg-emerald-700 px-4 py-3 text-xs font-semibold text-white shadow-2xl animate-in fade-in slide-in-from-top-4">
+        <div className={`fixed top-5 right-5 z-50 flex items-center gap-2 rounded-xl ${isMentor ? 'bg-[#5c37d8]' : 'bg-emerald-700'} px-4 py-3 text-xs font-semibold text-white shadow-2xl animate-in fade-in slide-in-from-top-4`}>
           <CheckCircle2 size={16} />
           {toastMsg}
         </div>
@@ -293,7 +338,7 @@ export default function ActivityDetailView({
           <button
             type="button"
             onClick={onBack}
-            className="h-10 w-10 rounded-xl bg-gray-100/80 hover:bg-[#0da651] hover:text-white text-gray-700 flex items-center justify-center transition-all cursor-pointer shadow-2xs shrink-0 active:scale-95"
+            className={`h-10 w-10 rounded-xl bg-gray-100/80 ${isMentor ? 'hover:bg-[#7656f4]' : 'hover:bg-[#0da651]'} hover:text-white text-gray-700 flex items-center justify-center transition-all cursor-pointer shadow-2xs shrink-0 active:scale-95`}
             title="Back to Activities"
           >
             <ArrowLeft size={18} />
@@ -305,58 +350,73 @@ export default function ActivityDetailView({
           </div>
         </div>
 
-        {/* Action Controls: 2 Main View Switcher Buttons + Edit & Delete Buttons */}
-        <div className="flex items-center gap-2 flex-wrap self-stretch md:self-auto justify-between md:justify-end">
-          {/* Two Main Switcher Buttons */}
-          <div className="flex items-center gap-1.5 bg-gray-100/80 p-1.5 rounded-xl border border-gray-200 shadow-2xs">
+        {/* Action Controls: For Mentors = Single Register Button; For Admin = View Switchers + Edit & Delete */}
+        {isMentor ? (
+          <div className="flex items-center gap-2">
             <button
               type="button"
-              onClick={() => setActiveTab("details")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${activeTab === "details"
-                  ? "bg-[#0da651] text-white shadow-sm hover:bg-[#0c9548]"
-                  : "text-gray-600 hover:text-gray-900 hover:bg-gray-200/60"
-                }`}
+              onClick={() => setShowRegisterModal(true)}
+              className="flex items-center gap-2 px-5 py-2.5 bg-[#7656f4] hover:bg-[#6242e2] text-white rounded-xl text-xs font-bold transition-all cursor-pointer shadow-sm hover:shadow active:scale-95"
             >
-              <FileText size={15} />
-              <span>Activity Details</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveTab("students")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${activeTab === "students"
-                  ? "bg-[#0da651] text-white shadow-sm hover:bg-[#0c9548]"
-                  : "text-gray-600 hover:text-gray-900 hover:bg-gray-200/60"
-                }`}
-            >
-              <Users size={15} />
-              <span>Registered Students ({activity.registered || registeredStudents.length})</span>
+              <UserPlus size={15} />
+              <span>Register for Activity</span>
             </button>
           </div>
+        ) : (
+          <div className="flex items-center gap-2 flex-wrap self-stretch md:self-auto justify-between md:justify-end">
+            {/* Two Main Switcher Buttons */}
+            <div className="flex items-center gap-1.5 bg-gray-100/80 p-1.5 rounded-xl border border-gray-200 shadow-2xs">
+              <button
+                type="button"
+                onClick={() => setActiveTab("details")}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  activeTab === "details"
+                    ? "bg-[#0da651] text-white shadow-sm hover:bg-[#0c9548]"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-200/60"
+                }`}
+              >
+                <FileText size={15} />
+                <span>Activity Details</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab("students")}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  activeTab === "students"
+                    ? "bg-[#0da651] text-white shadow-sm hover:bg-[#0c9548]"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-200/60"
+                }`}
+              >
+                <Users size={15} />
+                <span>Registered Students ({activity.registered || registeredStudents.length})</span>
+              </button>
+            </div>
 
-          {/* Edit & Delete Action Buttons */}
-          <div className="flex items-center gap-1.5">
-            <button
-              type="button"
-              onClick={() => onEdit?.(activity)}
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold text-gray-700 bg-white hover:bg-emerald-50 hover:text-[#0da651] border border-gray-200 shadow-2xs transition-all cursor-pointer active:scale-95"
-            >
-              <Edit size={14} className="text-emerald-600" />
-              <span>Edit</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => onDelete?.(activity.id)}
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold text-red-600 bg-white hover:bg-red-50 border border-gray-200 shadow-2xs transition-all cursor-pointer active:scale-95"
-            >
-              <Trash2 size={14} className="text-red-500" />
-              <span>Delete</span>
-            </button>
+            {/* Edit & Delete Action Buttons */}
+            <div className="flex items-center gap-1.5">
+              <button
+                type="button"
+                onClick={() => onEdit?.(activity)}
+                className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold text-gray-700 bg-white hover:bg-emerald-50 hover:text-[#0da651] border border-gray-200 shadow-2xs transition-all cursor-pointer active:scale-95"
+              >
+                <Edit size={14} className="text-emerald-600" />
+                <span>Edit</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => onDelete?.(activity.id)}
+                className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold text-red-600 bg-white hover:bg-red-50 border border-gray-200 shadow-2xs transition-all cursor-pointer active:scale-95"
+              >
+                <Trash2 size={14} className="text-red-500" />
+                <span>Delete</span>
+              </button>
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
-      {/* Conditional Content: Activity Details Tab vs Registered Students Tab */}
-      {activeTab === "details" ? (
+      {/* Conditional Content: Activity Details Tab vs Registered Students Tab (Mentors always see Details) */}
+      {(isMentor || activeTab === "details") ? (
         <div className="space-y-6">
           {/* Hero Banner Section with Poster, Title, and Key Meta */}
           <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 overflow-hidden flex flex-col md:flex-row">
@@ -373,7 +433,7 @@ export default function ActivityDetailView({
                   }}
                 />
               ) : (
-                <div className="w-full h-full bg-gradient-to-br from-emerald-700 via-teal-800 to-emerald-950 flex items-center justify-center">
+                <div className={`w-full h-full ${isMentor ? 'bg-gradient-to-br from-purple-800 via-indigo-900 to-slate-950' : 'bg-gradient-to-br from-emerald-700 via-teal-800 to-emerald-950'} flex items-center justify-center`}>
                   {getActivityIcon(activity.type, 48, "text-white/40")}
                 </div>
               )}
@@ -416,7 +476,7 @@ export default function ActivityDetailView({
               {/* Meta Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-4 bg-gray-50/80 rounded-xl border border-gray-100 text-xs">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-50 text-[#0da651] flex items-center justify-center shrink-0">
+                  <div className={`w-8 h-8 rounded-lg ${isMentor ? 'bg-[#f0eaff] text-[#7656f4]' : 'bg-emerald-50 text-[#0da651]'} flex items-center justify-center shrink-0`}>
                     <CalendarDays size={16} />
                   </div>
                   <div>
@@ -426,7 +486,7 @@ export default function ActivityDetailView({
                 </div>
 
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-50 text-[#0da651] flex items-center justify-center shrink-0">
+                  <div className={`w-8 h-8 rounded-lg ${isMentor ? 'bg-[#f0eaff] text-[#7656f4]' : 'bg-emerald-50 text-[#0da651]'} flex items-center justify-center shrink-0`}>
                     <Clock size={16} />
                   </div>
                   <div>
@@ -436,7 +496,7 @@ export default function ActivityDetailView({
                 </div>
 
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-50 text-[#0da651] flex items-center justify-center shrink-0">
+                  <div className={`w-8 h-8 rounded-lg ${isMentor ? 'bg-[#f0eaff] text-[#7656f4]' : 'bg-emerald-50 text-[#0da651]'} flex items-center justify-center shrink-0`}>
                     <MapPin size={16} />
                   </div>
                   <div>
@@ -446,35 +506,47 @@ export default function ActivityDetailView({
                 </div>
 
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-50 text-[#0da651] flex items-center justify-center shrink-0">
+                  <div className={`w-8 h-8 rounded-lg ${isMentor ? 'bg-[#f0eaff] text-[#7656f4]' : 'bg-emerald-50 text-[#0da651]'} flex items-center justify-center shrink-0`}>
                     <Users size={16} />
                   </div>
                   <div>
                     <p className="text-[10px] text-gray-400 uppercase font-bold">Students Registered</p>
                     <p className="font-bold text-gray-800">
-                      {activity.registered || registeredStudents.length} Students
+                      {registrationCount} Students
                     </p>
                   </div>
                 </div>
               </div>
 
+              {/* Action Button: Register for Activity (Mentor) or View Registered Students (Admin) */}
               <div className="flex items-center gap-3">
-                <button
-                  type="button"
-                  onClick={() => setActiveTab("students")}
-                  className="flex items-center justify-center gap-2 px-6 h-12 bg-[#0da651] hover:bg-[#0c9548] text-white font-bold text-sm rounded-lg shadow-sm hover:shadow active:scale-95 transition-all cursor-pointer"
-                >
-                  <Users size={17} className="stroke-[2.3]" />
-                  <span>View Registered Students</span>
-                </button>
+                {isMentor ? (
+                  <button
+                    type="button"
+                    onClick={() => setShowRegisterModal(true)}
+                    className="flex items-center justify-center gap-2 px-6 h-12 bg-[#7656f4] hover:bg-[#6242e2] text-white font-bold text-sm rounded-xl shadow-sm hover:shadow active:scale-95 transition-all cursor-pointer"
+                  >
+                    <UserPlus size={17} className="stroke-[2.3]" />
+                    <span>Register for Activity</span>
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab("students")}
+                    className="flex items-center justify-center gap-2 px-6 h-12 bg-[#0da651] hover:bg-[#0c9548] text-white font-bold text-sm rounded-lg shadow-sm hover:shadow active:scale-95 transition-all cursor-pointer"
+                  >
+                    <Users size={17} className="stroke-[2.3]" />
+                    <span>View Registered Students</span>
+                  </button>
+                )}
               </div>
             </div>
           </div>
 
           {/* Quick Stat Highlights */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-white p-5 rounded-2xl border border-slate-200/90 border-l-[3.5px] border-l-emerald-500 shadow-md shadow-slate-200/50 flex items-center gap-4">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-[#0da651] shadow-2xs">
+            <div className={`bg-white p-5 rounded-2xl border border-slate-200/90 border-l-[3.5px] ${isMentor ? 'border-l-[#7656f4]' : 'border-l-emerald-500'} shadow-md shadow-slate-200/50 flex items-center gap-4`}>
+              <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl ${isMentor ? 'bg-[#f0eaff] text-[#7656f4]' : 'bg-emerald-50 text-[#0da651]'} shadow-2xs`}>
                 <Users size={22} />
               </div>
               <div className="min-w-0">
@@ -482,7 +554,7 @@ export default function ActivityDetailView({
                 <p className="text-2xl font-bold text-gray-900 tracking-tight my-0.5">
                   {activity.registered || registeredStudents.length}
                 </p>
-                <p className="text-xs text-emerald-600 font-medium">Active participants</p>
+                <p className={`text-xs ${isMentor ? 'text-[#7656f4]' : 'text-emerald-600'} font-medium`}>Active participants</p>
               </div>
             </div>
 
@@ -527,18 +599,18 @@ export default function ActivityDetailView({
               {/* Event Description & Highlights Card */}
               <div className="bg-white p-6 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 space-y-4">
                 <div className="flex items-center gap-2 border-b border-gray-100 pb-3">
-                  <BookOpen size={18} className="text-[#0da651]" />
+                  <BookOpen size={18} className={isMentor ? "text-[#7656f4]" : "text-[#0da651]"} />
                   <h3 className="text-base font-bold text-gray-900">Activity Overview &amp; Description</h3>
                 </div>
                 <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
                   {activity.description}
                 </p>
-                <div className="p-4 bg-emerald-50/50 border border-emerald-100 rounded-xl text-xs text-emerald-900 leading-relaxed">
+                <div className={`p-4 ${isMentor ? 'bg-purple-50/50 border-purple-100 text-purple-950' : 'bg-emerald-50/50 border-emerald-100 text-emerald-900'} border rounded-xl text-xs leading-relaxed`}>
                   <p className="font-bold flex items-center gap-1.5 mb-1">
-                    <Sparkles size={14} className="text-[#0da651]" />
+                    <Sparkles size={14} className={isMentor ? "text-[#7656f4]" : "text-[#0da651]"} />
                     <span>Key Learning Outcomes &amp; Participation Highlights:</span>
                   </p>
-                  <ul className="list-disc list-inside space-y-1 text-emerald-800/90 pl-1">
+                  <ul className={`list-disc list-inside space-y-1 ${isMentor ? 'text-purple-900/90' : 'text-emerald-800/90'} pl-1`}>
                     <li>Hands-on practical exposure and direct collaboration with faculty mentors &amp; peer leads.</li>
                     <li>Verified institutional Certificate of Participation credited directly to Student Activity Ledger.</li>
                     <li>Opportunities for peer networking, teamwork building, and competitive excellence awards.</li>
@@ -549,15 +621,15 @@ export default function ActivityDetailView({
               {/* Event Timeline & Agenda Card */}
               <div className="bg-white p-6 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 space-y-4">
                 <div className="flex items-center gap-2 border-b border-gray-100 pb-3">
-                  <Clock size={18} className="text-[#0da651]" />
+                  <Clock size={18} className={isMentor ? "text-[#7656f4]" : "text-[#0da651]"} />
                   <h3 className="text-base font-bold text-gray-900">Event Schedule &amp; Agenda Timeline</h3>
                 </div>
 
-                <div className="relative pl-6 space-y-6 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-emerald-200">
+                <div className={`relative pl-6 space-y-6 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 ${isMentor ? 'before:bg-purple-200' : 'before:bg-emerald-200'}`}>
                   {activity.timeline && activity.timeline.length > 0 ? (
                     activity.timeline.map((item, idx) => {
                       const palette = [
-                        { text: "text-[#0da651]", dot: "bg-[#0da651]", ring: "ring-emerald-100" },
+                        { text: isMentor ? "text-[#7656f4]" : "text-[#0da651]", dot: isMentor ? "bg-[#7656f4]" : "bg-[#0da651]", ring: isMentor ? "ring-purple-100" : "ring-emerald-100" },
                         { text: "text-blue-600", dot: "bg-blue-500", ring: "ring-blue-100" },
                         { text: "text-amber-600", dot: "bg-amber-500", ring: "ring-amber-100" },
                         { text: "text-purple-600", dot: "bg-purple-500", ring: "ring-purple-100" },
@@ -580,8 +652,8 @@ export default function ActivityDetailView({
                   ) : (
                     <>
                       <div className="relative">
-                        <div className="absolute -left-6 top-1 w-3 h-3 rounded-full bg-[#0da651] ring-4 ring-emerald-100" />
-                        <p className="text-xs font-bold text-[#0da651]">09:30 AM – 10:00 AM</p>
+                        <div className={`absolute -left-6 top-1 w-3 h-3 rounded-full ${isMentor ? 'bg-[#7656f4] ring-purple-100' : 'bg-[#0da651] ring-emerald-100'} ring-4`} />
+                        <p className={`text-xs font-bold ${isMentor ? 'text-[#7656f4]' : 'text-[#0da651]'}`}>09:30 AM – 10:00 AM</p>
                         <p className="text-sm font-bold text-gray-800">Student Reporting &amp; Registration Check-in</p>
                         <p className="text-xs text-gray-500">Badge collection, attendance logging, and seating arrangement at venue.</p>
                       </div>
@@ -617,7 +689,7 @@ export default function ActivityDetailView({
               {/* Coordinators & Organizing Team */}
               <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 space-y-4">
                 <div className="flex items-center gap-2 border-b border-gray-100 pb-3">
-                  <Building2 size={18} className="text-[#0da651]" />
+                  <Building2 size={18} className={isMentor ? "text-[#7656f4]" : "text-[#0da651]"} />
                   <h3 className="text-base font-bold text-gray-900">Organizing Committee</h3>
                 </div>
 
@@ -644,21 +716,21 @@ export default function ActivityDetailView({
               {/* Guidelines & Logistics */}
               <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 space-y-4">
                 <div className="flex items-center gap-2 border-b border-gray-100 pb-3">
-                  <ShieldCheck size={18} className="text-[#0da651]" />
+                  <ShieldCheck size={18} className={isMentor ? "text-[#7656f4]" : "text-[#0da651]"} />
                   <h3 className="text-base font-bold text-gray-900">Guidelines &amp; Logistics</h3>
                 </div>
 
                 <div className="space-y-2.5 text-xs text-gray-600">
                   <div className="flex items-start gap-2">
-                    <CheckCircle2 size={14} className="text-[#0da651] shrink-0 mt-0.5" />
+                    <CheckCircle2 size={14} className={`${isMentor ? 'text-[#7656f4]' : 'text-[#0da651]'} shrink-0 mt-0.5`} />
                     <span>College ID Card is mandatory for entry and attendance verification.</span>
                   </div>
                   <div className="flex items-start gap-2">
-                    <CheckCircle2 size={14} className="text-[#0da651] shrink-0 mt-0.5" />
+                    <CheckCircle2 size={14} className={`${isMentor ? 'text-[#7656f4]' : 'text-[#0da651]'} shrink-0 mt-0.5`} />
                     <span>Laptops required for coding and technical workshop tracks.</span>
                   </div>
                   <div className="flex items-start gap-2">
-                    <CheckCircle2 size={14} className="text-[#0da651] shrink-0 mt-0.5" />
+                    <CheckCircle2 size={14} className={`${isMentor ? 'text-[#7656f4]' : 'text-[#0da651]'} shrink-0 mt-0.5`} />
                     <span>100% attendance during the event is necessary to claim Activity points.</span>
                   </div>
                 </div>
@@ -838,7 +910,11 @@ export default function ActivityDetailView({
                   setCurrentPage(1);
                 }}
                 placeholder="Search students by name, roll no, email, phone..."
-                className="w-full pl-10 pr-4 py-2.5 border border-gray-200 bg-gray-50/50 hover:bg-white focus:bg-white rounded-xl text-xs sm:text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all"
+                className={`w-full pl-10 pr-4 py-2.5 border border-gray-200 bg-gray-50/50 hover:bg-white focus:bg-white rounded-xl text-xs sm:text-sm font-medium text-gray-700 focus:outline-none transition-all ${
+                  isMentor
+                    ? "focus:ring-2 focus:ring-purple-500/20 focus:border-[#7656f4]"
+                    : "focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
+                }`}
               />
             </div>
 
@@ -852,7 +928,11 @@ export default function ActivityDetailView({
                     setDeptFilter(e.target.value);
                     setCurrentPage(1);
                   }}
-                  className="w-full appearance-none rounded-xl border border-gray-200 bg-gray-50/50 py-2.5 px-3 pr-8 text-xs sm:text-sm font-medium text-gray-700 focus:bg-white focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 cursor-pointer"
+                  className={`w-full appearance-none rounded-xl border border-gray-200 bg-gray-50/50 py-2.5 px-3 pr-8 text-xs sm:text-sm font-medium text-gray-700 focus:bg-white focus:outline-none cursor-pointer ${
+                    isMentor
+                      ? "focus:border-[#7656f4] focus:ring-2 focus:ring-purple-500/20"
+                      : "focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
+                  }`}
                 >
                   <option value="all">All Departments</option>
                   <option value="CSE">CSE</option>
@@ -872,7 +952,11 @@ export default function ActivityDetailView({
                     setYearFilter(e.target.value);
                     setCurrentPage(1);
                   }}
-                  className="w-full appearance-none rounded-xl border border-gray-200 bg-gray-50/50 py-2.5 px-3 pr-8 text-xs sm:text-sm font-medium text-gray-700 focus:bg-white focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 cursor-pointer"
+                  className={`w-full appearance-none rounded-xl border border-gray-200 bg-gray-50/50 py-2.5 px-3 pr-8 text-xs sm:text-sm font-medium text-gray-700 focus:bg-white focus:outline-none cursor-pointer ${
+                    isMentor
+                      ? "focus:border-[#7656f4] focus:ring-2 focus:ring-purple-500/20"
+                      : "focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
+                  }`}
                 >
                   <option value="all">All Years</option>
                   <option value="1">1st Year</option>
@@ -891,7 +975,11 @@ export default function ActivityDetailView({
                     setSemFilter(e.target.value);
                     setCurrentPage(1);
                   }}
-                  className="w-full appearance-none rounded-xl border border-gray-200 bg-gray-50/50 py-2.5 px-3 pr-8 text-xs sm:text-sm font-medium text-gray-700 focus:bg-white focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 cursor-pointer"
+                  className={`w-full appearance-none rounded-xl border border-gray-200 bg-gray-50/50 py-2.5 px-3 pr-8 text-xs sm:text-sm font-medium text-gray-700 focus:bg-white focus:outline-none cursor-pointer ${
+                    isMentor
+                      ? "focus:border-[#7656f4] focus:ring-2 focus:ring-purple-500/20"
+                      : "focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
+                  }`}
                 >
                   <option value="all">All Semesters</option>
                   <option value="1">Semester 1</option>
@@ -910,7 +998,11 @@ export default function ActivityDetailView({
               <button
                 type="button"
                 onClick={handleExportCSV}
-                className="inline-flex items-center gap-1.5 rounded-xl border border-emerald-300 bg-emerald-50/70 hover:bg-emerald-100 text-[#0da651] px-4 py-2.5 text-xs font-bold shadow-2xs transition-all cursor-pointer shrink-0 active:scale-95"
+                className={`inline-flex items-center gap-1.5 rounded-xl border ${
+                  isMentor
+                    ? "border-purple-300 bg-purple-50/70 hover:bg-purple-100 text-[#7656f4]"
+                    : "border-emerald-300 bg-emerald-50/70 hover:bg-emerald-100 text-[#0da651]"
+                } px-4 py-2.5 text-xs font-bold shadow-2xs transition-all cursor-pointer shrink-0 active:scale-95`}
               >
                 <Download size={15} />
                 <span>Export CSV</span>
@@ -923,7 +1015,11 @@ export default function ActivityDetailView({
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-gradient-to-r from-[#0da651] via-[#0e9f4e] to-[#09803d] text-white text-xs font-bold uppercase tracking-wider">
+                  <tr className={`${
+                    isMentor
+                      ? "bg-gradient-to-r from-[#7656f4] via-[#6845f2] to-[#5531dc]"
+                      : "bg-gradient-to-r from-[#0da651] via-[#0e9f4e] to-[#09803d]"
+                  } text-white text-xs font-bold uppercase tracking-wider`}>
                     <th className="py-3.5 px-5 text-left">STUDENT</th>
                     <th className="py-3.5 px-5 text-left">COLLEGE ROLL</th>
                     <th className="py-3.5 px-5 text-left">EMAIL</th>
@@ -991,7 +1087,7 @@ export default function ActivityDetailView({
                         </td>
 
                         {/* Semester */}
-                        <td className="py-3.5 px-5 text-center font-bold text-[#0da651] text-xs">
+                        <td className={`py-3.5 px-5 text-center font-bold ${isMentor ? 'text-[#7656f4]' : 'text-[#0da651]'} text-xs`}>
                           {st.semester}
                         </td>
 
@@ -999,7 +1095,9 @@ export default function ActivityDetailView({
                         <td className="py-3.5 px-5 text-center">
                           <span
                             className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold ${st.status === "Confirmed"
-                                ? "bg-emerald-50 text-[#0da651] border border-emerald-200"
+                                ? isMentor
+                                  ? "bg-purple-50 text-[#7656f4] border border-purple-200"
+                                  : "bg-emerald-50 text-[#0da651] border border-emerald-200"
                                 : st.status === "Attended"
                                   ? "bg-blue-50 text-blue-700 border border-blue-200"
                                   : "bg-amber-50 text-amber-700 border border-amber-200"
@@ -1049,10 +1147,13 @@ export default function ActivityDetailView({
                   <button
                     key={pageNum}
                     onClick={() => setCurrentPage(pageNum)}
-                    className={`w-7 h-7 text-xs rounded font-medium transition-colors cursor-pointer ${currentPage === pageNum
-                        ? "bg-primary text-white shadow-xs"
+                    className={`w-7 h-7 text-xs rounded font-medium transition-colors cursor-pointer ${
+                      currentPage === pageNum
+                        ? isMentor
+                          ? "bg-[#7656f4] text-white shadow-xs"
+                          : "bg-primary text-white shadow-xs"
                         : "text-gray-500 hover:bg-gray-100"
-                      }`}
+                    }`}
                   >
                     {pageNum}
                   </button>
@@ -1079,9 +1180,123 @@ export default function ActivityDetailView({
                       setCurrentPage(val);
                     }
                   }}
-                  className="w-12 border border-gray-200 rounded px-2 py-1 text-center focus:outline-none focus:ring-1 focus:ring-green-300 text-xs"
+                  className={`w-12 border border-gray-200 rounded px-2 py-1 text-center focus:outline-none focus:ring-1 ${isMentor ? 'focus:ring-purple-300' : 'focus:ring-green-300'} text-xs`}
                 />
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Registration Modal for Mentors */}
+      {showRegisterModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in duration-200">
+          <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-100 shadow-2xl max-w-lg w-full overflow-hidden flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-200 font-['Roboto',sans-serif]">
+            {/* Modal Header */}
+            <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-gradient-to-r from-[#f6f2fe] to-white">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-[#7656f4] text-white flex items-center justify-center shadow-md shadow-purple-500/20">
+                  <UserPlus size={20} />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-gray-900 leading-tight">Register for Activity</h3>
+                  <p className="text-xs text-gray-500 mt-0.5 truncate max-w-[260px] sm:max-w-xs">{activity.title}</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowRegisterModal(false)}
+                className="w-8 h-8 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-500 flex items-center justify-center transition-colors cursor-pointer"
+              >
+                <X size={16} />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-6 space-y-5 overflow-y-auto flex-1 text-xs sm:text-sm font-['Roboto',sans-serif]">
+              {/* Event Brief Pill */}
+              <div className="p-3.5 bg-[#f6f2fe] border border-purple-100/80 rounded-2xl flex items-center justify-between gap-3 text-xs">
+                <div>
+                  <p className="font-bold text-gray-900">{activity.title}</p>
+                  <p className="text-gray-500 mt-0.5">{activity.date} &bull; {activity.venue || "Main Auditorium"}</p>
+                </div>
+                <span className="px-2.5 py-1 rounded-lg bg-[#7656f4] text-white font-bold text-[11px] shrink-0">
+                  15 MAR Points
+                </span>
+              </div>
+
+              {/* Mentee List Selection */}
+              <div className="space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <p className="text-xs font-bold text-gray-700 uppercase tracking-wider">
+                    Select Mentees to Register ({selectedMentees.length}/{MENTEE_OPTIONS.length})
+                  </p>
+                  <button
+                    type="button"
+                    onClick={handleToggleSelectAll}
+                    className="text-xs font-bold text-[#7656f4] hover:underline cursor-pointer"
+                  >
+                    {selectedMentees.length === MENTEE_OPTIONS.length ? "Deselect All" : "Select All"}
+                  </button>
+                </div>
+
+                <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
+                  {MENTEE_OPTIONS.map((mentee) => {
+                    const isSelected = selectedMentees.includes(mentee.id);
+                    return (
+                      <div
+                        key={mentee.id}
+                        onClick={() => handleToggleMentee(mentee.id)}
+                        className={`flex items-center justify-between p-3 rounded-xl border transition-all cursor-pointer ${
+                          isSelected
+                            ? "border-[#7656f4] bg-purple-50/50 shadow-2xs"
+                            : "border-slate-200/80 hover:bg-slate-50"
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div
+                            className={`w-5 h-5 rounded-md flex items-center justify-center border transition-all ${
+                              isSelected
+                                ? "bg-[#7656f4] border-[#7656f4] text-white"
+                                : "border-gray-300 bg-white"
+                            }`}
+                          >
+                            {isSelected && <Check size={13} className="stroke-[3]" />}
+                          </div>
+                          <div>
+                            <p className="text-xs font-bold text-gray-900">{mentee.name}</p>
+                            <p className="text-[11px] text-gray-400 font-medium">
+                              {mentee.roll} &bull; {mentee.dept} &bull; {mentee.year}
+                            </p>
+                          </div>
+                        </div>
+                        <span className="text-[11px] font-semibold text-purple-700 bg-purple-100/60 px-2 py-0.5 rounded-md">
+                          Mentee
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* Modal Footer */}
+            <div className="p-4 sm:p-5 border-t border-slate-100 bg-slate-50/70 flex items-center justify-end gap-2.5">
+              <button
+                type="button"
+                onClick={() => setShowRegisterModal(false)}
+                className="px-4 py-2.5 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-100 text-xs font-bold transition-all cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleConfirmRegistration}
+                className="flex items-center gap-2 px-5 py-2.5 bg-[#7656f4] hover:bg-[#6242e2] text-white text-xs font-bold rounded-xl shadow-md shadow-purple-500/20 active:scale-95 transition-all cursor-pointer"
+              >
+                <UserPlus size={15} />
+                <span>Confirm Registration ({selectedMentees.length})</span>
+              </button>
             </div>
           </div>
         </div>

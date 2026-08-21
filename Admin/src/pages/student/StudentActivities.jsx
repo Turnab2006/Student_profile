@@ -528,31 +528,31 @@ export default function StudentActivities({ onNavigate, hideHeader = false }) {
               events
             </p>
 
-            {/* View Switchers matching reference */}
-            <div className="flex items-center gap-1.5 bg-slate-100/90 p-1 rounded-xl border border-slate-200/60">
+            {/* View Switcher */}
+            <div className="bg-white border border-slate-200/90 rounded-2xl p-1 shadow-2xs inline-flex items-center gap-1">
               <button
                 type="button"
                 onClick={() => setViewMode("grid")}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                className={`p-2 rounded-xl transition-all cursor-pointer ${
                   viewMode === "grid"
-                    ? "bg-blue-600 text-white shadow-xs"
-                    : "text-slate-600 hover:text-slate-900"
+                    ? "bg-blue-50 text-blue-600 border border-blue-200 shadow-2xs"
+                    : "text-slate-400 hover:text-slate-600 hover:bg-slate-50"
                 }`}
+                title="Grid View"
               >
-                <LayoutGrid size={14} />
-                <span>Grid View</span>
+                <LayoutGrid size={18} />
               </button>
               <button
                 type="button"
                 onClick={() => setViewMode("list")}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                className={`p-2 rounded-xl transition-all cursor-pointer ${
                   viewMode === "list"
-                    ? "bg-blue-600 text-white shadow-xs"
-                    : "text-slate-600 hover:text-slate-900"
+                    ? "bg-blue-50 text-blue-600 border border-blue-200 shadow-2xs"
+                    : "text-slate-400 hover:text-slate-600 hover:bg-slate-50"
                 }`}
+                title="List View"
               >
-                <List size={14} />
-                <span>List View</span>
+                <List size={18} />
               </button>
             </div>
           </div>
@@ -682,15 +682,27 @@ export default function StudentActivities({ onNavigate, hideHeader = false }) {
                       </div>
                     </div>
 
-                    {/* Bottom Action Button matching screenshot */}
-                    <div className="pt-2">
+                    {/* Bottom Action Button: View Details & Register in a Single Row */}
+                    <div className="pt-2 grid grid-cols-2 gap-2">
                       <button
                         type="button"
                         onClick={() => setSelectedActivity(activity)}
-                        className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl border border-blue-500 text-blue-600 bg-white hover:bg-blue-50 active:scale-[0.99] font-semibold text-xs transition-all cursor-pointer shadow-2xs"
+                        className="w-full flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl border border-blue-500 text-blue-600 bg-white hover:bg-blue-50 active:scale-[0.99] font-semibold text-xs transition-all cursor-pointer shadow-2xs"
                       >
                         <Eye size={14} />
                         <span>View Details</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleToggleRegistration(activity)}
+                        className={`w-full flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl font-semibold text-xs transition-all cursor-pointer shadow-xs active:scale-95 ${
+                          activity.isRegistered
+                            ? "bg-emerald-600 text-white hover:bg-emerald-700"
+                            : "bg-blue-600 text-white hover:bg-blue-700"
+                        }`}
+                      >
+                        <CheckCircle2 size={14} />
+                        <span>{activity.isRegistered ? "Registered" : "Register"}</span>
                       </button>
                     </div>
                   </div>
@@ -713,36 +725,32 @@ export default function StudentActivities({ onNavigate, hideHeader = false }) {
 
                     <div className="space-y-1 min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-[10px] font-bold text-purple-600 bg-purple-50 px-2 py-0.5 rounded-md border border-purple-100">
+                        <span className="text-[11px] font-bold text-purple-600 bg-purple-50 px-2 py-0.5 rounded border border-purple-100">
                           {activity.category}
                         </span>
-                        {activity.isRegistered && (
-                          <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-100 flex items-center gap-1">
-                            <Check size={10} /> Registered
-                          </span>
-                        )}
+                        <h4 className="text-sm font-bold text-slate-800 hover:text-blue-600 transition-colors">
+                          {activity.title}
+                        </h4>
                       </div>
-                      <h3 className="text-base font-bold text-slate-900 truncate">
-                        {activity.title}
-                      </h3>
-                      <p className="text-xs text-slate-500 line-clamp-1 max-w-xl">
+                      <p className="text-xs text-slate-500 line-clamp-1">
                         {activity.description}
                       </p>
-                      <div className="flex items-center gap-4 text-xs text-slate-500 pt-1 flex-wrap font-medium">
+                      <div className="flex items-center gap-4 text-[11px] text-slate-500 font-medium pt-1">
                         <span className="flex items-center gap-1">
-                          <Calendar size={13} className="text-slate-400" /> {activity.date}
+                          <Calendar size={12} className="text-slate-400" /> {activity.date}
                         </span>
                         <span className="flex items-center gap-1">
-                          <Clock size={13} className="text-slate-400" /> {activity.time}
+                          <Clock size={12} className="text-slate-400" /> {activity.time}
                         </span>
                         <span className="flex items-center gap-1">
-                          <MapPin size={13} className="text-slate-400" /> {activity.venue}
+                          <MapPin size={12} className="text-slate-400" /> {activity.venue}
                         </span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2.5 w-full sm:w-auto justify-end shrink-0 pt-2 sm:pt-0">
+                  {/* Actions in a Single Row */}
+                  <div className="flex items-center gap-2 w-full sm:w-auto justify-end shrink-0">
                     <button
                       type="button"
                       onClick={(e) => handleToggleBookmark(activity.id, e)}
@@ -765,6 +773,18 @@ export default function StudentActivities({ onNavigate, hideHeader = false }) {
                     >
                       <Eye size={14} />
                       <span>View Details</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleToggleRegistration(activity)}
+                      className={`px-4 py-2.5 rounded-xl font-semibold text-xs transition-all flex items-center gap-1.5 cursor-pointer shadow-xs active:scale-95 ${
+                        activity.isRegistered
+                          ? "bg-emerald-600 text-white hover:bg-emerald-700"
+                          : "bg-blue-600 text-white hover:bg-blue-700"
+                      }`}
+                    >
+                      <CheckCircle2 size={14} />
+                      <span>{activity.isRegistered ? "Registered" : "Register"}</span>
                     </button>
                   </div>
                 </div>

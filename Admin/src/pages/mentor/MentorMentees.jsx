@@ -420,29 +420,31 @@ export default function MentorMentees({ onNavigate }) {
           <ChevronDown size={14} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-500" />
         </div>
 
-        {/* List / Grid View Toggles (Moved into top bar) */}
-        <div className="flex items-center gap-1 bg-slate-100/80 p-1 rounded-xl border border-slate-200/60 ml-auto">
-          <button
-            type="button"
-            onClick={() => setViewMode('list')}
-            title="List View"
-            className={`p-1.5 rounded-lg transition-all cursor-pointer ${viewMode === 'list'
-              ? 'bg-white text-[#7656f4] shadow-sm border border-[#e2d9fd] font-bold'
-              : 'text-slate-400 hover:text-slate-600'
-              }`}
-          >
-            <List size={18} />
-          </button>
+        {/* List / Grid View Toggles */}
+        <div className="bg-white border border-slate-200/90 rounded-2xl p-1 shadow-2xs inline-flex items-center gap-1 ml-auto">
           <button
             type="button"
             onClick={() => setViewMode('grid')}
             title="Grid View"
-            className={`p-1.5 rounded-lg transition-all cursor-pointer ${viewMode === 'grid'
-              ? 'bg-white text-[#7656f4] shadow-sm border border-[#e2d9fd] font-bold'
-              : 'text-slate-400 hover:text-slate-600'
-              }`}
+            className={`p-2 rounded-xl transition-all cursor-pointer ${
+              viewMode === 'grid'
+                ? 'bg-[#f0eaff] text-[#7656f4] border border-[#7656f4]/30 shadow-2xs'
+                : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
+            }`}
           >
             <LayoutGrid size={18} />
+          </button>
+          <button
+            type="button"
+            onClick={() => setViewMode('list')}
+            title="List View"
+            className={`p-2 rounded-xl transition-all cursor-pointer ${
+              viewMode === 'list'
+                ? 'bg-[#f0eaff] text-[#7656f4] border border-[#7656f4]/30 shadow-2xs'
+                : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
+            }`}
+          >
+            <List size={18} />
           </button>
         </div>
       </div>

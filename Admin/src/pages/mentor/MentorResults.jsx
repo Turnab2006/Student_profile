@@ -38,6 +38,8 @@ const mockMentees = [
     name: 'Tanuka Saha',
     rollNo: 'CSE2024011',
     department: 'CSE',
+    year: '2nd Year',
+    semester: '3rd Sem',
     yearSem: '2nd Year / 3rd Sem',
     mentor: 'Dr. Rahul Verma',
     lastResult: '89%',
@@ -58,6 +60,8 @@ const mockMentees = [
     name: 'Arjun Mukherjee',
     rollNo: 'CSE2024031',
     department: 'CSE',
+    year: '1st Year',
+    semester: '1st Sem',
     yearSem: '1st Year / 1st Sem',
     mentor: 'Dr. Rahul Verma',
     lastResult: '91.6%',
@@ -78,6 +82,8 @@ const mockMentees = [
     name: 'Sneha Roy',
     rollNo: 'ECE2024005',
     department: 'ECE',
+    year: '2nd Year',
+    semester: '3rd Sem',
     yearSem: '2nd Year / 3rd Sem',
     mentor: 'Prof. S. Chatterjee',
     lastResult: '84%',
@@ -98,6 +104,8 @@ const mockMentees = [
     name: 'Rohan Sharma',
     rollNo: 'CSE2024015',
     department: 'CSE',
+    year: '3rd Year',
+    semester: '5th Sem',
     yearSem: '3rd Year / 5th Sem',
     mentor: 'Dr. Rahul Verma',
     lastResult: '78%',
@@ -117,6 +125,8 @@ const mockMentees = [
     name: 'Priya Patel',
     rollNo: 'IT2024009',
     department: 'IT',
+    year: '2nd Year',
+    semester: '3rd Sem',
     yearSem: '2nd Year / 3rd Sem',
     mentor: 'Dr. A. K. Sen',
     lastResult: '93%',
@@ -136,6 +146,8 @@ const mockMentees = [
     name: 'Aniket Das',
     rollNo: 'ME2024021',
     department: 'ME',
+    year: '1st Year',
+    semester: '2nd Sem',
     yearSem: '1st Year / 2nd Sem',
     mentor: 'Prof. M. Dutta',
     lastResult: '72%',
@@ -154,6 +166,8 @@ const mockMentees = [
     name: 'Vikram Singh',
     rollNo: 'EE2024003',
     department: 'EE',
+    year: '3rd Year',
+    semester: '6th Sem',
     yearSem: '3rd Year / 6th Sem',
     mentor: 'Dr. Rahul Verma',
     lastResult: '88%',
@@ -172,6 +186,8 @@ const mockMentees = [
     name: 'Isha Roy',
     rollNo: 'CSE2024028',
     department: 'CSE',
+    year: '2nd Year',
+    semester: '3rd Sem',
     yearSem: '2nd Year / 3rd Sem',
     mentor: 'Dr. Rahul Verma',
     lastResult: '86%',
@@ -190,6 +206,8 @@ const mockMentees = [
     name: 'Sourav Ganguly',
     rollNo: 'CSE2024040',
     department: 'CSE',
+    year: '2nd Year',
+    semester: '3rd Sem',
     yearSem: '2nd Year / 3rd Sem',
     mentor: 'Dr. Rahul Verma',
     lastResult: '90%',
@@ -207,6 +225,8 @@ const mockMentees = [
     name: 'Debjani Paul',
     rollNo: 'ECE2024018',
     department: 'ECE',
+    year: '2nd Year',
+    semester: '3rd Sem',
     yearSem: '2nd Year / 3rd Sem',
     mentor: 'Prof. S. Chatterjee',
     lastResult: '82%',
@@ -224,6 +244,8 @@ const mockMentees = [
     name: 'Manish Kumar',
     rollNo: 'IT2024014',
     department: 'IT',
+    year: '1st Year',
+    semester: '2nd Sem',
     yearSem: '1st Year / 2nd Sem',
     mentor: 'Dr. A. K. Sen',
     lastResult: '75%',
@@ -241,6 +263,8 @@ const mockMentees = [
     name: 'Ritika Ghosal',
     rollNo: 'CSE2024052',
     department: 'CSE',
+    year: '2nd Year',
+    semester: '3rd Sem',
     yearSem: '2nd Year / 3rd Sem',
     mentor: 'Dr. Rahul Verma',
     lastResult: '95%',
@@ -258,6 +282,8 @@ const mockMentees = [
     name: 'Aditya Sen',
     rollNo: 'ME2024011',
     department: 'ME',
+    year: '3rd Year',
+    semester: '5th Sem',
     yearSem: '3rd Year / 5th Sem',
     mentor: 'Prof. M. Dutta',
     lastResult: '79%',
@@ -275,6 +301,8 @@ const mockMentees = [
     name: 'Pooja Bose',
     rollNo: 'EE2024019',
     department: 'EE',
+    year: '2nd Year',
+    semester: '4th Sem',
     yearSem: '2nd Year / 4th Sem',
     mentor: 'Dr. Rahul Verma',
     lastResult: '87%',
@@ -292,6 +320,8 @@ const mockMentees = [
     name: 'Aakash Verma',
     rollNo: 'CSE2024061',
     department: 'CSE',
+    year: '2nd Year',
+    semester: '3rd Sem',
     yearSem: '2nd Year / 3rd Sem',
     mentor: 'Dr. Rahul Verma',
     lastResult: '81%',
@@ -309,6 +339,8 @@ const mockMentees = [
     name: 'Shreya Nandi',
     rollNo: 'ECE2024029',
     department: 'ECE',
+    year: '1st Year',
+    semester: '2nd Sem',
     yearSem: '1st Year / 2nd Sem',
     mentor: 'Prof. S. Chatterjee',
     lastResult: '89%',
@@ -326,6 +358,8 @@ const mockMentees = [
     name: 'Subhajit Dey',
     rollNo: 'IT2024022',
     department: 'IT',
+    year: '3rd Year',
+    semester: '5th Sem',
     yearSem: '3rd Year / 5th Sem',
     mentor: 'Dr. A. K. Sen',
     lastResult: '76%',
@@ -343,6 +377,8 @@ const mockMentees = [
     name: 'Ananya Mitra',
     rollNo: 'CSE2024074',
     department: 'CSE',
+    year: '2nd Year',
+    semester: '3rd Sem',
     yearSem: '2nd Year / 3rd Sem',
     mentor: 'Dr. Rahul Verma',
     lastResult: '92%',
@@ -360,6 +396,8 @@ const mockMentees = [
     name: 'Chirag Banerjee',
     rollNo: 'ME2024035',
     department: 'ME',
+    year: '2nd Year',
+    semester: '4th Sem',
     yearSem: '2nd Year / 4th Sem',
     mentor: 'Prof. M. Dutta',
     lastResult: '80%',
@@ -377,6 +415,8 @@ const mockMentees = [
     name: 'Tania Biswas',
     rollNo: 'CSE2024089',
     department: 'CSE',
+    year: '1st Year',
+    semester: '1st Sem',
     yearSem: '1st Year / 1st Sem',
     mentor: 'Dr. Rahul Verma',
     lastResult: '88%',
@@ -394,8 +434,8 @@ const mockMentees = [
 export default function MentorResults({ initialUpload = false }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [departmentFilter, setDepartmentFilter] = useState('All');
-  const [academicYear, setAcademicYear] = useState('2024-25');
-  const [sortBy, setSortBy] = useState('name');
+  const [yearFilter, setYearFilter] = useState('All');
+  const [semesterFilter, setSemesterFilter] = useState('All');
   const [viewMode, setViewMode] = useState('grid'); // 'grid' | 'list'
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -422,7 +462,7 @@ export default function MentorResults({ initialUpload = false }) {
 
   const itemsPerPage = 12;
 
-  // Filtering & Sorting
+  // Filtering
   const filteredMentees = useMemo(() => {
     return mockMentees
       .filter((mentee) => {
@@ -434,20 +474,21 @@ export default function MentorResults({ initialUpload = false }) {
           (mentee.email && mentee.email.toLowerCase().includes(query)) ||
           (mentee.phone && mentee.phone.toLowerCase().includes(query)) ||
           (mentee.department && mentee.department.toLowerCase().includes(query));
+
         const matchesDept =
           departmentFilter === 'All' || mentee.department === departmentFilter;
-        return matchesSearch && matchesDept;
-      })
-      .sort((a, b) => {
-        if (sortBy === 'name') return a.name.localeCompare(b.name);
-        if (sortBy === 'roll') return a.rollNo.localeCompare(b.rollNo);
-        if (sortBy === 'result-desc')
-          return parseFloat(b.lastResult) - parseFloat(a.lastResult);
-        if (sortBy === 'result-asc')
-          return parseFloat(a.lastResult) - parseFloat(b.lastResult);
-        return 0;
+
+        const menteeYear = mentee.year || mentee.yearSem?.split('/')[0]?.trim();
+        const matchesYear =
+          yearFilter === 'All' || menteeYear === yearFilter;
+
+        const menteeSem = mentee.semester || mentee.yearSem?.split('/')[1]?.trim();
+        const matchesSem =
+          semesterFilter === 'All' || menteeSem === semesterFilter;
+
+        return matchesSearch && matchesDept && matchesYear && matchesSem;
       });
-  }, [searchQuery, departmentFilter, sortBy]);
+  }, [searchQuery, departmentFilter, yearFilter, semesterFilter]);
 
   const totalPages = Math.ceil(filteredMentees.length / itemsPerPage) || 1;
   const showingStart = filteredMentees.length > 0 ? (currentPage - 1) * itemsPerPage + 1 : 0;
@@ -1012,49 +1053,63 @@ export default function MentorResults({ initialUpload = false }) {
             <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
           </div>
 
-          {/* Academic Year Filter */}
+          {/* Year Filter */}
           <div className="relative">
             <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-xl pl-3.5 pr-8 py-2.5 text-sm font-semibold text-slate-700 shadow-2xs hover:border-slate-300 transition-all cursor-pointer">
-              <CalendarDays size={18} className="text-slate-500 shrink-0" />
+              <GraduationCap size={18} className="text-slate-500 shrink-0" />
               <select
-                value={academicYear}
-                onChange={(e) => setAcademicYear(e.target.value)}
+                value={yearFilter}
+                onChange={(e) => {
+                  setYearFilter(e.target.value);
+                  setCurrentPage(1);
+                }}
                 className="bg-transparent text-slate-700 font-semibold appearance-none outline-none cursor-pointer"
               >
-                <option value="2024-25">Academic Year 2024-25</option>
-                <option value="2023-24">Academic Year 2023-24</option>
-                <option value="2022-23">Academic Year 2022-23</option>
+                <option value="All">All Years</option>
+                <option value="1st Year">1st Year</option>
+                <option value="2nd Year">2nd Year</option>
+                <option value="3rd Year">3rd Year</option>
+                <option value="4th Year">4th Year</option>
               </select>
             </div>
             <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
           </div>
 
-          {/* Sort Dropdown */}
+          {/* Semester Filter */}
           <div className="relative">
             <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-xl pl-3.5 pr-8 py-2.5 text-sm font-semibold text-slate-700 shadow-2xs hover:border-slate-300 transition-all cursor-pointer">
+              <CalendarDays size={18} className="text-slate-500 shrink-0" />
               <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
+                value={semesterFilter}
+                onChange={(e) => {
+                  setSemesterFilter(e.target.value);
+                  setCurrentPage(1);
+                }}
                 className="bg-transparent text-slate-700 font-semibold appearance-none outline-none cursor-pointer"
               >
-                <option value="name">Sort by: Name (A - Z)</option>
-                <option value="roll">Sort by: Roll Number</option>
-                <option value="result-desc">Sort by: Highest Result</option>
-                <option value="result-asc">Sort by: Lowest Result</option>
+                <option value="All">All Semesters</option>
+                <option value="1st Sem">1st Sem</option>
+                <option value="2nd Sem">2nd Sem</option>
+                <option value="3rd Sem">3rd Sem</option>
+                <option value="4th Sem">4th Sem</option>
+                <option value="5th Sem">5th Sem</option>
+                <option value="6th Sem">6th Sem</option>
+                <option value="7th Sem">7th Sem</option>
+                <option value="8th Sem">8th Sem</option>
               </select>
             </div>
             <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
           </div>
 
           {/* View mode toggle (Grid vs List) */}
-          <div className="flex items-center gap-1 bg-white border border-slate-200 rounded-xl p-1 shadow-2xs">
+          <div className="bg-white border border-slate-200/90 rounded-2xl p-1 shadow-2xs inline-flex items-center gap-1">
             <button
               type="button"
               onClick={() => setViewMode('grid')}
-              className={`p-1.5 rounded-lg transition-all cursor-pointer ${
+              className={`p-2 rounded-xl transition-all cursor-pointer ${
                 viewMode === 'grid'
-                  ? 'bg-[#f0eaff] text-[#7656f4] border border-[#7656f4]/40 shadow-xs'
-                  : 'text-slate-400 hover:text-slate-600'
+                  ? 'bg-[#f0eaff] text-[#7656f4] border border-[#7656f4]/30 shadow-2xs'
+                  : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
               }`}
               title="Grid View"
             >
@@ -1063,10 +1118,10 @@ export default function MentorResults({ initialUpload = false }) {
             <button
               type="button"
               onClick={() => setViewMode('list')}
-              className={`p-1.5 rounded-lg transition-all cursor-pointer ${
+              className={`p-2 rounded-xl transition-all cursor-pointer ${
                 viewMode === 'list'
-                  ? 'bg-[#f0eaff] text-[#7656f4] border border-[#7656f4]/40 shadow-xs'
-                  : 'text-slate-400 hover:text-slate-600'
+                  ? 'bg-[#f0eaff] text-[#7656f4] border border-[#7656f4]/30 shadow-2xs'
+                  : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
               }`}
               title="List View"
             >
@@ -1078,87 +1133,61 @@ export default function MentorResults({ initialUpload = false }) {
 
       {/* Main Content Area */}
       {viewMode === 'grid' ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+        /* Grid View */
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {currentPageMentees.map((mentee) => (
             <div
               key={mentee.id}
-              className="bg-white rounded-2xl p-4 sm:p-5 border border-gray-100 shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
+              className="bg-white rounded-3xl p-5 border border-gray-100/90 shadow-2xs hover:shadow-md hover:border-purple-200/80 transition-all flex flex-col justify-between gap-4 group"
             >
-              <div>
-                {/* Mentee Header */}
-                <div className="flex items-start justify-between gap-2 mb-4">
-                  <div className="flex items-center gap-3">
-                    <img
-                      src={mentee.avatar}
-                      alt={mentee.name}
-                      className="w-12 h-12 rounded-full object-cover border border-purple-100 shrink-0"
-                    />
-                    <div>
-                      <h3 className="text-base font-bold text-gray-900 leading-snug">
-                        {mentee.name}
-                      </h3>
-                      <span className="inline-flex items-center gap-1 bg-[#f6f2fe] text-[#7656f4] text-[11px] font-semibold px-2 py-0.5 rounded-md mt-0.5">
-                        <IdCard size={13} className="text-[#7656f4]" />
-                        {mentee.rollNo}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="text-right shrink-0">
-                    <div className="bg-emerald-50 border border-emerald-100 text-emerald-600 text-base font-extrabold px-2.5 py-0.5 rounded-lg inline-block">
-                      {mentee.lastResult}
-                    </div>
-                    <span className="block text-[10px] text-gray-400 font-medium mt-0.5">
-                      Last Result
-                    </span>
+              <div className="flex items-start justify-between">
+                <div className="flex items-center gap-3">
+                  <img
+                    src={mentee.avatar}
+                    alt={mentee.name}
+                    className="w-12 h-12 rounded-full object-cover border border-purple-100 group-hover:scale-105 transition-transform"
+                  />
+                  <div>
+                    <h3 className="font-bold text-gray-900 group-hover:text-[#7656f4] transition-colors">{mentee.name}</h3>
+                    <p className="text-xs text-gray-500 font-medium">{mentee.rollNo}</p>
                   </div>
                 </div>
+                <span className="bg-purple-50 text-[#7656f4] text-xs font-bold px-2.5 py-1 rounded-full border border-purple-100">
+                  {mentee.department}
+                </span>
+              </div>
 
-                {/* Key-Value Details */}
-                <div className="space-y-2 py-2.5 border-t border-b border-gray-50 my-3">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-gray-400 font-medium flex items-center gap-1.5">
-                      <Building2 size={15} className="text-[#7656f4]" />
-                      Department
-                    </span>
-                    <span className="font-bold text-gray-800">{mentee.department}</span>
-                  </div>
-
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-gray-400 font-medium flex items-center gap-1.5">
-                      <CalendarDays size={15} className="text-[#7656f4]" />
-                      Year / Semester
-                    </span>
-                    <span className="font-bold text-gray-800">{mentee.yearSem}</span>
-                  </div>
-
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-gray-400 font-medium flex items-center gap-1.5">
-                      <UserCheck size={15} className="text-[#7656f4]" />
-                      Mentor
-                    </span>
-                    <span className="font-bold text-gray-800">{mentee.mentor}</span>
-                  </div>
+              <div className="bg-[#f8fafc] rounded-2xl p-3 grid grid-cols-2 gap-2 border border-gray-100/60">
+                <div>
+                  <p className="text-[11px] text-gray-400 font-semibold">Academic Year</p>
+                  <p className="text-xs font-bold text-gray-800">{mentee.year || mentee.yearSem?.split('/')[0]?.trim()}</p>
+                </div>
+                <div>
+                  <p className="text-[11px] text-gray-400 font-semibold">Semester</p>
+                  <p className="text-xs font-bold text-gray-800">{mentee.semester || mentee.yearSem?.split('/')[1]?.trim()}</p>
+                </div>
+                <div className="col-span-2 flex items-center justify-between pt-1 border-t border-gray-200/40">
+                  <span className="text-xs font-semibold text-gray-600">Last Score:</span>
+                  <span className="text-sm font-extrabold text-emerald-600">{mentee.lastResult}</span>
                 </div>
               </div>
 
-              {/* Action Buttons */}
-              <div className="grid grid-cols-2 gap-2 mt-2 pt-1">
+              <div className="grid grid-cols-2 gap-2 pt-1">
                 <button
                   type="button"
                   onClick={() => setSelectedMenteeForDetails(mentee)}
-                  className="bg-[#f6f2fe] border border-[#7656f4]/30 text-[#7656f4] hover:bg-purple-100 py-[10.5px] px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                  className="bg-[#f6f2fe] hover:bg-purple-100 text-[#7656f4] border border-[#7656f4]/30 py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                 >
-                  <Eye size={16} />
+                  <Eye size={15} />
                   <span>View Details</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => handleOpenUpload(mentee)}
-                  className="bg-[#7656f4] hover:bg-[#6242e2] text-white py-[10.5px] px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-xs cursor-pointer"
+                  className="bg-[#7656f4] hover:bg-[#6242e2] text-white py-2.5 px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-xs cursor-pointer"
                 >
-                  <UploadCloud size={16} />
-                  <span>Upload Result</span>
+                  <UploadCloud size={15} />
+                  <span>Upload</span>
                 </button>
               </div>
             </div>
@@ -1166,18 +1195,18 @@ export default function MentorResults({ initialUpload = false }) {
         </div>
       ) : (
         /* List View */
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-xs overflow-hidden">
+        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 overflow-hidden font-['Roboto',sans-serif]">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-gray-50/80 border-b border-gray-100 text-[11px] font-bold text-gray-500 uppercase tracking-wider">
-                  <th className="py-3.5 px-4">Student</th>
-                  <th className="py-3.5 px-4">Roll Number</th>
-                  <th className="py-3.5 px-4">Department</th>
-                  <th className="py-3.5 px-4">Year / Sem</th>
-                  <th className="py-3.5 px-4">Mentor</th>
-                  <th className="py-3.5 px-4">Last Result</th>
-                  <th className="py-3.5 px-4 text-center">Actions</th>
+                <tr className="bg-gradient-to-r from-[#7656f4] via-[#6845f2] to-[#5531dc] text-white text-xs font-bold uppercase tracking-wider select-none">
+                  <th className="py-3.5 px-5 text-left">Student</th>
+                  <th className="py-3.5 px-4 text-left">Roll Number</th>
+                  <th className="py-3.5 px-4 text-left">Department</th>
+                  <th className="py-3.5 px-4 text-left">Year</th>
+                  <th className="py-3.5 px-4 text-left">Semester</th>
+                  <th className="py-3.5 px-4 text-left">Last Result</th>
+                  <th className="py-3.5 px-5 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 text-sm">
@@ -1199,8 +1228,8 @@ export default function MentorResults({ initialUpload = false }) {
                       </span>
                     </td>
                     <td className="py-3 px-4 font-semibold text-gray-700">{mentee.department}</td>
-                    <td className="py-3 px-4 text-gray-600">{mentee.yearSem}</td>
-                    <td className="py-3 px-4 text-gray-600">{mentee.mentor}</td>
+                    <td className="py-3 px-4 text-gray-600 font-medium">{mentee.year || mentee.yearSem?.split('/')[0]?.trim()}</td>
+                    <td className="py-3 px-4 text-gray-600 font-medium">{mentee.semester || mentee.yearSem?.split('/')[1]?.trim()}</td>
                     <td className="py-3 px-4">
                       <span className="bg-emerald-50 text-emerald-600 font-extrabold text-xs px-2.5 py-1 rounded-lg border border-emerald-100">
                         {mentee.lastResult}
