@@ -89,7 +89,7 @@ function ActionMessageIcon({ size = 18, className = "text-[#7656f4]" }) {
 }
 
 const customMenteeRecords = [
-  { name: 'Tanuka Saha', rollNo: 'CSE2024012', department: 'Computer Science & Engineering', mentorEmail: 'arindam.roy@trackademy.in', phone: '+91 9123930828', studentEmail: 'cse202413@recruit.org.in', avatar: '/tanuka_saha_avatar.png' },
+  { name: 'Tanuka Saha', rollNo: 'CSE2024012', department: 'Computer Science & Engineering', mentorEmail: 'arindam.roy@trackademy.in', phone: '+91 9123930828', studentEmail: 'cse202413@recruit.org.in', avatar: '/tuhina_avatar.jpg' },
   { name: 'Aarav Sharma', rollNo: 'IT2024002', department: 'Information Technology', mentorEmail: 'arindam.roy@trackademy.in', phone: '+91 9128449997', studentEmail: 'it2024002@recruit.org.in', avatar: '/aarav_sharma_avatar.png' },
   { name: 'Aarav Sharma 2', rollNo: 'IT2024022', department: 'Information Technology', mentorEmail: 'arindam.roy@trackademy.in', phone: '+91 9997921760', studentEmail: 'it2024022@recruit.org.in', avatar: '/aarav_sharma_avatar.png' },
   { name: 'Aarav Sharma 3', rollNo: 'IT2024042', department: 'Information Technology', mentorEmail: 'arindam.roy@trackademy.in', phone: '+91 9323772077', studentEmail: 'it2024042@recruit.org.in', avatar: '/aarav_sharma_avatar.png' },

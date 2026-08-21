@@ -226,7 +226,7 @@ export const tanukaStudentData = {
   id: "CSE2024012",
   name: "Tanuka Saha",
   verified: true,
-  avatar: "/tanuka_saha_avatar.png",
+  avatar: "/tuhina_avatar.jpg",
   email: "tanuka.saha@gmail.com",
   phone: "+91 9123930828",
   department: "Computer Science & Engineering",

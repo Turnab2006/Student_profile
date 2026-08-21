@@ -77,14 +77,16 @@ const statusStyles = {
   Cancelled: "bg-rose-50 text-rose-700 border border-rose-200/80",
 };
 
-function FilterDropdown({ value, onChange, options, isMentor = false }) {
+function FilterDropdown({ value, onChange, options, isMentor = false, isStudent = false }) {
   return (
     <div className="relative">
       <select
         value={value}
         onChange={(event) => onChange(event.target.value)}
         className={`appearance-none min-w-[135px] px-3.5 py-2.5 pr-8 border border-gray-200 rounded-xl text-xs sm:text-sm font-medium text-gray-700 bg-white hover:bg-gray-50/80 transition-colors whitespace-nowrap focus:outline-none cursor-pointer shadow-2xs ${
-          isMentor
+          isStudent
+            ? "focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563eb]"
+            : isMentor
             ? "focus:ring-2 focus:ring-purple-500/20 focus:border-[#7656f4]"
             : "focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
         }`}
@@ -100,7 +102,7 @@ function FilterDropdown({ value, onChange, options, isMentor = false }) {
   );
 }
 
-export default function Activities({ onNavigate, onOpenSidebar, isMentor = false, user = null }) {
+export default function Activities({ onNavigate, onOpenSidebar, isMentor = false, isStudent = false, user = null }) {
   const [activitiesList, setActivitiesList] = useState([]);
   const [selected, setSelected] = useState([]);
   const [view, setView] = useState("grid"); // 'grid' or 'list'
@@ -111,6 +113,16 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
   const [viewingActivity, setViewingActivity] = useState(null);
   const [activeMenuId, setActiveMenuId] = useState(null);
   const [toastMsg, setToastMsg] = useState("");
+
+  // Student direct registration state
+  const [studentRegisteredIds, setStudentRegisteredIds] = useState(() => {
+    try {
+      const saved = localStorage.getItem("trackademy_student_registered_activities");
+      return saved ? JSON.parse(saved) : ["EVT-001", "EVT-002", "EVT-003", "1", "2"];
+    } catch (e) {
+      return ["EVT-001", "EVT-002", "EVT-003", "1", "2"];
+    }
+  });
 
   // Registration Modal State for Mentor
   const [registerModalActivity, setRegisterModalActivity] = useState(null);
@@ -130,6 +142,30 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
   const showToast = (msg) => {
     setToastMsg(msg);
     setTimeout(() => setToastMsg(""), 3000);
+  };
+
+  const handleStudentRegisterToggle = (activity) => {
+    const isReg = studentRegisteredIds.includes(activity.id);
+    const nextList = isReg
+      ? studentRegisteredIds.filter((id) => id !== activity.id)
+      : [...studentRegisteredIds, activity.id];
+    setStudentRegisteredIds(nextList);
+    try {
+      localStorage.setItem("trackademy_student_registered_activities", JSON.stringify(nextList));
+    } catch (e) {}
+
+    const updated = activitiesList.map((a) =>
+      a.id === activity.id
+        ? { ...a, registered: Math.max(0, (a.registered || 0) + (isReg ? -1 : 1)) }
+        : a
+    );
+    handleSaveActivities(updated);
+
+    showToast(
+      !isReg
+        ? `🎉 Successfully registered for ${activity.title}!`
+        : `Registration cancelled for ${activity.title}`
+    );
   };
 
   const handleOpenRegisterModal = (activity) => {
@@ -200,7 +236,14 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
   const ongoingActivities = activitiesList.filter((a) => a.status === "Ongoing").length;
   const completedActivities = activitiesList.filter((a) => a.status === "Completed").length;
 
-  const stats = isMentor
+  const stats = isStudent
+    ? [
+        { icon: <Megaphone size={22} className="text-[#2563eb]" />, borderAccent: "border-l-[#2563eb]", bg: "bg-blue-50", value: String(totalActivities), label: "TOTAL ACTIVITIES", sub: "All time" },
+        { icon: <CalendarCheck size={22} className="text-emerald-600" />, borderAccent: "border-l-emerald-500", bg: "bg-emerald-50", value: String(upcomingActivities), label: "UPCOMING", sub: "Scheduled activities" },
+        { icon: <Clock size={22} className="text-amber-600" />, borderAccent: "border-l-amber-500", bg: "bg-amber-50", value: String(ongoingActivities), label: "ONGOING", sub: "In progress" },
+        { icon: <Trophy size={22} className="text-purple-600" />, borderAccent: "border-l-purple-500", bg: "bg-purple-50", value: String(completedActivities), label: "COMPLETED", sub: "Past activities" },
+      ]
+    : isMentor
     ? [
         { icon: <Megaphone size={22} className="text-[#7656f4]" />, borderAccent: "border-l-[#7656f4]", bg: "bg-[#f0eaff]", value: String(totalActivities), label: "TOTAL ACTIVITIES", sub: "All time" },
         { icon: <CalendarCheck size={22} className="text-emerald-600" />, borderAccent: "border-l-emerald-500", bg: "bg-emerald-50", value: String(upcomingActivities), label: "UPCOMING", sub: "Scheduled activities" },
@@ -257,17 +300,17 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
     setSelected((prev) => (prev.includes(id) ? prev.filter((r) => r !== id) : [...prev, id]));
 
   return (
-    <div className={`flex-1 ${isMentor ? 'w-full' : 'h-full flex flex-col overflow-hidden bg-[#f8fafc]'}`}>
+    <div className={`flex-1 ${isMentor || isStudent ? 'w-full' : 'h-full flex flex-col overflow-hidden bg-[#f8fafc]'}`}>
       {/* Toast Notification */}
       {toastMsg && (
-        <div className="fixed top-5 right-5 z-50 flex items-center gap-2 rounded-xl bg-emerald-700 px-4 py-3 text-xs font-semibold text-white shadow-2xl animate-in fade-in slide-in-from-top-4">
+        <div className={`fixed top-5 right-5 z-50 flex items-center gap-2 rounded-xl ${isStudent ? 'bg-blue-600' : isMentor ? 'bg-[#5c37d8]' : 'bg-emerald-700'} px-4 py-3 text-xs font-semibold text-white shadow-2xl animate-in fade-in slide-in-from-top-4`}>
           <CheckCircle2 size={16} />
           {toastMsg}
         </div>
       )}
 
-      {/* Top Header */}
-      {!isMentor && (
+      {/* Top Header - Hidden for Mentors & Students */}
+      {!isMentor && !isStudent && (
         <header className="h-[65px] bg-white border-b border-gray-100 px-6 flex items-center justify-between shrink-0 shadow-2xs">
           <div className="flex items-center gap-3">
             <button
@@ -305,7 +348,7 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
         </header>
       )}
 
-      <main className={isMentor ? "p-2 sm:px-5 sm:py-2.5 space-y-5 pb-10" : "flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 font-['Roboto',sans-serif]"}>
+      <main className={isMentor || isStudent ? "p-2 sm:px-5 sm:py-2.5 space-y-5 pb-10" : "flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 font-['Roboto',sans-serif]"}>
         {/* If viewingActivity is selected, render the full ActivityDetailView in the main area */}
         {viewingActivity ? (
           <ActivityDetailView
@@ -314,6 +357,9 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
             onEdit={(act) => handleEditActivity(act)}
             onDelete={(id) => handleDeleteActivity(id)}
             isMentor={isMentor}
+            isStudent={isStudent}
+            isRegistered={viewingActivity ? studentRegisteredIds.includes(viewingActivity.id) : false}
+            onRegisterToggle={handleStudentRegisterToggle}
           />
         ) : (
           <>
@@ -347,7 +393,9 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                   type="text"
                   placeholder="Search activities by title, type, venue..."
                   className={`w-full pl-10 pr-4 py-2.5 border border-gray-200 bg-gray-50/50 hover:bg-white focus:bg-white rounded-xl text-xs sm:text-sm font-medium text-gray-700 focus:outline-none transition-all ${
-                    isMentor
+                    isStudent
+                      ? "focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563eb]"
+                      : isMentor
                       ? "focus:ring-2 focus:ring-purple-500/20 focus:border-[#7656f4]"
                       : "focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500"
                   }`}
@@ -361,6 +409,7 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                   value={typeFilter}
                   onChange={setTypeFilter}
                   isMentor={isMentor}
+                  isStudent={isStudent}
                   options={[
                     { value: "all", label: "All Types" },
                     { value: "Technical", label: "Technical" },
@@ -378,6 +427,7 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                   value={statusFilter}
                   onChange={setStatusFilter}
                   isMentor={isMentor}
+                  isStudent={isStudent}
                   options={[
                     { value: "all", label: "All Status" },
                     { value: "Upcoming", label: "Upcoming" },
@@ -394,7 +444,9 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                     onClick={() => setView("grid")}
                     className={`p-2 rounded-xl transition-all cursor-pointer ${
                       view === "grid"
-                        ? isMentor
+                        ? isStudent
+                          ? "bg-blue-50 text-[#2563eb] border border-blue-200 shadow-2xs"
+                          : isMentor
                           ? "bg-[#f0eaff] text-[#7656f4] border border-[#7656f4]/30 shadow-2xs"
                           : "bg-emerald-50 text-[#0da651] border border-emerald-200 shadow-2xs"
                         : "text-slate-400 hover:text-slate-600 hover:bg-slate-50"
@@ -409,7 +461,9 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                     onClick={() => setView("list")}
                     className={`p-2 rounded-xl transition-all cursor-pointer ${
                       view === "list"
-                        ? isMentor
+                        ? isStudent
+                          ? "bg-blue-50 text-[#2563eb] border border-blue-200 shadow-2xs"
+                          : isMentor
                           ? "bg-[#f0eaff] text-[#7656f4] border border-[#7656f4]/30 shadow-2xs"
                           : "bg-emerald-50 text-[#0da651] border border-emerald-200 shadow-2xs"
                         : "text-slate-400 hover:text-slate-600 hover:bg-slate-50"
@@ -421,8 +475,8 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                   </button>
                 </div>
 
-                {/* Create Activity Button - Hidden for Mentors */}
-                {!isMentor && (
+                {/* Create Activity Button - Hidden for Mentors & Students */}
+                {!isMentor && !isStudent && (
                   <button
                     type="button"
                     onClick={handleCreateActivity}
@@ -465,7 +519,7 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                               }}
                             />
                           ) : (
-                            <div className={`w-full h-full ${isMentor ? 'bg-gradient-to-br from-[#5c37d8] via-[#4d2db7] to-[#1e1548]' : 'bg-gradient-to-br from-emerald-700 via-teal-800 to-emerald-950'} flex items-center justify-center`}>
+                            <div className={`w-full h-full ${isStudent ? 'bg-gradient-to-br from-blue-700 via-indigo-900 to-slate-950' : isMentor ? 'bg-gradient-to-br from-[#5c37d8] via-[#4d2db7] to-[#1e1548]' : 'bg-gradient-to-br from-emerald-700 via-teal-800 to-emerald-950'} flex items-center justify-center`}>
                               {getActivityIcon(a.type, 36, "text-white/40")}
                             </div>
                           )}
@@ -484,8 +538,8 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                             </span>
                           </div>
 
-                          {/* 3-Dots Menu Button at Top-Right Corner of Poster - Hidden for Mentors */}
-                          {!isMentor && (
+                          {/* 3-Dots Menu Button at Top-Right Corner of Poster - Hidden for Mentors & Students */}
+                          {!isMentor && !isStudent && (
                             <div className="absolute top-3 right-3 z-20">
                               <button
                                 type="button"
@@ -556,7 +610,7 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                             <div className="space-y-2 text-xs text-gray-600 mb-4">
                               {/* Date & Time */}
                               <div className="flex items-center gap-2">
-                                <CalendarDays size={14} className={`${isMentor ? 'text-[#7656f4]' : 'text-[#0da651]'} shrink-0`} />
+                                <CalendarDays size={14} className={`${isStudent ? 'text-[#2563eb]' : isMentor ? 'text-[#7656f4]' : 'text-[#0da651]'} shrink-0`} />
                                 <span className="font-medium text-gray-700">
                                   {a.date} {a.time ? `at ${a.time}` : ""}
                                 </span>
@@ -564,7 +618,7 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
 
                               {/* Location / Venue */}
                               <div className="flex items-center gap-2">
-                                <MapPin size={14} className={`${isMentor ? 'text-[#7656f4]' : 'text-[#0da651]'} shrink-0`} />
+                                <MapPin size={14} className={`${isStudent ? 'text-[#2563eb]' : isMentor ? 'text-[#7656f4]' : 'text-[#0da651]'} shrink-0`} />
                                 <span className="font-medium text-gray-700 truncate" title={a.venue || "Campus Venue"}>
                                   {a.venue || "Campus Venue"}
                                 </span>
@@ -572,7 +626,7 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
 
                               {/* Number of registered students - PLACED JUST AFTER LOCATION */}
                               <div className="flex items-center gap-2">
-                                <Users size={14} className={`${isMentor ? 'text-[#7656f4]' : 'text-[#0da651]'} shrink-0`} />
+                                <Users size={14} className={`${isStudent ? 'text-[#2563eb]' : isMentor ? 'text-[#7656f4]' : 'text-[#0da651]'} shrink-0`} />
                                 <span className="font-medium text-gray-700">
                                   <strong className="text-gray-900 font-bold">{a.registered || 0}</strong> students registered
                                 </span>
@@ -587,7 +641,9 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                                 type="button"
                                 onClick={() => setViewingActivity(a)}
                                 className={`w-full flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer shadow-2xs group/btn ${
-                                  isMentor
+                                  isStudent
+                                    ? "bg-blue-50 hover:bg-blue-100 text-[#2563eb] border border-blue-200/80 hover:border-blue-300"
+                                    : isMentor
                                     ? "bg-[#f6f2fe] hover:bg-purple-100 text-[#7656f4] border border-[#7656f4]/25 hover:border-[#7656f4]/40"
                                     : "bg-emerald-50 hover:bg-emerald-100 text-[#0da651] border border-emerald-200/80 hover:border-emerald-300"
                                 }`}
@@ -595,18 +651,43 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                                 <Eye size={14} className="group-hover/btn:scale-110 transition-transform stroke-[2.2]" />
                                 <span>View Details</span>
                               </button>
-                              <button
-                                type="button"
-                                onClick={() => handleOpenRegisterModal(a)}
-                                className={`w-full flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer shadow-xs active:scale-95 text-white ${
-                                  isMentor
-                                    ? "bg-[#7656f4] hover:bg-[#6242e2]"
-                                    : "bg-[#0da651] hover:bg-[#0c9548]"
-                                }`}
-                              >
-                                <UserPlus size={14} className="stroke-[2.2]" />
-                                <span>Register</span>
-                              </button>
+                              
+                              {isStudent ? (
+                                <button
+                                  type="button"
+                                  onClick={() => handleStudentRegisterToggle(a)}
+                                  className={`w-full flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer shadow-xs active:scale-95 text-white ${
+                                    studentRegisteredIds.includes(a.id)
+                                      ? "bg-emerald-600 hover:bg-emerald-700"
+                                      : "bg-[#2563eb] hover:bg-[#1d4ed8]"
+                                  }`}
+                                >
+                                  {studentRegisteredIds.includes(a.id) ? (
+                                    <>
+                                      <Check size={14} className="stroke-[2.5]" />
+                                      <span>Registered</span>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <UserPlus size={14} className="stroke-[2.2]" />
+                                      <span>Register</span>
+                                    </>
+                                  )}
+                                </button>
+                              ) : (
+                                <button
+                                  type="button"
+                                  onClick={() => handleOpenRegisterModal(a)}
+                                  className={`w-full flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer shadow-xs active:scale-95 text-white ${
+                                    isMentor
+                                      ? "bg-[#7656f4] hover:bg-[#6242e2]"
+                                      : "bg-[#0da651] hover:bg-[#0c9548]"
+                                  }`}
+                                >
+                                  <UserPlus size={14} className="stroke-[2.2]" />
+                                  <span>Register</span>
+                                </button>
+                              )}
                             </div>
                           </div>
                         </div>
@@ -626,6 +707,7 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                         value={sortBy}
                         onChange={setSortBy}
                         isMentor={isMentor}
+                        isStudent={isStudent}
                         options={[
                           { value: "newest", label: "Sort by: Newest" },
                           { value: "oldest", label: "Sort by: Oldest" },
@@ -640,7 +722,9 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                     <table className="w-full text-left border-collapse">
                       <thead>
                         <tr className={`${
-                          isMentor
+                          isStudent
+                            ? "bg-gradient-to-r from-[#2563eb] via-[#1d4ed8] to-[#1e40af]"
+                            : isMentor
                             ? "bg-gradient-to-r from-[#7656f4] via-[#6845f2] to-[#5531dc]"
                             : "bg-gradient-to-r from-[#0da651] via-[#0e9f4e] to-[#09803d]"
                         } text-white text-xs font-bold uppercase tracking-wider`}>
@@ -649,7 +733,7 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                               type="checkbox"
                               checked={allVisibleSelected}
                               onChange={toggleAll}
-                              className={`rounded border-white/40 cursor-pointer ${isMentor ? "accent-[#7656f4]" : "accent-emerald-800"}`}
+                              className={`rounded border-white/40 cursor-pointer ${isStudent ? "accent-[#2563eb]" : isMentor ? "accent-[#7656f4]" : "accent-emerald-800"}`}
                             />
                           </th>
                           <th className="py-3.5 px-4 text-left">ACTIVITY</th>
@@ -674,7 +758,9 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                               key={a.id}
                               className={`hover:bg-gray-50/60 transition-colors ${
                                 selected.includes(a.id)
-                                  ? isMentor
+                                  ? isStudent
+                                    ? "bg-blue-50/40"
+                                    : isMentor
                                     ? "bg-purple-50/40"
                                     : "bg-emerald-50/30"
                                   : ""
@@ -685,7 +771,7 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                                   type="checkbox"
                                   checked={selected.includes(a.id)}
                                   onChange={() => toggleOne(a.id)}
-                                  className={`rounded border-gray-300 cursor-pointer ${isMentor ? "accent-[#7656f4]" : "accent-primary"}`}
+                                  className={`rounded border-gray-300 cursor-pointer ${isStudent ? "accent-[#2563eb]" : isMentor ? "accent-[#7656f4]" : "accent-primary"}`}
                                 />
                               </td>
                               <td className="px-4 py-3">
@@ -702,7 +788,7 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                                       }}
                                     />
                                   ) : (
-                                    <div className={`w-16 h-11 rounded-xl ${isMentor ? 'bg-purple-100 text-[#7656f4]' : 'bg-emerald-100 text-[#0da651]'} flex items-center justify-center font-bold text-xs shrink-0`}>
+                                    <div className={`w-16 h-11 rounded-xl ${isStudent ? 'bg-blue-100 text-[#2563eb]' : isMentor ? 'bg-purple-100 text-[#7656f4]' : 'bg-emerald-100 text-[#0da651]'} flex items-center justify-center font-bold text-xs shrink-0`}>
                                       {getActivityIcon(a.type, 18)}
                                     </div>
                                   )}
@@ -726,7 +812,7 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                               <td className="px-4 py-3">
                                 <div className="flex flex-col text-xs text-gray-600">
                                   <div className="flex items-center gap-1.5 font-medium">
-                                    <CalendarDays size={13} className={`${isMentor ? 'text-[#7656f4]' : 'text-[#0da651]'}`} /> {a.date}
+                                    <CalendarDays size={13} className={`${isStudent ? 'text-[#2563eb]' : isMentor ? 'text-[#7656f4]' : 'text-[#0da651]'}`} /> {a.date}
                                   </div>
                                   {a.time && (
                                     <div className="flex items-center gap-1.5 mt-0.5 text-gray-400">
@@ -737,7 +823,7 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                               </td>
                               <td className="px-4 py-3">
                                 <div className="flex items-center gap-1.5 text-xs text-gray-600 font-medium">
-                                  <MapPin size={13} className={`${isMentor ? 'text-[#7656f4]' : 'text-[#0da651]'}`} /> {a.venue || "Campus Venue"}
+                                  <MapPin size={13} className={`${isStudent ? 'text-[#2563eb]' : isMentor ? 'text-[#7656f4]' : 'text-[#0da651]'}`} /> {a.venue || "Campus Venue"}
                                 </div>
                               </td>
                               <td className="px-4 py-3 text-center">
@@ -760,25 +846,51 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                                     type="button"
                                     onClick={() => setViewingActivity(a)}
                                     className={`text-[11px] font-bold px-3 py-1.5 rounded-xl transition-colors flex items-center gap-1 cursor-pointer border ${
-                                      isMentor
+                                      isStudent
+                                        ? "text-[#2563eb] bg-blue-50 hover:bg-[#2563eb] hover:text-white border-blue-200/60"
+                                        : isMentor
                                         ? "text-[#7656f4] bg-[#f6f2fe] hover:bg-[#7656f4] hover:text-white border-[#7656f4]/30"
                                         : "text-[#0da651] bg-emerald-50 hover:bg-[#0da651] hover:text-white border-emerald-200/60"
                                     }`}
                                   >
                                     <Eye size={12} /> View
                                   </button>
-                                  <button
-                                    type="button"
-                                    onClick={() => handleOpenRegisterModal(a)}
-                                    className={`text-[11px] font-bold px-3 py-1.5 rounded-xl transition-all flex items-center gap-1 cursor-pointer text-white shadow-2xs active:scale-95 ${
-                                      isMentor
-                                        ? "bg-[#7656f4] hover:bg-[#6242e2]"
-                                        : "bg-[#0da651] hover:bg-[#0c9548]"
-                                    }`}
-                                  >
-                                    <UserPlus size={12} /> Register
-                                  </button>
-                                  {!isMentor && (
+                                  
+                                  {isStudent ? (
+                                    <button
+                                      type="button"
+                                      onClick={() => handleStudentRegisterToggle(a)}
+                                      className={`text-[11px] font-bold px-3 py-1.5 rounded-xl transition-all flex items-center gap-1 cursor-pointer text-white shadow-2xs active:scale-95 ${
+                                        studentRegisteredIds.includes(a.id)
+                                          ? "bg-emerald-600 hover:bg-emerald-700"
+                                          : "bg-[#2563eb] hover:bg-[#1d4ed8]"
+                                      }`}
+                                    >
+                                      {studentRegisteredIds.includes(a.id) ? (
+                                        <>
+                                          <Check size={12} className="stroke-[2.5]" /> Registered
+                                        </>
+                                      ) : (
+                                        <>
+                                          <UserPlus size={12} /> Register
+                                        </>
+                                      )}
+                                    </button>
+                                  ) : (
+                                    <button
+                                      type="button"
+                                      onClick={() => handleOpenRegisterModal(a)}
+                                      className={`text-[11px] font-bold px-3 py-1.5 rounded-xl transition-all flex items-center gap-1 cursor-pointer text-white shadow-2xs active:scale-95 ${
+                                        isMentor
+                                          ? "bg-[#7656f4] hover:bg-[#6242e2]"
+                                          : "bg-[#0da651] hover:bg-[#0c9548]"
+                                      }`}
+                                    >
+                                      <UserPlus size={12} /> Register
+                                    </button>
+                                  )}
+
+                                  {!isMentor && !isStudent && (
                                     <div className="relative">
                                       <button
                                         type="button"

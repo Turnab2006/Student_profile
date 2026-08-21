@@ -230,9 +230,8 @@ function MentorProfileHeaderWidget({ user, onNavigate, onLogout }) {
           {/* Chevron Icon */}
           <ChevronDown
             size={15}
-            className={`text-gray-500 transition-transform duration-200 ${
-              profileOpen ? "rotate-180 text-[#7656f4]" : "group-hover:text-gray-700"
-            }`}
+            className={`text-gray-500 transition-transform duration-200 ${profileOpen ? "rotate-180 text-[#7656f4]" : "group-hover:text-gray-700"
+              }`}
           />
         </button>
 
@@ -873,11 +872,10 @@ export default function StudentProfile({
                 </span>
                 <span>&gt;</span>
                 <span
-                  className={`cursor-pointer ${
-                    isDigitalCard
+                  className={`cursor-pointer ${isDigitalCard
                       ? "hover:text-gray-600"
                       : (userRole === "mentor" ? "text-[#7656f4] font-semibold" : "text-[#0da651] font-semibold")
-                  }`}
+                    }`}
                   onClick={() => handleSetShowDigitalCard(false)}
                 >
                   {userRole === "mentor" ? "View Mentee" : "View Students"}
@@ -915,19 +913,22 @@ export default function StudentProfile({
           <div className="w-full space-y-3.5 pb-8">
 
             {/* ==================================================================== */}
-            {/* UPPER USER INFO CARD (LIGHT BLUE / SKY GRADIENT WITH DOT PATTERN)   */}
+            {/* UPPER USER INFO CARD (DEEP PORTAL GRADIENT WITH WHITE CONTRAST)      */}
             {/* ==================================================================== */}
-            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#ebf5ff] via-[#f3f9ff] to-[#e0f0fe] border border-sky-200/80 p-4 sm:p-5 lg:p-6 shadow-xs group">
+            <div className={`relative overflow-hidden rounded-2xl p-4 sm:p-5 lg:p-6 shadow-md group ${userRole === "mentor"
+                ? "bg-gradient-to-r from-[#7656f4] via-[#6845f2] to-[#5531dc] border border-purple-600/30 text-white shadow-purple-900/10"
+                : "bg-gradient-to-r from-[#2563eb] via-[#1d4ed8] to-[#1e40af] border border-blue-600/30 text-white shadow-blue-900/15"
+              }`}>
 
               {/* Ambient Sky/Blue Gradient Glow */}
-              <div className="absolute -right-16 -top-16 w-56 h-56 bg-sky-200/45 rounded-full blur-3xl pointer-events-none" />
-              <div className="absolute -left-16 -bottom-16 w-56 h-56 bg-blue-200/35 rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute -right-16 -top-16 w-56 h-56 bg-white/10 rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute -left-16 -bottom-16 w-56 h-56 bg-white/10 rounded-full blur-3xl pointer-events-none" />
 
               {/* Decorative Dot Matrix on Background */}
               <div
-                className="absolute inset-0 pointer-events-none opacity-25"
+                className="absolute inset-0 pointer-events-none opacity-20"
                 style={{
-                  backgroundImage: `radial-gradient(#38bdf8 1.2px, transparent 1.2px)`,
+                  backgroundImage: `radial-gradient(rgba(255,255,255,0.7) 1.2px, transparent 1.2px)`,
                   backgroundSize: "14px 14px",
                 }}
               />
@@ -937,16 +938,15 @@ export default function StudentProfile({
 
                 {/* Left Column: Avatar & Middle Info */}
                 <div className="flex flex-col sm:flex-row items-center gap-5 sm:gap-6 text-center sm:text-left">
-                  {/* 1. Student Avatar with White Glowing Ring */}
+                  {/* 1. Student Avatar with White Ring */}
                   <div className="relative shrink-0">
-                    <div className="h-28 w-28 sm:h-32 sm:w-32 rounded-full ring-[4px] ring-white shadow-[0_4px_18px_rgba(14,165,233,0.15)] overflow-hidden bg-white flex items-center justify-center border border-sky-200/80">
+                    <div className="h-28 w-28 sm:h-32 sm:w-32 rounded-full ring-[4px] ring-white/90 shadow-[0_4px_18px_rgba(0,0,0,0.25)] overflow-hidden bg-white flex items-center justify-center border-2 border-white">
                       <img
-                        src={student.avatar || "/tanuka_saha_avatar.png"}
+                        src={student.avatar && student.avatar !== "/tanuka_saha_avatar.png" ? student.avatar : (tuhinaAvatar || "/tuhina_avatar.jpg")}
                         alt={student.name || "Tanuka Saha"}
                         className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
                         onError={(e) => {
-                          e.target.style.display = 'none';
-                          if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
+                          e.target.src = "/tuhina_avatar.jpg";
                         }}
                       />
                       <div className="hidden h-full w-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white font-bold text-3xl items-center justify-center">
@@ -958,65 +958,65 @@ export default function StudentProfile({
                   {/* 2. Middle Student Info Details */}
                   <div className="flex flex-col items-center sm:items-start space-y-2">
                     {/* Student Full Name */}
-                    <h2 className="text-2xl sm:text-[28px] font-bold text-[#0c2340] tracking-tight leading-tight">
+                    <h2 className="text-2xl sm:text-[28px] font-bold text-white tracking-tight leading-tight">
                       {student.name || "Tanuka Saha"}
                     </h2>
 
                     {/* Student ID / Roll Pill Badge */}
                     <div>
-                      <span className="inline-flex items-center px-3.5 py-1 mb-3 rounded-lg bg-white/90 border border-blue-200/80 text-[#1d61e7] text-xs sm:text-[13px] font-bold tracking-wide shadow-2xs">
+                      <span className="inline-flex items-center px-3.5 py-1 mb-2 rounded-lg bg-white/20 border border-white/30 text-white text-xs sm:text-[13px] font-bold tracking-wide shadow-2xs backdrop-blur-md">
                         {student.rollNo || student.id || "CSE2024012"}
                       </span>
                     </div>
 
                     {/* Contact Info, Course & Department Horizontal Row with Subtle Vertical Dividers */}
-                    <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3.5 sm:gap-5 pt-1 text-xs sm:text-[13px] font-medium text-slate-700">
+                    <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3.5 sm:gap-5 pt-1 text-xs sm:text-[13px] font-medium text-blue-100/90">
 
                       {/* Phone Number */}
                       <div className="flex items-center gap-2">
-                        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white text-[#1d61e7] shadow-2xs border border-blue-100/90 shrink-0">
-                          <Phone size={13} className="fill-[#1d61e7] stroke-[1.5]" />
+                        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/20 text-white shadow-2xs border border-white/25 shrink-0 backdrop-blur-xs">
+                          <Phone size={13} className="fill-white stroke-[1.5]" />
                         </div>
-                        <span className="font-semibold text-slate-800 tracking-tight">
+                        <span className="font-semibold text-white tracking-tight">
                           {student.phone || student.additionalDetails?.phoneNumber || "+91 9123930828"}
                         </span>
                       </div>
 
                       {/* Divider 1 */}
-                      <div className="hidden sm:block h-4 w-[1px] bg-slate-300/80 self-center" />
+                      <div className="hidden sm:block h-4 w-[1px] bg-white/25 self-center" />
 
                       {/* Email ID */}
                       <div className="flex items-center gap-2">
-                        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white text-[#1d61e7] shadow-2xs border border-blue-100/90 shrink-0">
+                        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/20 text-white shadow-2xs border border-white/25 shrink-0 backdrop-blur-xs">
                           <Mail size={14} className="stroke-[2.2]" />
                         </div>
-                        <span className="font-semibold text-slate-800">
+                        <span className="font-semibold text-white">
                           {student.email || student.additionalDetails?.personalEmail || "tanuka.saha@gmail.com"}
                         </span>
                       </div>
 
                       {/* Divider 2 */}
-                      <div className="hidden sm:block h-4 w-[1px] bg-slate-300/80 self-center" />
+                      <div className="hidden sm:block h-4 w-[1px] bg-white/25 self-center" />
 
                       {/* Course: B.Tech */}
                       <div className="flex items-center gap-2">
-                        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white text-[#1d61e7] shadow-2xs border border-blue-100/90 shrink-0">
+                        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/20 text-white shadow-2xs border border-white/25 shrink-0 backdrop-blur-xs">
                           <GraduationCap size={14} className="stroke-[2.2]" />
                         </div>
-                        <span className="font-semibold text-slate-800">
+                        <span className="font-semibold text-white">
                           {student.course || "B.Tech"}
                         </span>
                       </div>
 
                       {/* Divider 3 */}
-                      <div className="hidden sm:block h-4 w-[1px] bg-slate-300/80 self-center" />
+                      <div className="hidden sm:block h-4 w-[1px] bg-white/25 self-center" />
 
                       {/* Department */}
                       <div className="flex items-center gap-2">
-                        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white text-[#1d61e7] shadow-2xs border border-blue-100/90 shrink-0">
+                        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/20 text-white shadow-2xs border border-white/25 shrink-0 backdrop-blur-xs">
                           <Building size={14} className="stroke-[2.2]" />
                         </div>
-                        <span className="font-semibold text-slate-800">
+                        <span className="font-semibold text-white">
                           {student.department || "Computer Science & Engineering"}
                         </span>
                       </div>
@@ -1030,9 +1030,9 @@ export default function StudentProfile({
                   <button
                     type="button"
                     onClick={() => handleSetShowDigitalCard(true)}
-                    className="inline-flex items-center gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-white hover:bg-blue-50 text-blue-600 border border-blue-200/90 text-xs sm:text-sm font-semibold tracking-tight transition-all active:scale-95 shadow-2xs cursor-pointer group/btn"
+                    className="inline-flex items-center gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-white hover:bg-blue-50 text-[#2563eb] border border-white/80 text-xs sm:text-sm font-bold tracking-tight transition-all active:scale-95 shadow-md hover:shadow-lg cursor-pointer group/btn"
                   >
-                    <CreditCard size={15} className="text-blue-600 group-hover/btn:scale-110 transition-transform stroke-[2.2]" />
+                    <CreditCard size={15} className="text-[#2563eb] group-hover/btn:scale-110 transition-transform stroke-[2.2]" />
                     <span>View Digital ID Card</span>
                   </button>
                 </div>

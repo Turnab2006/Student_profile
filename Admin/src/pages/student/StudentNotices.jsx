@@ -25,8 +25,11 @@ import {
   Clock,
   Sparkles,
   Info,
-  CheckCircle2
+  CheckCircle2,
+  LayoutGrid,
+  List
 } from "lucide-react";
+import NoticeDetailView from "../admin/NoticeDetailView";
 
 export const initialNoticesData = [
   {
@@ -165,19 +168,15 @@ export default function StudentNotices({
 }) {
   const isMentorMode = isMentor || userRole === 'mentor' || theme === 'purple';
   const [notices] = useState(initialNoticesData);
+  const [viewMode, setViewMode] = useState("grid"); // 'grid' or 'list'
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedPriority, setSelectedPriority] = useState("all"); // 'all' | 'High' | 'Medium' | 'Low'
   const [selectedCategory, setSelectedCategory] = useState("all"); // 'all' | 'Academic' | 'General' | 'Workshop' | 'Finance' | 'Access'
   const [sortBy, setSortBy] = useState("latest"); // 'latest' | 'oldest' | 'priority' | 'title'
   const [entriesPerPage, setEntriesPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedNoticeModal, setSelectedNoticeModal] = useState(null);
+  const [viewingNotice, setViewingNotice] = useState(null);
   const [toastMessage, setToastMessage] = useState(null);
-
-  // Dropdown open states
-  const [priorityDropdownOpen, setPriorityDropdownOpen] = useState(false);
-  const [categoryDropdownOpen, setCategoryDropdownOpen] = useState(false);
-  const [sortDropdownOpen, setSortDropdownOpen] = useState(false);
 
   function showToast(msg) {
     setToastMessage(msg);
@@ -262,11 +261,31 @@ export default function StudentNotices({
   ];
 
   const sortOptions = [
-    { value: "latest", label: "Latest First" },
-    { value: "oldest", label: "Oldest First" },
-    { value: "priority", label: "Priority (High to Low)" },
-    { value: "title", label: "Title (A-Z)" },
+    { value: "latest", label: "Sort: Latest First" },
+    { value: "oldest", label: "Sort: Oldest First" },
+    { value: "priority", label: "Sort: High Priority" },
+    { value: "title", label: "Sort: Title (A-Z)" },
   ];
+
+  if (viewingNotice) {
+    return (
+      <div className="flex-1 overflow-y-auto bg-[#f6f7fb] min-w-0 font-sans p-2 sm:px-5 sm:py-3.5 max-w-[1600px] mx-auto w-full">
+        <NoticeDetailView
+          notice={{
+            ...viewingNotice,
+            content: viewingNotice.fullContent || viewingNotice.content || viewingNotice.description,
+            date: viewingNotice.publishedDate || viewingNotice.date,
+            files: viewingNotice.hasAttachment
+              ? [{ name: viewingNotice.attachmentName || `${viewingNotice.title}.pdf`, size: viewingNotice.attachmentSize || "1.4 MB", type: "PDF" }]
+              : viewingNotice.files || []
+          }}
+          onBack={() => setViewingNotice(null)}
+          isStudent={!isMentorMode}
+          isMentor={isMentorMode}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="flex-1 overflow-y-auto bg-[#f6f7fb] min-w-0 font-sans">
@@ -315,207 +334,338 @@ export default function StudentNotices({
       )}
 
       {/* Main Content matching Dashboard padding & spacing */}
-      <main className="space-y-3.5 p-4">
-        {/* Search & Filter Controls Bar */}
-        <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3">
-            {/* Search Input */}
-            <div className="relative flex-1">
-              <Search
-                size={18}
-                className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
-              />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => {
-                  setSearchQuery(e.target.value);
+      <main className="space-y-4 p-2 sm:px-5 sm:py-3.5 max-w-[1600px] mx-auto font-['Roboto',sans-serif]">
+        
+        {/* Upper Box-type Controls Bar matching reference image style */}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white px-4 py-2.5 sm:px-5 sm:py-3 rounded-[20px] border border-slate-200/90 shadow-md shadow-slate-200/50">
+          
+          {/* Row 1 (Mobile) / Left Column (Desktop): Search Bar */}
+          <div className="relative w-full sm:w-[320px] md:w-[380px] lg:w-[460px] shrink-0">
+            <Search size={17} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+            <input
+              type="text"
+              placeholder="Search notice by title, keyword, or author..."
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setCurrentPage(1);
+              }}
+              className={`w-full pl-10 pr-9 py-2 bg-slate-50 border border-slate-200/90 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none transition-all shadow-2xs ${
+                isMentorMode
+                  ? "focus:border-[#7656f4] focus:ring-2 focus:ring-purple-100"
+                  : "focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              }`}
+            />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => {
+                  setSearchQuery("");
                   setCurrentPage(1);
                 }}
-                placeholder="Search notices by title or keyword..."
-                className="w-full pl-11 pr-4 py-3 bg-white border border-slate-200 rounded-2xl text-sm font-medium text-slate-700 placeholder:text-slate-400 shadow-2xs focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery("")}
-                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1 rounded-full hover:bg-slate-100"
-                >
-                  <X size={15} />
-                </button>
-              )}
-            </div>
-
-            {/* Filter 1: All Priorities */}
-            <div className="relative shrink-0">
-              <button
-                type="button"
-                onClick={() => {
-                  setPriorityDropdownOpen((prev) => !prev);
-                  setCategoryDropdownOpen(false);
-                  setSortDropdownOpen(false);
-                }}
-                className="flex items-center justify-between gap-3 min-w-[160px] w-full md:w-auto px-4 py-3 bg-white border border-slate-200 rounded-2xl text-sm font-semibold text-slate-700 shadow-2xs hover:bg-slate-50 transition-colors cursor-pointer"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-0.5 rounded-full hover:bg-slate-200 cursor-pointer"
+                aria-label="Clear search"
               >
-                <div className="flex items-center gap-2">
-                  <Flag size={15} className="text-slate-500" />
-                  <span>
-                    {priorityOptions.find((o) => o.value === selectedPriority)?.label ||
-                      "All Priorities"}
-                  </span>
-                </div>
-                <ChevronDown
-                  size={16}
-                  className={`text-slate-400 transition-transform duration-200 ${
-                    priorityDropdownOpen ? "rotate-180" : ""
-                  }`}
-                />
+                <X size={14} />
               </button>
-
-              {priorityDropdownOpen && (
-                <div className="absolute right-0 top-full mt-2 w-48 rounded-2xl border border-slate-200 bg-white p-1.5 shadow-xl z-30 animate-in fade-in zoom-in-95 duration-150">
-                  {priorityOptions.map((option) => (
-                    <button
-                      key={option.value}
-                      type="button"
-                      onClick={() => {
-                        setSelectedPriority(option.value);
-                        setPriorityDropdownOpen(false);
-                        setCurrentPage(1);
-                      }}
-                      className={`w-full flex items-center justify-between px-3 py-2 text-xs font-semibold rounded-xl transition-colors cursor-pointer ${
-                        selectedPriority === option.value
-                          ? "bg-blue-50 text-blue-600 font-bold"
-                          : "text-slate-700 hover:bg-slate-100/80 hover:text-slate-900"
-                      }`}
-                    >
-                      <span>{option.label}</span>
-                      {selectedPriority === option.value && (
-                        <Check size={14} className="text-blue-600" />
-                      )}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Filter 2: All Categories */}
-            <div className="relative shrink-0">
-              <button
-                type="button"
-                onClick={() => {
-                  setCategoryDropdownOpen((prev) => !prev);
-                  setPriorityDropdownOpen(false);
-                  setSortDropdownOpen(false);
-                }}
-                className="flex items-center justify-between gap-3 min-w-[170px] w-full md:w-auto px-4 py-3 bg-white border border-slate-200 rounded-2xl text-sm font-semibold text-slate-700 shadow-2xs hover:bg-slate-50 transition-colors cursor-pointer"
-              >
-                <div className="flex items-center gap-2">
-                  <Layers size={15} className="text-slate-500" />
-                  <span>
-                    {categoryOptions.find((o) => o.value === selectedCategory)?.label ||
-                      "All Categories"}
-                  </span>
-                </div>
-                <ChevronDown
-                  size={16}
-                  className={`text-slate-400 transition-transform duration-200 ${
-                    categoryDropdownOpen ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
-
-              {categoryDropdownOpen && (
-                <div className="absolute right-0 top-full mt-2 w-48 rounded-2xl border border-slate-200 bg-white p-1.5 shadow-xl z-30 animate-in fade-in zoom-in-95 duration-150">
-                  {categoryOptions.map((option) => (
-                    <button
-                      key={option.value}
-                      type="button"
-                      onClick={() => {
-                        setSelectedCategory(option.value);
-                        setCategoryDropdownOpen(false);
-                        setCurrentPage(1);
-                      }}
-                      className={`w-full flex items-center justify-between px-3 py-2 text-xs font-semibold rounded-xl transition-colors cursor-pointer ${
-                        selectedCategory === option.value
-                          ? "bg-blue-50 text-blue-600 font-bold"
-                          : "text-slate-700 hover:bg-slate-100/80 hover:text-slate-900"
-                      }`}
-                    >
-                      <span>{option.label}</span>
-                      {selectedCategory === option.value && (
-                        <Check size={14} className="text-blue-600" />
-                      )}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
+            )}
           </div>
 
-          {/* Subheader: Showing counts & Sort Dropdown */}
-          <div className="flex items-center justify-between pt-1">
-            <p className="text-xs sm:text-sm font-semibold text-slate-600">
-              Showing{" "}
-              <span className="font-bold text-slate-900">
-                {paginatedNotices.length}
-              </span>{" "}
-              of{" "}
-              <span className="font-bold text-slate-900">
-                {sortedNotices.length}
-              </span>{" "}
-              notices
-            </p>
+          {/* Row 2 (Mobile) / Right Column (Desktop): Filters + Grid/List Buttons at the last, right corner */}
+          <div className="flex flex-wrap sm:flex-nowrap items-center justify-between sm:justify-end gap-2 sm:gap-2.5 w-full sm:w-auto">
+            {/* Priority Filter */}
+            <div className="relative shrink-0">
+              <select
+                value={selectedPriority}
+                onChange={(e) => {
+                  setSelectedPriority(e.target.value);
+                  setCurrentPage(1);
+                }}
+                className={`appearance-none min-w-[125px] px-3.5 py-2 pr-8 border border-slate-200/90 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 transition-colors whitespace-nowrap focus:outline-none cursor-pointer shadow-2xs ${
+                  isMentorMode
+                    ? "focus:ring-2 focus:ring-purple-500/20 focus:border-[#7656f4]"
+                    : "focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563eb]"
+                }`}
+              >
+                {priorityOptions.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown size={14} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
+            </div>
 
-            {/* Sort by Dropdown */}
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-slate-400 font-medium hidden sm:inline">Sort by:</span>
-              <div className="relative">
+            {/* Category Filter */}
+            <div className="relative shrink-0">
+              <select
+                value={selectedCategory}
+                onChange={(e) => {
+                  setSelectedCategory(e.target.value);
+                  setCurrentPage(1);
+                }}
+                className={`appearance-none min-w-[130px] px-3.5 py-2 pr-8 border border-slate-200/90 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 transition-colors whitespace-nowrap focus:outline-none cursor-pointer shadow-2xs ${
+                  isMentorMode
+                    ? "focus:ring-2 focus:ring-purple-500/20 focus:border-[#7656f4]"
+                    : "focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563eb]"
+                }`}
+              >
+                {categoryOptions.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown size={14} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
+            </div>
+
+            {/* Sort Filter */}
+            <div className="relative shrink-0">
+              <select
+                value={sortBy}
+                onChange={(e) => {
+                  setSortBy(e.target.value);
+                }}
+                className={`appearance-none min-w-[140px] px-3.5 py-2 pr-8 border border-slate-200/90 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 transition-colors whitespace-nowrap focus:outline-none cursor-pointer shadow-2xs ${
+                  isMentorMode
+                    ? "focus:ring-2 focus:ring-purple-500/20 focus:border-[#7656f4]"
+                    : "focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563eb]"
+                }`}
+              >
+                {sortOptions.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown size={14} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
+            </div>
+
+            {/* View Mode Toggle Buttons ("Grid View" & "List View") at the last, right corner */}
+            <div className="bg-white border border-slate-200/90 rounded-2xl p-1 shadow-2xs inline-flex items-center gap-1 shrink-0">
+              <button
+                type="button"
+                onClick={() => setViewMode("grid")}
+                title="Grid View"
+                aria-label="Grid View"
+                className={`p-2 rounded-xl transition-all cursor-pointer ${
+                  viewMode === "grid"
+                    ? isMentorMode
+                      ? "bg-[#f0eaff] text-[#7656f4] border border-[#7656f4]/30 shadow-2xs"
+                      : "bg-blue-50 text-blue-600 border border-blue-200 shadow-2xs"
+                    : "text-slate-400 hover:text-slate-600 hover:bg-slate-50"
+                }`}
+              >
+                <LayoutGrid size={18} />
+              </button>
+              <button
+                type="button"
+                onClick={() => setViewMode("list")}
+                title="List View"
+                aria-label="List View"
+                className={`p-2 rounded-xl transition-all cursor-pointer ${
+                  viewMode === "list"
+                    ? isMentorMode
+                      ? "bg-[#f0eaff] text-[#7656f4] border border-[#7656f4]/30 shadow-2xs"
+                      : "bg-blue-50 text-blue-600 border border-blue-200 shadow-2xs"
+                    : "text-slate-400 hover:text-slate-600 hover:bg-slate-50"
+                }`}
+              >
+                <List size={18} />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Notices Content: Grid View vs List View */}
+        {viewMode === "grid" ? (
+          <div className="space-y-4">
+            {paginatedNotices.length === 0 ? (
+              <div className="py-16 text-center text-gray-400 text-sm bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50">
+                <FileText size={32} className="mx-auto text-gray-300 mb-2" />
+                <p className="font-semibold text-gray-600">No notices found</p>
+                <p className="text-xs text-gray-400 mt-1">Try adjusting your filters or search keywords.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+                {paginatedNotices.map((notice) => {
+                  const IconComponent = notice.icon || Megaphone;
+                  return (
+                    <div
+                      key={notice.id}
+                      className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 overflow-hidden flex flex-col hover:-translate-y-1 hover:shadow-xl hover:shadow-slate-300/40 transition-all duration-200 group p-5 justify-between font-['Roboto',sans-serif]"
+                    >
+                      <div>
+                        {/* Top Badges & Icon */}
+                        <div className="flex items-start justify-between gap-3 mb-3.5">
+                          <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform ${notice.iconBg}`}>
+                            <IconComponent size={22} />
+                          </div>
+                          <div className="flex items-center gap-1.5 flex-wrap justify-end">
+                            <span className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold ${notice.priorityBadgeClass}`}>
+                              {notice.priority}
+                            </span>
+                            <span className={`inline-block px-2.5 py-0.5 rounded-md text-[11px] font-bold ${notice.categoryBadgeClass}`}>
+                              {notice.category}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Title & Description */}
+                        <h3
+                          onClick={() => setViewingNotice(notice)}
+                          className={`text-base font-bold transition-colors leading-snug line-clamp-2 cursor-pointer mb-2 ${
+                            isMentorMode ? "text-slate-900 group-hover:text-purple-700" : "text-slate-900 group-hover:text-blue-600"
+                          }`}
+                          title={notice.title}
+                        >
+                          {notice.title}
+                        </h3>
+
+                        <p className="text-xs text-slate-500 font-normal line-clamp-3 leading-relaxed mb-4">
+                          {notice.description}
+                        </p>
+                      </div>
+
+                      {/* Footer Meta & Actions */}
+                      <div className="pt-3.5 border-t border-slate-100 space-y-3">
+                        <div className="flex items-center justify-between text-xs text-slate-500">
+                          <div className="flex items-center gap-1.5 font-medium">
+                            <Calendar size={13} className="text-slate-400 shrink-0" />
+                            <span>{notice.publishedDate}</span>
+                          </div>
+                          {notice.hasAttachment && (
+                            <span className={`inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-md ${
+                              isMentorMode ? "bg-purple-50 text-purple-600" : "bg-blue-50 text-blue-600"
+                            }`}>
+                              <Paperclip size={11} />
+                              <span>Attachment</span>
+                            </span>
+                          )}
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => setViewingNotice(notice)}
+                            className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer shadow-xs active:scale-95 text-white ${
+                              isMentorMode
+                                ? "bg-[#7656f4] hover:bg-[#6242e2] shadow-purple-500/20"
+                                : "bg-[#2563eb] hover:bg-[#1d4ed8] shadow-blue-500/20"
+                            }`}
+                          >
+                            <Eye size={14} className="stroke-[2.2]" />
+                            <span>View Notice</span>
+                          </button>
+
+                          {notice.hasAttachment && (
+                            <button
+                              type="button"
+                              onClick={(e) => handleDownloadAttachment(notice, e)}
+                              title={`Download ${notice.attachmentName || 'Attachment'}`}
+                              className={`p-2.5 rounded-xl border transition-all cursor-pointer shadow-2xs active:scale-95 ${
+                                isMentorMode
+                                  ? "text-purple-600 bg-purple-50 hover:bg-purple-100 border-purple-200"
+                                  : "text-blue-600 bg-blue-50 hover:bg-blue-100 border-blue-200"
+                              }`}
+                            >
+                              <Download size={14} className="stroke-[2.2]" />
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* Bottom Pagination for Grid View */}
+            <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 font-['Roboto',sans-serif] select-none">
+              {/* Show entries dropdown */}
+              <div className="flex items-center gap-2 text-xs text-slate-500 font-medium">
+                <span>Show</span>
+                <select
+                  value={entriesPerPage}
+                  onChange={(e) => {
+                    setEntriesPerPage(Number(e.target.value));
+                    setCurrentPage(1);
+                  }}
+                  className={`px-2 py-1 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-700 focus:outline-none cursor-pointer ${
+                    isMentorMode ? "focus:ring-1 focus:ring-purple-500" : "focus:ring-1 focus:ring-blue-500"
+                  }`}
+                >
+                  <option value={6}>6</option>
+                  <option value={9}>9</option>
+                  <option value={12}>12</option>
+                  <option value={24}>24</option>
+                </select>
+                <span>entries</span>
+              </div>
+
+              {/* Numbered Pagination */}
+              <div className="flex items-center gap-1.5">
                 <button
                   type="button"
-                  onClick={() => {
-                    setSortDropdownOpen((prev) => !prev);
-                    setPriorityDropdownOpen(false);
-                    setCategoryDropdownOpen(false);
-                  }}
-                  className="flex items-center gap-2 px-3.5 py-1.5 bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 shadow-2xs hover:bg-slate-50 transition-colors cursor-pointer"
+                  disabled={safeCurrentPage === 1}
+                  onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+                  className="w-8 h-8 rounded-lg border border-slate-200 bg-white text-slate-600 flex items-center justify-center hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer shadow-2xs"
+                  aria-label="Previous Page"
                 >
-                  <span>
-                    {sortOptions.find((o) => o.value === sortBy)?.label || "Latest First"}
-                  </span>
-                  <ChevronDown
-                    size={14}
-                    className={`text-slate-400 transition-transform duration-200 ${
-                      sortDropdownOpen ? "rotate-180" : ""
-                    }`}
-                  />
+                  <ChevronLeft size={16} />
                 </button>
 
-                {sortDropdownOpen && (
-                  <div className="absolute right-0 top-full mt-1.5 w-44 rounded-xl border border-slate-200 bg-white p-1.5 shadow-xl z-30 animate-in fade-in zoom-in-95 duration-150">
-                    {sortOptions.map((option) => (
-                      <button
-                        key={option.value}
-                        type="button"
-                        onClick={() => {
-                          setSortBy(option.value);
-                          setSortDropdownOpen(false);
-                        }}
-                        className={`w-full flex items-center justify-between px-3 py-2 text-xs font-semibold rounded-lg transition-colors cursor-pointer ${
-                          sortBy === option.value
-                            ? "bg-blue-50 text-blue-600 font-bold"
-                            : "text-slate-700 hover:bg-slate-100/80 hover:text-slate-900"
-                        }`}
-                      >
-                        <span>{option.label}</span>
-                        {sortBy === option.value && <Check size={13} className="text-blue-600" />}
-                      </button>
-                    ))}
-                  </div>
-                )}
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNumber) => (
+                  <button
+                    key={pageNumber}
+                    type="button"
+                    onClick={() => setCurrentPage(pageNumber)}
+                    className={`w-8 h-8 rounded-lg font-bold text-xs flex items-center justify-center transition-all cursor-pointer ${
+                      pageNumber === safeCurrentPage
+                        ? isMentorMode ? "bg-[#7656f4] text-white shadow-xs" : "bg-blue-600 text-white shadow-xs"
+                        : "border border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
+                    }`}
+                  >
+                    {pageNumber}
+                  </button>
+                ))}
+
+                <button
+                  type="button"
+                  disabled={safeCurrentPage === totalPages}
+                  onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+                  className="w-8 h-8 rounded-lg border border-slate-200 bg-white text-slate-600 flex items-center justify-center hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer shadow-2xs"
+                  aria-label="Next Page"
+                >
+                  <ChevronRight size={16} />
+                </button>
+              </div>
+
+              {/* Previous / Next buttons */}
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  disabled={safeCurrentPage === 1}
+                  onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+                  className="px-3.5 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-500 hover:text-slate-800 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                >
+                  Previous
+                </button>
+                <button
+                  type="button"
+                  disabled={safeCurrentPage === totalPages}
+                  onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+                  className={`px-4 py-1.5 rounded-xl text-white text-xs font-semibold disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer shadow-2xs ${
+                    isMentorMode ? "bg-[#7656f4] hover:bg-[#6242e2]" : "bg-blue-600 hover:bg-blue-700"
+                  }`}
+                >
+                  Next &gt;
+                </button>
               </div>
             </div>
           </div>
-
-          {/* Notices Table Card matching design */}
+        ) : (
+          /* Notices Table Card (List View) */
           <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 overflow-hidden font-['Roboto',sans-serif]">
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
@@ -562,7 +712,7 @@ export default function StudentNotices({
                       return (
                         <tr
                           key={notice.id}
-                          onClick={() => setSelectedNoticeModal(notice)}
+                          onClick={() => setViewingNotice(notice)}
                           className={`transition-colors cursor-pointer group ${isMentorMode ? 'hover:bg-purple-50/40' : 'hover:bg-blue-50/40'}`}
                         >
                           {/* Notice Column */}
@@ -640,11 +790,15 @@ export default function StudentNotices({
                               type="button"
                               onClick={(e) => {
                                 e.stopPropagation();
-                                setSelectedNoticeModal(notice);
+                                setViewingNotice(notice);
                               }}
-                              className={`inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl border transition-all cursor-pointer shadow-2xs ${isMentorMode ? 'text-[#7656f4] bg-[#f6f2fe] hover:bg-[#7656f4] hover:text-white border-[#7656f4]/30' : 'text-blue-600 bg-blue-50 hover:bg-blue-600 hover:text-white border-blue-200/80'}`}
+                              className={`inline-flex items-center gap-1.5 text-xs font-bold px-3.5 py-1.5 rounded-xl transition-all cursor-pointer shadow-xs active:scale-95 text-white ${
+                                isMentorMode
+                                  ? "bg-[#7656f4] hover:bg-[#6242e2] shadow-purple-500/20"
+                                  : "bg-[#2563eb] hover:bg-[#1d4ed8] shadow-blue-500/20"
+                              }`}
                             >
-                              <Eye size={14} />
+                              <Eye size={14} className="stroke-[2.2]" />
                               <span>View</span>
                             </button>
                           </td>
@@ -736,123 +890,8 @@ export default function StudentNotices({
               </div>
             </div>
           </div>
+        )}
       </main>
-
-      {/* Notice Detail View Modal */}
-      {selectedNoticeModal && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-150">
-          <div className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl border border-slate-100 overflow-hidden animate-in zoom-in-95 duration-200">
-            {/* Modal Header */}
-            <div className="p-6 border-b border-slate-100 flex items-start justify-between gap-4 bg-slate-50/50">
-              <div className="space-y-2 min-w-0">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span
-                    className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${selectedNoticeModal.priorityBadgeClass}`}
-                  >
-                    {selectedNoticeModal.priority} Priority
-                  </span>
-                  <span
-                    className={`inline-block px-3 py-1 rounded-md text-xs font-semibold ${selectedNoticeModal.categoryBadgeClass}`}
-                  >
-                    {selectedNoticeModal.category}
-                  </span>
-                  <span className="text-xs text-slate-400 font-mono">
-                    {selectedNoticeModal.id}
-                  </span>
-                </div>
-
-                <h2 className="text-xl sm:text-2xl font-bold text-slate-900 leading-snug">
-                  {selectedNoticeModal.title}
-                </h2>
-
-                <div className="flex items-center gap-4 text-xs text-slate-500 pt-1 flex-wrap">
-                  <span className="flex items-center gap-1 font-medium">
-                    <Calendar size={13} className="text-slate-400" />
-                    {selectedNoticeModal.publishedDate} at {selectedNoticeModal.publishedTime}
-                  </span>
-                  <span className="flex items-center gap-1 font-medium">
-                    <Megaphone size={13} className="text-slate-400" />
-                    {selectedNoticeModal.author}
-                  </span>
-                </div>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => setSelectedNoticeModal(null)}
-                className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-900 flex items-center justify-center transition-colors cursor-pointer shrink-0"
-              >
-                <X size={16} />
-              </button>
-            </div>
-
-            {/* Modal Content */}
-            <div className="p-6 overflow-y-auto space-y-6 flex-1 text-slate-700 text-sm">
-              <div className="space-y-3">
-                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-                  Official Announcement
-                </h4>
-                <div className="p-5 bg-slate-50 rounded-2xl border border-slate-200/60 text-sm text-slate-700 leading-relaxed whitespace-pre-wrap font-normal">
-                  {selectedNoticeModal.fullContent || selectedNoticeModal.description}
-                </div>
-              </div>
-
-              {/* Attachment if present */}
-              {selectedNoticeModal.hasAttachment && (
-                <div className="space-y-2">
-                  <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-                    Attached Document
-                  </h4>
-                  <div className="flex items-center justify-between p-4 bg-blue-50/50 border border-blue-100 rounded-2xl">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 font-bold text-xs">
-                        PDF
-                      </div>
-                      <div>
-                        <p className="text-xs font-bold text-slate-800">
-                          {selectedNoticeModal.attachmentName}
-                        </p>
-                        <p className="text-[11px] text-slate-400">
-                          {selectedNoticeModal.attachmentSize || "Official Circular PDF"}
-                        </p>
-                      </div>
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={(e) => handleDownloadAttachment(selectedNoticeModal, e)}
-                      className="px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shadow-2xs"
-                    >
-                      <Download size={13} />
-                      <span>Download</span>
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Modal Footer Actions */}
-            <div className="p-4 sm:p-5 bg-slate-50 border-t border-slate-100 flex items-center justify-between gap-3 shrink-0">
-              <button
-                type="button"
-                onClick={() => showToast("Notice copied to clipboard!")}
-                className="flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 rounded-xl hover:bg-slate-200/60 transition-colors cursor-pointer"
-              >
-                <Share2 size={14} />
-                <span>Share</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setSelectedNoticeModal(null)}
-                className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs rounded-xl cursor-pointer transition-all shadow-2xs"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

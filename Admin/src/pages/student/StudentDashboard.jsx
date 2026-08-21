@@ -350,14 +350,18 @@ export default function StudentDashboard({ onLogout }) {
             {/* Top Grid: Profile Hero Banner & Rank Card */}
             <section className="grid gap-2.5 xl:grid-cols-[1.8fr_0.8fr]">
               {/* Student Hero Summary Card matching UI reference */}
-              <div className="rounded-2xl border border-slate-200 bg-white p-3 sm:p-4 shadow-sm group flex flex-col justify-center">
-                <div className="flex flex-col md:flex-row items-start md:items-center gap-5 sm:gap-6">
+              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#2563eb] via-[#1d4ed8] to-[#1e40af] border border-blue-600/30 text-white p-3.5 sm:p-4.5 shadow-md shadow-blue-500/15 group flex flex-col justify-center">
+                {/* Ambient Gradient Glow */}
+                <div className="absolute -right-16 -top-16 w-56 h-56 bg-white/10 rounded-full blur-3xl pointer-events-none" />
+                <div className="absolute -left-16 -bottom-16 w-56 h-56 bg-white/10 rounded-full blur-3xl pointer-events-none" />
+
+                <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-5 sm:gap-6">
                   {/* Avatar Image */}
-                  <div className="w-[125px] h-[125px] sm:w-[130px] sm:h-[130px] rounded-[16px] overflow-hidden shrink-0 border border-slate-200 shadow-2xs">
+                  <div className="w-[125px] h-[125px] sm:w-[130px] sm:h-[130px] rounded-[18px] overflow-hidden shrink-0 border-2 border-white ring-2 ring-white/80 shadow-md">
                     <img
                       src="/tuhina_avatar.jpg"
                       alt="Tuhina Banerjee"
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                       onError={(e) => {
                         e.target.style.display = "none";
                         if (e.target.nextSibling) e.target.nextSibling.style.display = "flex";
@@ -370,50 +374,50 @@ export default function StudentDashboard({ onLogout }) {
 
                   {/* Content */}
                   <div className="flex-1 min-w-0">
-                    <h2 className="text-2xl sm:text-[25px] font-bold text-gray-900 tracking-tight leading-tight">
+                    <h2 className="text-2xl sm:text-[26px] font-bold text-white tracking-tight leading-tight">
                       Tanuka Saha
                     </h2>
-                    <p className="text-xs sm:text-[13px] text-gray-500 font-normal mt-2 mb-4">
+                    <p className="text-xs sm:text-[13px] text-blue-100/90 font-medium mt-1.5 mb-3.5">
                       B.Tech | Computer Science &amp; Engineering
                     </p>
 
-                    {/* User Info Area with Light Blue Background & Border */}
-                    <div className="bg-[#F2F7FF] rounded-2xl border border-[#DCE8FC] p-2.5 sm:px-4 sm:py-3 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 w-fit sm:w-auto">
+                    {/* User Info Area with Frosted Glass Background & Border */}
+                    <div className="bg-white/15 backdrop-blur-sm rounded-2xl border border-white/25 p-2.5 sm:px-4 sm:py-3 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 w-fit sm:w-auto shadow-2xs">
                       {/* Left Column */}
-                      <div className="space-y-3 shrink-0">
-                        <div className="flex items-center gap-2 text-xs sm:text-[13px] text-gray-700">
-                          <Mail size={15} className="text-gray-800 shrink-0 stroke-[1.8]" />
+                      <div className="space-y-2.5 shrink-0">
+                        <div className="flex items-center gap-2 text-xs sm:text-[13px] text-white">
+                          <Mail size={15} className="text-blue-200 shrink-0 stroke-[1.8]" />
                           <span>
-                            <strong className="font-semibold text-gray-900">Email :</strong>{" "}
-                            <span className="text-gray-600">tanukas@gmail.com</span>
+                            <strong className="font-bold text-white">Email :</strong>{" "}
+                            <span className="text-blue-100 font-normal">tanukas@gmail.com</span>
                           </span>
                         </div>
-                        <div className="flex items-center gap-2 text-xs sm:text-[13px] text-gray-700">
-                          <Phone size={15} className="text-gray-800 shrink-0 stroke-[1.8]" />
+                        <div className="flex items-center gap-2 text-xs sm:text-[13px] text-white">
+                          <Phone size={15} className="text-blue-200 shrink-0 stroke-[1.8]" />
                           <span>
-                            <strong className="font-semibold text-gray-900">Phone :</strong>{" "}
-                            <span className="text-gray-600">+91-9999999999</span>
+                            <strong className="font-bold text-white">Phone :</strong>{" "}
+                            <span className="text-blue-100 font-normal">+91-9999999999</span>
                           </span>
                         </div>
                       </div>
 
                       {/* Vertical Divider */}
-                      <div className="hidden sm:block w-[1px] h-9 bg-[#D4E4FC] self-center" />
+                      <div className="hidden sm:block w-[1px] h-9 bg-white/25 self-center" />
 
                       {/* Right Column */}
-                      <div className="space-y-2 shrink-0">
-                        <div className="flex items-center gap-2 text-xs sm:text-[13px] text-gray-700">
-                          <User size={15} className="text-gray-800 shrink-0 stroke-[1.8]" />
+                      <div className="space-y-2.5 shrink-0">
+                        <div className="flex items-center gap-2 text-xs sm:text-[13px] text-white">
+                          <User size={15} className="text-blue-200 shrink-0 stroke-[1.8]" />
                           <span>
-                            <strong className="font-semibold text-gray-900">College Roll :</strong>{" "}
-                            <span className="text-gray-600">CSE2024012</span>
+                            <strong className="font-bold text-white">College Roll :</strong>{" "}
+                            <span className="text-blue-100 font-normal">CSE2024012</span>
                           </span>
                         </div>
-                        <div className="flex items-center gap-2 text-xs sm:text-[13px] text-gray-700">
-                          <GraduationCap size={15} className="text-gray-800 shrink-0 stroke-[1.8]" />
+                        <div className="flex items-center gap-2 text-xs sm:text-[13px] text-white">
+                          <GraduationCap size={15} className="text-blue-200 shrink-0 stroke-[1.8]" />
                           <span>
-                            <strong className="font-semibold text-gray-900">University Roll :</strong>{" "}
-                            <span className="text-gray-600">11700124178</span>
+                            <strong className="font-bold text-white">University Roll :</strong>{" "}
+                            <span className="text-blue-100 font-normal">11700124178</span>
                           </span>
                         </div>
                       </div>

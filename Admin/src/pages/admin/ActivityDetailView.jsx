@@ -157,6 +157,9 @@ export default function ActivityDetailView({
   onEdit,
   onDelete,
   isMentor = false,
+  isStudent = false,
+  isRegistered = false,
+  onRegisterToggle = null,
 }) {
   const [activeTab, setActiveTab] = useState("details"); // 'details' or 'students'
   const [searchQuery, setSearchQuery] = useState("");
@@ -172,10 +175,26 @@ export default function ActivityDetailView({
   const [selectedMentees, setSelectedMentees] = useState(MENTEE_OPTIONS.map((m) => m.id));
   const [registrationCount, setRegistrationCount] = useState(activity.registered || 412);
   const [isRegisteredSuccess, setIsRegisteredSuccess] = useState(false);
+  const [isStudentRegistered, setIsStudentRegistered] = useState(isRegistered);
 
   const showToast = (msg) => {
     setToastMsg(msg);
     setTimeout(() => setToastMsg(""), 3000);
+  };
+
+  const handleStudentRegisterClick = () => {
+    const nextState = !isStudentRegistered;
+    setIsStudentRegistered(nextState);
+    setRegistrationCount((prev) => Math.max(0, prev + (nextState ? 1 : -1)));
+    if (onRegisterToggle) {
+      onRegisterToggle(activity);
+    } else {
+      showToast(
+        nextState
+          ? `🎉 Successfully registered for ${activity.title}!`
+          : `Registration cancelled for ${activity.title}`
+      );
+    }
   };
 
   const handleToggleMentee = (id) => {
@@ -326,7 +345,7 @@ export default function ActivityDetailView({
     <div className="space-y-6 animate-in fade-in duration-200 font-['Roboto',sans-serif]">
       {/* Toast Notification */}
       {toastMsg && (
-        <div className={`fixed top-5 right-5 z-50 flex items-center gap-2 rounded-xl ${isMentor ? 'bg-[#5c37d8]' : 'bg-emerald-700'} px-4 py-3 text-xs font-semibold text-white shadow-2xl animate-in fade-in slide-in-from-top-4`}>
+        <div className={`fixed top-5 right-5 z-50 flex items-center gap-2 rounded-xl ${isStudent ? 'bg-blue-600' : isMentor ? 'bg-[#5c37d8]' : 'bg-emerald-700'} px-4 py-3 text-xs font-semibold text-white shadow-2xl animate-in fade-in slide-in-from-top-4`}>
           <CheckCircle2 size={16} />
           {toastMsg}
         </div>
@@ -338,7 +357,7 @@ export default function ActivityDetailView({
           <button
             type="button"
             onClick={onBack}
-            className={`h-10 w-10 rounded-xl bg-gray-100/80 ${isMentor ? 'hover:bg-[#7656f4]' : 'hover:bg-[#0da651]'} hover:text-white text-gray-700 flex items-center justify-center transition-all cursor-pointer shadow-2xs shrink-0 active:scale-95`}
+            className={`h-10 w-10 rounded-xl bg-gray-100/80 ${isStudent ? 'hover:bg-[#2563eb]' : isMentor ? 'hover:bg-[#7656f4]' : 'hover:bg-[#0da651]'} hover:text-white text-gray-700 flex items-center justify-center transition-all cursor-pointer shadow-2xs shrink-0 active:scale-95`}
             title="Back to Activities"
           >
             <ArrowLeft size={18} />
@@ -350,8 +369,32 @@ export default function ActivityDetailView({
           </div>
         </div>
 
-        {/* Action Controls: For Mentors = Single Register Button; For Admin = View Switchers + Edit & Delete */}
-        {isMentor ? (
+        {/* Action Controls: For Students & Mentors = Single Register Button; For Admin = View Switchers + Edit & Delete */}
+        {isStudent ? (
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={handleStudentRegisterClick}
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer shadow-sm hover:shadow active:scale-95 text-white ${
+                isStudentRegistered
+                  ? "bg-emerald-600 hover:bg-emerald-700"
+                  : "bg-[#2563eb] hover:bg-[#1d4ed8]"
+              }`}
+            >
+              {isStudentRegistered ? (
+                <>
+                  <Check size={15} className="stroke-[2.5]" />
+                  <span>Registered</span>
+                </>
+              ) : (
+                <>
+                  <UserPlus size={15} />
+                  <span>Register for Activity</span>
+                </>
+              )}
+            </button>
+          </div>
+        ) : isMentor ? (
           <div className="flex items-center gap-2">
             <button
               type="button"
@@ -415,8 +458,8 @@ export default function ActivityDetailView({
         )}
       </div>
 
-      {/* Conditional Content: Activity Details Tab vs Registered Students Tab (Mentors always see Details) */}
-      {(isMentor || activeTab === "details") ? (
+      {/* Conditional Content: Activity Details Tab vs Registered Students Tab (Students & Mentors always see Details) */}
+      {(isStudent || isMentor || activeTab === "details") ? (
         <div className="space-y-6">
           {/* Hero Banner Section with Poster, Title, and Key Meta */}
           <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 overflow-hidden flex flex-col md:flex-row">
@@ -433,7 +476,7 @@ export default function ActivityDetailView({
                   }}
                 />
               ) : (
-                <div className={`w-full h-full ${isMentor ? 'bg-gradient-to-br from-purple-800 via-indigo-900 to-slate-950' : 'bg-gradient-to-br from-emerald-700 via-teal-800 to-emerald-950'} flex items-center justify-center`}>
+                <div className={`w-full h-full ${isStudent ? 'bg-gradient-to-br from-blue-800 via-indigo-900 to-slate-950' : isMentor ? 'bg-gradient-to-br from-purple-800 via-indigo-900 to-slate-950' : 'bg-gradient-to-br from-emerald-700 via-teal-800 to-emerald-950'} flex items-center justify-center`}>
                   {getActivityIcon(activity.type, 48, "text-white/40")}
                 </div>
               )}
@@ -476,7 +519,7 @@ export default function ActivityDetailView({
               {/* Meta Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 p-4 bg-gray-50/80 rounded-xl border border-gray-100 text-xs">
                 <div className="flex items-center gap-2.5">
-                  <div className={`w-8 h-8 rounded-lg ${isMentor ? 'bg-[#f0eaff] text-[#7656f4]' : 'bg-emerald-50 text-[#0da651]'} flex items-center justify-center shrink-0`}>
+                  <div className={`w-8 h-8 rounded-lg ${isStudent ? 'bg-blue-50 text-[#2563eb]' : isMentor ? 'bg-[#f0eaff] text-[#7656f4]' : 'bg-emerald-50 text-[#0da651]'} flex items-center justify-center shrink-0`}>
                     <CalendarDays size={16} />
                   </div>
                   <div>
@@ -486,7 +529,7 @@ export default function ActivityDetailView({
                 </div>
 
                 <div className="flex items-center gap-2.5">
-                  <div className={`w-8 h-8 rounded-lg ${isMentor ? 'bg-[#f0eaff] text-[#7656f4]' : 'bg-emerald-50 text-[#0da651]'} flex items-center justify-center shrink-0`}>
+                  <div className={`w-8 h-8 rounded-lg ${isStudent ? 'bg-blue-50 text-[#2563eb]' : isMentor ? 'bg-[#f0eaff] text-[#7656f4]' : 'bg-emerald-50 text-[#0da651]'} flex items-center justify-center shrink-0`}>
                     <Clock size={16} />
                   </div>
                   <div>
@@ -496,7 +539,7 @@ export default function ActivityDetailView({
                 </div>
 
                 <div className="flex items-center gap-2.5">
-                  <div className={`w-8 h-8 rounded-lg ${isMentor ? 'bg-[#f0eaff] text-[#7656f4]' : 'bg-emerald-50 text-[#0da651]'} flex items-center justify-center shrink-0`}>
+                  <div className={`w-8 h-8 rounded-lg ${isStudent ? 'bg-blue-50 text-[#2563eb]' : isMentor ? 'bg-[#f0eaff] text-[#7656f4]' : 'bg-emerald-50 text-[#0da651]'} flex items-center justify-center shrink-0`}>
                     <MapPin size={16} />
                   </div>
                   <div>
@@ -506,7 +549,7 @@ export default function ActivityDetailView({
                 </div>
 
                 <div className="flex items-center gap-2.5">
-                  <div className={`w-8 h-8 rounded-lg ${isMentor ? 'bg-[#f0eaff] text-[#7656f4]' : 'bg-emerald-50 text-[#0da651]'} flex items-center justify-center shrink-0`}>
+                  <div className={`w-8 h-8 rounded-lg ${isStudent ? 'bg-blue-50 text-[#2563eb]' : isMentor ? 'bg-[#f0eaff] text-[#7656f4]' : 'bg-emerald-50 text-[#0da651]'} flex items-center justify-center shrink-0`}>
                     <Users size={16} />
                   </div>
                   <div>
@@ -518,9 +561,31 @@ export default function ActivityDetailView({
                 </div>
               </div>
 
-              {/* Action Button: Register for Activity (Mentor) or View Registered Students (Admin) */}
+              {/* Action Button: Register for Activity (Student/Mentor) or View Registered Students (Admin) */}
               <div className="flex items-center gap-3">
-                {isMentor ? (
+                {isStudent ? (
+                  <button
+                    type="button"
+                    onClick={handleStudentRegisterClick}
+                    className={`flex items-center justify-center gap-2 px-6 h-12 font-bold text-sm rounded-xl shadow-sm hover:shadow active:scale-95 transition-all cursor-pointer text-white ${
+                      isStudentRegistered
+                        ? "bg-emerald-600 hover:bg-emerald-700"
+                        : "bg-[#2563eb] hover:bg-[#1d4ed8]"
+                    }`}
+                  >
+                    {isStudentRegistered ? (
+                      <>
+                        <Check size={17} className="stroke-[2.5]" />
+                        <span>Registered</span>
+                      </>
+                    ) : (
+                      <>
+                        <UserPlus size={17} className="stroke-[2.3]" />
+                        <span>Register for Activity</span>
+                      </>
+                    )}
+                  </button>
+                ) : isMentor ? (
                   <button
                     type="button"
                     onClick={() => setShowRegisterModal(true)}
@@ -545,8 +610,8 @@ export default function ActivityDetailView({
 
           {/* Quick Stat Highlights */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className={`bg-white p-5 rounded-2xl border border-slate-200/90 border-l-[3.5px] ${isMentor ? 'border-l-[#7656f4]' : 'border-l-emerald-500'} shadow-md shadow-slate-200/50 flex items-center gap-4`}>
-              <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl ${isMentor ? 'bg-[#f0eaff] text-[#7656f4]' : 'bg-emerald-50 text-[#0da651]'} shadow-2xs`}>
+            <div className={`bg-white p-5 rounded-2xl border border-slate-200/90 border-l-[3.5px] ${isStudent ? 'border-l-[#2563eb]' : isMentor ? 'border-l-[#7656f4]' : 'border-l-emerald-500'} shadow-md shadow-slate-200/50 flex items-center gap-4`}>
+              <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl ${isStudent ? 'bg-blue-50 text-[#2563eb]' : isMentor ? 'bg-[#f0eaff] text-[#7656f4]' : 'bg-emerald-50 text-[#0da651]'} shadow-2xs`}>
                 <Users size={22} />
               </div>
               <div className="min-w-0">
@@ -554,7 +619,7 @@ export default function ActivityDetailView({
                 <p className="text-2xl font-bold text-gray-900 tracking-tight my-0.5">
                   {activity.registered || registeredStudents.length}
                 </p>
-                <p className={`text-xs ${isMentor ? 'text-[#7656f4]' : 'text-emerald-600'} font-medium`}>Active participants</p>
+                <p className={`text-xs ${isStudent ? 'text-[#2563eb]' : isMentor ? 'text-[#7656f4]' : 'text-emerald-600'} font-medium`}>Active participants</p>
               </div>
             </div>
 

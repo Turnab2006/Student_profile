@@ -210,9 +210,76 @@ export default function StudentSubjects({ hideHeader = false }) {
           />
         </div>
 
-        {/* Row 2 (Mobile) / Right Column (Desktop): Grid/List Buttons & Semester Filter side-by-side */}
+        {/* Row 2 (Mobile) / Right Column (Desktop): Semester Filter + Grid/List Buttons at the last, right corner */}
         <div className="flex items-center justify-between sm:justify-end gap-2 sm:gap-3 w-full sm:w-auto">
-          {/* View Mode Toggle Buttons ("Grid View" & "List View") */}
+          {/* Custom Semester Dropdown Filter */}
+          <div className="relative shrink-0">
+            <button
+              type="button"
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="flex items-center justify-between gap-2 sm:gap-3 px-3 sm:px-4 py-2 bg-slate-50 hover:bg-slate-100/90 active:bg-slate-100 border border-slate-200/90 rounded-xl text-xs sm:text-sm font-bold text-slate-800 transition-all cursor-pointer shadow-2xs hover:shadow-xs min-w-[140px] sm:min-w-[170px]"
+            >
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+                <span>{selectedOpt.label}</span>
+              </div>
+              <ChevronDown
+                size={16}
+                className={`text-slate-500 transition-transform duration-200 ${
+                  isDropdownOpen ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+
+            {/* Dropdown Menu */}
+            {isDropdownOpen && (
+              <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-2xl border border-slate-200 shadow-xl shadow-slate-200/50 py-2 z-50 animate-in fade-in zoom-in-95 duration-150">
+                <div className="px-3 py-1.5 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                  Select Semester
+                </div>
+                {semesterOptions.map((sem) => {
+                  const isSelected = sem.value === selectedSemester;
+                  return (
+                    <button
+                      key={sem.value}
+                      type="button"
+                      onClick={() => {
+                        setSelectedSemester(sem.value);
+                        setIsDropdownOpen(false);
+                      }}
+                      className={`w-full flex items-center justify-between px-3.5 py-2.5 text-xs sm:text-sm transition-colors text-left cursor-pointer ${
+                        isSelected
+                          ? "bg-blue-50/80 text-blue-600 font-bold"
+                          : "text-slate-700 hover:bg-slate-50 font-medium"
+                      }`}
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <span
+                          className={`w-1.5 h-1.5 rounded-full ${
+                            isSelected ? "bg-blue-600" : "bg-slate-300"
+                          }`}
+                        ></span>
+                        <span>{sem.label}</span>
+                      </div>
+                      {sem.status && (
+                        <span
+                          className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                            sem.status === "Active"
+                              ? "bg-emerald-50 text-emerald-600 border border-emerald-200"
+                              : "bg-slate-100 text-slate-500"
+                          }`}
+                        >
+                          {sem.status}
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+
+          {/* View Mode Toggle Buttons ("Grid View" & "List View") at the last, right corner */}
           <div className="bg-white border border-slate-200/90 rounded-2xl p-1 shadow-2xs inline-flex items-center gap-1 shrink-0">
             <button
               type="button"
@@ -238,51 +305,6 @@ export default function StudentSubjects({ hideHeader = false }) {
             >
               <List size={18} />
             </button>
-          </div>
-
-          {/* Custom Semester Dropdown Filter */}
-          <div className="relative shrink-0">
-            <button
-              type="button"
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="flex items-center justify-between gap-2 sm:gap-3 px-3 sm:px-4 py-2 bg-slate-50 hover:bg-slate-100/90 active:bg-slate-100 border border-slate-200/90 rounded-xl text-xs sm:text-sm font-bold text-slate-800 transition-all cursor-pointer shadow-2xs hover:shadow-xs min-w-[140px] sm:min-w-[170px]"
-            >
-              <div className="flex items-center gap-2">
-                <Calendar size={15} className="text-blue-600" />
-                <span>{selectedOpt.label}</span>
-              </div>
-              <ChevronDown
-                size={14}
-                className={`text-slate-500 transition-transform duration-200 ${isDropdownOpen ? "rotate-180" : ""}`}
-              />
-            </button>
-
-            {/* Dropdown Menu */}
-            {isDropdownOpen && (
-              <div className="absolute right-0 top-full mt-2 w-56 bg-white border border-slate-200 rounded-2xl shadow-xl z-50 p-2 space-y-1 animate-in fade-in zoom-in-95 duration-150">
-                <p className="text-[10px] font-bold text-slate-400 px-3 py-1 uppercase tracking-wider">
-                  Select Semester
-                </p>
-                {semesterOptions.map((opt) => (
-                  <button
-                    key={opt.value}
-                    type="button"
-                    onClick={() => {
-                      setSelectedSemester(opt.value);
-                      setIsDropdownOpen(false);
-                    }}
-                    className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
-                      selectedSemester === opt.value
-                        ? "bg-blue-50 text-blue-600 font-bold"
-                        : "text-slate-700 hover:bg-slate-50 hover:text-slate-900"
-                    }`}
-                  >
-                    <span>{opt.label}</span>
-                    {selectedSemester === opt.value && <CheckCircle size={14} className="text-blue-600" />}
-                  </button>
-                ))}
-              </div>
-            )}
           </div>
         </div>
 

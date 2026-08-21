@@ -81,17 +81,28 @@ export default function NoticeDetailView({
   onEdit,
   onDelete,
   isMentor = false,
+  isStudent = false,
 }) {
   if (!notice) return null;
 
+  const isStudentPortal = isStudent || (!isMentor && isStudent);
+  const isMentorPortal = isMentor;
+  const isAdmin = !isStudent && !isMentor;
+
   // Attached files
-  const attachedFiles = notice.files || [
+  const attachedFiles = notice.files || (notice.hasAttachment ? [
     {
-      name: `${notice.id}_Official_Circular.pdf`,
+      name: notice.attachmentName || `${notice.id || 'Notice'}_Circular.pdf`,
+      size: notice.attachmentSize || "420.5 KB",
+      type: "PDF",
+    }
+  ] : [
+    {
+      name: `${notice.id || 'Notice'}_Official_Circular.pdf`,
       size: "420.5 KB",
       type: "PDF",
     },
-  ];
+  ]);
 
   const getDocTypeIcon = (type) => {
     switch (type) {
@@ -105,7 +116,7 @@ export default function NoticeDetailView({
       case "CSV":
         return <FileSpreadsheet size={22} className="text-emerald-500" />;
       default:
-        return <File size={22} className="text-emerald-600" />;
+        return <File size={22} className={isStudentPortal ? "text-blue-600" : isMentorPortal ? "text-purple-600" : "text-emerald-600"} />;
     }
   };
 
@@ -113,13 +124,19 @@ export default function NoticeDetailView({
 
   return (
     <div className="w-full space-y-5 animate-in fade-in duration-200 font-['Roboto',sans-serif]">
-      {/* Top Header / Action Bar with Back Button & Breadcrumbs */}
+      {/* Top Header / Action Bar with Back Button */}
       <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3 min-w-0">
           <button
             type="button"
             onClick={onBack}
-            className="w-10 h-10 rounded-xl bg-gray-100/80 hover:bg-gray-200 active:scale-95 text-gray-700 flex items-center justify-center shrink-0 transition-all cursor-pointer shadow-2xs border border-gray-200/60"
+            className={`w-10 h-10 rounded-xl bg-gray-100/80 hover:bg-gray-200 active:scale-95 text-gray-700 flex items-center justify-center shrink-0 transition-all cursor-pointer shadow-2xs border border-gray-200/60 ${
+              isStudentPortal
+                ? "hover:border-blue-300 hover:text-blue-600 hover:bg-blue-50"
+                : isMentorPortal
+                ? "hover:border-purple-300 hover:text-purple-600 hover:bg-purple-50"
+                : ""
+            }`}
             title="Back to Notices"
             aria-label="Back to Notices"
           >
@@ -132,30 +149,57 @@ export default function NoticeDetailView({
           </div>
         </div>
 
-        {/* Action Buttons (Edit and Delete only) */}
-        <div className="flex items-center gap-2 self-stretch sm:self-auto justify-end">
-          <button
-            type="button"
-            onClick={() => onEdit?.(notice)}
-            className="flex items-center gap-1.5 px-4 py-2 bg-[#0da651] hover:bg-[#0c9548] text-white rounded-xl text-xs font-bold transition-all cursor-pointer shadow-sm active:scale-95"
-          >
-            <Edit size={14} />
-            <span>Edit Notice</span>
-          </button>
+        {/* Action Buttons: Only show Edit and Delete for Admin (no edit/delete or 3-dots for student/mentor) */}
+        {isAdmin ? (
+          <div className="flex items-center gap-2 self-stretch sm:self-auto justify-end">
+            <button
+              type="button"
+              onClick={() => onEdit?.(notice)}
+              className="flex items-center gap-1.5 px-4 py-2 bg-[#0da651] hover:bg-[#0c9548] text-white rounded-xl text-xs font-bold transition-all cursor-pointer shadow-sm active:scale-95"
+            >
+              <Edit size={14} />
+              <span>Edit Notice</span>
+            </button>
 
-          <button
-            type="button"
-            onClick={() => onDelete?.(notice.id)}
-            className="flex items-center gap-1.5 px-3.5 py-2 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-xl text-xs font-bold border border-rose-200/80 transition-all cursor-pointer shadow-2xs active:scale-95"
-          >
-            <Trash2 size={14} />
-            <span>Delete</span>
-          </button>
-        </div>
+            <button
+              type="button"
+              onClick={() => onDelete?.(notice.id)}
+              className="flex items-center gap-1.5 px-3.5 py-2 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-xl text-xs font-bold border border-rose-200/80 transition-all cursor-pointer shadow-2xs active:scale-95"
+            >
+              <Trash2 size={14} />
+              <span>Delete</span>
+            </button>
+          </div>
+        ) : (
+          attachedFiles.length > 0 && (
+            <div className="flex items-center gap-2 self-stretch sm:self-auto justify-end">
+              <button
+                type="button"
+                onClick={() => alert(`Downloading circular: ${attachedFiles[0].name}`)}
+                className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer shadow-sm active:scale-95 text-white ${
+                  isStudentPortal
+                    ? "bg-[#2563eb] hover:bg-[#1d4ed8]"
+                    : "bg-[#7656f4] hover:bg-[#6242e2]"
+                }`}
+              >
+                <Download size={14} />
+                <span>Download Attachment</span>
+              </button>
+            </div>
+          )
+        )}
       </div>
 
       {/* Hero Notice Banner */}
-      <section className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#0da651] via-[#0e9f4e] to-[#09803d] border border-emerald-600/30 p-6 sm:p-7 shadow-md shadow-emerald-900/10 text-white space-y-4">
+      <section
+        className={`relative overflow-hidden rounded-2xl border p-6 sm:p-7 shadow-md text-white space-y-4 ${
+          isStudentPortal
+            ? "bg-gradient-to-r from-[#2563eb] via-[#1d4ed8] to-[#1e40af] border-blue-600/30 shadow-blue-900/10"
+            : isMentorPortal
+            ? "bg-gradient-to-r from-[#7656f4] via-[#6845f2] to-[#5531dc] border-purple-600/30 shadow-purple-900/10"
+            : "bg-gradient-to-r from-[#0da651] via-[#0e9f4e] to-[#09803d] border-emerald-600/30 shadow-emerald-900/10"
+        }`}
+      >
         {/* Top Badges */}
         <div className="relative z-10 flex flex-wrap items-center gap-2">
           {notice.category && (
@@ -234,25 +278,31 @@ export default function NoticeDetailView({
           <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-5 sm:p-6 space-y-4">
             <div className="flex items-center justify-between border-b border-gray-100 pb-3">
               <h3 className="text-sm font-bold text-gray-900 flex items-center gap-2">
-                <FileText size={16} className="text-emerald-600" />
+                <FileText size={16} className={isStudentPortal ? "text-blue-600" : isMentorPortal ? "text-purple-600" : "text-emerald-600"} />
                 <span>Notice Announcement Content &amp; Details</span>
               </h3>
               <span className="text-[11px] text-gray-400 font-medium">Official Notice</span>
             </div>
 
-            <div className="p-4 sm:p-5 rounded-xl bg-[#f8fbf9] border border-emerald-100/80 text-gray-800 text-sm leading-relaxed whitespace-pre-wrap">
-              {notice.content}
+            <div className={`p-4 sm:p-5 rounded-xl border text-gray-800 text-sm leading-relaxed whitespace-pre-wrap ${
+              isStudentPortal
+                ? "bg-[#f8faff] border-blue-100/80"
+                : isMentorPortal
+                ? "bg-[#faf8ff] border-purple-100/80"
+                : "bg-[#f8fbf9] border-emerald-100/80"
+            }`}>
+              {notice.content || notice.description || notice.fullContent}
             </div>
 
             {/* Important Notice Guidelines Banner */}
             <div className="p-4 rounded-xl bg-amber-50/70 border border-amber-200/70 flex items-start gap-3 text-xs text-amber-900">
               <AlertTriangle size={17} className="text-amber-600 shrink-0 mt-0.5" />
               <div>
-                <strong className="font-bold block text-amber-950 mb-0.5">Important Student Instruction:</strong>
+                <strong className="font-bold block text-amber-950 mb-0.5">Important Notice Instruction:</strong>
                 <span>
                   All concerned students and department members falling under the{" "}
-                  <strong>{notice.audience || "target group"}</strong> are strictly advised to adhere to the
-                  deadlines and guidelines mentioned in this circular.
+                  <strong>{notice.audience || "target group"}</strong> are advised to follow the
+                  guidelines and deadlines mentioned in this announcement.
                 </span>
               </div>
             </div>
@@ -262,7 +312,7 @@ export default function NoticeDetailView({
           <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-5 sm:p-6 space-y-4">
             <div className="flex items-center justify-between border-b border-gray-100 pb-3">
               <h3 className="text-sm font-bold text-gray-900 flex items-center gap-2">
-                <Users size={16} className="text-emerald-600" />
+                <Users size={16} className={isStudentPortal ? "text-blue-600" : isMentorPortal ? "text-purple-600" : "text-emerald-600"} />
                 <span>Target Audience &amp; Broadcast Scope</span>
               </h3>
             </div>
@@ -278,14 +328,24 @@ export default function NoticeDetailView({
                 <p className="text-[11px] text-purple-600 mt-1 font-medium">Broadcast recipient group</p>
               </div>
 
-              {/* Box 2: Category (Emerald Theme) */}
-              <div className="p-4 rounded-2xl bg-[#f0fdf4] border border-emerald-200/80 border-l-4 border-l-emerald-500 shadow-2xs">
+              {/* Box 2: Category (Themed) */}
+              <div className={`p-4 rounded-2xl border-l-4 shadow-2xs ${
+                isStudentPortal
+                  ? "bg-[#f0f7ff] border-blue-200/80 border-l-blue-500"
+                  : isMentorPortal
+                  ? "bg-[#faf5ff] border-purple-200/80 border-l-purple-500"
+                  : "bg-[#f0fdf4] border-emerald-200/80 border-l-emerald-500"
+              }`}>
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-[11px] font-bold text-emerald-700 uppercase tracking-wider">Category</span>
-                  <BookOpen size={15} className="text-emerald-600" />
+                  <span className={`text-[11px] font-bold uppercase tracking-wider ${
+                    isStudentPortal ? "text-blue-700" : isMentorPortal ? "text-purple-700" : "text-emerald-700"
+                  }`}>Category</span>
+                  <BookOpen size={15} className={isStudentPortal ? "text-blue-600" : isMentorPortal ? "text-purple-600" : "text-emerald-600"} />
                 </div>
                 <p className="text-sm sm:text-base font-extrabold text-gray-900">{notice.category}</p>
-                <p className="text-[11px] text-emerald-600 mt-1 font-medium">Departmental classification</p>
+                <p className={`text-[11px] mt-1 font-medium ${
+                  isStudentPortal ? "text-blue-600" : isMentorPortal ? "text-purple-600" : "text-emerald-600"
+                }`}>Departmental classification</p>
               </div>
 
               {/* Box 3: Priority Ranking (Themed by Priority Level) */}
@@ -307,10 +367,16 @@ export default function NoticeDetailView({
           <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-5 space-y-4">
             <div className="flex items-center justify-between border-b border-gray-100 pb-3">
               <h3 className="text-sm font-bold text-gray-900 flex items-center gap-2">
-                <Paperclip size={16} className="text-emerald-600" />
+                <Paperclip size={16} className={isStudentPortal ? "text-blue-600" : isMentorPortal ? "text-purple-600" : "text-emerald-600"} />
                 <span>Attached Circulars &amp; Files</span>
               </h3>
-              <span className="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+              <span className={`text-xs font-semibold px-2 py-0.5 rounded-md border ${
+                isStudentPortal
+                  ? "text-blue-700 bg-blue-50 border-blue-200"
+                  : isMentorPortal
+                  ? "text-purple-700 bg-purple-50 border-purple-200"
+                  : "text-emerald-700 bg-emerald-50 border-emerald-200"
+              }`}>
                 {attachedFiles.length} File{attachedFiles.length > 1 ? "s" : ""}
               </span>
             </div>
@@ -319,10 +385,16 @@ export default function NoticeDetailView({
               {attachedFiles.map((file, idx) => (
                 <div
                   key={idx}
-                  className="p-3.5 rounded-xl bg-emerald-50/60 border border-emerald-200/70 flex items-center justify-between gap-3 hover:bg-emerald-50 transition-colors"
+                  className={`p-3.5 rounded-xl border flex items-center justify-between gap-3 transition-colors ${
+                    isStudentPortal
+                      ? "bg-blue-50/60 border-blue-200/70 hover:bg-blue-50"
+                      : isMentorPortal
+                      ? "bg-purple-50/60 border-purple-200/70 hover:bg-purple-50"
+                      : "bg-emerald-50/60 border-emerald-200/70 hover:bg-emerald-50"
+                  }`}
                 >
                   <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-10 h-10 rounded-xl bg-white border border-emerald-100 flex items-center justify-center shrink-0 shadow-2xs">
+                    <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center shrink-0 shadow-2xs">
                       {getDocTypeIcon(file.type || "PDF")}
                     </div>
                     <div className="min-w-0">
@@ -336,7 +408,13 @@ export default function NoticeDetailView({
                   <button
                     type="button"
                     onClick={() => alert(`Downloading circular: ${file.name}`)}
-                    className="p-2 text-emerald-700 hover:bg-white rounded-xl transition-all cursor-pointer shadow-2xs border border-emerald-200/60 shrink-0"
+                    className={`p-2 rounded-xl transition-all cursor-pointer shadow-2xs border shrink-0 ${
+                      isStudentPortal
+                        ? "text-blue-700 hover:bg-white border-blue-200/60"
+                        : isMentorPortal
+                        ? "text-purple-700 hover:bg-white border-purple-200/60"
+                        : "text-emerald-700 hover:bg-white border-emerald-200/60"
+                    }`}
                     title="Download Document"
                   >
                     <Download size={14} />
@@ -350,18 +428,32 @@ export default function NoticeDetailView({
           <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-5 space-y-4">
             <div className="flex items-center justify-between border-b border-gray-100 pb-3">
               <h3 className="text-sm font-bold text-gray-900 flex items-center gap-2">
-                <Clock size={16} className="text-emerald-600" />
+                <Clock size={16} className={isStudentPortal ? "text-blue-600" : isMentorPortal ? "text-purple-600" : "text-emerald-600"} />
                 <span>Notice Schedule &amp; Timeline</span>
               </h3>
             </div>
 
             {/* Vertical Flow Steps */}
-            <div className="relative pl-6 space-y-5 border-l-2 border-emerald-200 ml-2 py-1">
+            <div className={`relative pl-6 space-y-5 border-l-2 ml-2 py-1 ${
+              isStudentPortal ? "border-blue-200" : isMentorPortal ? "border-purple-200" : "border-emerald-200"
+            }`}>
               {/* Step 1: Published */}
               <div className="relative">
-                <div className="absolute -left-[31px] top-0.5 w-4 h-4 rounded-full bg-[#0da651] ring-4 ring-emerald-100 flex items-center justify-center" />
+                <div className={`absolute -left-[31px] top-0.5 w-4 h-4 rounded-full flex items-center justify-center ${
+                  isStudentPortal
+                    ? "bg-[#2563eb] ring-4 ring-blue-100"
+                    : isMentorPortal
+                    ? "bg-[#7656f4] ring-4 ring-purple-100"
+                    : "bg-[#0da651] ring-4 ring-emerald-100"
+                }`} />
                 <div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                  <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border ${
+                    isStudentPortal
+                      ? "text-blue-700 bg-blue-50 border-blue-200"
+                      : isMentorPortal
+                      ? "text-purple-700 bg-purple-50 border-purple-200"
+                      : "text-emerald-700 bg-emerald-50 border-emerald-200"
+                  }`}>
                     Published On
                   </span>
                   <p className="text-xs font-bold text-gray-900 mt-1">{notice.date}</p>
@@ -383,12 +475,24 @@ export default function NoticeDetailView({
 
               {/* Step 3: Current Status */}
               <div className="relative">
-                <div className="absolute -left-[31px] top-0.5 w-4 h-4 rounded-full bg-blue-500 ring-4 ring-blue-100 flex items-center justify-center" />
+                <div className={`absolute -left-[31px] top-0.5 w-4 h-4 rounded-full flex items-center justify-center ${
+                  isStudentPortal
+                    ? "bg-blue-600 ring-4 ring-blue-100"
+                    : isMentorPortal
+                    ? "bg-purple-600 ring-4 ring-purple-100"
+                    : "bg-emerald-600 ring-4 ring-emerald-100"
+                }`} />
                 <div>
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
+                  <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded border ${
+                    isStudentPortal
+                      ? "text-blue-700 bg-blue-50 border-blue-200"
+                      : isMentorPortal
+                      ? "text-purple-700 bg-purple-50 border-purple-200"
+                      : "text-emerald-700 bg-emerald-50 border-emerald-200"
+                  }`}>
                     Broadcast Status
                   </span>
-                  <p className="text-xs font-bold text-gray-900 mt-1">{notice.status}</p>
+                  <p className="text-xs font-bold text-gray-900 mt-1">{notice.status || "Active"}</p>
                   <p className="text-[11px] text-gray-400 mt-0.5">Visible on all student and mentor portals</p>
                 </div>
               </div>
