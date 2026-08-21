@@ -73,9 +73,15 @@ export default function Sidebar({
     >
       {/* Brand Logo Header */}
       <div className="h-[65px] flex items-center justify-between border-b border-gray-100 px-6 shrink-0">
-        <span className="block text-2xl font-bold tracking-tight text-gray-900">
-          Trackademy
-        </span>
+        <img
+          src="/logo.svg"
+          alt="Trackademy"
+          className="h-7 w-auto max-w-[170px] object-contain cursor-pointer select-none"
+          onClick={() => {
+            if (onNavigate) onNavigate("dashboard");
+            if (onClose) onClose();
+          }}
+        />
         <button
           type="button"
           onClick={onClose}
