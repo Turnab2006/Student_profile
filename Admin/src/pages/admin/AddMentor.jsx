@@ -62,9 +62,8 @@ function TextField({ icon: Icon, type = "text", placeholder, value, onChange, di
         disabled={disabled}
         value={value}
         onChange={onChange}
-        className={`w-full border border-emerald-200/80 bg-[#f4fbf7] hover:bg-[#ebf8f0]/70 hover:border-emerald-300 rounded-lg py-2 text-sm text-gray-800 placeholder:text-gray-400 focus:bg-white focus:outline-none focus:border-[#0da651] focus:ring-2 focus:ring-emerald-200 transition-all ${
-          Icon ? "pl-9 pr-3" : "px-3"
-        } ${disabled ? "bg-gray-50 text-gray-400 border-gray-200 cursor-not-allowed" : ""}`}
+        className={`w-full border border-emerald-200/80 bg-[#f4fbf7] hover:bg-[#ebf8f0]/70 hover:border-emerald-300 rounded-lg py-2 text-sm text-gray-800 placeholder:text-gray-400 focus:bg-white focus:outline-none focus:border-[#0da651] focus:ring-2 focus:ring-emerald-200 transition-all ${Icon ? "pl-9 pr-3" : "px-3"
+          } ${disabled ? "bg-gray-50 text-gray-400 border-gray-200 cursor-not-allowed" : ""}`}
       />
     </div>
   );
@@ -83,9 +82,8 @@ function SelectField({ icon: Icon, placeholder, options = [], value, onChange, d
         value={value}
         onChange={onChange}
         disabled={disabled}
-        className={`w-full border border-emerald-200/80 bg-[#f4fbf7] hover:bg-[#ebf8f0]/70 hover:border-emerald-300 rounded-lg py-2 text-sm text-gray-700 focus:bg-white focus:outline-none focus:border-[#0da651] focus:ring-2 focus:ring-emerald-200 transition-all appearance-none pr-8 cursor-pointer ${
-          Icon ? "pl-9" : "px-3"
-        } ${disabled ? "bg-gray-50 text-gray-400 border-gray-200 cursor-not-allowed opacity-75" : ""}`}
+        className={`w-full border border-emerald-200/80 bg-[#f4fbf7] hover:bg-[#ebf8f0]/70 hover:border-emerald-300 rounded-lg py-2 text-sm text-gray-700 focus:bg-white focus:outline-none focus:border-[#0da651] focus:ring-2 focus:ring-emerald-200 transition-all appearance-none pr-8 cursor-pointer ${Icon ? "pl-9" : "px-3"
+          } ${disabled ? "bg-gray-50 text-gray-400 border-gray-200 cursor-not-allowed opacity-75" : ""}`}
       >
         <option value="">{placeholder}</option>
         {options.map((option) => (
@@ -249,11 +247,10 @@ export default function AddMentor({ onNavigate, onOpenSidebar }) {
                     <button
                       type="button"
                       onClick={() => setAddMode("manual")}
-                      className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer ${
-                        addMode === "manual"
+                      className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer ${addMode === "manual"
                           ? "bg-primary text-white shadow-sm"
                           : "text-gray-600 hover:text-gray-900"
-                      }`}
+                        }`}
                     >
                       <User size={15} />
                       Single Mentor
@@ -262,11 +259,10 @@ export default function AddMentor({ onNavigate, onOpenSidebar }) {
                     <button
                       type="button"
                       onClick={() => setAddMode("csv")}
-                      className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer ${
-                        addMode === "csv"
+                      className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all cursor-pointer ${addMode === "csv"
                           ? "bg-primary text-white shadow-sm"
                           : "text-gray-600 hover:text-gray-900"
-                      }`}
+                        }`}
                     >
                       <Users size={15} />
                       Multiple Mentors
@@ -465,9 +461,8 @@ export default function AddMentor({ onNavigate, onOpenSidebar }) {
                             e.preventDefault();
                             setDragOver(false);
                           }}
-                          className={`rounded-2xl border-2 border-dashed p-8 sm:p-10 flex flex-col items-center justify-center text-center transition-all ${
-                            dragOver ? "border-[#0da651] bg-emerald-50/60 scale-[1.01]" : "border-emerald-200/80 bg-[#f4fbf7]/70 hover:bg-[#ebf8f0] hover:border-emerald-300"
-                          }`}
+                          className={`rounded-2xl border-2 border-dashed p-8 sm:p-10 flex flex-col items-center justify-center text-center transition-all ${dragOver ? "border-[#0da651] bg-emerald-50/60 scale-[1.01]" : "border-emerald-200/80 bg-[#f4fbf7]/70 hover:bg-[#ebf8f0] hover:border-emerald-300"
+                            }`}
                         >
                           <div className="w-16 h-16 rounded-2xl bg-emerald-50 border border-emerald-100 text-[#0da651] flex items-center justify-center mb-4 shadow-xs">
                             <Upload size={28} className="stroke-[2.2]" />
@@ -606,7 +601,7 @@ export default function AddMentor({ onNavigate, onOpenSidebar }) {
                     <div>
                       <div className="flex items-center gap-2">
                         <h2 className="text-base font-bold text-gray-800">Select Students</h2>
-                        
+
                         {/* Info Tooltip Pop-up */}
                         <div className="relative group/info inline-flex items-center">
                           <button
@@ -702,15 +697,14 @@ export default function AddMentor({ onNavigate, onOpenSidebar }) {
                             <div
                               key={st.id}
                               onClick={() => toggleStudentSelect(st.id)}
-                              className={`flex items-center justify-between p-3 rounded-xl border transition-all cursor-pointer ${
-                                isSelected ? "border-emerald-300 bg-emerald-50/70" : "border-gray-200/80 bg-white hover:bg-emerald-50/30"
-                              }`}
+                              className={`flex items-center justify-between p-3 rounded-xl border transition-all cursor-pointer ${isSelected ? "border-emerald-300 bg-emerald-50/70" : "border-gray-200/80 bg-white hover:bg-emerald-50/30"
+                                }`}
                             >
                               <div className="flex items-center gap-3 min-w-0">
                                 <input
                                   type="checkbox"
                                   checked={isSelected}
-                                  onChange={() => {}}
+                                  onChange={() => { }}
                                   className="w-4 h-4 rounded text-[#0da651] focus:ring-emerald-400 accent-[#0da651]"
                                 />
                                 <div className={`w-8 h-8 rounded-full ${st.bg} text-xs font-bold flex items-center justify-center shrink-0`}>
@@ -729,9 +723,8 @@ export default function AddMentor({ onNavigate, onOpenSidebar }) {
                                 </div>
                                 <button
                                   type="button"
-                                  className={`px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1 ${
-                                    isSelected ? "bg-emerald-100 text-[#0da651]" : "border border-emerald-200 text-[#0da651] hover:bg-emerald-50"
-                                  }`}
+                                  className={`px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1 ${isSelected ? "bg-emerald-100 text-[#0da651]" : "border border-emerald-200 text-[#0da651] hover:bg-emerald-50"
+                                    }`}
                                 >
                                   {isSelected ? <Check size={13} /> : <Plus size={13} />}
                                   <span>{isSelected ? "Added" : "Add"}</span>

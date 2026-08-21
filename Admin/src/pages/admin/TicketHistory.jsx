@@ -28,26 +28,26 @@ import AdminProfile from "../../components/admin/AdminProfile";
 import { getStoredTickets, saveStoredTickets } from "../../data/ticketData";
 
 const categoryBadgeColors = {
-  Academic:   "bg-purple-100 text-purple-700 border border-purple-200",
+  Academic: "bg-purple-100 text-purple-700 border border-purple-200",
   Attendance: "bg-blue-100 text-blue-700 border border-blue-200",
-  Results:    "bg-teal-100 text-teal-700 border border-teal-200",
-  Mentors:    "bg-indigo-100 text-indigo-700 border border-indigo-200",
-  System:     "bg-rose-100 text-rose-700 border border-rose-200",
-  General:    "bg-slate-100 text-slate-700 border border-slate-200",
+  Results: "bg-teal-100 text-teal-700 border border-teal-200",
+  Mentors: "bg-indigo-100 text-indigo-700 border border-indigo-200",
+  System: "bg-rose-100 text-rose-700 border border-rose-200",
+  General: "bg-slate-100 text-slate-700 border border-slate-200",
 };
 
 const priorityStyles = {
   Urgent: "bg-rose-100 text-rose-700 border border-rose-200",
-  High:   "bg-amber-100 text-amber-700 border border-amber-200",
+  High: "bg-amber-100 text-amber-700 border border-amber-200",
   Medium: "bg-blue-100 text-blue-700 border border-blue-200",
-  Low:    "bg-slate-100 text-slate-700 border border-slate-200",
+  Low: "bg-slate-100 text-slate-700 border border-slate-200",
 };
 
 const statusStyles = {
-  Resolved:       "bg-green-100 text-green-700 border border-green-200",
-  "In Progress":  "bg-amber-100 text-amber-700 border border-amber-200",
+  Resolved: "bg-green-100 text-green-700 border border-green-200",
+  "In Progress": "bg-amber-100 text-amber-700 border border-amber-200",
   "Under Review": "bg-blue-100 text-blue-700 border border-blue-200",
-  Closed:         "bg-gray-100 text-gray-600 border border-gray-200",
+  Closed: "bg-gray-100 text-gray-600 border border-gray-200",
 };
 
 function FilterDropdown({ value, onChange, options }) {
@@ -235,7 +235,7 @@ export default function TicketHistory({ onNavigate, onOpenSidebar, isMentor = fa
 
       {/* Main Container */}
       <main className={isMentor ? "p-2 sm:px-5 sm:py-2.5 space-y-5 pb-10" : "flex-1 overflow-y-auto p-4 sm:p-6 space-y-5 font-['Roboto',sans-serif]"}>
-        
+
         {/* Upper Green Hero Header */}
         <section className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#0da651] via-[#0e9f4e] to-[#09803d] border border-emerald-600/30 px-6 py-5 shadow-sm text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="relative z-10 flex items-center gap-3.5">
@@ -416,9 +416,8 @@ export default function TicketHistory({ onNavigate, onOpenSidebar, isMentor = fa
                     return (
                       <tr
                         key={t.id}
-                        className={`hover:bg-emerald-50/40 transition-colors ${
-                          isSelected ? "bg-emerald-50/60" : ""
-                        }`}
+                        className={`hover:bg-emerald-50/40 transition-colors ${isSelected ? "bg-emerald-50/60" : ""
+                          }`}
                       >
                         {/* Checkbox */}
                         <td className="py-3.5 px-4 text-center">
@@ -454,9 +453,8 @@ export default function TicketHistory({ onNavigate, onOpenSidebar, isMentor = fa
                         {/* Category */}
                         <td className="py-3.5 px-4 text-center">
                           <span
-                            className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-bold ${
-                              categoryBadgeColors[t.category] || "bg-gray-100 text-gray-700"
-                            }`}
+                            className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-bold ${categoryBadgeColors[t.category] || "bg-gray-100 text-gray-700"
+                              }`}
                           >
                             {t.category}
                           </span>
@@ -465,9 +463,8 @@ export default function TicketHistory({ onNavigate, onOpenSidebar, isMentor = fa
                         {/* Priority */}
                         <td className="py-3.5 px-4 text-center">
                           <span
-                            className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-bold ${
-                              priorityStyles[t.priority] || priorityStyles.Medium
-                            }`}
+                            className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-bold ${priorityStyles[t.priority] || priorityStyles.Medium
+                              }`}
                           >
                             {t.priority}
                           </span>
@@ -484,9 +481,8 @@ export default function TicketHistory({ onNavigate, onOpenSidebar, isMentor = fa
                         {/* Status */}
                         <td className="py-3.5 px-4 text-center">
                           <span
-                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold ${
-                              statusStyles[t.status] || "bg-gray-100 text-gray-700"
-                            }`}
+                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold ${statusStyles[t.status] || "bg-gray-100 text-gray-700"
+                              }`}
                           >
                             {t.status}
                           </span>
@@ -562,11 +558,10 @@ export default function TicketHistory({ onNavigate, onOpenSidebar, isMentor = fa
                       key={item}
                       type="button"
                       onClick={() => setCurrentPage(item)}
-                      className={`w-7 h-7 text-xs rounded-lg font-bold transition-all cursor-pointer ${
-                        currentPage === item
+                      className={`w-7 h-7 text-xs rounded-lg font-bold transition-all cursor-pointer ${currentPage === item
                           ? "bg-[#0da651] text-white shadow-2xs"
                           : "text-gray-600 hover:bg-gray-100"
-                      }`}
+                        }`}
                     >
                       {item}
                     </button>
@@ -606,7 +601,7 @@ export default function TicketHistory({ onNavigate, onOpenSidebar, isMentor = fa
       {viewingTicket && (
         <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4 sm:p-6">
           <div className="bg-white rounded-3xl max-w-3xl w-full shadow-2xl border border-gray-100 animate-in fade-in zoom-in-95 duration-200 flex flex-col max-h-[90vh] overflow-hidden font-['Roboto',sans-serif]">
-            
+
             {/* Fixed Sticky Header */}
             <div className="flex items-center justify-between gap-3 px-6 sm:px-8 py-5 border-b border-gray-100 bg-white shrink-0">
               <div className="flex flex-wrap items-center gap-2">
@@ -645,7 +640,7 @@ export default function TicketHistory({ onNavigate, onOpenSidebar, isMentor = fa
                 <h3 className="text-xl sm:text-2xl font-extrabold text-gray-900 tracking-tight leading-snug">
                   {viewingTicket.subject}
                 </h3>
-                
+
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-gray-500 pt-0.5">
                   <div className="flex items-center gap-1.5">
                     <CalendarDays size={14} className="text-gray-400" />
@@ -696,11 +691,10 @@ export default function TicketHistory({ onNavigate, onOpenSidebar, isMentor = fa
                   ]).map((step, idx) => (
                     <div key={idx} className="relative">
                       <div
-                        className={`absolute -left-[35px] sm:-left-[39px] top-0.5 w-5 h-5 rounded-full flex items-center justify-center ring-4 ${
-                          step.completed
+                        className={`absolute -left-[35px] sm:-left-[39px] top-0.5 w-5 h-5 rounded-full flex items-center justify-center ring-4 ${step.completed
                             ? "bg-[#0da651] ring-emerald-100 text-white"
                             : "bg-gray-300 ring-gray-100 text-transparent"
-                        }`}
+                          }`}
                       >
                         {step.completed && <Check size={11} className="stroke-[3]" />}
                       </div>

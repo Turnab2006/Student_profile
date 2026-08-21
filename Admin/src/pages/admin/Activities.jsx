@@ -322,11 +322,10 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                   <button
                     type="button"
                     onClick={() => setView("grid")}
-                    className={`p-2 rounded-lg transition-all cursor-pointer ${
-                      view === "grid"
+                    className={`p-2 rounded-lg transition-all cursor-pointer ${view === "grid"
                         ? "bg-white text-[#0da651] font-bold shadow-xs"
                         : "text-gray-400 hover:text-gray-700"
-                    }`}
+                      }`}
                     title="Grid View"
                     aria-label="Grid View"
                   >
@@ -335,11 +334,10 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                   <button
                     type="button"
                     onClick={() => setView("list")}
-                    className={`p-2 rounded-lg transition-all cursor-pointer ${
-                      view === "list"
+                    className={`p-2 rounded-lg transition-all cursor-pointer ${view === "list"
                         ? "bg-white text-[#0da651] font-bold shadow-xs"
                         : "text-gray-400 hover:text-gray-700"
-                    }`}
+                      }`}
                     title="List View"
                     aria-label="List View"
                   >
@@ -400,9 +398,8 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                           {/* Category Type Badge with Icon on Bottom-Left */}
                           <div className="absolute bottom-3 left-3 z-10">
                             <span
-                              className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-bold shadow-sm backdrop-blur-md ${
-                                categoryBadgeStyles[a.type] || "bg-black/60 text-white border border-white/20"
-                              }`}
+                              className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-bold shadow-sm backdrop-blur-md ${categoryBadgeStyles[a.type] || "bg-black/60 text-white border border-white/20"
+                                }`}
                             >
                               {getActivityIcon(a.type, 13)}
                               <span>{a.type}</span>
@@ -463,9 +460,8 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                                 {a.title}
                               </h3>
                               <span
-                                className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full shrink-0 ${
-                                  statusStyles[a.status] || "bg-gray-100 text-gray-700"
-                                }`}
+                                className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full shrink-0 ${statusStyles[a.status] || "bg-gray-100 text-gray-700"
+                                  }`}
                               >
                                 {a.status}
                               </span>
@@ -573,9 +569,8 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                           visibleActivities.map((a) => (
                             <tr
                               key={a.id}
-                              className={`hover:bg-gray-50/60 transition-colors ${
-                                selected.includes(a.id) ? "bg-emerald-50/30" : ""
-                              }`}
+                              className={`hover:bg-gray-50/60 transition-colors ${selected.includes(a.id) ? "bg-emerald-50/30" : ""
+                                }`}
                             >
                               <td className="px-4 py-3 text-center">
                                 <input
@@ -613,9 +608,8 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                               </td>
                               <td className="px-4 py-3 text-center">
                                 <span
-                                  className={`inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-lg ${
-                                    categoryBadgeStyles[a.type] || "bg-gray-100 text-gray-700"
-                                  }`}
+                                  className={`inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-lg ${categoryBadgeStyles[a.type] || "bg-gray-100 text-gray-700"
+                                    }`}
                                 >
                                   {getActivityIcon(a.type, 11)}
                                   <span>{a.type}</span>
@@ -646,9 +640,8 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                               </td>
                               <td className="px-4 py-3 text-center">
                                 <span
-                                  className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold ${
-                                    statusStyles[a.status] || "bg-gray-100 text-gray-700"
-                                  }`}
+                                  className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold ${statusStyles[a.status] || "bg-gray-100 text-gray-700"
+                                    }`}
                                 >
                                   {a.status}
                                 </span>

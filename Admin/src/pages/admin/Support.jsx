@@ -299,7 +299,7 @@ export default function Support({ onNavigate, onOpenSidebar, isMentor = false })
       {/* Main Container */}
       <main className={isMentor ? "p-2 sm:px-5 sm:py-2.5 space-y-5 pb-10 font-['Roboto',sans-serif]" : "flex-1 overflow-y-auto p-4 lg:p-5 font-['Roboto',sans-serif]"}>
         <div className="max-w-[1500px] mx-auto space-y-5">
-          
+
           {/* ========================================================================= */}
           {/* 1. UPPER HEADER: Green Background with Track Status & History Buttons     */}
           {/* ========================================================================= */}
@@ -423,7 +423,7 @@ export default function Support({ onNavigate, onOpenSidebar, isMentor = false })
           {/* 4. 1fr 1fr EQUAL GRID: FAQ Column (Left) & Ticket Form Column (Right)    */}
           {/* ========================================================================= */}
           <section className="grid grid-cols-1 lg:grid-cols-2 gap-5 items-start">
-            
+
             {/* Left Column (1fr): Frequently Asked Questions */}
             <div className="rounded-2xl border border-slate-200/90 bg-white shadow-md shadow-slate-200/50 p-5 sm:p-6 space-y-4">
               <div className="flex items-center justify-between border-b border-gray-100 pb-3">
@@ -441,9 +441,8 @@ export default function Support({ onNavigate, onOpenSidebar, isMentor = false })
                   return (
                     <div
                       key={item.question}
-                      className={`rounded-xl border transition-all overflow-hidden ${
-                        open ? "border-emerald-200 bg-[#f4fbf7]/40 shadow-2xs" : "border-gray-200/80 bg-white hover:bg-gray-50/50"
-                      }`}
+                      className={`rounded-xl border transition-all overflow-hidden ${open ? "border-emerald-200 bg-[#f4fbf7]/40 shadow-2xs" : "border-gray-200/80 bg-white hover:bg-gray-50/50"
+                        }`}
                     >
                       <button
                         type="button"
@@ -453,9 +452,8 @@ export default function Support({ onNavigate, onOpenSidebar, isMentor = false })
                         <span className="text-xs sm:text-sm font-bold text-gray-800">{item.question}</span>
                         <ChevronDown
                           size={16}
-                          className={`text-gray-400 shrink-0 transition-transform duration-200 ${
-                            open ? "rotate-180 text-[#0da651]" : ""
-                          }`}
+                          className={`text-gray-400 shrink-0 transition-transform duration-200 ${open ? "rotate-180 text-[#0da651]" : ""
+                            }`}
                         />
                       </button>
                       {open && (
@@ -547,7 +545,7 @@ export default function Support({ onNavigate, onOpenSidebar, isMentor = false })
                   <label className="block text-xs font-semibold text-gray-700 mb-1.5">
                     Upload Screenshot / Image (Optional)
                   </label>
-                  
+
                   {imagePreview ? (
                     /* Uploaded Image Preview */
                     <div className="relative p-3 rounded-xl bg-emerald-50/70 border border-emerald-200 flex items-center justify-between gap-3">
@@ -703,7 +701,7 @@ export default function Support({ onNavigate, onOpenSidebar, isMentor = false })
       {showTrackModal && (
         <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4 sm:p-6">
           <div className="bg-white rounded-3xl max-w-3xl w-full shadow-2xl border border-gray-100 animate-in fade-in zoom-in-95 duration-200 flex flex-col max-h-[90vh] overflow-hidden font-['Roboto',sans-serif]">
-            
+
             {/* Fixed Sticky Header */}
             <div className="flex items-center justify-between gap-3 px-6 sm:px-8 py-5 border-b border-gray-100 bg-white shrink-0">
               <div className="flex items-center gap-3">
@@ -781,13 +779,12 @@ export default function Support({ onNavigate, onOpenSidebar, isMentor = false })
                       </span>
                     </div>
                     <span
-                      className={`text-xs font-bold px-3.5 py-1 rounded-full ${
-                        trackedTicket.status === "Resolved"
+                      className={`text-xs font-bold px-3.5 py-1 rounded-full ${trackedTicket.status === "Resolved"
                           ? "bg-green-100 text-green-700 border border-green-200"
                           : trackedTicket.status === "In Progress"
-                          ? "bg-amber-100 text-amber-700 border border-amber-200"
-                          : "bg-blue-100 text-blue-700 border border-blue-200"
-                      }`}
+                            ? "bg-amber-100 text-amber-700 border border-amber-200"
+                            : "bg-blue-100 text-blue-700 border border-blue-200"
+                        }`}
                     >
                       {trackedTicket.status}
                     </span>
@@ -821,11 +818,10 @@ export default function Support({ onNavigate, onOpenSidebar, isMentor = false })
                       ]).map((step, idx) => (
                         <div key={idx} className="relative">
                           <div
-                            className={`absolute -left-[35px] sm:-left-[39px] top-0.5 w-5 h-5 rounded-full flex items-center justify-center ring-4 ${
-                              step.completed
+                            className={`absolute -left-[35px] sm:-left-[39px] top-0.5 w-5 h-5 rounded-full flex items-center justify-center ring-4 ${step.completed
                                 ? "bg-[#0da651] ring-emerald-100 text-white"
                                 : "bg-gray-300 ring-gray-100 text-transparent"
-                            }`}
+                              }`}
                           >
                             {step.completed && <Check size={11} className="stroke-[3]" />}
                           </div>

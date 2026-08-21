@@ -16,18 +16,18 @@ import {
 import AdminProfile from "../../components/admin/AdminProfile";
 
 const students = [
-  { initials: "TS", name: "Tamsha Sengupta",      roll: "lee2024001",  dept: "EE",  program: "B.Tech Lateral", year: "3rd", semester: "Semester 6", mentor: "Debarati Roy",  avatarBg: "bg-teal-200",   avatarText: "text-teal-700" },
-  { initials: "TR", name: "Turnab Roy",             roll: "lee2024002",  dept: "cse",  program: "B.Tech", year: "3rd", semester: "Semester 6", mentor: "Debarati Roy",  avatarBg: "bg-blue-200",   avatarText: "text-blue-700" },
-  { initials: "MC", name: "Madhurima Chatterjee",  roll: "lee2024003",  dept: "EE",  program: "B.Tech Lateral", year: "3rd", semester: "Semester 6", mentor: "Debarati Roy",  avatarBg: "bg-pink-200",   avatarText: "text-pink-700" },
-  { initials: "ND", name: "Nilankur Das",          roll: "lee2024004",  dept: "EE",  program: "B.Tech Lateral", year: "3rd", semester: "Semester 6", mentor: "Debarati Roy",  avatarBg: "bg-orange-200", avatarText: "text-orange-700" },
-  { initials: "AR", name: "Abhinandan Roy",        roll: "lee2024005",  dept: "EE",  program: "B.Tech Lateral", year: "3rd", semester: "Semester 6", mentor: "Debarati Roy",  avatarBg: "bg-purple-200", avatarText: "text-purple-700" },
-  { initials: "SG", name: "Subhamita Ganguly",     roll: "lece2024001", dept: "ECE", program: "B.Tech Lateral", year: "3rd", semester: "Semester 6", mentor: "Payel Dutta",   avatarBg: "bg-green-200",  avatarText: "text-green-700" },
-  { initials: "AB", name: "Alok Bhattacharya",     roll: "lece2024002", dept: "ECE", program: "B.Tech Lateral", year: "3rd", semester: "Semester 6", mentor: "Payel Dutta",   avatarBg: "bg-yellow-200", avatarText: "text-yellow-700" },
-  { initials: "SM", name: "Subhankar Mazumdar",    roll: "lece2024003", dept: "ECE", program: "B.Tech Lateral", year: "3rd", semester: "Semester 6", mentor: "Payel Dutta",   avatarBg: "bg-sky-200",    avatarText: "text-sky-700" },
+  { initials: "TS", name: "Tamsha Sengupta", roll: "lee2024001", dept: "EE", program: "B.Tech Lateral", year: "3rd", semester: "Semester 6", mentor: "Debarati Roy", avatarBg: "bg-teal-200", avatarText: "text-teal-700" },
+  { initials: "TR", name: "Turnab Roy", roll: "lee2024002", dept: "cse", program: "B.Tech", year: "3rd", semester: "Semester 6", mentor: "Debarati Roy", avatarBg: "bg-blue-200", avatarText: "text-blue-700" },
+  { initials: "MC", name: "Madhurima Chatterjee", roll: "lee2024003", dept: "EE", program: "B.Tech Lateral", year: "3rd", semester: "Semester 6", mentor: "Debarati Roy", avatarBg: "bg-pink-200", avatarText: "text-pink-700" },
+  { initials: "ND", name: "Nilankur Das", roll: "lee2024004", dept: "EE", program: "B.Tech Lateral", year: "3rd", semester: "Semester 6", mentor: "Debarati Roy", avatarBg: "bg-orange-200", avatarText: "text-orange-700" },
+  { initials: "AR", name: "Abhinandan Roy", roll: "lee2024005", dept: "EE", program: "B.Tech Lateral", year: "3rd", semester: "Semester 6", mentor: "Debarati Roy", avatarBg: "bg-purple-200", avatarText: "text-purple-700" },
+  { initials: "SG", name: "Subhamita Ganguly", roll: "lece2024001", dept: "ECE", program: "B.Tech Lateral", year: "3rd", semester: "Semester 6", mentor: "Payel Dutta", avatarBg: "bg-green-200", avatarText: "text-green-700" },
+  { initials: "AB", name: "Alok Bhattacharya", roll: "lece2024002", dept: "ECE", program: "B.Tech Lateral", year: "3rd", semester: "Semester 6", mentor: "Payel Dutta", avatarBg: "bg-yellow-200", avatarText: "text-yellow-700" },
+  { initials: "SM", name: "Subhankar Mazumdar", roll: "lece2024003", dept: "ECE", program: "B.Tech Lateral", year: "3rd", semester: "Semester 6", mentor: "Payel Dutta", avatarBg: "bg-sky-200", avatarText: "text-sky-700" },
 ];
 
 const deptColors = {
-  EE:  "bg-blue-100 text-blue-600",
+  EE: "bg-blue-100 text-blue-600",
   ECE: "bg-purple-100 text-purple-600",
 };
 

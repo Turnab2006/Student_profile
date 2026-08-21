@@ -312,11 +312,10 @@ export default function ActivityDetailView({
             <button
               type="button"
               onClick={() => setActiveTab("details")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                activeTab === "details"
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${activeTab === "details"
                   ? "bg-[#0da651] text-white shadow-sm hover:bg-[#0c9548]"
                   : "text-gray-600 hover:text-gray-900 hover:bg-gray-200/60"
-              }`}
+                }`}
             >
               <FileText size={15} />
               <span>Activity Details</span>
@@ -324,11 +323,10 @@ export default function ActivityDetailView({
             <button
               type="button"
               onClick={() => setActiveTab("students")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                activeTab === "students"
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${activeTab === "students"
                   ? "bg-[#0da651] text-white shadow-sm hover:bg-[#0c9548]"
                   : "text-gray-600 hover:text-gray-900 hover:bg-gray-200/60"
-              }`}
+                }`}
             >
               <Users size={15} />
               <span>Registered Students ({activity.registered || registeredStudents.length})</span>
@@ -384,17 +382,15 @@ export default function ActivityDetailView({
               {/* Badges on Poster */}
               <div className="absolute bottom-4 left-4 z-10 flex items-center gap-2">
                 <span
-                  className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold shadow-md backdrop-blur-md ${
-                    categoryBadgeStyles[activity.type] || "bg-black/60 text-white border border-white/20"
-                  }`}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold shadow-md backdrop-blur-md ${categoryBadgeStyles[activity.type] || "bg-black/60 text-white border border-white/20"
+                    }`}
                 >
                   {getActivityIcon(activity.type, 14)}
                   <span>{activity.type}</span>
                 </span>
                 <span
-                  className={`text-xs font-bold px-3 py-1 rounded-lg shadow-md backdrop-blur-md ${
-                    statusStyles[activity.status] || "bg-gray-100 text-gray-700"
-                  }`}
+                  className={`text-xs font-bold px-3 py-1 rounded-lg shadow-md backdrop-blur-md ${statusStyles[activity.status] || "bg-gray-100 text-gray-700"
+                    }`}
                 >
                   {activity.status}
                 </span>
@@ -1002,13 +998,12 @@ export default function ActivityDetailView({
                         {/* Status */}
                         <td className="py-3.5 px-5 text-center">
                           <span
-                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold ${
-                              st.status === "Confirmed"
+                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold ${st.status === "Confirmed"
                                 ? "bg-emerald-50 text-[#0da651] border border-emerald-200"
                                 : st.status === "Attended"
-                                ? "bg-blue-50 text-blue-700 border border-blue-200"
-                                : "bg-amber-50 text-amber-700 border border-amber-200"
-                            }`}
+                                  ? "bg-blue-50 text-blue-700 border border-blue-200"
+                                  : "bg-amber-50 text-amber-700 border border-amber-200"
+                              }`}
                           >
                             {st.status}
                           </span>
@@ -1054,11 +1049,10 @@ export default function ActivityDetailView({
                   <button
                     key={pageNum}
                     onClick={() => setCurrentPage(pageNum)}
-                    className={`w-7 h-7 text-xs rounded font-medium transition-colors cursor-pointer ${
-                      currentPage === pageNum
+                    className={`w-7 h-7 text-xs rounded font-medium transition-colors cursor-pointer ${currentPage === pageNum
                         ? "bg-primary text-white shadow-xs"
                         : "text-gray-500 hover:bg-gray-100"
-                    }`}
+                      }`}
                   >
                     {pageNum}
                   </button>

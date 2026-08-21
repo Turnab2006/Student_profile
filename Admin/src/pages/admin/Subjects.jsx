@@ -334,7 +334,7 @@ export default function Subjects({ onNavigate, subjectsList = [], setSubjectsLis
 
               <div className="flex items-center gap-2 text-xs font-semibold text-slate-500">
                 <span>Total Semester Courses:</span>
-                <span className="font-extrabold text-[#2563eb] bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-100">
+                <span className="font-extrabold text-[#0da651] bg-[#f4fbf7] px-2.5 py-0.5 rounded-full border border-emerald-200/80">
                   {currentSubjects.length} Subjects
                 </span>
               </div>
@@ -350,7 +350,7 @@ export default function Subjects({ onNavigate, subjectsList = [], setSubjectsLis
                   placeholder="Search subject, code, or faculty..."
                   value={subjectSearchQuery}
                   onChange={(e) => setSubjectSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200/90 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
+                  className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200/90 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all"
                 />
               </div>
 
@@ -363,7 +363,7 @@ export default function Subjects({ onNavigate, subjectsList = [], setSubjectsLis
                     onClick={() => setSubjectViewMode("grid")}
                     title="Grid View"
                     className={`flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${subjectViewMode === "grid"
-                      ? "bg-[#2563eb] text-white"
+                      ? "bg-[#0da651] text-white shadow-sm"
                       : "text-slate-600 hover:text-slate-900 hover:bg-slate-200/50"
                       }`}
                   >
@@ -375,7 +375,7 @@ export default function Subjects({ onNavigate, subjectsList = [], setSubjectsLis
                     onClick={() => setSubjectViewMode("list")}
                     title="List View"
                     className={`flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${subjectViewMode === "list"
-                      ? "bg-[#2563eb] text-white"
+                      ? "bg-[#0da651] text-white shadow-sm"
                       : "text-slate-600 hover:text-slate-900 hover:bg-slate-200/50"
                       }`}
                   >
@@ -394,7 +394,7 @@ export default function Subjects({ onNavigate, subjectsList = [], setSubjectsLis
                     <span>{selectedOpt.label}</span>
                     <ChevronDown
                       size={15}
-                      className={`text-slate-400 transition-transform duration-200 ${isDropdownOpen ? "rotate-180 text-blue-600" : ""
+                      className={`text-slate-400 transition-transform duration-200 ${isDropdownOpen ? "rotate-180 text-[#0da651]" : ""
                         }`}
                     />
                   </button>
@@ -418,13 +418,13 @@ export default function Subjects({ onNavigate, subjectsList = [], setSubjectsLis
                                 setIsDropdownOpen(false);
                               }}
                               className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${isSelected
-                                ? "bg-blue-50 text-[#2563eb]"
+                                ? "bg-[#f4fbf7] text-[#0da651]"
                                 : "text-slate-700 hover:bg-slate-50 hover:text-slate-900"
                                 }`}
                             >
                               <span>{opt.label}</span>
                               {isSelected && (
-                                <Check size={16} className="text-[#2563eb] stroke-[2.5]" />
+                                <Check size={16} className="text-[#0da651] stroke-[2.5]" />
                               )}
                             </button>
                           );
@@ -584,7 +584,7 @@ export default function Subjects({ onNavigate, subjectsList = [], setSubjectsLis
             {/* Empty State */}
             {filteredSemesterSubjects.length === 0 && (
               <div className="bg-white rounded-[20px] border border-slate-200/90 p-10 text-center space-y-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 mx-auto">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-50 text-[#0da651] border border-emerald-200/80 mx-auto">
                   <Search size={22} />
                 </div>
                 <h3 className="text-base font-bold text-slate-800">No subjects found</h3>
@@ -599,18 +599,26 @@ export default function Subjects({ onNavigate, subjectsList = [], setSubjectsLis
           /* VIEW 2: MAIN SUBJECTS MANAGEMENT TABLE VIEW                               */
           /* ========================================================================= */
           <>
-            {/* Banner with Blue Gradient Background */}
-            <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#1d4ed8] via-[#2563eb] to-[#3b82f6] p-5 sm:p-6 text-white border border-blue-500/30 shadow-md shadow-blue-500/10">
-              <div className="relative z-10 space-y-1.5 max-w-2xl">
-                <h2 className="text-xl sm:text-xl font-bold tracking-tight text-white">
+            {/* Upper Green Gradient Hero Header */}
+            <section className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#0da651] via-[#0e9f4e] to-[#09803d] border border-emerald-600/30 p-5 sm:p-6 shadow-sm text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="relative z-10 space-y-1">
+                <div className="flex items-center gap-2">
+                  <span className="px-2.5 py-0.5 rounded-md bg-white/20 text-white text-[11px] font-bold tracking-wider uppercase backdrop-blur-xs">
+                    Global Configuration
+                  </span>
+                  <span className="text-emerald-100 text-xs font-semibold">• Super Admin Access</span>
+                </div>
+                <h2 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
                   Subject Management
                 </h2>
-                <p className="text-xs sm:text-sm text-blue-100 leading-relaxed">
-                  Manage , configure course codes, and view semester-wise subjects across all streams.
+                <p className="text-xs sm:text-sm text-emerald-50/90 font-normal max-w-xl">
+                  Manage, configure course codes, and view semester-wise subjects across all streams.
                 </p>
               </div>
-              <div className="absolute -right-10 -bottom-10 w-48 h-48 rounded-full bg-white/10 blur-2xl pointer-events-none" />
-            </div>
+
+              {/* Decorative background shape */}
+              <div className="absolute right-0 top-0 bottom-0 w-64 bg-gradient-to-l from-white/10 to-transparent pointer-events-none" />
+            </section>
 
             {/* Filter Controls Bar & Add Subject Button */}
             <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
@@ -776,7 +784,7 @@ export default function Subjects({ onNavigate, subjectsList = [], setSubjectsLis
                                 <button
                                   type="button"
                                   onClick={() => handleOpenSubjectView(item)}
-                                  className="text-[11px] font-semibold text-blue-600 bg-blue-50 hover:bg-blue-100 px-3 py-1 rounded-full transition-colors cursor-pointer"
+                                  className="text-[11px] font-semibold text-[#0da651] bg-[#f4fbf7] hover:bg-[#eaf8ee] border border-emerald-200/80 px-3 py-1 rounded-full transition-colors cursor-pointer"
                                 >
                                   View
                                 </button>

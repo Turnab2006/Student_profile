@@ -464,7 +464,7 @@ export default function Attendances({ onNavigate, onOpenSidebar }) {
                 <button
                   type="button"
                   onClick={() => setEmailModal(viewingStudent)}
-                  className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-blue-600 via-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl text-xs sm:text-sm font-bold active:scale-95 transition-all cursor-pointer"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-[#0da651] via-[#0e9f4e] to-[#09803d] hover:from-[#0c9649] hover:to-[#087337] text-white rounded-xl text-xs sm:text-sm font-bold active:scale-95 transition-all cursor-pointer shadow-sm"
                 >
                   <Mail size={15} className="stroke-[2.4]" />
                   <span>Send Mail</span>
@@ -828,11 +828,10 @@ export default function Attendances({ onNavigate, onOpenSidebar }) {
                     <button
                       key={pageNum}
                       onClick={() => setCurrentPage(pageNum)}
-                      className={`w-7 h-7 text-xs rounded font-medium transition-colors cursor-pointer ${
-                        currentPage === pageNum
+                      className={`w-7 h-7 text-xs rounded font-medium transition-colors cursor-pointer ${currentPage === pageNum
                           ? "bg-[#0da651] text-white shadow-sm"
                           : "text-gray-500 hover:bg-gray-100"
-                      }`}
+                        }`}
                     >
                       {pageNum}
                     </button>

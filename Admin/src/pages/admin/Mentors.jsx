@@ -16,29 +16,29 @@ import {
 import AdminProfile from "../../components/admin/AdminProfile";
 
 const mentors = [
-  { initials: "DR", name: "Debarati Roy",            empId: "EMP001", dept: "EE",  specialization: "Power Systems",     students: 12, status: "Active",   avatarBg: "bg-purple-200", avatarText: "text-purple-700" },
-  { initials: "PD", name: "Payel Dutta",             empId: "EMP002", dept: "ECE", specialization: "Embedded Systems",   students: 8,  status: "Active",   avatarBg: "bg-pink-200",   avatarText: "text-pink-700" },
-  { initials: "SK", name: "Sourav Kumar",            empId: "EMP003", dept: "CS",  specialization: "Machine Learning",  students: 15, status: "Active",   avatarBg: "bg-blue-200",   avatarText: "text-blue-700" },
-  { initials: "AD", name: "Anindita Das",             empId: "EMP004", dept: "EE",  specialization: "Control Systems",   students: 10, status: "Active",   avatarBg: "bg-teal-200",   avatarText: "text-teal-700" },
-  { initials: "MG", name: "Moumita Ghosh",            empId: "EMP005", dept: "ME",  specialization: "Thermodynamics",    students: 6,  status: "On Leave", avatarBg: "bg-orange-200", avatarText: "text-orange-700" },
-  { initials: "RC", name: "Rajat Chakraborty",        empId: "EMP006", dept: "CE",  specialization: "Structural Engg",   students: 9,  status: "Active",   avatarBg: "bg-green-200",  avatarText: "text-green-700" },
-  { initials: "SN", name: "Sneha Nandi",              empId: "EMP007", dept: "ECE", specialization: "VLSI Design",        students: 7,  status: "Active",   avatarBg: "bg-sky-200",    avatarText: "text-sky-700" },
-  { initials: "AK", name: "Arun Kumar Mandal",        empId: "EMP008", dept: "CS",  specialization: "Cyber Security",    students: 11, status: "Active",   avatarBg: "bg-yellow-200", avatarText: "text-yellow-700" },
+  { initials: "DR", name: "Debarati Roy", empId: "EMP001", dept: "EE", specialization: "Power Systems", students: 12, status: "Active", avatarBg: "bg-purple-200", avatarText: "text-purple-700" },
+  { initials: "PD", name: "Payel Dutta", empId: "EMP002", dept: "ECE", specialization: "Embedded Systems", students: 8, status: "Active", avatarBg: "bg-pink-200", avatarText: "text-pink-700" },
+  { initials: "SK", name: "Sourav Kumar", empId: "EMP003", dept: "CS", specialization: "Machine Learning", students: 15, status: "Active", avatarBg: "bg-blue-200", avatarText: "text-blue-700" },
+  { initials: "AD", name: "Anindita Das", empId: "EMP004", dept: "EE", specialization: "Control Systems", students: 10, status: "Active", avatarBg: "bg-teal-200", avatarText: "text-teal-700" },
+  { initials: "MG", name: "Moumita Ghosh", empId: "EMP005", dept: "ME", specialization: "Thermodynamics", students: 6, status: "On Leave", avatarBg: "bg-orange-200", avatarText: "text-orange-700" },
+  { initials: "RC", name: "Rajat Chakraborty", empId: "EMP006", dept: "CE", specialization: "Structural Engg", students: 9, status: "Active", avatarBg: "bg-green-200", avatarText: "text-green-700" },
+  { initials: "SN", name: "Sneha Nandi", empId: "EMP007", dept: "ECE", specialization: "VLSI Design", students: 7, status: "Active", avatarBg: "bg-sky-200", avatarText: "text-sky-700" },
+  { initials: "AK", name: "Arun Kumar Mandal", empId: "EMP008", dept: "CS", specialization: "Cyber Security", students: 11, status: "Active", avatarBg: "bg-yellow-200", avatarText: "text-yellow-700" },
 ];
 
 const deptColors = {
-  EE:  "bg-blue-100 text-blue-600",
+  EE: "bg-blue-100 text-blue-600",
   ECE: "bg-purple-100 text-purple-600",
-  CS:  "bg-green-100 text-green-600",
-  ME:  "bg-orange-100 text-orange-600",
-  CE:  "bg-teal-100 text-teal-600",
+  CS: "bg-green-100 text-green-600",
+  ME: "bg-orange-100 text-orange-600",
+  CE: "bg-teal-100 text-teal-600",
 };
 
 const stats = [
-  { icon: <Users size={22} className="text-green-600" />,         bg: "bg-green-50",  value: "156", label: "Total Mentors",    sub: "Active mentors" },
-  { icon: <Star size={22} className="text-yellow-500" />,        bg: "bg-yellow-50", value: "92",  label: "Senior Mentors",  sub: "5+ years experience" },
-  { icon: <GraduationCap size={22} className="text-blue-500" />, bg: "bg-blue-50",   value: "64",  label: "Junior Mentors",  sub: "Under 5 years" },
-  { icon: <Briefcase size={22} className="text-purple-500" />,   bg: "bg-purple-50", value: "8",   label: "Departments",    sub: "Active departments" },
+  { icon: <Users size={22} className="text-green-600" />, bg: "bg-green-50", value: "156", label: "Total Mentors", sub: "Active mentors" },
+  { icon: <Star size={22} className="text-yellow-500" />, bg: "bg-yellow-50", value: "92", label: "Senior Mentors", sub: "5+ years experience" },
+  { icon: <GraduationCap size={22} className="text-blue-500" />, bg: "bg-blue-50", value: "64", label: "Junior Mentors", sub: "Under 5 years" },
+  { icon: <Briefcase size={22} className="text-purple-500" />, bg: "bg-purple-50", value: "8", label: "Departments", sub: "Active departments" },
 ];
 
 function FilterDropdown({ value, onChange, options }) {

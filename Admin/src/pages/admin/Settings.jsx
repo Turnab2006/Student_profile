@@ -140,7 +140,7 @@ export default function Settings({ onNavigate, onOpenSidebar }) {
       {/* Main Container */}
       <main className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
         <div className="max-w-[1500px] mx-auto space-y-6">
-          
+
           {/* ========================================================================= */}
           {/* 1. UPPER GREEN GRADIENT HERO HEADER                                       */}
           {/* ========================================================================= */}
@@ -250,11 +250,10 @@ export default function Settings({ onNavigate, onOpenSidebar }) {
                   key={tab.id}
                   type="button"
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${
-                    isActive
+                  className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap cursor-pointer ${isActive
                       ? "bg-[#0da651] text-white shadow-sm"
                       : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-                  }`}
+                    }`}
                 >
                   <Icon size={16} />
                   <span>{tab.label}</span>
@@ -531,14 +530,12 @@ export default function Settings({ onNavigate, onOpenSidebar }) {
                     <button
                       type="button"
                       onClick={() => setSecurityData({ ...securityData, twoFactorAuth: !securityData.twoFactorAuth })}
-                      className={`w-12 h-6 rounded-full transition-colors relative cursor-pointer ${
-                        securityData.twoFactorAuth ? "bg-[#0da651]" : "bg-gray-300"
-                      }`}
+                      className={`w-12 h-6 rounded-full transition-colors relative cursor-pointer ${securityData.twoFactorAuth ? "bg-[#0da651]" : "bg-gray-300"
+                        }`}
                     >
                       <span
-                        className={`w-5 h-5 rounded-full bg-white absolute top-0.5 transition-transform shadow-xs ${
-                          securityData.twoFactorAuth ? "right-0.5" : "left-0.5"
-                        }`}
+                        className={`w-5 h-5 rounded-full bg-white absolute top-0.5 transition-transform shadow-xs ${securityData.twoFactorAuth ? "right-0.5" : "left-0.5"
+                          }`}
                       />
                     </button>
                   </div>
@@ -685,14 +682,12 @@ export default function Settings({ onNavigate, onOpenSidebar }) {
                           enabled: !maintenanceSettings.enabled,
                         })
                       }
-                      className={`w-12 h-6 rounded-full transition-colors relative cursor-pointer ${
-                        maintenanceSettings.enabled ? "bg-rose-500" : "bg-gray-300"
-                      }`}
+                      className={`w-12 h-6 rounded-full transition-colors relative cursor-pointer ${maintenanceSettings.enabled ? "bg-rose-500" : "bg-gray-300"
+                        }`}
                     >
                       <span
-                        className={`w-5 h-5 rounded-full bg-white absolute top-0.5 transition-transform shadow-xs ${
-                          maintenanceSettings.enabled ? "right-0.5" : "left-0.5"
-                        }`}
+                        className={`w-5 h-5 rounded-full bg-white absolute top-0.5 transition-transform shadow-xs ${maintenanceSettings.enabled ? "right-0.5" : "left-0.5"
+                          }`}
                       />
                     </button>
                   </div>
@@ -828,14 +823,12 @@ export default function Settings({ onNavigate, onOpenSidebar }) {
                             [item.key]: !notificationPreferences[item.key],
                           })
                         }
-                        className={`w-12 h-6 rounded-full transition-colors relative shrink-0 cursor-pointer ${
-                          notificationPreferences[item.key] ? "bg-[#0da651]" : "bg-gray-300"
-                        }`}
+                        className={`w-12 h-6 rounded-full transition-colors relative shrink-0 cursor-pointer ${notificationPreferences[item.key] ? "bg-[#0da651]" : "bg-gray-300"
+                          }`}
                       >
                         <span
-                          className={`w-5 h-5 rounded-full bg-white absolute top-0.5 transition-transform shadow-xs ${
-                            notificationPreferences[item.key] ? "right-0.5" : "left-0.5"
-                          }`}
+                          className={`w-5 h-5 rounded-full bg-white absolute top-0.5 transition-transform shadow-xs ${notificationPreferences[item.key] ? "right-0.5" : "left-0.5"
+                            }`}
                         />
                       </button>
                     </div>
