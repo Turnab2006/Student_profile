@@ -166,7 +166,7 @@ export default function AddSubject({ onNavigate, subjectsList = [], setSubjectsL
             <Menu size={20} />
           </button>
           <div>
-            <h1 className="text-xl font-bold text-gray-800 tracking-tight">Add Subject</h1>
+            <h1 className="text-lg sm:text-xl font-bold text-gray-800 tracking-tight truncate">Add Subject</h1>
             <nav className="flex items-center gap-1.5 text-xs text-gray-400 mt-0.5">
               <span className="hover:text-gray-600 cursor-pointer" onClick={() => onNavigate?.("subjects")}>Subjects</span>
               <span>&gt;</span>

@@ -4,19 +4,16 @@ import {
   Bell,
   HelpCircle,
   ChevronDown,
-  User,
   Settings,
   LogOut,
-  ShieldCheck,
   Megaphone,
   AlertTriangle,
   CheckCircle2,
-  X
 } from "lucide-react";
 
 export default function StudentHeader({
   activePage = "dashboard",
-  studentName = "Tuhina Banerjee",
+  studentName = "Tanuka Saha",
   studentRole = "Student",
   avatarUrl = "/tuhina_avatar.jpg",
   onNavigate,
@@ -37,7 +34,7 @@ export default function StudentHeader({
   const pageMeta = {
     dashboard: {
       title: "Dashboard",
-      subtitle: "Welcome back, Tuhina ! Here's what's happening today.",
+      subtitle: `Welcome back, ${studentName.split(" ")[0]}! Here's what's happening today.`,
     },
     profile: {
       title: "Profile",
@@ -60,7 +57,7 @@ export default function StudentHeader({
       subtitle: "Check your earned academic credit points and achievements.",
     },
     message: {
-      title: "Message",
+      title: "Messages",
       subtitle: "Communicate directly with assigned mentors and faculty.",
     },
     activities: {
@@ -83,7 +80,7 @@ export default function StudentHeader({
 
   const currentMeta = pageMeta[activePage] || {
     title: activePage ? activePage.charAt(0).toUpperCase() + activePage.slice(1) : "Dashboard",
-    subtitle: "Welcome back, Tuhina ! Here's what's happening today.",
+    subtitle: `Welcome back, ${studentName.split(" ")[0]}! Here's what's happening today.`,
   };
 
   const notifications = [
@@ -98,32 +95,32 @@ export default function StudentHeader({
     {
       id: "2",
       title: "Technovate 2026 Registration",
-      desc: "Your registration for Hackathon track has been confirmed.",
+      desc: "Registration open for Annual Hackathon & Coding Challenge.",
       time: "2 hours ago",
       icon: CheckCircle2,
       iconBg: "bg-emerald-100 text-emerald-600",
     },
     {
       id: "3",
-      title: "Mentor Session Scheduled",
-      desc: "Upcoming 1-on-1 counseling with Dr. Debarati Roy on Friday.",
+      title: "Attendance Warning",
+      desc: "Attendance in CS304 is below 75%. Please meet your faculty advisor.",
       time: "1 day ago",
-      icon: ShieldCheck,
-      iconBg: "bg-indigo-100 text-indigo-600",
+      icon: AlertTriangle,
+      iconBg: "bg-amber-100 text-amber-600",
     },
   ];
 
-  const clearAllNotifications = () => {
-    setUnreadCount(0);
-  };
-
-  const handleNav = (page) => {
+  const handleNav = (pageKey) => {
     setProfileOpen(false);
     setNotifOpen(false);
-    if (onNavigate) onNavigate(page);
+    if (onNavigate) onNavigate(pageKey);
   };
 
-  // Close dropdowns on click outside
+  const handleLogout = () => {
+    setProfileOpen(false);
+    if (onLogout) onLogout();
+  };
+
   useEffect(() => {
     function handleClickOutside(event) {
       if (containerRef.current && !containerRef.current.contains(event.target)) {
@@ -138,9 +135,9 @@ export default function StudentHeader({
   }, []);
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-gray-200/80 bg-white/95 px-4 sm:px-6 backdrop-blur-md transition-all shadow-2xs font-['Roboto',sans-serif]">
-      {/* Left: Mobile Toggle + Page Title / Breadcrumb */}
-      <div className="flex items-center gap-3 min-w-0">
+    <header className="h-[65px] bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-2xs font-['Roboto',sans-serif] w-full">
+      {/* Left: Mobile Toggle + Page Title / Breadcrumb matching Admin Portal header */}
+      <div className="flex items-center gap-2 sm:gap-3 min-w-0 pr-2">
         <button
           type="button"
           onClick={onOpenSidebar}
@@ -150,55 +147,59 @@ export default function StudentHeader({
           <Menu size={20} />
         </button>
         <div className="min-w-0">
-          <h1 className="text-xl sm:text-[22px] font-bold leading-tight text-gray-900 tracking-tight truncate font-['Roboto',sans-serif]">
-            {currentMeta.title}
+          <h1 className="text-lg sm:text-xl font-bold text-gray-800 tracking-tight truncate">
+            {activePage === "profile" && isDigitalCardActive
+              ? "Digital Student ID"
+              : activePage === "attendances" && isAttendanceDetailActive
+              ? "Attendance Details"
+              : activePage === "results" && isResultDetailActive
+              ? "Result Details"
+              : currentMeta.title}
           </h1>
+
           {activePage === "profile" && isDigitalCardActive ? (
-            <div className="flex items-center gap-1.5 text-xs sm:text-[13px] mt-0.5 font-['Roboto',sans-serif]">
-              <button
-                type="button"
+            <nav className="flex items-center gap-1.5 text-xs text-gray-400 mt-0.5">
+              <span
                 onClick={onNavigateToProfile}
-                className="text-blue-600 hover:text-blue-700 hover:underline font-semibold cursor-pointer transition-colors"
+                className="hover:text-gray-600 font-medium cursor-pointer transition-colors"
               >
                 Profile
-              </button>
-              <span className="text-gray-400 font-bold">&gt;</span>
-              <span className="text-gray-600 font-medium">Digital ID Card</span>
-            </div>
+              </span>
+              <span>&gt;</span>
+              <span className="text-[#2384FD] font-semibold">Digital ID Card</span>
+            </nav>
           ) : activePage === "attendances" && isAttendanceDetailActive ? (
-            <div className="flex items-center gap-1.5 text-xs sm:text-[13px] mt-0.5 font-['Roboto',sans-serif]">
-              <button
-                type="button"
+            <nav className="flex items-center gap-1.5 text-xs text-gray-400 mt-0.5">
+              <span
                 onClick={onNavigateToAttendance}
-                className="text-blue-600 hover:text-blue-700 hover:underline font-semibold cursor-pointer transition-colors"
+                className="hover:text-gray-600 font-medium cursor-pointer transition-colors"
               >
                 Attendance
-              </button>
-              <span className="text-gray-400 font-bold">&gt;</span>
-              <span className="text-gray-600 font-medium">View Attendance</span>
-            </div>
+              </span>
+              <span>&gt;</span>
+              <span className="text-[#2384FD] font-semibold">View Attendance</span>
+            </nav>
           ) : activePage === "results" && isResultDetailActive ? (
-            <div className="flex items-center gap-1.5 text-xs sm:text-[13px] mt-0.5 font-['Roboto',sans-serif]">
-              <button
-                type="button"
+            <nav className="flex items-center gap-1.5 text-xs text-gray-400 mt-0.5">
+              <span
                 onClick={onNavigateToResults}
-                className="text-blue-600 hover:text-blue-700 hover:underline font-semibold cursor-pointer transition-colors"
+                className="hover:text-gray-600 font-medium cursor-pointer transition-colors"
               >
                 Results
-              </button>
-              <span className="text-gray-400 font-bold">&gt;</span>
-              <span className="text-gray-600 font-medium">View Result</span>
-            </div>
+              </span>
+              <span>&gt;</span>
+              <span className="text-[#2384FD] font-semibold">View Result</span>
+            </nav>
           ) : (
-            <p className="text-xs sm:text-[13px] text-gray-400 mt-0.5 truncate hidden sm:block font-['Roboto',sans-serif] font-normal">
+            <p className="text-xs text-gray-400 mt-0.5 truncate hidden sm:block">
               {currentMeta.subtitle}
             </p>
           )}
         </div>
       </div>
 
-      {/* Right: Actions + Profile Dropdown */}
-      <div className="flex items-center gap-2 sm:gap-3.5 relative shrink-0" ref={containerRef}>
+      {/* Right: Actions + Profile Dropdown matching Admin Profile layout */}
+      <div className="flex items-center gap-2 sm:gap-3.5 relative select-none shrink-0" ref={containerRef}>
         {/* 1. Notification Bell Icon with Red Badge */}
         <div className="relative">
           <button
@@ -263,14 +264,13 @@ export default function StudentHeader({
                 })}
               </div>
 
-              {/* Bottom link */}
               <div className="border-t border-gray-100 pt-2 text-center">
                 <button
                   type="button"
                   onClick={() => handleNav("notices")}
                   className="w-full py-1.5 text-xs font-semibold text-blue-600 hover:bg-blue-50 rounded-xl transition-colors cursor-pointer"
                 >
-                  View All Notices & Activities
+                  View All Notices
                 </button>
               </div>
             </div>
@@ -288,6 +288,9 @@ export default function StudentHeader({
           <HelpCircle size={19} className="stroke-[1.8]" />
         </button>
 
+        {/* Vertical Divider */}
+        <div className="hidden sm:block h-5 w-[1px] bg-gray-200" />
+
         {/* 3. Student Profile Pill */}
         <div className="relative">
           <button
@@ -297,10 +300,11 @@ export default function StudentHeader({
               setNotifOpen(false);
             }}
             className="flex items-center gap-2.5 sm:gap-3 p-1 rounded-xl hover:bg-gray-100/70 transition-all cursor-pointer focus:outline-none group"
+            aria-expanded={profileOpen}
           >
-            {/* Circular Avatar with online green status indicator dot */}
+            {/* Avatar on LEFT */}
             <div className="relative">
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden bg-gradient-to-br from-blue-100 to-indigo-100 flex items-center justify-center border border-gray-200 shadow-sm">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden border border-gray-200 shadow-xs ring-2 ring-blue-500/20 bg-slate-100 flex items-center justify-center">
                 <img
                   src={avatarUrl}
                   alt={studentName}
@@ -310,19 +314,19 @@ export default function StudentHeader({
                     if (e.target.nextSibling) e.target.nextSibling.style.display = "flex";
                   }}
                 />
-                <span className="hidden w-full h-full items-center justify-center text-xs font-bold text-blue-700">
-                  TB
-                </span>
+                <div className="hidden w-full h-full bg-gradient-to-br from-blue-500 to-indigo-600 items-center justify-center text-xs font-bold text-white">
+                  {studentName.charAt(0)}
+                </div>
               </div>
               <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-white" />
             </div>
 
             {/* Name & Role Text */}
             <div className="text-left leading-tight hidden sm:block">
-              <p className="text-sm font-semibold text-gray-800 group-hover:text-blue-600 transition-colors">
+              <p className="text-sm font-semibold text-gray-900 group-hover:text-[#2384FD] transition-colors">
                 {studentName}
               </p>
-              <p className="text-xs text-gray-400 capitalize font-medium">{studentRole}</p>
+              <p className="text-xs text-gray-500 capitalize font-medium">{studentRole}</p>
             </div>
 
             {/* Chevron Icon */}
@@ -336,28 +340,23 @@ export default function StudentHeader({
 
           {/* Profile Dropdown Menu */}
           {profileOpen && (
-            <div className="absolute right-0 top-full mt-2.5 w-44 rounded-2xl border border-slate-200 bg-white p-1.5 shadow-xl z-50 animate-in fade-in slide-in-from-top-2 duration-150">
-              {/* Menu items */}
+            <div className="absolute right-0 top-full mt-2.5 w-48 rounded-2xl border border-slate-200 bg-white p-1.5 shadow-xl z-50 animate-in fade-in slide-in-from-top-2 duration-150">
               <div className="space-y-0.5">
                 <button
                   type="button"
                   onClick={() => handleNav("settings")}
-                  className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-gray-700 rounded-xl hover:bg-blue-50 hover:text-blue-600 transition-colors cursor-pointer"
+                  className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-slate-50 hover:text-gray-900 rounded-xl transition-colors cursor-pointer"
                 >
-                  <Settings size={15} className="text-gray-400" />
+                  <Settings size={15} className="text-gray-500" />
                   <span>Settings</span>
                 </button>
-
+                <div className="h-[1px] bg-slate-100 my-1" />
                 <button
                   type="button"
-                  onClick={() => {
-                    setProfileOpen(false);
-                    if (onLogout) onLogout();
-                    else onNavigate?.("logout");
-                  }}
-                  className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-[#FF4D4F] rounded-xl hover:bg-red-50 transition-colors cursor-pointer"
+                  onClick={handleLogout}
+                  className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-rose-600 hover:bg-rose-50 rounded-xl transition-colors cursor-pointer"
                 >
-                  <LogOut size={15} className="text-[#FF4D4F]" />
+                  <LogOut size={15} />
                   <span>Logout</span>
                 </button>
               </div>

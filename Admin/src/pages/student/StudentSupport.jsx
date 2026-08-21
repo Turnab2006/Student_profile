@@ -56,10 +56,10 @@ export default function StudentSupport({ hideHeader = false }) {
     <div className="p-4 sm:p-6 space-y-6 font-['Roboto',sans-serif]">
       {!hideHeader && (
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 font-['Barlow',sans-serif]">
+          <h1 className="text-lg sm:text-xl font-bold text-gray-800 tracking-tight truncate">
             Student Support &amp; Help Desk
           </h1>
-          <p className="text-xs sm:text-sm text-gray-500 mt-1 font-['Barlow',sans-serif]">
+          <p className="text-xs text-gray-400 mt-0.5 truncate hidden sm:block">
             Get assistance with your academic records, mentor guidance, and technical portal queries.
           </p>
         </div>

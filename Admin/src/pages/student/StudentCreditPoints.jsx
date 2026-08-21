@@ -86,10 +86,10 @@ export default function StudentCreditPoints({ hideHeader = false }) {
       {!hideHeader && (
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 font-['Barlow',sans-serif]">
-              Credit Points & Achievements
+            <h1 className="text-lg sm:text-xl font-bold text-gray-800 tracking-tight truncate">
+              Credit Points &amp; Achievements
             </h1>
-            <p className="text-xs sm:text-sm text-gray-500 mt-1 font-['Barlow',sans-serif]">
+            <p className="text-xs text-gray-400 mt-0.5 truncate hidden sm:block">
               Track your extracurricular, technical, and academic credits.
             </p>
           </div>

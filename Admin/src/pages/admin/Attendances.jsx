@@ -300,6 +300,7 @@ export default function Attendances({ onNavigate, onOpenSidebar }) {
   const [selectedDept, setSelectedDept] = useState("All Departments");
   const [selectedProgram, setSelectedProgram] = useState("All Programs");
   const [selectedSem, setSelectedSem] = useState("All Semesters");
+  const [selectedYear, setSelectedYear] = useState("All Years");
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -331,6 +332,11 @@ export default function Attendances({ onNavigate, onOpenSidebar }) {
         const studentSemNum = s.semester ? s.semester.toString().replace(/[^0-9]/g, "") : "";
         if (selSemNum && studentSemNum && selSemNum !== studentSemNum) return false;
       }
+      if (selectedYear !== "All Years") {
+        const selYrNum = selectedYear.replace(/[^0-9]/g, "");
+        const studentYrNum = s.year ? s.year.toString().replace(/[^0-9]/g, "") : "";
+        if (selYrNum && studentYrNum && selYrNum !== studentYrNum) return false;
+      }
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
         return (
@@ -343,7 +349,7 @@ export default function Attendances({ onNavigate, onOpenSidebar }) {
       }
       return true;
     });
-  }, [selectedDept, selectedProgram, selectedSem, searchQuery]);
+  }, [selectedDept, selectedProgram, selectedSem, selectedYear, searchQuery]);
 
   const totalPages = Math.ceil(filteredData.length / itemsPerPage) || 1;
   const currentStudents = useMemo(() => {
@@ -380,11 +386,11 @@ export default function Attendances({ onNavigate, onOpenSidebar }) {
   const handleExport = () => {
     const csvContent =
       "data:text/csv;charset=utf-8," +
-      ["Roll No,Name,Email,Department,Program,Attendance,Status"]
+      ["Roll No,Name,Email,Department,Program,Year,Semester,Attendance,Status"]
         .concat(
           filteredData.map(
             (s) =>
-              `"${s.rollNo}","${s.name}","${s.email}","${s.department}","${s.program}","${s.percentage}% (${s.attended}/${s.total})","${s.status}"`
+              `"${s.rollNo}","${s.name}","${s.email}","${formatDept(s.department)}","${s.program}","Year ${s.year}","Semester ${s.semester}","${s.percentage}% (${s.attended}/${s.total})","${s.status}"`
           )
         )
         .join("\n");
@@ -548,7 +554,10 @@ export default function Attendances({ onNavigate, onOpenSidebar }) {
                 <div className="relative min-w-[130px] sm:w-auto">
                   <select
                     value={selectedDept}
-                    onChange={(e) => setSelectedDept(e.target.value)}
+                    onChange={(e) => {
+                      setSelectedDept(e.target.value);
+                      setCurrentPage(1);
+                    }}
                     className="w-full appearance-none rounded-xl border border-gray-200 bg-gray-50/50 py-2.5 px-3 pr-8 text-xs sm:text-sm font-medium text-gray-700 focus:bg-white focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 cursor-pointer"
                   >
                     <option>All Departments</option>
@@ -565,7 +574,10 @@ export default function Attendances({ onNavigate, onOpenSidebar }) {
                 <div className="relative min-w-[125px] sm:w-auto">
                   <select
                     value={selectedProgram}
-                    onChange={(e) => setSelectedProgram(e.target.value)}
+                    onChange={(e) => {
+                      setSelectedProgram(e.target.value);
+                      setCurrentPage(1);
+                    }}
                     className="w-full appearance-none rounded-xl border border-gray-200 bg-gray-50/50 py-2.5 px-3 pr-8 text-xs sm:text-sm font-medium text-gray-700 focus:bg-white focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 cursor-pointer"
                   >
                     <option>All Programs</option>
@@ -581,14 +593,40 @@ export default function Attendances({ onNavigate, onOpenSidebar }) {
                 <div className="relative min-w-[130px] sm:w-auto">
                   <select
                     value={selectedSem}
-                    onChange={(e) => setSelectedSem(e.target.value)}
+                    onChange={(e) => {
+                      setSelectedSem(e.target.value);
+                      setCurrentPage(1);
+                    }}
                     className="w-full appearance-none rounded-xl border border-gray-200 bg-gray-50/50 py-2.5 px-3 pr-8 text-xs sm:text-sm font-medium text-gray-700 focus:bg-white focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 cursor-pointer"
                   >
                     <option>All Semesters</option>
-                    <option>I Semester</option>
-                    <option>III Semester</option>
-                    <option>V Semester</option>
-                    <option>VII Semester</option>
+                    <option>Semester 1</option>
+                    <option>Semester 2</option>
+                    <option>Semester 3</option>
+                    <option>Semester 4</option>
+                    <option>Semester 5</option>
+                    <option>Semester 6</option>
+                    <option>Semester 7</option>
+                    <option>Semester 8</option>
+                  </select>
+                  <ChevronDown size={14} className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                </div>
+
+                {/* Year Filter (placed after Semester) */}
+                <div className="relative min-w-[120px] sm:w-auto">
+                  <select
+                    value={selectedYear}
+                    onChange={(e) => {
+                      setSelectedYear(e.target.value);
+                      setCurrentPage(1);
+                    }}
+                    className="w-full appearance-none rounded-xl border border-gray-200 bg-gray-50/50 py-2.5 px-3 pr-8 text-xs sm:text-sm font-medium text-gray-700 focus:bg-white focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 cursor-pointer"
+                  >
+                    <option>All Years</option>
+                    <option>1st Year</option>
+                    <option>2nd Year</option>
+                    <option>3rd Year</option>
+                    <option>4th Year</option>
                   </select>
                   <ChevronDown size={14} className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400" />
                 </div>

@@ -54,6 +54,7 @@ const PAGE_PARENT_MAP = {
   "add-subject": "subjects",
   "add-activity": "activities",
   "add-notice": "notices",
+  "ticket-history": "support",
 };
 
 export default function Sidebar({

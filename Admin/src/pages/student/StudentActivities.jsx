@@ -322,14 +322,13 @@ export default function StudentActivities({ onNavigate, hideHeader = false }) {
         </div>
       )}
 
-      {/* Top Header */}
       {!hideHeader && (
-        <header className="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white/80 px-6 py-3 backdrop-blur-sm font-barlow">
+        <header className="h-[65px] bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-2xs font-['Roboto',sans-serif]">
           <div>
-            <h1 className="text-[28px] font-bold tracking-tight text-slate-800 font-barlow">
+            <h1 className="text-lg sm:text-xl font-bold text-gray-800 tracking-tight truncate">
               Activities
             </h1>
-            <p className="text-sm text-slate-500 font-barlow">
+            <p className="text-xs text-gray-400 mt-0.5 truncate hidden sm:block">
               Explore and manage all events and activities.
             </p>
           </div>

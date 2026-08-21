@@ -855,7 +855,7 @@ export default function StudentProfile({
             </button>
 
             <div className="min-w-0">
-              <h1 className="text-xl font-bold text-gray-800 tracking-tight truncate">
+              <h1 className="text-lg sm:text-xl font-bold text-gray-800 tracking-tight truncate">
                 {isDigitalCard ? "Digital Student ID" : "Student Profile"}
               </h1>
               <nav className="flex items-center gap-1.5 text-xs text-gray-400 mt-0.5">

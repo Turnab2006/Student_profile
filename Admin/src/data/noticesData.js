@@ -3,7 +3,9 @@ export const defaultNotices = [
     id: "NTC001",
     title: "Semester Exam Schedule 2026",
     category: "Academic",
+    priority: "Urgent",
     date: "2026-05-20",
+    expiryDate: "2026-06-30",
     status: "Active",
     badgeColor: "bg-green-100 text-green-600",
     author: "Academic Cell",
@@ -14,7 +16,9 @@ export const defaultNotices = [
     id: "NTC002",
     title: "Project Submission Deadline Extension",
     category: "Academic",
+    priority: "High",
     date: "2026-05-18",
+    expiryDate: "2026-08-15",
     status: "Active",
     badgeColor: "bg-green-100 text-green-600",
     author: "Prof. Kaushik Chatterjee",
@@ -25,7 +29,9 @@ export const defaultNotices = [
     id: "NTC003",
     title: "Mentorship Group Meeting Schedule",
     category: "General",
+    priority: "Medium",
     date: "2026-05-15",
+    expiryDate: "2026-05-25",
     status: "Active",
     badgeColor: "bg-green-100 text-green-600",
     author: "Prof. Kaushik Chatterjee",
@@ -36,7 +42,9 @@ export const defaultNotices = [
     id: "NTC004",
     title: "Holiday Notice: Summer Break",
     category: "General",
+    priority: "Medium",
     date: "2026-05-15",
+    expiryDate: "2026-06-21",
     status: "Active",
     badgeColor: "bg-green-100 text-green-600",
     author: "Admin Office",
@@ -47,7 +55,9 @@ export const defaultNotices = [
     id: "NTC005",
     title: "Library Timings Extended for Exams",
     category: "Academic",
+    priority: "Low",
     date: "2026-05-12",
+    expiryDate: "2026-06-15",
     status: "Active",
     badgeColor: "bg-green-100 text-green-600",
     author: "Library Admin",
@@ -58,7 +68,9 @@ export const defaultNotices = [
     id: "NTC006",
     title: "Campus Placement Drive Registration",
     category: "Placement",
+    priority: "High",
     date: "2026-05-10",
+    expiryDate: "2026-05-30",
     status: "Active",
     badgeColor: "bg-green-100 text-green-600",
     author: "Placement Cell",
@@ -69,7 +81,9 @@ export const defaultNotices = [
     id: "NTC007",
     title: "Hostel Fee Payment Deadline",
     category: "General",
+    priority: "High",
     date: "2026-05-08",
+    expiryDate: "2026-05-25",
     status: "Draft",
     badgeColor: "bg-yellow-100 text-yellow-600",
     author: "Accounts Dept",
@@ -80,7 +94,9 @@ export const defaultNotices = [
     id: "NTC008",
     title: "Faculty Meeting Schedule",
     category: "Academic",
+    priority: "Low",
     date: "2026-05-05",
+    expiryDate: "2026-05-06",
     status: "Archived",
     badgeColor: "bg-gray-200 text-gray-600",
     author: "HOD CSE",
@@ -91,7 +107,9 @@ export const defaultNotices = [
     id: "NTC009",
     title: "Blood Donation Camp",
     category: "Event",
+    priority: "Medium",
     date: "2026-05-03",
+    expiryDate: "2026-05-05",
     status: "Active",
     badgeColor: "bg-green-100 text-green-600",
     author: "NSS Club",
@@ -102,7 +120,9 @@ export const defaultNotices = [
     id: "NTC010",
     title: "Sports Week Announcement",
     category: "Event",
+    priority: "Low",
     date: "2026-04-28",
+    expiryDate: "2026-05-04",
     status: "Archived",
     badgeColor: "bg-gray-200 text-gray-600",
     author: "Sports Committee",
@@ -116,7 +136,14 @@ export function getStoredNotices() {
     const data = localStorage.getItem("trackademy_notices");
     if (data) {
       const parsed = JSON.parse(data);
-      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        // Ensure priority and expiryDate exist on each notice
+        return parsed.map((item, idx) => ({
+          ...item,
+          priority: item.priority || (defaultNotices[idx]?.priority || "Medium"),
+          expiryDate: item.expiryDate || (defaultNotices[idx]?.expiryDate || ""),
+        }));
+      }
     }
   } catch (e) {
     console.error("Error reading notices from localStorage", e);

@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Menu, Bell, HelpCircle, ChevronDown, User, Settings, LogOut, ShieldCheck, AlertTriangle, Megaphone } from 'lucide-react';
+import { Menu, Bell, HelpCircle, ChevronDown, Settings, LogOut, Megaphone, AlertTriangle, CheckCircle2 } from 'lucide-react';
 
 export default function MentorNavbar({
   activeTab = 'dashboard',
@@ -33,44 +33,48 @@ export default function MentorNavbar({
       subtitle: `Welcome back, ${currentUser.firstName}! Here's what's happening today.`,
     },
     mentees: {
-      title: 'Mentee',
-      subtitle: 'Manage and view your assigned mentees.',
+      title: 'Mentees',
+      subtitle: 'Manage and view your assigned student mentees.',
+    },
+    'student-profile': {
+      title: 'Student Profile',
+      subtitle: 'Comprehensive academic and personal record of mentee.',
     },
     profile: {
-      title: 'Profile',
-      subtitle: 'View and update your mentor profile details.',
+      title: 'Mentor Profile',
+      subtitle: 'View and update your mentor profile information.',
     },
     messages: {
-      title: 'Message',
-      subtitle: 'Chat and communicate with your mentees.',
+      title: 'Messages',
+      subtitle: 'Chat and communicate with your assigned mentees.',
     },
     results: {
       title: 'Results',
-      subtitle: "Manage and upload mentees' academic results",
+      subtitle: "Manage and upload mentees' academic results and grades.",
     },
     attendance: {
       title: 'Attendance',
-      subtitle: 'Track and record student attendance.',
+      subtitle: 'Track and record student attendance records.',
     },
     'credit-points': {
-      title: 'Credit Point',
-      subtitle: 'Award and review student credit points.',
+      title: 'Credit Points',
+      subtitle: 'Award and review student credit points and achievements.',
     },
     notices: {
-      title: 'Notice',
-      subtitle: 'Latest announcements and official notices.',
+      title: 'Notices',
+      subtitle: 'Latest campus announcements and official circulars.',
     },
     activities: {
-      title: 'Activity',
-      subtitle: 'Track system activities and updates.',
+      title: 'Activities',
+      subtitle: 'Track student extracurricular events and activity logs.',
     },
     settings: {
       title: 'Settings',
       subtitle: 'Manage portal preferences and configurations.',
     },
     support: {
-      title: 'System Support',
-      subtitle: 'Help desk and technical assistance.',
+      title: 'Support Center',
+      subtitle: 'Help desk and technical assistance for mentors.',
     },
   };
 
@@ -78,6 +82,33 @@ export default function MentorNavbar({
     title: activeTab ? activeTab.charAt(0).toUpperCase() + activeTab.slice(1) : 'Dashboard',
     subtitle: `Welcome back, ${currentUser.firstName}! Here's what's happening today.`,
   };
+
+  const notifications = [
+    {
+      id: '1',
+      title: 'New Project Deadline Extended',
+      desc: 'Final term project deadline is extended to Aug 15.',
+      time: '10 mins ago',
+      icon: Megaphone,
+      iconBg: 'bg-emerald-100 text-emerald-600',
+    },
+    {
+      id: '2',
+      title: 'Mentee Attendance Alert',
+      desc: '2 mentees are below 75% attendance threshold.',
+      time: '1 hour ago',
+      icon: AlertTriangle,
+      iconBg: 'bg-amber-100 text-amber-600',
+    },
+    {
+      id: '3',
+      title: 'Semester Grade Submission',
+      desc: 'Grade submission portal for Semester V is now active.',
+      time: '3 hours ago',
+      icon: CheckCircle2,
+      iconBg: 'bg-blue-100 text-blue-600',
+    },
+  ];
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -97,9 +128,9 @@ export default function MentorNavbar({
   };
 
   return (
-    <header className="h-[65px] bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-2xs w-full">
-      {/* Left side: Mobile menu button + Title & Subtitle */}
-      <div className="flex items-center gap-3 min-w-0">
+    <header className="h-[65px] bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-2xs w-full font-['Roboto',sans-serif]">
+      {/* Left side: Mobile menu button + Title & Subtitle matching Admin header */}
+      <div className="flex items-center gap-2 sm:gap-3 min-w-0 pr-2">
         {onOpenSidebar && (
           <button
             type="button"
@@ -111,7 +142,7 @@ export default function MentorNavbar({
           </button>
         )}
         <div className="min-w-0">
-          <h1 className="text-lg sm:text-xl font-bold leading-tight text-gray-800 tracking-tight truncate">
+          <h1 className="text-lg sm:text-xl font-bold text-gray-800 tracking-tight truncate">
             {currentMeta.title}
           </h1>
           <p className="text-xs text-gray-400 mt-0.5 truncate hidden sm:block">
@@ -120,8 +151,8 @@ export default function MentorNavbar({
         </div>
       </div>
 
-      {/* Right side: Bell (3) + Help Circle + Divider + User Profile */}
-      <div className="flex items-center gap-2 sm:gap-4 relative select-none shrink-0" ref={containerRef}>
+      {/* Right side: Bell + Help Circle + Divider + User Profile */}
+      <div className="flex items-center gap-2 sm:gap-3.5 relative select-none shrink-0" ref={containerRef}>
         {/* Notification Bell */}
         <div className="relative">
           <button
@@ -130,12 +161,13 @@ export default function MentorNavbar({
               setNotifOpen((prev) => !prev);
               setProfileOpen(false);
             }}
-            className="relative flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-xl text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-all cursor-pointer focus:outline-none"
+            className="relative flex h-9 w-9 items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors cursor-pointer focus:outline-none"
             title="Notifications"
+            aria-label="Notifications"
           >
-            <Bell size={18} />
+            <Bell size={19} className="stroke-[1.8]" />
             {unreadCount > 0 && (
-              <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[10px] font-bold text-white shadow-sm animate-pulse">
+              <span className="absolute -top-0.5 -right-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[#FF4D4F] px-1 text-[10px] font-bold text-white shadow-sm ring-2 ring-white">
                 {unreadCount}
               </span>
             )}
@@ -163,33 +195,25 @@ export default function MentorNavbar({
               </div>
 
               <div className="py-2 space-y-2 max-h-72 overflow-y-auto">
-                <div
-                  className="flex items-start gap-3 p-2 rounded-xl hover:bg-gray-50 transition-colors cursor-pointer"
-                  onClick={() => navigateTo('notices')}
-                >
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600">
-                    <Megaphone size={15} />
-                  </div>
-                  <div className="flex-1 overflow-hidden">
-                    <p className="text-xs font-bold text-gray-800 leading-tight">New Project Deadline Extended</p>
-                    <p className="text-[11px] text-gray-500 leading-tight mt-0.5 line-clamp-2">Final term project deadline is extended to Aug 15.</p>
-                    <p className="text-[10px] text-gray-400 font-medium mt-1">10 mins ago</p>
-                  </div>
-                </div>
-
-                <div
-                  className="flex items-start gap-3 p-2 rounded-xl hover:bg-gray-50 transition-colors cursor-pointer"
-                  onClick={() => navigateTo('attendance')}
-                >
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-100 text-amber-600">
-                    <AlertTriangle size={15} />
-                  </div>
-                  <div className="flex-1 overflow-hidden">
-                    <p className="text-xs font-bold text-gray-800 leading-tight">Mentee Attendance Alert</p>
-                    <p className="text-[11px] text-gray-500 leading-tight mt-0.5 line-clamp-2">2 mentees are below 75% attendance threshold.</p>
-                    <p className="text-[10px] text-gray-400 font-medium mt-1">1 hour ago</p>
-                  </div>
-                </div>
+                {notifications.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <div
+                      key={item.id}
+                      className="flex items-start gap-3 p-2 rounded-xl hover:bg-gray-50 transition-colors cursor-pointer"
+                      onClick={() => navigateTo('notices')}
+                    >
+                      <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${item.iconBg}`}>
+                        <Icon size={15} />
+                      </div>
+                      <div className="flex-1 overflow-hidden">
+                        <p className="text-xs font-bold text-gray-800 leading-tight">{item.title}</p>
+                        <p className="text-[11px] text-gray-500 leading-tight mt-0.5 line-clamp-2">{item.desc}</p>
+                        <p className="text-[10px] text-gray-400 font-medium mt-1">{item.time}</p>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
 
               <div className="border-t border-gray-100 pt-2 text-center">
@@ -209,16 +233,17 @@ export default function MentorNavbar({
         <button
           type="button"
           onClick={() => navigateTo('support')}
-          className="hidden sm:flex h-9 w-9 items-center justify-center rounded-xl text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-all cursor-pointer focus:outline-none"
+          className="flex h-9 w-9 items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors cursor-pointer focus:outline-none"
           title="Support Center"
+          aria-label="Support Center"
         >
-          <HelpCircle size={18} />
+          <HelpCircle size={19} className="stroke-[1.8]" />
         </button>
 
         {/* Divider */}
         <div className="hidden sm:block h-5 w-[1px] bg-gray-200" />
 
-        {/* User Profile Block */}
+        {/* User Profile Block matching Admin profile styling */}
         <div className="relative">
           <button
             type="button"
@@ -227,10 +252,11 @@ export default function MentorNavbar({
               setNotifOpen(false);
             }}
             className="flex items-center gap-2.5 sm:gap-3 p-1 rounded-xl hover:bg-gray-100/70 transition-all cursor-pointer focus:outline-none group"
+            aria-expanded={profileOpen}
           >
             {/* Avatar on LEFT with online green dot */}
             <div className="relative">
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden bg-gradient-to-br from-purple-100 to-indigo-100 flex items-center justify-center border border-gray-200 shadow-sm">
+              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden bg-gradient-to-br from-purple-100 to-indigo-100 flex items-center justify-center border border-gray-200 shadow-xs ring-2 ring-purple-500/20">
                 {currentUser.avatar ? (
                   <img
                     src={currentUser.avatar}
@@ -266,18 +292,20 @@ export default function MentorNavbar({
             />
           </button>
 
-          {/* Profile Dropdown Menu - Same as Student and Admin */}
+          {/* Profile Dropdown Menu */}
           {profileOpen && (
-            <div className="absolute right-0 top-full mt-2.5 w-44 rounded-2xl border border-slate-200 bg-white p-1.5 shadow-xl z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+            <div className="absolute right-0 top-full mt-2.5 w-48 rounded-2xl border border-slate-200 bg-white p-1.5 shadow-xl z-50 animate-in fade-in slide-in-from-top-2 duration-150">
               <div className="space-y-0.5">
                 <button
                   type="button"
                   onClick={() => navigateTo('settings')}
-                  className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-gray-700 rounded-xl hover:bg-purple-50 hover:text-[#7656f4] transition-colors cursor-pointer group"
+                  className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-purple-50 hover:text-[#7656f4] rounded-xl transition-colors cursor-pointer"
                 >
                   <Settings size={15} className="text-gray-400 group-hover:text-[#7656f4]" />
                   <span>Settings</span>
                 </button>
+
+                <div className="h-[1px] bg-slate-100 my-1" />
 
                 <button
                   type="button"
@@ -285,9 +313,9 @@ export default function MentorNavbar({
                     setProfileOpen(false);
                     if (onLogout) onLogout();
                   }}
-                  className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-rose-600 rounded-xl hover:bg-rose-50 transition-colors cursor-pointer"
+                  className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-rose-600 hover:bg-rose-50 rounded-xl transition-colors cursor-pointer"
                 >
-                  <LogOut size={15} className="text-rose-500" />
+                  <LogOut size={15} />
                   <span>Logout</span>
                 </button>
               </div>

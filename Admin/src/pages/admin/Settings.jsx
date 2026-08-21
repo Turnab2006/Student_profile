@@ -139,7 +139,7 @@ export default function Settings({ onNavigate, onOpenSidebar }) {
             <Menu size={20} />
           </button>
           <div className="min-w-0">
-            <h1 className="text-xl font-bold text-gray-800 tracking-tight">Settings</h1>
+            <h1 className="text-lg sm:text-xl font-bold text-gray-800 tracking-tight truncate">Settings</h1>
             <p className="text-xs text-gray-400 mt-0.5">Configure portal preferences and system settings</p>
           </div>
         </div>

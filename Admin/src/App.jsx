@@ -20,6 +20,7 @@ import Activities from "./pages/admin/Activities";
 import AddActivity from "./pages/admin/AddActivity";
 import Settings from "./pages/admin/Settings";
 import Support from "./pages/admin/Support";
+import TicketHistory from "./pages/admin/TicketHistory";
 import Semesters from "./pages/admin/Semesters";
 import Subjects from "./pages/admin/Subjects";
 import AddSubject from "./pages/admin/AddSubject";
@@ -56,6 +57,7 @@ function AdminLayout({ subjectsList, setSubjectsList, onLogout }) {
     "add-notice": "/admin/notices/add",
     settings: "/admin/settings",
     support: "/admin/support",
+    "ticket-history": "/admin/support/history",
   };
 
   const getActivePageFromPath = (path) => {
@@ -74,6 +76,7 @@ function AdminLayout({ subjectsList, setSubjectsList, onLogout }) {
     if (path.includes("/admin/notices/add")) return "add-notice";
     if (path.includes("/admin/notices")) return "notices";
     if (path.includes("/admin/settings")) return "settings";
+    if (path.includes("/admin/support/history")) return "ticket-history";
     if (path.includes("/admin/support")) return "support";
     return "dashboard";
   };
@@ -111,6 +114,7 @@ function AdminLayout({ subjectsList, setSubjectsList, onLogout }) {
       case "attendances":     return <Attendances onNavigate={handleAdminNavigate} onOpenSidebar={handleOpenSidebar} />;
       case "settings":        return <Settings onNavigate={handleAdminNavigate} onOpenSidebar={handleOpenSidebar} />;
       case "support":         return <Support onNavigate={handleAdminNavigate} onOpenSidebar={handleOpenSidebar} />;
+      case "ticket-history":  return <TicketHistory onNavigate={handleAdminNavigate} onOpenSidebar={handleOpenSidebar} />;
       default:
         return <Dashboard onNavigate={handleAdminNavigate} onOpenSidebar={handleOpenSidebar} />;
     }
@@ -123,15 +127,15 @@ function AdminLayout({ subjectsList, setSubjectsList, onLogout }) {
           type="button"
           aria-label="Close navigation overlay"
           onClick={() => setMobileSidebarOpen(false)}
-          className="fixed inset-0 z-40 bg-black/40 backdrop-blur-[1px] lg:hidden"
+          className="fixed inset-0 z-40 bg-black/40 lg:hidden cursor-pointer"
         />
       ) : null}
-
       <Sidebar
         activePage={adminActivePage}
         onNavigate={handleAdminNavigate}
         open={mobileSidebarOpen}
         onClose={() => setMobileSidebarOpen(false)}
+        onLogout={onLogout}
       />
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {renderAdminPage()}
@@ -141,6 +145,15 @@ function AdminLayout({ subjectsList, setSubjectsList, onLogout }) {
 }
 
 export default function App() {
+  const [currentUser, setCurrentUser] = useState(() => {
+    try {
+      const saved = localStorage.getItem("trackademy_user");
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
+
   const navigate = useNavigate();
   const location = useLocation();
   const [subjectsList, setSubjectsList] = useState([]);
@@ -169,6 +182,7 @@ export default function App() {
             "add-notice": "/admin/notices/add",
             settings: "/admin/settings",
             support: "/admin/support",
+            "ticket-history": "/admin/support/history",
           };
           if (pathMap[e.detail]) {
             navigate(pathMap[e.detail]);

@@ -9,7 +9,7 @@ export const defaultActivities = [
     status: "Upcoming",
     registered: 234,
     badgeColor: "bg-purple-100 text-purple-600",
-    image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=300&auto=format&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop&q=80",
     description: "Showcase innovation, creativity, and technical excellence among students and professionals."
   },
   {
@@ -22,7 +22,7 @@ export const defaultActivities = [
     status: "Upcoming",
     registered: 89,
     badgeColor: "bg-pink-100 text-pink-600",
-    image: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=300&auto=format&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800&auto=format&fit=crop&q=80",
     description: "An inspiring startup event featuring successful entrepreneurs and innovative ideas."
   },
   {
@@ -35,7 +35,7 @@ export const defaultActivities = [
     status: "Upcoming",
     registered: 156,
     badgeColor: "bg-cyan-100 text-cyan-600",
-    image: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=300&auto=format&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=800&auto=format&fit=crop&q=80",
     description: "A celebration of teamwork, determination, and athletic excellence."
   },
   {
@@ -48,7 +48,7 @@ export const defaultActivities = [
     status: "Upcoming",
     registered: 412,
     badgeColor: "bg-yellow-100 text-yellow-600",
-    image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=300&auto=format&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&auto=format&fit=crop&q=80",
     description: "Experience diversity, art, music and cultural performances."
   },
   {
@@ -61,7 +61,7 @@ export const defaultActivities = [
     status: "Upcoming",
     registered: 67,
     badgeColor: "bg-green-100 text-green-600",
-    image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=300&auto=format&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&auto=format&fit=crop&q=80",
     description: "Hands-on workshop to explore the future of Artificial Intelligence."
   },
   {
@@ -74,7 +74,7 @@ export const defaultActivities = [
     status: "Upcoming",
     registered: 45,
     badgeColor: "bg-purple-100 text-purple-600",
-    image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=300&auto=format&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&auto=format&fit=crop&q=80",
     description: "Test your coding skills and compete with the best."
   },
   {
@@ -87,7 +87,7 @@ export const defaultActivities = [
     status: "Completed",
     registered: 156,
     badgeColor: "bg-orange-100 text-orange-600",
-    image: "https://images.unsplash.com/photo-1615461066841-6116e61058f4?w=300&auto=format&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1615461066841-6116e61058f4?w=800&auto=format&fit=crop&q=80",
     description: "Join to save lives — camp organized with local blood bank."
   },
   {
@@ -100,7 +100,7 @@ export const defaultActivities = [
     status: "Cancelled",
     registered: 0,
     badgeColor: "bg-red-100 text-red-600",
-    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=300&auto=format&fit=crop&q=80",
+    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&auto=format&fit=crop&q=80",
     description: "A guided visit to local tech companies and startups."
   }
 ];
@@ -110,7 +110,16 @@ export function getStoredActivities() {
     const data = localStorage.getItem("trackademy_activities");
     if (data) {
       const parsed = JSON.parse(data);
-      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        // Sync enhanced images for default activities if available
+        const defaultMap = new Map(defaultActivities.map(a => [a.id, a.image]));
+        return parsed.map(item => {
+          if (defaultMap.has(item.id)) {
+            return { ...item, image: defaultMap.get(item.id) };
+          }
+          return item;
+        });
+      }
     }
   } catch (e) {
     console.error("Error loading activities", e);
