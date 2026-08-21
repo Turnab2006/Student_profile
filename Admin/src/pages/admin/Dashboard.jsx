@@ -1,12 +1,9 @@
 import {
   Users,
-  CheckCircle2,
-  TrendingUp,
-  Star,
-  UserPlus,
-  UserCheck2,
-  Upload,
+  UserCheck,
+  Bell,
   Megaphone,
+  UserPlus,
   BookOpen,
   Menu,
   Activity,
@@ -33,7 +30,7 @@ const stats = [
     label: "Total Mentors",
     value: "156",
     subtext: "Active faculty & staff",
-    icon: CheckCircle2,
+    icon: UserCheck,
     cardClass: "bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#22C55E]",
     valueClass: "text-[#111827]",
     iconWrap: "bg-[#EAFBF1] text-[#22C55E]",
@@ -44,18 +41,18 @@ const stats = [
     label: "Active Notices",
     value: "10",
     subtext: "Published announcements",
-    icon: TrendingUp,
+    icon: Bell,
     cardClass: "bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#F59E0B]",
     valueClass: "text-[#111827]",
     iconWrap: "bg-[#FFF5E8] text-[#F59E0B]",
     pageKey: "notices",
   },
   {
-    key: "events",
-    label: "Upcoming Events",
+    key: "activities",
+    label: "Upcoming Activities",
     value: "6",
     subtext: "Scheduled this month",
-    icon: Star,
+    icon: Megaphone,
     cardClass: "bg-white text-slate-800 border border-slate-200 border-l-4 border-l-[#3B82F6]",
     valueClass: "text-[#111827]",
     iconWrap: "bg-[#EEF5FF] text-[#3B82F6]",
@@ -68,15 +65,15 @@ const activities = [
   { name: "Henry Vecna", action: "registered as new student", detail: "Computer Science & Engineering", badge: "Student", badgeColor: "bg-emerald-100 text-emerald-600", time: "2 min ago", avatar: "HV", avatarBg: "bg-emerald-100" },
   { name: "Harry Potter", action: "registered as new mentor", detail: "Computer Science & Engineering", badge: "Mentor", badgeColor: "bg-purple-100 text-purple-600", time: "3 min ago", avatar: "HP", avatarBg: "bg-purple-100" },
   { name: "Admin", action: "published a new notice", detail: "Exam Routine for upcoming semester", badge: "Notice", badgeColor: "bg-blue-100 text-blue-600", time: "7 min ago", avatar: "AD", avatarBg: "bg-blue-100" },
-  { name: "Admin", action: "published a new event", detail: "Regalia 2026 - Cultural Event", badge: "Event", badgeColor: "bg-amber-100 text-amber-600", time: "8 min ago", avatar: "AD", avatarBg: "bg-amber-100" },
+  { name: "Admin", action: "published a new event", detail: "Regalia 2026 - Cultural Event", badge: "Activity", badgeColor: "bg-amber-100 text-amber-600", time: "8 min ago", avatar: "AD", avatarBg: "bg-amber-100" },
   { name: "Admin", action: "updated semester syllabus", detail: "Semester 5 course materials", badge: "Semester", badgeColor: "bg-rose-100 text-rose-600", time: "10 min ago", avatar: "AD", avatarBg: "bg-rose-100" },
 ];
 
 const quickActions = [
   { icon: UserPlus, label: "Add Student", page: "add-student", color: "text-[#0da651]", bg: "bg-[#eaf8f1] hover:bg-[#d8f3e5]" },
-  { icon: UserCheck2, label: "Add Mentor", page: "add-mentor", color: "text-[#0da651]", bg: "bg-[#eaf8f1] hover:bg-[#d8f3e5]" },
-  { icon: Upload, label: "Upload Activity", page: "add-activity", color: "text-[#0da651]", bg: "bg-[#eaf8f1] hover:bg-[#d8f3e5]" },
-  { icon: Megaphone, label: "Upload Notice", page: "add-notice", color: "text-[#0da651]", bg: "bg-[#eaf8f1] hover:bg-[#d8f3e5]" },
+  { icon: UserCheck, label: "Add Mentor", page: "add-mentor", color: "text-[#0da651]", bg: "bg-[#eaf8f1] hover:bg-[#d8f3e5]" },
+  { icon: Megaphone, label: "Upload Activity", page: "add-activity", color: "text-[#0da651]", bg: "bg-[#eaf8f1] hover:bg-[#d8f3e5]" },
+  { icon: Bell, label: "Upload Notice", page: "add-notice", color: "text-[#0da651]", bg: "bg-[#eaf8f1] hover:bg-[#d8f3e5]" },
   { icon: CalendarDays, label: "Update Semester", page: "semesters", color: "text-[#0da651]", bg: "bg-[#eaf8f1] hover:bg-[#d8f3e5]" },
   { icon: BookOpen, label: "Upload Subject", page: "add-subject", color: "text-[#0da651]", bg: "bg-[#eaf8f1] hover:bg-[#d8f3e5]" },
 ];
@@ -130,7 +127,7 @@ export default function Dashboard({ onNavigate, onOpenSidebar }) {
 
         {/* Stats Grid - Standardized to match Mentor and Student Dashboard Stat Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
-          {stats.map(({ key, label, value, subtext, cardClass, valueClass, iconWrap, pageKey }) => (
+          {stats.map(({ key, label, value, subtext, icon: Icon, cardClass, valueClass, iconWrap, pageKey }) => (
             <div
               key={label}
               onClick={() => {
@@ -142,15 +139,7 @@ export default function Dashboard({ onNavigate, onOpenSidebar }) {
                 <div
                   className={`flex h-11 w-11 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-2xl ${iconWrap}`}
                 >
-                  {key === "mentors" ? (
-                    <CheckCircle2 size={24} className="fill-[#22C55E] text-white" />
-                  ) : key === "events" ? (
-                    <Star size={22} className="fill-[#3B82F6] text-[#3B82F6]" />
-                  ) : key === "notices" ? (
-                    <TrendingUp size={23} className="stroke-[2.5]" />
-                  ) : (
-                    <Users size={23} className="stroke-[2.2]" />
-                  )}
+                  <Icon size={23} className="stroke-[2.2]" />
                 </div>
 
                 <div className="flex-1 min-w-0">

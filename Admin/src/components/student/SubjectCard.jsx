@@ -75,12 +75,13 @@ export default function SubjectCard({
   index = 0,
   onDownload,
   className = "",
+  showAttendance = true,
 }) {
   const code = subject?.code || "CS501";
   const name = subject?.name || "Design & Analysis of Algorithms";
   const credits = subject?.credits !== undefined ? subject?.credits : 4;
-  const instructor = subject?.instructor || "Dr. Kaushik Chatterjee";
-  const lectureHours = subject?.lectureHours || subject?.hours || "45 Hours";
+  const instructor = subject?.facultyName || subject?.instructor || "Dr. Kaushik Chatterjee";
+  const lectureHours = subject?.lectureHours || subject?.totalHours || subject?.hours || "45 Hours";
   const totalClasses = subject?.totalClasses || subject?.total || 36;
   const attendedClasses = subject?.attendedClasses || subject?.attended || 34;
   const attendancePct = typeof subject?.attendance === "string" 
@@ -153,28 +154,30 @@ export default function SubjectCard({
           </div>
         </div>
 
-        {/* 4. Attendance Panel */}
-        <div className="p-3 rounded-xl bg-slate-50/80 border border-slate-100/80 space-y-1.5 mb-3">
-          <div className="flex items-center justify-between text-xs font-semibold">
-            <span className="text-slate-500 font-medium">Attendance</span>
-            <span className={`font-extrabold text-sm ${theme.attendanceColor}`}>
-              {attendancePct}%
-            </span>
-          </div>
+        {/* 4. Attendance Panel (Only rendered when showAttendance is true) */}
+        {showAttendance && (
+          <div className="p-3 rounded-xl bg-slate-50/80 border border-slate-100/80 space-y-1.5 mb-3">
+            <div className="flex items-center justify-between text-xs font-semibold">
+              <span className="text-slate-500 font-medium">Attendance</span>
+              <span className={`font-extrabold text-sm ${theme.attendanceColor}`}>
+                {attendancePct}%
+              </span>
+            </div>
 
-          {/* Progress Bar */}
-          <div className="h-1.5 w-full bg-slate-200/70 rounded-full overflow-hidden">
-            <div
-              className={`h-full rounded-full transition-all duration-500 ${theme.progressColor}`}
-              style={{ width: `${Math.min(attendancePct, 100)}%` }}
-            />
-          </div>
+            {/* Progress Bar */}
+            <div className="h-1.5 w-full bg-slate-200/70 rounded-full overflow-hidden">
+              <div
+                className={`h-full rounded-full transition-all duration-500 ${theme.progressColor}`}
+                style={{ width: `${Math.min(attendancePct, 100)}%` }}
+              />
+            </div>
 
-          {/* Attended / Total Classes count */}
-          <div className="text-[11px] font-semibold text-slate-400 pt-0.5">
-            {attendedClasses} / {totalClasses} Classes
+            {/* Attended / Total Classes count */}
+            <div className="text-[11px] font-semibold text-slate-400 pt-0.5">
+              {attendedClasses} / {totalClasses} Classes
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* 5. Download Syllabus Button */}

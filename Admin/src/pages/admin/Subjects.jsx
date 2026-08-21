@@ -50,6 +50,13 @@ const defaultSubjects = [
     id: "1",
     code: "CS501",
     name: "Design & Analysis of Algorithms",
+    credits: 4,
+    totalHours: "45 Hours",
+    totalClasses: 36,
+    facultyName: "Dr. Kaushik Chatterjee",
+    instructor: "Dr. Kaushik Chatterjee",
+    syllabusFileName: "CS501_Algorithms_Syllabus.pdf",
+    syllabusFileSize: "1.4 MB",
     program: "B.Tech",
     department: "Computer Science Engineering",
     year: "3rd Year",
@@ -60,6 +67,13 @@ const defaultSubjects = [
     id: "2",
     code: "EC302",
     name: "Analog Communication",
+    credits: 4,
+    totalHours: "45 Hours",
+    totalClasses: 36,
+    facultyName: "Prof. Arindam Roy",
+    instructor: "Prof. Arindam Roy",
+    syllabusFileName: "EC302_Analog_Comm_Syllabus.pdf",
+    syllabusFileSize: "1.1 MB",
     program: "B.Tech",
     department: "Electronics & Communication Engineering",
     year: "2nd Year",
@@ -70,6 +84,13 @@ const defaultSubjects = [
     id: "3",
     code: "EE701",
     name: "Control Systems",
+    credits: 3,
+    totalHours: "40 Hours",
+    totalClasses: 32,
+    facultyName: "Dr. Ananya Sen",
+    instructor: "Dr. Ananya Sen",
+    syllabusFileName: "EE701_Control_Systems_Syllabus.pdf",
+    syllabusFileSize: "980 KB",
     program: "B.Tech",
     department: "Electrical Engineering",
     year: "4th Year",
@@ -80,6 +101,13 @@ const defaultSubjects = [
     id: "4",
     code: "MT101",
     name: "Advanced Algorithms",
+    credits: 4,
+    totalHours: "45 Hours",
+    totalClasses: 36,
+    facultyName: "Dr. Kaushik Chatterjee",
+    instructor: "Dr. Kaushik Chatterjee",
+    syllabusFileName: "MT101_Adv_Algorithms_Syllabus.pdf",
+    syllabusFileSize: "1.6 MB",
     program: "M.Tech",
     department: "Computer Science Engineering",
     year: "1st Year",
@@ -90,6 +118,13 @@ const defaultSubjects = [
     id: "5",
     code: "VL301",
     name: "Low Power VLSI",
+    credits: 4,
+    totalHours: "45 Hours",
+    totalClasses: 36,
+    facultyName: "Prof. Pritam Paul",
+    instructor: "Prof. Pritam Paul",
+    syllabusFileName: "VL301_VLSI_Design_Syllabus.pdf",
+    syllabusFileSize: "1.3 MB",
     program: "M.Tech",
     department: "VLSI Design",
     year: "2nd Year",
@@ -100,6 +135,13 @@ const defaultSubjects = [
     id: "6",
     code: "BCA101",
     name: "Computer Fundamentals",
+    credits: 3,
+    totalHours: "35 Hours",
+    totalClasses: 30,
+    facultyName: "Prof. Debarati Ghosh",
+    instructor: "Prof. Debarati Ghosh",
+    syllabusFileName: "BCA101_Fundamentals_Syllabus.pdf",
+    syllabusFileSize: "850 KB",
     program: "BCA",
     department: "Computer Applications",
     year: "1st Year",
@@ -110,6 +152,13 @@ const defaultSubjects = [
     id: "7",
     code: "MCA301",
     name: "Cloud Computing",
+    credits: 4,
+    totalHours: "45 Hours",
+    totalClasses: 36,
+    facultyName: "Dr. Sourav Das",
+    instructor: "Dr. Sourav Das",
+    syllabusFileName: "MCA301_Cloud_Computing_Syllabus.pdf",
+    syllabusFileSize: "1.5 MB",
     program: "MCA",
     department: "Master of Computer Applications",
     year: "2nd Year",
@@ -445,6 +494,7 @@ export default function Subjects({ onNavigate, subjectsList = [], setSubjectsLis
                     subject={subject}
                     index={index}
                     onDownload={handleDownloadSyllabus}
+                    showAttendance={false}
                   />
                 ))}
               </div>
@@ -452,9 +502,9 @@ export default function Subjects({ onNavigate, subjectsList = [], setSubjectsLis
 
             {/* Mode 2: LIST VIEW TABLE */}
             {subjectViewMode === "list" && filteredSemesterSubjects.length > 0 && (
-              <div className="bg-white rounded-[20px] border border-slate-200/90 p-4 sm:p-5 lg:p-6 overflow-hidden animate-in fade-in duration-150">
+              <div className="bg-white rounded-[20px] border border-slate-200/90 p-4 sm:p-5 lg:p-6 overflow-hidden animate-in fade-in duration-150 shadow-sm">
                 <div className="overflow-x-auto">
-                  <table className="w-full text-left border-collapse min-w-[960px]">
+                  <table className="w-full text-left border-collapse min-w-[840px]">
                     <thead>
                       <tr className="bg-[#f0f6ff]/90 text-xs font-bold text-[#1d61e7] rounded-2xl overflow-hidden">
                         <th className="py-4 px-5 rounded-l-2xl whitespace-nowrap">
@@ -481,16 +531,10 @@ export default function Subjects({ onNavigate, subjectsList = [], setSubjectsLis
                             <span className="whitespace-nowrap">LECTURE HOURS</span>
                           </div>
                         </th>
-                        <th className="py-4 px-5 whitespace-nowrap">
-                          <div className="flex items-center gap-1.5">
-                            <Calendar size={14} className="text-[#1d61e7] stroke-[2.4]" />
-                            <span className="whitespace-nowrap">ATTENDANCE %</span>
-                          </div>
-                        </th>
                         <th className="py-4 px-5 text-center whitespace-nowrap">
                           <div className="flex items-center justify-center gap-1.5">
-                            <UserCheck size={14} className="text-[#1d61e7] stroke-[2.4]" />
-                            <span className="whitespace-nowrap">ATTENDED / TOTAL</span>
+                            <CalendarDays size={14} className="text-[#1d61e7] stroke-[2.4]" />
+                            <span className="whitespace-nowrap">TOTAL CLASSES</span>
                           </div>
                         </th>
                         <th className="py-4 px-5 rounded-r-2xl text-center whitespace-nowrap">
@@ -501,13 +545,6 @@ export default function Subjects({ onNavigate, subjectsList = [], setSubjectsLis
                     <tbody className="divide-y divide-slate-100">
                       {filteredSemesterSubjects.map((subject, idx) => {
                         const theme = SUBJECT_THEMES[subject.colorTheme || THEME_KEYS[idx % THEME_KEYS.length]] || SUBJECT_THEMES.blue;
-                        const pct = typeof subject.attendance === "string"
-                          ? parseInt(subject.attendance.replace("%", ""), 10)
-                          : (subject.attendance || 94);
-
-                        let barColor = "bg-[#10b981]";
-                        if (pct < 75) barColor = "bg-[#ef4444]";
-                        else if (pct <= 80) barColor = "bg-[#f97316]";
 
                         return (
                           <tr key={subject.code} className="hover:bg-slate-50/70 transition-colors">
@@ -524,7 +561,7 @@ export default function Subjects({ onNavigate, subjectsList = [], setSubjectsLis
                                 <p className="font-bold text-slate-900 text-sm leading-snug">{subject.name}</p>
                                 <p className="text-xs text-slate-500 font-medium flex items-center gap-1 mt-0.5 whitespace-nowrap">
                                   <User size={12} className="text-slate-400 shrink-0" />
-                                  <span>{subject.instructor || "Faculty"}</span>
+                                  <span>{subject.facultyName || subject.instructor || "Faculty"}</span>
                                 </p>
                               </div>
                             </td>
@@ -538,27 +575,14 @@ export default function Subjects({ onNavigate, subjectsList = [], setSubjectsLis
 
                             {/* Lecture Hours */}
                             <td className="py-4 px-5 text-center font-bold text-slate-800 text-xs sm:text-sm whitespace-nowrap">
-                              {subject.lectureHours}
+                              {subject.lectureHours || subject.totalHours || "45 Hours"}
                             </td>
 
-                            {/* Attendance % Progress Bar */}
-                            <td className="py-4 px-5 whitespace-nowrap">
-                              <div className="flex items-center gap-3">
-                                <div className="w-24 sm:w-28 bg-slate-100 rounded-full h-2 overflow-hidden shrink-0">
-                                  <div
-                                    className={`h-full rounded-full transition-all duration-500 ${barColor}`}
-                                    style={{ width: `${Math.min(pct, 100)}%` }}
-                                  />
-                                </div>
-                                <span className="text-xs sm:text-sm font-extrabold text-slate-800 shrink-0">
-                                  {pct}%
-                                </span>
-                              </div>
-                            </td>
-
-                            {/* Attended / Total */}
+                            {/* Total Classes */}
                             <td className="py-4 px-5 text-center font-bold text-slate-700 text-xs sm:text-sm whitespace-nowrap">
-                              {subject.attendedClasses} / {subject.totalClasses} Classes
+                              <span className="inline-block px-3 py-1 bg-slate-100/80 rounded-lg text-slate-800 font-bold">
+                                {subject.totalClasses || 36} Classes
+                              </span>
                             </td>
 
                             {/* Action */}
@@ -1018,20 +1042,75 @@ export default function Subjects({ onNavigate, subjectsList = [], setSubjectsLis
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1">Semester</label>
-                <input
-                  type="text"
-                  value={editingSubject.semester}
-                  onChange={(e) => setEditingSubject({ ...editingSubject, semester: e.target.value })}
-                  className="w-full text-xs p-2.5 border border-gray-200 rounded-xl bg-gray-50 focus:outline-none focus:border-emerald-500"
-                />
-              </div>
-              <div>
                 <label className="block text-xs font-medium text-gray-700 mb-1">Subject Code</label>
                 <input
                   type="text"
                   value={editingSubject.code || ""}
                   onChange={(e) => setEditingSubject({ ...editingSubject, code: e.target.value })}
+                  className="w-full text-xs p-2.5 border border-gray-200 rounded-xl bg-gray-50 focus:outline-none focus:border-emerald-500"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-700 mb-1">Subject Name</label>
+                <input
+                  type="text"
+                  value={editingSubject.name || ""}
+                  onChange={(e) => setEditingSubject({ ...editingSubject, name: e.target.value })}
+                  className="w-full text-xs p-2.5 border border-gray-200 rounded-xl bg-gray-50 focus:outline-none focus:border-emerald-500"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-3 gap-3">
+              <div>
+                <label className="block text-xs font-medium text-gray-700 mb-1">Credits</label>
+                <input
+                  type="number"
+                  min="1"
+                  max="10"
+                  value={editingSubject.credits || 4}
+                  onChange={(e) => setEditingSubject({ ...editingSubject, credits: parseInt(e.target.value, 10) || 4 })}
+                  className="w-full text-xs p-2.5 border border-gray-200 rounded-xl bg-gray-50 focus:outline-none focus:border-emerald-500"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-700 mb-1">Total Hours</label>
+                <input
+                  type="text"
+                  value={editingSubject.totalHours || "45 Hours"}
+                  onChange={(e) => setEditingSubject({ ...editingSubject, totalHours: e.target.value })}
+                  className="w-full text-xs p-2.5 border border-gray-200 rounded-xl bg-gray-50 focus:outline-none focus:border-emerald-500"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-700 mb-1">Total Classes</label>
+                <input
+                  type="number"
+                  min="1"
+                  max="120"
+                  value={editingSubject.totalClasses || 36}
+                  onChange={(e) => setEditingSubject({ ...editingSubject, totalClasses: parseInt(e.target.value, 10) || 36 })}
+                  className="w-full text-xs p-2.5 border border-gray-200 rounded-xl bg-gray-50 focus:outline-none focus:border-emerald-500"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-xs font-medium text-gray-700 mb-1">Faculty Name</label>
+                <input
+                  type="text"
+                  value={editingSubject.facultyName || editingSubject.instructor || ""}
+                  onChange={(e) => setEditingSubject({ ...editingSubject, facultyName: e.target.value, instructor: e.target.value })}
+                  className="w-full text-xs p-2.5 border border-gray-200 rounded-xl bg-gray-50 focus:outline-none focus:border-emerald-500"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-700 mb-1">Syllabus File Name</label>
+                <input
+                  type="text"
+                  value={editingSubject.syllabusFileName || ""}
+                  onChange={(e) => setEditingSubject({ ...editingSubject, syllabusFileName: e.target.value })}
                   className="w-full text-xs p-2.5 border border-gray-200 rounded-xl bg-gray-50 focus:outline-none focus:border-emerald-500"
                 />
               </div>
