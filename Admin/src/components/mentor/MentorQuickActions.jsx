@@ -22,7 +22,7 @@ const actions = [
     textTone: 'text-[#2384FD]',
   },
   {
-    title: 'Upload Credit Point',
+    title: 'Upload Credit Points',
     icon: Star,
     tab: 'credit-points',
     tone: 'bg-[#FFF9EE]',
@@ -32,7 +32,7 @@ const actions = [
     textTone: 'text-[#D97706]',
   },
   {
-    title: 'View Mentee',
+    title: 'View Mentees',
     icon: GraduationCap,
     tab: 'mentees',
     tone: 'bg-[#F9F5FF]',

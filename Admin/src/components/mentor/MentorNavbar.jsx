@@ -53,7 +53,7 @@ export default function MentorNavbar({
       subtitle: "Manage and upload mentees' academic results and grades.",
     },
     attendance: {
-      title: 'Attendance',
+      title: 'Attendances',
       subtitle: 'Track and record student attendance records.',
     },
     'credit-points': {

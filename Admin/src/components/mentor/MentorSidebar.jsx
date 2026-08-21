@@ -79,24 +79,24 @@ const menuGroups = [
     title: 'MAIN',
     items: [
       { id: 'dashboard', label: 'Dashboard', icon: LayoutGrid },
-      { id: 'mentees', label: 'Mentee', icon: Users },
+      { id: 'mentees', label: 'Mentees', icon: Users },
       { id: 'profile', label: 'Profile', icon: User },
-      { id: 'messages', label: 'Message', icon: MessagesCustomIcon },
     ],
   },
   {
     title: 'MANAGEMENT',
     items: [
       { id: 'results', label: 'Results', icon: ResultsClipboardIcon },
-      { id: 'attendance', label: 'Attendance', icon: CalendarCheck },
-      { id: 'credit-points', label: 'Credit Point', icon: Star },
+      { id: 'attendance', label: 'Attendances', icon: CalendarCheck },
+      { id: 'credit-points', label: 'Credit Points', icon: Star },
     ],
   },
   {
-    title: 'ANNOUNCEMENT',
+    title: 'COMMUNICATION',
     items: [
-      { id: 'notices', label: 'Notice', icon: Megaphone },
-      { id: 'activities', label: 'Activity', icon: Bell },
+      { id: 'messages', label: 'Messages', icon: MessagesCustomIcon },
+      { id: 'activities', label: 'Activities', icon: Bell },
+      { id: 'notices', label: 'Notices', icon: Megaphone },
     ],
   },
   {
