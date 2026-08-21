@@ -23,9 +23,11 @@ import MentorMentees from './MentorMentees';
 import MentorMessages from './MentorMessages';
 import MentorAttendance from './MentorAttendance';
 import MentorResults from './MentorResults';
+import MentorCreditPoints from './MentorCreditPoints';
 import MentorNotices from './MentorNotices';
 import MentorActivities from './MentorActivities';
 import MentorSupport from './MentorSupport';
+import MentorSettings from './MentorSettings';
 import StudentProfile from '../student/StudentProfile';
 import { initialStudentData } from '../../data/studentProfileData';
 
@@ -175,7 +177,7 @@ export default function MentorDashboard({ user, onLogout }) {
 
   function renderView() {
     if (activeTab !== 'dashboard') {
-      if (activeTab === 'profile' || activeTab === 'settings') {
+      if (activeTab === 'profile') {
         return (
           <div className="p-2 sm:px-5 sm:py-2.5 pb-10">
             <MentorProfilePage />
@@ -202,6 +204,9 @@ export default function MentorDashboard({ user, onLogout }) {
           </div>
         );
       }
+      if (activeTab === 'credit-points') {
+        return <MentorCreditPoints onNavigate={handleNavigate} />;
+      }
       if (activeTab === 'notices') {
         return <MentorNotices user={user} onNavigate={handleNavigate} />;
       }
@@ -210,6 +215,9 @@ export default function MentorDashboard({ user, onLogout }) {
       }
       if (activeTab === 'support') {
         return <MentorSupport onNavigate={handleNavigate} />;
+      }
+      if (activeTab === 'settings') {
+        return <MentorSettings onNavigate={handleNavigate} />;
       }
       const title = tabTitles[activeTab] || 'This Page';
       return (

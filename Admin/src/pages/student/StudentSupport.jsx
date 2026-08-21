@@ -194,20 +194,6 @@ export default function StudentSupport({ hideHeader = false }) {
 
   return (
     <div className="p-2 sm:px-5 sm:py-3.5 space-y-5 font-['Roboto',sans-serif] w-full max-w-[1600px] mx-auto pb-10">
-      {/* Top Header if not hidden */}
-      {!hideHeader && (
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-lg sm:text-xl font-bold text-gray-800 tracking-tight truncate">
-              Student Support Center
-            </h1>
-            <p className="text-xs text-gray-400 mt-0.5 truncate hidden sm:block">
-              Submit tickets, explore academic FAQs, and contact the helpdesk.
-            </p>
-          </div>
-        </div>
-      )}
-
       {/* ========================================================================= */}
       {/* 1. UPPER BLUE HERO BANNER                                                 */}
       {/* ========================================================================= */}
