@@ -135,7 +135,7 @@ export default function StudentHeader({
   }, []);
 
   return (
-    <header className="h-[65px] bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-2xs font-['Roboto',sans-serif] w-full">
+    <header className="sticky top-0 z-30 h-[65px] bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-2xs font-['Roboto',sans-serif] w-full">
       {/* Left: Mobile Toggle + Page Title / Breadcrumb matching Admin Portal header */}
       <div className="flex items-center gap-2 sm:gap-3 min-w-0 pr-2">
         <button
@@ -158,7 +158,7 @@ export default function StudentHeader({
           </h1>
 
           {activePage === "profile" && isDigitalCardActive ? (
-            <nav className="flex items-center gap-1.5 text-xs text-gray-400 mt-0.5">
+            <nav className="hidden sm:flex items-center gap-1.5 text-xs text-gray-400 mt-0.5">
               <span
                 onClick={onNavigateToProfile}
                 className="hover:text-gray-600 font-medium cursor-pointer transition-colors"
@@ -169,7 +169,7 @@ export default function StudentHeader({
               <span className="text-[#2384FD] font-semibold">Digital ID Card</span>
             </nav>
           ) : activePage === "attendances" && isAttendanceDetailActive ? (
-            <nav className="flex items-center gap-1.5 text-xs text-gray-400 mt-0.5">
+            <nav className="hidden sm:flex items-center gap-1.5 text-xs text-gray-400 mt-0.5">
               <span
                 onClick={onNavigateToAttendance}
                 className="hover:text-gray-600 font-medium cursor-pointer transition-colors"
@@ -180,7 +180,7 @@ export default function StudentHeader({
               <span className="text-[#2384FD] font-semibold">View Attendance</span>
             </nav>
           ) : activePage === "results" && isResultDetailActive ? (
-            <nav className="flex items-center gap-1.5 text-xs text-gray-400 mt-0.5">
+            <nav className="hidden sm:flex items-center gap-1.5 text-xs text-gray-400 mt-0.5">
               <span
                 onClick={onNavigateToResults}
                 className="hover:text-gray-600 font-medium cursor-pointer transition-colors"

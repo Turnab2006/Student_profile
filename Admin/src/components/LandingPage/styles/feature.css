@@ -1,12 +1,13 @@
 /* Feature Section Styles */
 .trackademy-landing-root .feature-section {
-    padding: 3rem 0;
+    padding: 4.5rem 0;
     background-color: #ffffff;
     width: 100%;
+    font-family: var(--tlp-font-family);
 }
 
 .trackademy-landing-root .feature-container {
-    padding: 0 1rem;
+    padding: 0 1.5rem;
     margin: 0 auto;
     max-width: 80rem;
     width: 100%;
@@ -14,63 +15,68 @@
 
 .trackademy-landing-root .feature-header {
     text-align: center;
+    max-width: 46rem;
+    margin: 0 auto 3.5rem;
 }
 
 .trackademy-landing-root .feature-label-badge {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.3rem 1rem;
+    padding: 0.35rem 1rem;
     border-radius: 9999px;
-    background-color: #e3ebff;
-    border: 1px solid #E4E7EC;
+    background-color: var(--tlp-badge-bg, #eff6ff);
+    border: 1px solid var(--tlp-badge-border, #dbeafe);
+    margin-bottom: 0.75rem;
 }
 
 .trackademy-landing-root .feature-label {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: #4776e4;
+    font-size: var(--tlp-badge-size, 0.875rem);
+    font-weight: var(--tlp-badge-weight, 600);
+    color: var(--tlp-badge-color, #2563eb);
     letter-spacing: -0.01em;
-    font-family: "Plus Jakarta Sans", sans-serif;
+    font-family: var(--tlp-font-family);
 }
 
 .trackademy-landing-root .feature-title {
-    margin-top: 0.75rem;
-    font-size: 1.875rem;
-    font-weight: 700;
-    line-height: 1.25;
-    color: #111827;
-    font-family: "Plus Jakarta Sans", sans-serif;
+    margin: 0.75rem 0 0 0;
+    font-size: var(--tlp-heading-size-mobile, 1.875rem);
+    font-weight: var(--tlp-heading-weight, 700);
+    line-height: var(--tlp-heading-line-height, 1.25);
+    letter-spacing: var(--tlp-heading-letter-spacing, -0.025em);
+    color: var(--tlp-heading-color, #0f172a);
+    font-family: var(--tlp-font-family);
 }
 
 .trackademy-landing-root .feature-subtitle {
-    margin-top: 1rem;
-    line-height: 1.75;
-    color: #4b5563;
-    font-family: "Plus Jakarta Sans", sans-serif;
-    font-size: 1rem;
+    margin: 0.85rem 0 0 0;
+    line-height: var(--tlp-subtext-line-height, 1.65);
+    color: var(--tlp-subtext-color, #475467);
+    font-family: var(--tlp-font-family);
+    font-size: var(--tlp-subtext-size-mobile, 1rem);
+    font-weight: var(--tlp-subtext-weight, 400);
 }
 
 .trackademy-landing-root .feature-grid {
     display: grid;
     grid-template-columns: 1fr;
-    margin-top: 60px;
+    margin-top: 2.5rem;
     text-align: center;
-    row-gap: 3rem;
+    row-gap: 2.5rem;
 }
 
 /* Feature Card */
 .trackademy-landing-root .feature-card {
-    padding: 0;
+    padding: 1.5rem 1rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1.25rem;
 }
 
 .trackademy-landing-root .feature-card__icon-slot {
     width: 60px;
-    height: 72px;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -81,48 +87,50 @@
 }
 
 .trackademy-landing-root .feature-card__title {
-    margin-top: 0;
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #111827;
-    font-family: "Plus Jakarta Sans", sans-serif;
+    margin: 0;
+    font-size: var(--tlp-card-title-size-mobile, 1.125rem);
+    font-weight: var(--tlp-card-title-weight, 700);
+    line-height: var(--tlp-card-title-line-height, 1.35);
+    letter-spacing: var(--tlp-card-title-letter-spacing, -0.015em);
+    color: var(--tlp-heading-color, #0f172a);
+    font-family: var(--tlp-font-family);
 }
 
 .trackademy-landing-root .feature-card__description {
-    margin-top: 0;
-    font-size: 1rem;
-    color: #4b5563;
-    font-family: "Plus Jakarta Sans", sans-serif;
-    line-height: 1.5;
+    margin: 0;
+    font-size: var(--tlp-card-text-size, 0.9375rem);
+    font-weight: var(--tlp-card-text-weight, 400);
+    color: var(--tlp-card-text-color, #475467);
+    font-family: var(--tlp-font-family);
+    line-height: var(--tlp-card-text-line-height, 1.6);
 }
 
 /* ===== Responsive: 640px ===== */
 @media (min-width: 640px) {
-    .trackademy-landing-root .feature-section {
-        padding: 4rem 0;
-    }
-
-    .trackademy-landing-root .feature-container {
-        padding: 0 1.5rem;
-    }
-
-    .trackademy-landing-root .feature-title {
-        font-size: 2.25rem;
-    }
-
-    .trackademy-landing-root .feature-subtitle {
-        margin: 2rem 0;
-    }
-
     .trackademy-landing-root .feature-grid {
-        margin-top: 4rem;
         grid-template-columns: repeat(2, 1fr);
-        column-gap: 3rem;
+        column-gap: 2.5rem;
     }
 }
 
 /* ===== Responsive: 768px ===== */
 @media (min-width: 768px) {
+    .trackademy-landing-root .feature-section {
+        padding: 5.5rem 0;
+    }
+
+    .trackademy-landing-root .feature-title {
+        font-size: var(--tlp-heading-size-desktop, 2.25rem);
+    }
+
+    .trackademy-landing-root .feature-subtitle {
+        font-size: var(--tlp-subtext-size-desktop, 1.0625rem);
+    }
+
+    .trackademy-landing-root .feature-card__title {
+        font-size: var(--tlp-card-title-size-desktop, 1.25rem);
+    }
+
     .trackademy-landing-root .feature-grid {
         grid-template-columns: repeat(3, 1fr);
         column-gap: 0;
@@ -130,7 +138,7 @@
     }
 
     .trackademy-landing-root .feature-card {
-        padding: 2rem;
+        padding: 2rem 1.75rem;
     }
 
     .trackademy-landing-root .feature-card--border-left {
@@ -144,31 +152,7 @@
 
 /* ===== Responsive: 1024px ===== */
 @media (min-width: 1024px) {
-    .trackademy-landing-root .feature-section {
-        padding: 6rem 0;
-    }
-
-    .trackademy-landing-root .feature-header {
-        text-align: center;
-        padding: 0 160px;
-    }
-
-    .trackademy-landing-root .feature-subtitle {
-        font-size: 1.3rem;
-    }
-
-    .trackademy-landing-root .feature-label {
-        font-size: 1rem;
-    }
-
     .trackademy-landing-root .feature-card {
-        padding: 2.5rem 3rem;
-    }
-}
-
-/* ===== Responsive: 1280px ===== */
-@media (min-width: 1280px) {
-    .trackademy-landing-root .feature-title {
-        font-size: 2.25rem;
+        padding: 2.5rem 2rem;
     }
 }

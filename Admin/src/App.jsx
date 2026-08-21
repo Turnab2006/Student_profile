@@ -223,7 +223,7 @@ export default function App() {
         path="/login"
         element={
           <LoginPage
-            initialRole={new URLSearchParams(location.search).get("role") || "mentor"}
+            initialRole={new URLSearchParams(location.search).get("role") || "student"}
             onLoginSuccess={(selectedRole) => {
               if (selectedRole === "admin") navigate("/admin/dashboard");
               else if (selectedRole === "mentor") navigate("/mentor/dashboard");

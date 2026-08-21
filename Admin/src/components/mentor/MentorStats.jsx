@@ -90,7 +90,7 @@ function renderStatIcon(keyType, Icon) {
 
 export default function MentorStats({ items = [], onNavigate }) {
   return (
-    <div className="grid gap-2.5 sm:grid-cols-2 xl:grid-cols-4">
+    <div className="grid gap-2 sm:gap-2.5 grid-cols-2 xl:grid-cols-4">
       {items.map((item) => {
         const keyType = item.key || item.icon;
         const styleDefaults = defaultCardStyles[keyType] || {};
@@ -122,25 +122,25 @@ export default function MentorStats({ items = [], onNavigate }) {
             onClick={() => {
               if (pageKey && onNavigate) onNavigate(pageKey);
             }}
-            className={`rounded-2xl border px-4 py-4 sm:py-5 shadow-sm ${cardClass} cursor-pointer hover:shadow-md hover:scale-[1.01] transition-all`}
+            className={`rounded-2xl border p-2.5 sm:px-4 sm:py-4 shadow-sm ${cardClass} cursor-pointer hover:shadow-md hover:scale-[1.01] transition-all`}
           >
-            <div className="flex items-center gap-5">
+            <div className="flex items-center gap-2.5 sm:gap-4">
               <div
-                className={`flex h-11 w-11 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-2xl ${iconWrap}`}
+                className={`flex h-9 w-9 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl ${iconWrap}`}
               >
                 {renderStatIcon(keyType, Icon)}
               </div>
 
               <div className="flex-1 min-w-0">
-                <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 truncate">
+                <div className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-500 truncate">
                   {label}
                 </div>
                 <div
-                  className={`text-2xl sm:text-[28px] font-extrabold leading-none mt-1 mb-0.5 ${valueClass}`}
+                  className={`text-lg sm:text-[24px] font-extrabold leading-none mt-1 mb-0.5 ${valueClass}`}
                 >
                   {value}
                 </div>
-                <div className="text-xs text-slate-400 font-medium truncate">
+                <div className="text-[10px] sm:text-xs text-slate-400 font-medium truncate">
                   {note}
                 </div>
               </div>
@@ -151,3 +151,4 @@ export default function MentorStats({ items = [], onNavigate }) {
     </div>
   );
 }
+

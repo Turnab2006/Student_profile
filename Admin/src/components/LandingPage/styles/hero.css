@@ -43,10 +43,10 @@
     max-width: 340px;
     background: #EEF4FF;
     border-radius: 40px;
-    font-size: 16px;
-    font-weight: 400;
+    font-size: 15px;
+    font-weight: 500;
     color: #2d2d2d;
-    font-family: "Roboto", sans-serif;
+    font-family: var(--tlp-font-family);
     line-height: normal;
 }
 
@@ -59,13 +59,13 @@
 }
 
 .trackademy-landing-root .hero-text h2 {
-    font-family: "Barlow", sans-serif;
-    font-size: 60px;
-    color: var(--tlp-dark-color, #111827);
-    margin-bottom: 50px;
-    font-weight: 650;
-    line-height: 1.08;
-    letter-spacing: -0.02em;
+    font-family: var(--tlp-font-family);
+    font-size: 58px;
+    color: var(--tlp-dark-color, #0f172a);
+    margin-bottom: 40px;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
 }
 
 .trackademy-landing-root .hero-text span.highlight {
@@ -102,9 +102,9 @@
 .trackademy-landing-root .btn {
     padding: 10px 40px;
     border-radius: 10px;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 600;
-    font-family: "Roboto", sans-serif;
+    font-family: var(--tlp-font-family);
     cursor: pointer;
     line-height: 1.3;
     transition: all 0.2s ease;
@@ -191,16 +191,18 @@
 }
 
 .trackademy-landing-root .hero .text h3 {
-    font-size: 18px;
-    color: #2d2d2d;
-    font-weight: 600;
+    font-size: var(--tlp-card-title-size-mobile, 1.125rem);
+    color: #0f172a;
+    font-weight: 700;
     margin-bottom: 0px;
+    font-family: var(--tlp-font-family);
 }
 
 .trackademy-landing-root .hero .text p {
-    font-size: 14px;
-    color: #4e4e4e;
-    line-height: 1.3;
+    font-size: var(--tlp-card-text-size, 0.9375rem);
+    color: var(--tlp-card-text-color, #475467);
+    line-height: 1.4;
+    font-family: var(--tlp-font-family);
 }
 
 /* Responsive Media Queries */

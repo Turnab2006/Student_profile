@@ -91,7 +91,7 @@ export default function Dashboard({ onNavigate, onOpenSidebar }) {
   return (
     <div className="flex-1 h-full flex flex-col overflow-hidden bg-[#f8fafc]">
       {/* Topbar aligned with sidebar logo border line (h-[65px]) matching other admin pages */}
-      <header className="h-[65px] bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-2xs">
+      <header className="sticky top-0 z-30 h-[65px] bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-2xs">
         <div className="flex items-center gap-3">
           <button
             type="button"
@@ -126,32 +126,32 @@ export default function Dashboard({ onNavigate, onOpenSidebar }) {
         </div>
 
         {/* Stats Grid - Standardized to match Mentor and Student Dashboard Stat Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-2.5">
           {stats.map(({ key, label, value, subtext, icon: Icon, cardClass, valueClass, iconWrap, pageKey }) => (
             <div
               key={label}
               onClick={() => {
                 if (pageKey && onNavigate) onNavigate(pageKey);
               }}
-              className={`rounded-2xl border px-4 py-4 sm:py-5 shadow-sm ${cardClass} cursor-pointer hover:shadow-md hover:scale-[1.01] transition-all`}
+              className={`rounded-2xl border p-2.5 sm:px-4 sm:py-4 shadow-sm ${cardClass} cursor-pointer hover:shadow-md hover:scale-[1.01] transition-all`}
             >
-              <div className="flex items-center gap-5">
+              <div className="flex items-center gap-2.5 sm:gap-4">
                 <div
-                  className={`flex h-11 w-11 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-2xl ${iconWrap}`}
+                  className={`flex h-9 w-9 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl ${iconWrap}`}
                 >
-                  <Icon size={23} className="stroke-[2.2]" />
+                  <Icon size={18} className="sm:w-[22px] sm:h-[22px] stroke-[2.2]" />
                 </div>
 
                 <div className="flex-1 min-w-0">
-                  <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 truncate">
+                  <div className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-500 truncate">
                     {label}
                   </div>
                   <div
-                    className={`text-2xl sm:text-[28px] font-extrabold leading-none mt-1 mb-0.5 ${valueClass}`}
+                    className={`text-lg sm:text-[24px] font-extrabold leading-none mt-1 mb-0.5 ${valueClass}`}
                   >
                     {value}
                   </div>
-                  <div className="text-xs text-slate-400 font-medium truncate">
+                  <div className="text-[10px] sm:text-xs text-slate-400 font-medium truncate">
                     {subtext}
                   </div>
                 </div>

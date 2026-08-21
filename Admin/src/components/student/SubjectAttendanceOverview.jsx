@@ -97,32 +97,32 @@ export default function SubjectAttendanceOverview({
         <table className="w-full text-left border-collapse min-w-[720px]">
           <thead>
             <tr className={`${isMentorMode ? "bg-[#f8f6fe] text-[#7656f4]" : "bg-[#f0f6ff]/90 text-[#1d61e7]"} text-xs font-bold rounded-2xl overflow-hidden`}>
-              <th className="py-4 px-5 rounded-l-2xl">
-                <div className="flex items-center gap-1.5">
+              <th className="py-4 px-5 rounded-l-2xl whitespace-nowrap">
+                <div className="flex items-center gap-1.5 whitespace-nowrap">
                   <Hash size={14} className={`${isMentorMode ? "text-[#7656f4]" : "text-[#1d61e7]"} stroke-[2.4]`} />
                   <span>SUBJECT CODE</span>
                 </div>
               </th>
-              <th className="py-4 px-5">
-                <div className="flex items-center gap-1.5">
+              <th className="py-4 px-5 whitespace-nowrap">
+                <div className="flex items-center gap-1.5 whitespace-nowrap">
                   <BookOpen size={14} className={`${isMentorMode ? "text-[#7656f4]" : "text-[#1d61e7]"} stroke-[2.4]`} />
                   <span>SUBJECT NAME</span>
                 </div>
               </th>
-              <th className="py-4 px-5">
-                <div className="flex items-center gap-1.5">
+              <th className="py-4 px-5 whitespace-nowrap">
+                <div className="flex items-center gap-1.5 whitespace-nowrap">
                   <Clock size={14} className={`${isMentorMode ? "text-[#7656f4]" : "text-[#1d61e7]"} stroke-[2.4]`} />
                   <span>ATTENDANCE %</span>
                 </div>
               </th>
-              <th className="py-4 px-5 text-center">
-                <div className="flex items-center justify-center gap-1.5">
+              <th className="py-4 px-5 text-center whitespace-nowrap">
+                <div className="flex items-center justify-center gap-1.5 whitespace-nowrap">
                   <Calendar size={14} className={`${isMentorMode ? "text-[#7656f4]" : "text-[#1d61e7]"} stroke-[2.4]`} />
                   <span>CLASSES ATTENDED</span>
                 </div>
               </th>
-              <th className="py-4 px-5 rounded-r-2xl">
-                <div className="flex items-center gap-1.5">
+              <th className="py-4 px-5 rounded-r-2xl whitespace-nowrap">
+                <div className="flex items-center gap-1.5 whitespace-nowrap">
                   <Award size={14} className={`${isMentorMode ? "text-[#7656f4]" : "text-[#1d61e7]"} stroke-[2.4]`} />
                   <span>STATUS</span>
                 </div>

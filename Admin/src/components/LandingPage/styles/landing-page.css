@@ -13,18 +13,50 @@ html {
 
 /* Root Scoping Container */
 .trackademy-landing-root {
-    --tlp-primary-color: #4999FF;
-    --tlp-primary-hover: #3582eb;
+    --tlp-primary-color: #2563EB;
+    --tlp-primary-hover: #1d4ed8;
     --tlp-primary-gradient: linear-gradient(135deg, #6E99FF 0%, #5B85F0 100%);
     --tlp-highlight-gradient: linear-gradient(91deg, #147FEB 18.53%, #FB8FFF 94.92%);
-    --tlp-dark-color: #101828;
-    --tlp-text-color: #2d2d2d;
+    --tlp-dark-color: #0f172a;
+    --tlp-text-color: #334155;
     --tlp-text-muted: #475467;
     --tlp-bg-color: #ffffff;
     --tlp-border-color: #E4E7EC;
 
+    /* Standardized Landing Page Typography Tokens */
+    --tlp-font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --tlp-badge-size: 0.875rem; /* 14px */
+    --tlp-badge-weight: 600;
+    --tlp-badge-color: #2563eb;
+    --tlp-badge-bg: #eff6ff;
+    --tlp-badge-border: #dbeafe;
+
+    --tlp-heading-size-mobile: 1.875rem; /* 30px */
+    --tlp-heading-size-desktop: 2.25rem; /* 36px */
+    --tlp-heading-weight: 700;
+    --tlp-heading-line-height: 1.25;
+    --tlp-heading-letter-spacing: -0.025em;
+    --tlp-heading-color: #0f172a;
+
+    --tlp-subtext-size-mobile: 1rem; /* 16px */
+    --tlp-subtext-size-desktop: 1.0625rem; /* 17px */
+    --tlp-subtext-weight: 400;
+    --tlp-subtext-line-height: 1.65;
+    --tlp-subtext-color: #475467;
+
+    --tlp-card-title-size-mobile: 1.125rem; /* 18px */
+    --tlp-card-title-size-desktop: 1.25rem; /* 20px */
+    --tlp-card-title-weight: 700;
+    --tlp-card-title-line-height: 1.35;
+    --tlp-card-title-letter-spacing: -0.015em;
+
+    --tlp-card-text-size: 0.9375rem; /* 15px */
+    --tlp-card-text-weight: 400;
+    --tlp-card-text-line-height: 1.6;
+    --tlp-card-text-color: #475467;
+
     /* Base Typography */
-    font-family: 'Barlow', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: var(--tlp-font-family);
     color: var(--tlp-text-color);
     background-color: var(--tlp-bg-color);
     line-height: 1.5;

@@ -417,62 +417,63 @@ export default function StudentAttendance({
           <div className="border-b border-slate-100 my-1" />
 
           {/* 4 Top KPI Cards matching Profile and Dashboard standard */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          {/* 4 Stat Cards: Reduced width placed in two rows on mobile */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
 
             {/* 1. Total Semesters (Light Blue / Purple Squircle) */}
-            <div className={`bg-white p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-3.5 ${isMentor ? 'hover:border-purple-200' : 'hover:border-blue-200'} transition-colors`}>
-              <div className={`h-12 w-12 rounded-xl flex items-center justify-center shrink-0 shadow-2xs ${isMentor ? 'bg-[#f0eaff] text-[#7656f4] border border-purple-100/80' : 'bg-blue-50 text-[#1d61e7] border border-blue-100/80'}`}>
-                <Calendar size={24} className="stroke-[2.2]" />
+            <div className={`bg-white p-2.5 sm:p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-2.5 sm:gap-3.5 ${isMentor ? 'hover:border-purple-200' : 'hover:border-blue-200'} transition-colors`}>
+              <div className={`h-9 w-9 sm:h-12 sm:w-12 rounded-xl flex items-center justify-center shrink-0 shadow-2xs ${isMentor ? 'bg-[#f0eaff] text-[#7656f4] border border-purple-100/80' : 'bg-blue-50 text-[#1d61e7] border border-blue-100/80'}`}>
+                <Calendar size={18} className="sm:w-6 sm:h-6 stroke-[2.2]" />
               </div>
               <div className="overflow-hidden">
-                <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">TOTAL SEMESTERS</p>
-                <p className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-0.5">
+                <p className="text-[10px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-wider truncate">TOTAL SEMESTERS</p>
+                <p className="text-lg sm:text-2xl font-extrabold text-slate-900 mt-0.5">
                   {totalSems}
                 </p>
               </div>
             </div>
 
             {/* 2. Average Attendance (Light Green Squircle) */}
-            <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-3.5 hover:border-emerald-200 transition-colors">
-              <div className="h-12 w-12 rounded-xl bg-emerald-50 text-[#16a34a] flex items-center justify-center shrink-0 border border-emerald-100/80 shadow-2xs">
-                <CheckCircle2 size={24} className="stroke-[2.2]" />
+            <div className="bg-white p-2.5 sm:p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-2.5 sm:gap-3.5 hover:border-emerald-200 transition-colors">
+              <div className="h-9 w-9 sm:h-12 sm:w-12 rounded-xl bg-emerald-50 text-[#16a34a] flex items-center justify-center shrink-0 border border-emerald-100/80 shadow-2xs">
+                <CheckCircle2 size={18} className="sm:w-6 sm:h-6 stroke-[2.2]" />
               </div>
               <div className="overflow-hidden">
-                <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">AVERAGE ATTENDANCE</p>
-                <p className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-0.5">
+                <p className="text-[10px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-wider truncate">AVG ATTENDANCE</p>
+                <p className="text-lg sm:text-2xl font-extrabold text-slate-900 mt-0.5">
                   {avgAttendance}%
                 </p>
               </div>
             </div>
 
             {/* 3. Highest Attendance (Light Purple/Indigo Squircle) */}
-            <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-3.5 hover:border-purple-200 transition-colors">
-              <div className="h-12 w-12 rounded-xl bg-purple-50 text-[#7c3aed] flex items-center justify-center shrink-0 border border-purple-100/80 shadow-2xs">
-                <TrendingUp size={24} className="stroke-[2.2]" />
+            <div className="bg-white p-2.5 sm:p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-2.5 sm:gap-3.5 hover:border-purple-200 transition-colors">
+              <div className="h-9 w-9 sm:h-12 sm:w-12 rounded-xl bg-purple-50 text-[#7c3aed] flex items-center justify-center shrink-0 border border-purple-100/80 shadow-2xs">
+                <TrendingUp size={18} className="sm:w-6 sm:h-6 stroke-[2.2]" />
               </div>
               <div className="overflow-hidden">
-                <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">HIGHEST ATTENDANCE</p>
-                <p className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-0.5">
+                <p className="text-[10px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-wider truncate">HIGHEST ATTENDANCE</p>
+                <p className="text-lg sm:text-2xl font-extrabold text-slate-900 mt-0.5">
                   {highestAttendance}%
                 </p>
-                <p className="text-[11px] font-medium text-slate-500 truncate">
-                  Semester {highestSemNumber}
+                <p className="text-[10px] sm:text-[11px] font-medium text-slate-500 truncate">
+                  Sem {highestSemNumber}
                 </p>
               </div>
             </div>
 
             {/* 4. Lowest Attendance (Light Amber Squircle) */}
-            <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-3.5 hover:border-amber-200 transition-colors">
-              <div className="h-12 w-12 rounded-xl bg-amber-50 text-[#f59e0b] flex items-center justify-center shrink-0 border border-amber-100/80 shadow-2xs">
-                <PieChart size={24} className="stroke-[2.2]" />
+            <div className="bg-white p-2.5 sm:p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-2.5 sm:gap-3.5 hover:border-amber-200 transition-colors">
+              <div className="h-9 w-9 sm:h-12 sm:w-12 rounded-xl bg-amber-50 text-[#f59e0b] flex items-center justify-center shrink-0 border border-amber-100/80 shadow-2xs">
+                <PieChart size={18} className="sm:w-6 sm:h-6 stroke-[2.2]" />
               </div>
               <div className="overflow-hidden">
-                <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">LOWEST ATTENDANCE</p>
-                <p className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-0.5">
+                <p className="text-[10px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-wider truncate">LOWEST ATTENDANCE</p>
+                <p className="text-lg sm:text-2xl font-extrabold text-slate-900 mt-0.5">
                   {lowestAttendance}%
                 </p>
-                <p className="text-[11px] font-medium text-slate-500 truncate">
-                  Semester {lowestSemNumber}
+                <p className="text-[10px] sm:text-[11px] font-medium text-slate-500 truncate">
+                  Sem {lowestSemNumber}
                 </p>
               </div>
             </div>
@@ -483,28 +484,28 @@ export default function StudentAttendance({
             <table className="w-full text-left border-separate border-spacing-y-2.5 min-w-[800px]">
               <thead>
                 <tr className={`${isMentor ? 'bg-[#f8f6fe] text-[#7656f4]' : 'bg-[#f0f6ff]/90 text-[#1d61e7]'} text-xs font-bold rounded-2xl overflow-hidden`}>
-                  <th className="py-4 px-5 rounded-l-2xl text-center w-16">
+                  <th className="py-4 px-5 rounded-l-2xl text-center w-16 whitespace-nowrap">
                     #
                   </th>
-                  <th className="py-4 px-5 text-center">
+                  <th className="py-4 px-5 text-center whitespace-nowrap">
                     Year
                   </th>
-                  <th className="py-4 px-5 text-center">
+                  <th className="py-4 px-5 text-center whitespace-nowrap">
                     Semester
                   </th>
-                  <th className="py-4 px-5 text-center">
-                    <div className="flex items-center justify-center gap-1.5">
+                  <th className="py-4 px-5 text-center whitespace-nowrap">
+                    <div className="flex items-center justify-center gap-1.5 whitespace-nowrap">
                       <span>Attendance (%)</span>
                       <Info size={14} className={`${isMentor ? 'text-[#7656f4]' : 'text-[#1d61e7]'} stroke-[2.4]`} />
                     </div>
                   </th>
-                  <th className="py-4 px-5 text-center">
+                  <th className="py-4 px-5 text-center whitespace-nowrap">
                     Remarks
                   </th>
-                  <th className="py-4 px-5 text-center">
+                  <th className="py-4 px-5 text-center whitespace-nowrap">
                     View Details
                   </th>
-                  <th className="py-4 px-5 rounded-r-2xl text-center">
+                  <th className="py-4 px-5 rounded-r-2xl text-center whitespace-nowrap">
                     Action
                   </th>
                 </tr>

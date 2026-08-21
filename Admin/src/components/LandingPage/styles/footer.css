@@ -3,7 +3,7 @@
     padding: 3.5rem 0 2rem;
     background-color: #071d3e;
     border-top: 1px solid #0f1d30;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: var(--tlp-font-family);
     width: 100%;
 }
 

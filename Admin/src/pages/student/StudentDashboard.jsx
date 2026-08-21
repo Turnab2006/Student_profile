@@ -355,9 +355,9 @@ export default function StudentDashboard({ onLogout }) {
                 <div className="absolute -right-16 -top-16 w-56 h-56 bg-white/10 rounded-full blur-3xl pointer-events-none" />
                 <div className="absolute -left-16 -bottom-16 w-56 h-56 bg-white/10 rounded-full blur-3xl pointer-events-none" />
 
-                <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-5 sm:gap-6">
-                  {/* Avatar Image */}
-                  <div className="w-[125px] h-[125px] sm:w-[130px] sm:h-[130px] rounded-[18px] overflow-hidden shrink-0 border-2 border-white ring-2 ring-white/80 shadow-md">
+                <div className="relative z-10 flex flex-col md:flex-row items-center md:items-center gap-4 sm:gap-6 text-center md:text-left">
+                  {/* Avatar Image centered on mobile */}
+                  <div className="w-[110px] h-[110px] sm:w-[130px] sm:h-[130px] rounded-[18px] overflow-hidden shrink-0 border-2 border-white ring-2 ring-white/80 shadow-md mx-auto md:mx-0">
                     <img
                       src="/tuhina_avatar.jpg"
                       alt="Tuhina Banerjee"
@@ -372,53 +372,52 @@ export default function StudentDashboard({ onLogout }) {
                     </div>
                   </div>
 
-                  {/* Content */}
-                  <div className="flex-1 min-w-0">
+                  {/* Content - middle aligned on mobile */}
+                  <div className="flex-1 min-w-0 flex flex-col items-center md:items-start text-center md:text-left w-full">
                     <h2 className="text-2xl sm:text-[26px] font-bold text-white tracking-tight leading-tight">
                       Tanuka Saha
                     </h2>
-                    <p className="text-xs sm:text-[13px] text-blue-100/90 font-medium mt-1.5 mb-3.5">
+                    <p className="text-xs sm:text-[13px] text-blue-100/90 font-medium mt-1 mb-3">
                       B.Tech | Computer Science &amp; Engineering
                     </p>
 
-                    {/* User Info Area with Frosted Glass Background & Border */}
-                    <div className="bg-white/15 backdrop-blur-sm rounded-2xl border border-white/25 p-2.5 sm:px-4 sm:py-3 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6 w-fit sm:w-auto shadow-2xs">
-                      {/* Left Column */}
-                      <div className="space-y-2.5 shrink-0">
-                        <div className="flex items-center gap-2 text-xs sm:text-[13px] text-white">
-                          <Mail size={15} className="text-blue-200 shrink-0 stroke-[1.8]" />
-                          <span>
-                            <strong className="font-bold text-white">Email :</strong>{" "}
-                            <span className="text-blue-100 font-normal">tanukas@gmail.com</span>
-                          </span>
+                    {/* User Info Area with Frosted Glass Background - spread to entire width */}
+                    <div className="w-full bg-white/15 backdrop-blur-sm rounded-2xl border border-white/25 p-3 sm:px-4 sm:py-3 shadow-2xs">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-4 sm:divide-x sm:divide-white/25">
+                        {/* Left Column */}
+                        <div className="space-y-2 sm:pr-2">
+                          <div className="flex items-center justify-center md:justify-start gap-2 text-xs sm:text-[13px] text-white">
+                            <Mail size={14} className="text-blue-200 shrink-0 stroke-[1.8]" />
+                            <span>
+                              <strong className="font-bold text-white">Email :</strong>{" "}
+                              <span className="text-blue-100 font-normal">tanukas@gmail.com</span>
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-center md:justify-start gap-2 text-xs sm:text-[13px] text-white">
+                            <Phone size={14} className="text-blue-200 shrink-0 stroke-[1.8]" />
+                            <span>
+                              <strong className="font-bold text-white">Phone :</strong>{" "}
+                              <span className="text-blue-100 font-normal">+91-9999999999</span>
+                            </span>
+                          </div>
                         </div>
-                        <div className="flex items-center gap-2 text-xs sm:text-[13px] text-white">
-                          <Phone size={15} className="text-blue-200 shrink-0 stroke-[1.8]" />
-                          <span>
-                            <strong className="font-bold text-white">Phone :</strong>{" "}
-                            <span className="text-blue-100 font-normal">+91-9999999999</span>
-                          </span>
-                        </div>
-                      </div>
 
-                      {/* Vertical Divider */}
-                      <div className="hidden sm:block w-[1px] h-9 bg-white/25 self-center" />
-
-                      {/* Right Column */}
-                      <div className="space-y-2.5 shrink-0">
-                        <div className="flex items-center gap-2 text-xs sm:text-[13px] text-white">
-                          <User size={15} className="text-blue-200 shrink-0 stroke-[1.8]" />
-                          <span>
-                            <strong className="font-bold text-white">College Roll :</strong>{" "}
-                            <span className="text-blue-100 font-normal">CSE2024012</span>
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2 text-xs sm:text-[13px] text-white">
-                          <GraduationCap size={15} className="text-blue-200 shrink-0 stroke-[1.8]" />
-                          <span>
-                            <strong className="font-bold text-white">University Roll :</strong>{" "}
-                            <span className="text-blue-100 font-normal">11700124178</span>
-                          </span>
+                        {/* Right Column */}
+                        <div className="space-y-2 sm:pl-4">
+                          <div className="flex items-center justify-center md:justify-start gap-2 text-xs sm:text-[13px] text-white">
+                            <User size={14} className="text-blue-200 shrink-0 stroke-[1.8]" />
+                            <span>
+                              <strong className="font-bold text-white">College Roll :</strong>{" "}
+                              <span className="text-blue-100 font-normal">CSE2024012</span>
+                            </span>
+                          </div>
+                          <div className="flex items-center justify-center md:justify-start gap-2 text-xs sm:text-[13px] text-white">
+                            <GraduationCap size={14} className="text-blue-200 shrink-0 stroke-[1.8]" />
+                            <span>
+                              <strong className="font-bold text-white">University Roll :</strong>{" "}
+                              <span className="text-blue-100 font-normal">11700124178</span>
+                            </span>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -426,18 +425,18 @@ export default function StudentDashboard({ onLogout }) {
                 </div>
               </div>
 
-              {/* Rank Card */}
-              <div className="w-full rounded-2xl border border-slate-200 bg-white p-3.5 sm:p-4 shadow-sm text-slate-800 flex flex-col justify-between">
-                <div className="flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-2 text-sm sm:text-base font-bold leading-none text-slate-800">
-                    <Award size={18} className="text-slate-700" />
+              {/* Rank Card with reduced width & compact layout */}
+              <div className="w-full max-w-sm mx-auto xl:max-w-none rounded-2xl border border-slate-200 bg-white p-3 sm:p-3.5 shadow-sm text-slate-800 flex flex-col justify-between">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-1.5 text-xs sm:text-sm font-bold leading-none text-slate-800">
+                    <Award size={16} className="text-slate-700 shrink-0" />
                     <span>Academic Rank</span>
                   </div>
 
-                  <div className="relative w-[95px]">
+                  <div className="relative w-[85px]">
                     <select
                       defaultValue="CSE"
-                      className="w-full appearance-none rounded-xl border border-slate-200 bg-[#f1f3f5] px-2.5 py-1 pr-6 text-xs font-semibold text-slate-700 outline-none transition focus:border-blue-300"
+                      className="w-full appearance-none rounded-xl border border-slate-200 bg-[#f1f3f5] px-2 py-0.5 pr-5 text-[11px] font-semibold text-slate-700 outline-none transition focus:border-blue-300 cursor-pointer"
                       aria-label="Select department"
                     >
                       <option value="CSE">CSE</option>
@@ -445,49 +444,49 @@ export default function StudentDashboard({ onLogout }) {
                       <option value="ECE">ECE</option>
                       <option value="AIML">AIML</option>
                     </select>
-                    <ChevronDown className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-slate-500" size={13} />
+                    <ChevronDown className="pointer-events-none absolute right-1.5 top-1/2 -translate-y-1/2 text-slate-500" size={12} />
                   </div>
                 </div>
 
-                <div className="my-1.5 text-center">
-                  <div className="flex items-baseline justify-center gap-2">
-                    <span className="text-3xl sm:text-[34px] font-bold tracking-tight text-[#2384FD] leading-none">1</span>
-                    <span className="text-xl sm:text-[20px] font-semibold text-slate-400 leading-none">/ 30</span>
+                <div className="my-1 text-center">
+                  <div className="flex items-baseline justify-center gap-1.5">
+                    <span className="text-2xl sm:text-[30px] font-bold tracking-tight text-[#2384FD] leading-none">1</span>
+                    <span className="text-lg sm:text-[18px] font-semibold text-slate-400 leading-none">/ 30</span>
                   </div>
                 </div>
 
                 <div>
-                  <div className="h-2 w-[85%] mx-auto overflow-hidden rounded-full bg-[#dfe3ea]">
+                  <div className="h-1.5 w-[80%] mx-auto overflow-hidden rounded-full bg-[#dfe3ea]">
                     <div className="h-full w-[96%] rounded-full bg-[#2384FD]" />
                   </div>
-                  <div className="mt-1.5 text-center text-[10px] sm:text-[11px] font-medium text-slate-500">
+                  <div className="mt-1 text-center text-[10px] font-medium text-slate-500">
                     Top 4% in Department
                   </div>
                 </div>
               </div>
             </section>
 
-            {/* Stat Cards Grid with Enhanced Height & Larger Numbers */}
-            <section className="grid gap-2.5 sm:grid-cols-2 xl:grid-cols-4">
+            {/* Stat Cards Grid with Reduced Width & 2-Col Mobile Layout */}
+            <section className="grid gap-2 sm:gap-2.5 grid-cols-2 xl:grid-cols-4">
               {statCards.map(({ label, value, note, icon: Icon, cardClass, valueClass, iconWrap, pageKey }) => (
                 <div
                   key={label}
                   onClick={() => {
                     if (pageKey) handleNavigate(pageKey);
                   }}
-                  className={`rounded-2xl border px-4 py-4 sm:py-5 shadow-sm ${cardClass} cursor-pointer hover:shadow-md hover:scale-[1.01] transition-all`}
+                  className={`rounded-2xl border p-2.5 sm:px-4 sm:py-3.5 shadow-xs ${cardClass} cursor-pointer hover:shadow-md hover:scale-[1.01] transition-all`}
                 >
-                  <div className="flex items-center gap-5">
-                    <div className={`flex h-11 w-11 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-2xl ${iconWrap}`}>
-                      <Icon size={23} className="stroke-[2.2]" />
+                  <div className="flex items-center gap-2.5 sm:gap-3.5">
+                    <div className={`flex h-9 w-9 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl ${iconWrap}`}>
+                      <Icon size={18} className="sm:w-[22px] sm:h-[22px] stroke-[2.2]" />
                     </div>
 
                     <div className="flex-1 min-w-0">
-                      <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 truncate">
+                      <div className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-500 truncate">
                         {label}
                       </div>
-                      <div className={`text-2xl sm:text-[28px] font-extrabold leading-none mt-1 mb-0.5 ${valueClass}`}>{value}</div>
-                      <div className="text-xs text-slate-400 font-medium truncate">{note}</div>
+                      <div className={`text-lg sm:text-[24px] font-extrabold leading-tight mt-0.5 mb-0.5 ${valueClass}`}>{value}</div>
+                      <div className="text-[10px] sm:text-xs text-slate-400 font-medium truncate">{note}</div>
                     </div>
                   </div>
                 </div>

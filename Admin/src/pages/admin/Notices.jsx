@@ -239,7 +239,7 @@ export default function Notices({ onNavigate, onOpenSidebar, isMentor = false, u
 
       {/* Top Header */}
       {!isMentor && (
-        <header className="h-[65px] bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-2xs">
+        <header className="sticky top-0 z-30 h-[65px] bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-2xs">
           <div className="flex items-center gap-2 sm:gap-3 min-w-0 pr-2">
             <button
               type="button"
@@ -257,7 +257,7 @@ export default function Notices({ onNavigate, onOpenSidebar, isMentor = false, u
                 {viewingNotice ? "Notice Details" : "Notices"}
               </h1>
               {viewingNotice ? (
-                <nav className="flex items-center gap-1.5 text-xs text-gray-400 mt-0.5">
+                <nav className="hidden sm:flex items-center gap-1.5 text-xs text-gray-400 mt-0.5">
                   <span
                     className="hover:text-gray-600 cursor-pointer font-medium"
                     onClick={() => setViewingNotice(null)}

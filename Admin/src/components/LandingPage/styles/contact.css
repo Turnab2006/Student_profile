@@ -1,8 +1,8 @@
 /* Contact Section Stylesheet */
 .trackademy-landing-root .contact-section {
-    padding: 4.5rem 0;
-    background-color: #f9fafb;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    padding: 5rem 0;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    font-family: var(--tlp-font-family);
     position: relative;
     overflow: hidden;
     width: 100%;
@@ -20,7 +20,7 @@
     display: grid;
     grid-template-columns: 1fr;
     gap: 3.5rem;
-    align-items: center;
+    align-items: flex-start;
 }
 
 /* Left / Info Column */
@@ -34,69 +34,108 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.3rem 1rem;
+    padding: 0.35rem 1rem;
     border-radius: 9999px;
-    background-color: #e3ebff;
-    border: 1px solid #E4E7EC;
-    margin-bottom: 0.8rem;
+    background-color: var(--tlp-badge-bg, #eff6ff);
+    border: 1px solid var(--tlp-badge-border, #dbeafe);
+    margin-bottom: 0.75rem;
 }
 
 .trackademy-landing-root .contact-label {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: #4776e4;
+    font-size: var(--tlp-badge-size, 0.875rem);
+    font-weight: var(--tlp-badge-weight, 600);
+    color: var(--tlp-badge-color, #2563eb);
     letter-spacing: -0.01em;
+    font-family: var(--tlp-font-family);
 }
 
 .trackademy-landing-root .contact-title {
-    font-size: 2.25rem;
-    font-weight: 700;
-    color: #101828;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
-    margin: 0.5rem 0 1rem 0;
+    font-size: var(--tlp-heading-size-mobile, 1.875rem);
+    font-weight: var(--tlp-heading-weight, 700);
+    color: var(--tlp-heading-color, #0f172a);
+    line-height: var(--tlp-heading-line-height, 1.25);
+    letter-spacing: var(--tlp-heading-letter-spacing, -0.025em);
+    margin: 0.75rem 0 0 0;
+    font-family: var(--tlp-font-family);
 }
 
 .trackademy-landing-root .contact-description {
-    font-size: 1rem;
-    line-height: 1.6;
-    color: #475467;
-    margin-bottom: 2.5rem;
-    max-width: 32rem;
+    font-size: var(--tlp-subtext-size-mobile, 1rem);
+    line-height: var(--tlp-subtext-line-height, 1.65);
+    font-weight: var(--tlp-subtext-weight, 400);
+    color: var(--tlp-subtext-color, #475467);
+    margin: 0.85rem 0 2rem 0;
+    max-width: 34rem;
+    font-family: var(--tlp-font-family);
 }
 
-/* Contact Info Item List */
-.trackademy-landing-root .contact-info-list {
+/* Contact Cards Grid */
+.trackademy-landing-root .contact-cards-grid {
     display: flex;
     flex-direction: column;
-    gap: 1.75rem;
+    gap: 1rem;
     width: 100%;
-    padding: 0;
-    margin: 0;
-    list-style: none;
 }
 
-.trackademy-landing-root .contact-info-item {
+.trackademy-landing-root .contact-info-card {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 1.25rem;
+    padding: 1.25rem 1.35rem;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 1rem;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+}
+
+.trackademy-landing-root .contact-info-card:hover {
+    border-color: #cbd5e1;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px -4px rgba(15, 23, 42, 0.08);
 }
 
 .trackademy-landing-root .contact-icon-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 3.25rem;
-    height: 3.25rem;
+    width: 3rem;
+    height: 3rem;
     border-radius: 0.75rem;
-    background-color: #e3ebff;
-    color: #4776e4;
+    background-color: #eff6ff;
+    color: #2563eb;
     flex-shrink: 0;
+    border: 1px solid #dbeafe;
+    transition: all 0.2s ease;
+}
+
+.trackademy-landing-root .contact-icon-wrapper--location {
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    color: #2563eb;
+    border-color: #bfdbfe;
+}
+
+.trackademy-landing-root .contact-icon-wrapper--phone {
+    background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+    color: #059669;
+    border-color: #a7f3d0;
+}
+
+.trackademy-landing-root .contact-icon-wrapper--email {
+    background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+    color: #4f46e5;
+    border-color: #c7d2fe;
+}
+
+.trackademy-landing-root .contact-icon-wrapper--hours {
+    background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+    color: #7c3aed;
+    border-color: #e9d5ff;
 }
 
 .trackademy-landing-root .contact-icon-wrapper svg {
-    width: 1.375rem;
-    height: 1.375rem;
+    width: 1.35rem;
+    height: 1.35rem;
     fill: none;
     stroke: currentColor;
     stroke-width: 2;
@@ -108,35 +147,130 @@
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
+    flex: 1;
+}
+
+.trackademy-landing-root .contact-label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
 }
 
 .trackademy-landing-root .contact-info-label {
-    font-size: 1rem;
-    font-weight: 700;
-    color: #101828;
+    font-size: var(--tlp-card-title-size-mobile, 1.125rem);
+    font-weight: var(--tlp-card-title-weight, 700);
+    color: var(--tlp-heading-color, #0f172a);
     margin: 0;
+    font-family: var(--tlp-font-family);
 }
 
 .trackademy-landing-root .contact-info-value {
-    font-size: 0.95rem;
-    color: #475467;
+    font-size: var(--tlp-card-text-size, 0.9375rem);
+    font-weight: var(--tlp-card-text-weight, 400);
+    line-height: var(--tlp-card-text-line-height, 1.6);
+    color: var(--tlp-card-text-color, #475467);
     margin: 0;
+    font-family: var(--tlp-font-family);
+}
+
+.trackademy-landing-root .contact-link {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.15s ease;
+}
+
+.trackademy-landing-root .contact-link:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+.trackademy-landing-root .contact-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 9999px;
+    background-color: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #065f46;
+}
+
+.trackademy-landing-root .contact-status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #10b981;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25);
+    animation: tlpPulse 2s infinite ease-in-out;
+}
+
+@keyframes tlpPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.85); }
 }
 
 /* Right / Form Card */
 .trackademy-landing-root .contact-form-card {
     background-color: #ffffff;
-    border: 1px solid #E4E7EC;
+    border: 1px solid #e2e8f0;
     border-radius: 1.25rem;
-    box-shadow: 0px 20px 24px -4px rgba(16, 24, 40, 0.04), 0px 8px 8px -4px rgba(16, 24, 40, 0.02);
-    padding: 2rem 1.5rem;
+    box-shadow: 0px 20px 25px -5px rgba(15, 23, 42, 0.06), 0px 8px 10px -6px rgba(15, 23, 42, 0.03);
+    padding: 2rem 1.75rem;
     width: 100%;
+    position: relative;
+}
+
+.trackademy-landing-root .contact-form-header {
+    margin-bottom: 1.75rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.trackademy-landing-root .contact-form-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 0.4rem 0;
+    font-family: var(--tlp-font-family);
+    letter-spacing: -0.015em;
+}
+
+.trackademy-landing-root .contact-form-subtitle {
+    font-size: 0.9375rem;
+    color: #64748b;
+    margin: 0;
+    line-height: 1.5;
+    font-family: var(--tlp-font-family);
 }
 
 .trackademy-landing-root .contact-form {
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
+}
+
+.trackademy-landing-root .contact-status-alert {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.85rem 1.15rem;
+    background-color: #ecfdf5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+    border-radius: 0.65rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1.45;
+}
+
+.trackademy-landing-root .contact-status-alert svg {
+    flex-shrink: 0;
+    color: #059669;
 }
 
 /* Inner row */
@@ -150,38 +284,52 @@
 .trackademy-landing-root .contact-form-group {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.45rem;
 }
 
 .trackademy-landing-root .contact-form-group label {
     font-size: 0.875rem;
     font-weight: 600;
-    color: #101828;
+    color: #1e293b;
+    font-family: var(--tlp-font-family);
 }
 
 .trackademy-landing-root .contact-input,
+.trackademy-landing-root .contact-select,
 .trackademy-landing-root .contact-textarea {
     width: 100%;
-    padding: 0.875rem 1rem;
+    padding: 0.75rem 1rem;
     font-size: 0.9375rem;
-    font-family: inherit;
-    color: #111827;
+    font-family: var(--tlp-font-family);
+    color: #0f172a;
     background-color: #ffffff;
-    border: 1px solid #d1d5db;
-    border-radius: 0.5rem;
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.65rem;
+    transition: all 0.2s ease;
+}
+
+.trackademy-landing-root .contact-select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748B'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1.25em 1.25em;
+    padding-right: 2.5rem;
 }
 
 .trackademy-landing-root .contact-input::placeholder,
 .trackademy-landing-root .contact-textarea::placeholder {
-    color: #9ca3af;
+    color: #94a3b8;
 }
 
 .trackademy-landing-root .contact-input:focus,
+.trackademy-landing-root .contact-select:focus,
 .trackademy-landing-root .contact-textarea:focus {
-    border-color: #4999ff;
-    box-shadow: 0 0 0 3px rgba(73, 153, 255, 0.15);
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
     outline: none;
+    background-color: #ffffff;
 }
 
 .trackademy-landing-root .contact-textarea {
@@ -194,24 +342,26 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 0.6rem;
     padding: 0.875rem 1.75rem;
     font-size: 0.9375rem;
     font-weight: 600;
-    font-family: inherit;
+    font-family: var(--tlp-font-family);
     color: #ffffff;
-    background-color: #147FEB;
+    background-color: #2563eb;
     border: none;
-    border-radius: 0.5rem;
+    border-radius: 0.65rem;
     cursor: pointer;
-    transition: background-color 0.15s ease, transform 0.1s ease;
+    transition: all 0.2s ease;
     margin-top: 0.5rem;
     width: 100%;
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
 }
 
 .trackademy-landing-root .contact-btn-submit:hover,
 .trackademy-landing-root .contact-btn-submit:focus {
-    background-color: #0f6ecc;
+    background-color: #1d4ed8;
+    box-shadow: 0 6px 14px rgba(37, 99, 235, 0.35);
     outline: none;
 }
 
@@ -227,15 +377,31 @@
     stroke-width: 2;
     stroke-linecap: round;
     stroke-linejoin: round;
-    transition: transform 0.15s ease;
+    transition: transform 0.2s ease;
 }
 
 .trackademy-landing-root .contact-btn-submit:hover svg {
-    transform: translate(2px, -2px);
+    transform: translate(3px, -3px);
 }
 
 /* ===== Responsive Breakpoints ===== */
 @media (min-width: 768px) {
+    .trackademy-landing-root .contact-section {
+        padding: 5.5rem 0;
+    }
+
+    .trackademy-landing-root .contact-title {
+        font-size: var(--tlp-heading-size-desktop, 2.25rem);
+    }
+
+    .trackademy-landing-root .contact-description {
+        font-size: var(--tlp-subtext-size-desktop, 1.0625rem);
+    }
+
+    .trackademy-landing-root .contact-info-label {
+        font-size: var(--tlp-card-title-size-desktop, 1.25rem);
+    }
+
     .trackademy-landing-root .contact-form-card {
         padding: 2.5rem;
     }
@@ -246,16 +412,8 @@
 }
 
 @media (min-width: 1024px) {
-    .trackademy-landing-root .contact-section {
-        padding: 6rem 0;
-    }
-
     .trackademy-landing-root .contact-grid {
-        grid-template-columns: 1fr 1.2fr;
-        gap: 5rem;
-    }
-
-    .trackademy-landing-root .contact-title {
-        font-size: 2.75rem;
+        grid-template-columns: 1fr 1.15fr;
+        gap: 4.5rem;
     }
 }

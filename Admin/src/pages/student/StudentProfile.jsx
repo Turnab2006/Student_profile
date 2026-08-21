@@ -820,7 +820,7 @@ export default function StudentProfile({
 
       {/* Top Header matching original admin portal */}
       {!hideHeader && (
-        <header className="h-[65px] bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-2xs z-20">
+        <header className="sticky top-0 z-30 h-[65px] bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-2xs">
           {/* Left: Mobile Sidebar Trigger + Back Button & Title & Breadcrumbs */}
           <div className="flex items-center gap-3">
             <button
@@ -857,7 +857,7 @@ export default function StudentProfile({
               <h1 className="text-lg sm:text-xl font-bold text-gray-800 tracking-tight truncate">
                 {isDigitalCard ? "Digital Student ID" : "Student Profile"}
               </h1>
-              <nav className="flex items-center gap-1.5 text-xs text-gray-400 mt-0.5">
+              <nav className="hidden sm:flex items-center gap-1.5 text-xs text-gray-400 mt-0.5">
                 <span
                   className="hover:text-gray-600 cursor-pointer"
                   onClick={() => {
@@ -933,14 +933,15 @@ export default function StudentProfile({
                 }}
               />
 
-              {/* Inner Content Layout */}
-              <div className="relative z-10 flex flex-col md:flex-row items-center md:items-start justify-between gap-5 sm:gap-6">
-
-                {/* Left Column: Avatar & Middle Info */}
-                <div className="flex flex-col sm:flex-row items-center gap-5 sm:gap-6 text-center sm:text-left">
-                  {/* 1. Student Avatar with White Ring */}
+              {/* ==================================================================== */}
+              {/* 1. DESKTOP VIEW (hidden on mobile, flex on md and above)              */}
+              {/* ==================================================================== */}
+              <div className="relative z-10 hidden md:flex items-start justify-between gap-6">
+                {/* Left Column: Avatar & Details */}
+                <div className="flex items-center gap-6">
+                  {/* Student Avatar with White Ring */}
                   <div className="relative shrink-0">
-                    <div className="h-28 w-28 sm:h-32 sm:w-32 rounded-full ring-[4px] ring-white/90 shadow-[0_4px_18px_rgba(0,0,0,0.25)] overflow-hidden bg-white flex items-center justify-center border-2 border-white">
+                    <div className="h-28 w-28 lg:h-32 lg:w-32 rounded-full ring-[4px] ring-white/90 shadow-[0_4px_18px_rgba(0,0,0,0.25)] overflow-hidden bg-white flex items-center justify-center border-2 border-white">
                       <img
                         src={student.avatar && student.avatar !== "/tanuka_saha_avatar.png" ? student.avatar : (tuhinaAvatar || "/tuhina_avatar.jpg")}
                         alt={student.name || "Tanuka Saha"}
@@ -955,23 +956,22 @@ export default function StudentProfile({
                     </div>
                   </div>
 
-                  {/* 2. Middle Student Info Details */}
-                  <div className="flex flex-col items-center sm:items-start space-y-2">
+                  {/* Middle Student Info Details */}
+                  <div className="flex flex-col items-start space-y-2">
                     {/* Student Full Name */}
-                    <h2 className="text-2xl sm:text-[28px] font-bold text-white tracking-tight leading-tight">
+                    <h2 className="text-2xl lg:text-[28px] font-bold text-white tracking-tight leading-tight">
                       {student.name || "Tanuka Saha"}
                     </h2>
 
                     {/* Student ID / Roll Pill Badge */}
                     <div>
-                      <span className="inline-flex items-center px-3.5 py-1 mb-2 rounded-lg bg-white/20 border border-white/30 text-white text-xs sm:text-[13px] font-bold tracking-wide shadow-2xs backdrop-blur-md">
+                      <span className="inline-flex items-center px-3.5 py-1 mb-2 rounded-lg bg-white/20 border border-white/30 text-white text-xs lg:text-[13px] font-bold tracking-wide shadow-2xs backdrop-blur-md">
                         {student.rollNo || student.id || "CSE2024012"}
                       </span>
                     </div>
 
                     {/* Contact Info, Course & Department Horizontal Row with Subtle Vertical Dividers */}
-                    <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3.5 sm:gap-5 pt-1 text-xs sm:text-[13px] font-medium text-blue-100/90">
-
+                    <div className="flex flex-wrap items-center justify-start gap-4 lg:gap-5 pt-1 text-xs lg:text-[13px] font-medium text-blue-100/90">
                       {/* Phone Number */}
                       <div className="flex items-center gap-2">
                         <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/20 text-white shadow-2xs border border-white/25 shrink-0 backdrop-blur-xs">
@@ -983,7 +983,7 @@ export default function StudentProfile({
                       </div>
 
                       {/* Divider 1 */}
-                      <div className="hidden sm:block h-4 w-[1px] bg-white/25 self-center" />
+                      <div className="h-4 w-[1px] bg-white/25 self-center" />
 
                       {/* Email ID */}
                       <div className="flex items-center gap-2">
@@ -996,7 +996,7 @@ export default function StudentProfile({
                       </div>
 
                       {/* Divider 2 */}
-                      <div className="hidden sm:block h-4 w-[1px] bg-white/25 self-center" />
+                      <div className="h-4 w-[1px] bg-white/25 self-center" />
 
                       {/* Course: B.Tech */}
                       <div className="flex items-center gap-2">
@@ -1009,7 +1009,7 @@ export default function StudentProfile({
                       </div>
 
                       {/* Divider 3 */}
-                      <div className="hidden sm:block h-4 w-[1px] bg-white/25 self-center" />
+                      <div className="h-4 w-[1px] bg-white/25 self-center" />
 
                       {/* Department */}
                       <div className="flex items-center gap-2">
@@ -1020,41 +1020,130 @@ export default function StudentProfile({
                           {student.department || "Computer Science & Engineering"}
                         </span>
                       </div>
-
                     </div>
                   </div>
                 </div>
 
                 {/* Upper Right Action: View Digital Card Button */}
-                <div className="shrink-0 flex items-center self-center md:self-start">
+                <div className="shrink-0 flex items-center self-start">
                   <button
                     type="button"
                     onClick={() => handleSetShowDigitalCard(true)}
-                    className="inline-flex items-center gap-2 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-white hover:bg-blue-50 text-[#2563eb] border border-white/80 text-xs sm:text-sm font-bold tracking-tight transition-all active:scale-95 shadow-md hover:shadow-lg cursor-pointer group/btn"
+                    className="inline-flex items-center gap-2 px-3.5 py-2 lg:px-4 lg:py-2.5 rounded-xl bg-white hover:bg-blue-50 text-[#2563eb] border border-white/80 text-xs lg:text-sm font-bold tracking-tight transition-all active:scale-95 shadow-md hover:shadow-lg cursor-pointer group/btn"
                   >
                     <CreditCard size={15} className="text-[#2563eb] group-hover/btn:scale-110 transition-transform stroke-[2.2]" />
                     <span>View Digital ID Card</span>
                   </button>
                 </div>
+              </div>
 
+              {/* ==================================================================== */}
+              {/* 2. MOBILE VIEW (flex on mobile, hidden on md and above)               */}
+              {/* ==================================================================== */}
+              <div className="relative z-10 flex md:hidden flex-col items-center w-full">
+                {/* 1. Top Corner: View Digital ID Card Button */}
+                <div className="w-full flex justify-end mb-1">
+                  <button
+                    type="button"
+                    onClick={() => handleSetShowDigitalCard(true)}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-blue-50 text-[#2563eb] border border-white/80 text-xs font-bold tracking-tight transition-all active:scale-95 shadow-md hover:shadow-lg cursor-pointer group/btn"
+                  >
+                    <CreditCard size={14} className="text-[#2563eb] group-hover/btn:scale-110 transition-transform stroke-[2.2]" />
+                    <span>View Digital ID Card</span>
+                  </button>
+                </div>
+
+                {/* 2. Middle: Profile Image */}
+                <div className="relative shrink-0 mb-3">
+                  <div className="h-24 w-24 rounded-full ring-[4px] ring-white/90 shadow-[0_4px_18px_rgba(0,0,0,0.25)] overflow-hidden bg-white flex items-center justify-center border-2 border-white mx-auto">
+                    <img
+                      src={student.avatar && student.avatar !== "/tanuka_saha_avatar.png" ? student.avatar : (tuhinaAvatar || "/tuhina_avatar.jpg")}
+                      alt={student.name || "Tanuka Saha"}
+                      className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+                      onError={(e) => {
+                        e.target.src = "/tuhina_avatar.jpg";
+                      }}
+                    />
+                    <div className="hidden h-full w-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white font-bold text-3xl items-center justify-center">
+                      {(student.name || "TS").slice(0, 2).toUpperCase()}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Student Full Name & Roll Badge */}
+                <div className="flex flex-col items-center text-center space-y-1 mb-3">
+                  <h2 className="text-2xl font-bold text-white tracking-tight leading-tight">
+                    {student.name || "Tanuka Saha"}
+                  </h2>
+                  <div>
+                    <span className="inline-flex items-center px-3.5 py-1 rounded-lg bg-white/20 border border-white/30 text-white text-xs font-bold tracking-wide shadow-2xs backdrop-blur-md">
+                      {student.rollNo || student.id || "CSE2024012"}
+                    </span>
+                  </div>
+                </div>
+
+                {/* 3. Details in TWO ROWS */}
+                <div className="w-full max-w-2xl flex flex-col items-center gap-2 text-xs font-medium text-blue-100/90">
+                  {/* Row 1: Contact Info (Phone & Email) */}
+                  <div className="flex flex-wrap items-center justify-center gap-3">
+                    <div className="flex items-center gap-2">
+                      <div className="flex h-6 w-6 items-center justify-center rounded-full bg-white/20 text-white shadow-2xs border border-white/25 shrink-0 backdrop-blur-xs">
+                        <Phone size={12} className="fill-white stroke-[1.5]" />
+                      </div>
+                      <span className="font-semibold text-white tracking-tight">
+                        {student.phone || student.additionalDetails?.phoneNumber || "+91 9123930828"}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <div className="flex h-6 w-6 items-center justify-center rounded-full bg-white/20 text-white shadow-2xs border border-white/25 shrink-0 backdrop-blur-xs">
+                        <Mail size={13} className="stroke-[2.2]" />
+                      </div>
+                      <span className="font-semibold text-white">
+                        {student.email || student.additionalDetails?.personalEmail || "tanuka.saha@gmail.com"}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Row 2: Academic Info (Course & Department) */}
+                  <div className="flex flex-wrap items-center justify-center gap-3">
+                    <div className="flex items-center gap-2">
+                      <div className="flex h-6 w-6 items-center justify-center rounded-full bg-white/20 text-white shadow-2xs border border-white/25 shrink-0 backdrop-blur-xs">
+                        <GraduationCap size={13} className="stroke-[2.2]" />
+                      </div>
+                      <span className="font-semibold text-white">
+                        {student.course || "B.Tech"}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <div className="flex h-6 w-6 items-center justify-center rounded-full bg-white/20 text-white shadow-2xs border border-white/25 shrink-0 backdrop-blur-xs">
+                        <Building size={13} className="stroke-[2.2]" />
+                      </div>
+                      <span className="font-semibold text-white">
+                        {student.department || "Computer Science & Engineering"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
             {/* ==================================================================== */}
-            {/* TAB NAVIGATION BUTTONS                                               */}
+            {/* TAB NAVIGATION BUTTONS (SINGLE LINE ON ALL DEVICES)                  */}
             {/* ==================================================================== */}
-            <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 p-1.5 flex items-center justify-between sm:justify-start gap-1 sm:gap-2.5 overflow-x-auto">
+            <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 p-1.5 flex items-center justify-start gap-1 sm:gap-2.5 overflow-x-auto scrollbar-none flex-nowrap">
               {/* 1. Academic Tab (Default Active) */}
               <button
                 type="button"
                 onClick={() => setActiveTab("academic")}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all relative ${activeTab === "academic"
+                className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all relative shrink-0 whitespace-nowrap ${activeTab === "academic"
                   ? "text-blue-600 font-bold bg-blue-50/70"
                   : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
                   }`}
               >
-                <GraduationCap size={17} className={activeTab === "academic" ? "text-blue-600" : "text-slate-400"} />
-                <span>Academics</span>
+                <GraduationCap size={16} className={activeTab === "academic" ? "text-blue-600 shrink-0" : "text-slate-400 shrink-0"} />
+                <span className="whitespace-nowrap">Academics</span>
                 {activeTab === "academic" && (
                   <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-blue-600 rounded-full" />
                 )}
@@ -1064,13 +1153,13 @@ export default function StudentProfile({
               <button
                 type="button"
                 onClick={() => setActiveTab("personal")}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all relative ${(activeTab === "personal" || activeTab === "parents")
+                className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all relative shrink-0 whitespace-nowrap ${(activeTab === "personal" || activeTab === "parents")
                   ? "text-blue-600 font-bold bg-blue-50/70"
                   : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
                   }`}
               >
-                <User size={17} className={(activeTab === "personal" || activeTab === "parents") ? "text-blue-600" : "text-slate-400"} />
-                <span>Personal Info</span>
+                <User size={16} className={(activeTab === "personal" || activeTab === "parents") ? "text-blue-600 shrink-0" : "text-slate-400 shrink-0"} />
+                <span className="whitespace-nowrap">Personal Info</span>
                 {(activeTab === "personal" || activeTab === "parents") && (
                   <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-blue-600 rounded-full" />
                 )}
@@ -1080,13 +1169,13 @@ export default function StudentProfile({
               <button
                 type="button"
                 onClick={() => setActiveTab("result")}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all relative ${activeTab === "result"
+                className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all relative shrink-0 whitespace-nowrap ${activeTab === "result"
                   ? "text-blue-600 font-bold bg-blue-50/70"
                   : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
                   }`}
               >
-                <Clock size={17} className={activeTab === "result" ? "text-blue-600" : "text-slate-400"} />
-                <span>Result</span>
+                <Clock size={16} className={activeTab === "result" ? "text-blue-600 shrink-0" : "text-slate-400 shrink-0"} />
+                <span className="whitespace-nowrap">Result</span>
                 {activeTab === "result" && (
                   <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-blue-600 rounded-full" />
                 )}
@@ -1096,18 +1185,19 @@ export default function StudentProfile({
               <button
                 type="button"
                 onClick={() => setActiveTab("attendance")}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all relative ${activeTab === "attendance"
+                className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all relative shrink-0 whitespace-nowrap ${activeTab === "attendance"
                   ? "text-blue-600 font-bold bg-blue-50/70"
                   : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
                   }`}
               >
-                <Calendar size={17} className={activeTab === "attendance" ? "text-blue-600" : "text-slate-400"} />
-                <span>Attendance</span>
+                <Calendar size={16} className={activeTab === "attendance" ? "text-blue-600 shrink-0" : "text-slate-400 shrink-0"} />
+                <span className="whitespace-nowrap">Attendance</span>
                 {activeTab === "attendance" && (
                   <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-blue-600 rounded-full" />
                 )}
               </button>
             </div>
+
 
             {/* ==================================================================== */}
             {/* TAB 1: ACADEMIC DETAILS (DEFAULT ACTIVE)                             */}

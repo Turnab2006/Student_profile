@@ -1,5 +1,5 @@
 .trackademy-landing-root .navbar {
-    font-family: "Roboto", sans-serif;
+    font-family: var(--tlp-font-family);
     background: rgba(255, 255, 255, 0.90);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);

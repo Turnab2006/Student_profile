@@ -128,7 +128,7 @@ export default function MentorNavbar({
   };
 
   return (
-    <header className="h-[65px] bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-2xs w-full font-['Roboto',sans-serif]">
+    <header className="sticky top-0 z-30 h-[65px] bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-2xs w-full font-['Roboto',sans-serif]">
       {/* Left side: Mobile menu button + Title & Subtitle matching Admin header */}
       <div className="flex items-center gap-2 sm:gap-3 min-w-0 pr-2">
         {onOpenSidebar && (

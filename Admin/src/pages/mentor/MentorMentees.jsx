@@ -457,12 +457,12 @@ export default function MentorMentees({ onNavigate }) {
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-[#f0eaff] text-[#7656f4] text-[11.5px] font-extrabold uppercase tracking-wider border-b border-[#e2d9fd]">
-                  <th className="py-3.5 px-4 sm:px-5">MENTEE</th>
-                  <th className="py-3.5 px-4">ID / COLLEGE ROLL NO.</th>
-                  <th className="py-3.5 px-4">DEPARTMENT</th>
-                  <th className="py-3.5 px-4">EMAIL</th>
-                  <th className="py-3.5 px-4">CONTACT</th>
-                  <th className="py-3.5 px-4 text-center">ACTIONS</th>
+                  <th className="py-3.5 px-4 sm:px-5 whitespace-nowrap">MENTEE</th>
+                  <th className="py-3.5 px-4 whitespace-nowrap">ID / COLLEGE ROLL NO.</th>
+                  <th className="py-3.5 px-4 whitespace-nowrap">DEPARTMENT</th>
+                  <th className="py-3.5 px-4 whitespace-nowrap">EMAIL</th>
+                  <th className="py-3.5 px-4 whitespace-nowrap">CONTACT</th>
+                  <th className="py-3.5 px-4 text-center whitespace-nowrap">ACTIONS</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 text-slate-700 font-normal">

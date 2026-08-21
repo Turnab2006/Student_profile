@@ -597,13 +597,15 @@ export default function MentorProfilePage({ mentorData: propMentorData }) {
               }}
             />
 
-            {/* Inner Content Layout */}
-            <div className="relative z-10 flex flex-col md:flex-row items-center md:items-start justify-between gap-5 sm:gap-6">
+            {/* ==================================================================== */}
+            {/* 1. DESKTOP VIEW (hidden on mobile, flex on md and above)              */}
+            {/* ==================================================================== */}
+            <div className="relative z-10 hidden md:flex items-start justify-between gap-6">
               {/* Left Column: Avatar & Details */}
-              <div className="flex flex-col sm:flex-row items-center gap-5 sm:gap-6 text-center sm:text-left">
-                {/* 1. Mentor Avatar with White Glowing Ring */}
+              <div className="flex items-center gap-6">
+                {/* Mentor Avatar with White Ring */}
                 <div className="relative shrink-0">
-                  <div className="h-28 w-28 sm:h-32 sm:w-32 rounded-full ring-[4px] ring-white shadow-xl shadow-purple-950/40 overflow-hidden bg-white flex items-center justify-center border border-white/40">
+                  <div className="h-28 w-28 lg:h-32 lg:w-32 rounded-full ring-[4px] ring-white shadow-xl shadow-purple-950/40 overflow-hidden bg-white flex items-center justify-center border border-white/40">
                     <img
                       src={mentor.avatar}
                       alt={mentor.fullName}
@@ -619,16 +621,16 @@ export default function MentorProfilePage({ mentorData: propMentorData }) {
                   </div>
                 </div>
 
-                {/* 2. Middle Mentor Info Details */}
-                <div className="flex flex-col items-center sm:items-start space-y-2">
+                {/* Middle Mentor Info Details */}
+                <div className="flex flex-col items-start space-y-2">
                   {/* Mentor Full Name */}
-                  <h2 className="text-2xl sm:text-[28px] font-bold text-white tracking-tight leading-tight">
+                  <h2 className="text-2xl lg:text-[28px] font-bold text-white tracking-tight leading-tight">
                     {mentor.fullName}
                   </h2>
 
-                  {/* Badges: Employee ID & Role */}
-                  <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2 mb-2">
-                    <span className="inline-flex items-center px-3.5 py-1 rounded-lg bg-white/20 border border-white/30 text-white text-xs sm:text-[13px] font-bold tracking-wide shadow-2xs backdrop-blur-md">
+                  {/* Employee ID & Status Badge */}
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="inline-flex items-center px-3.5 py-1 rounded-lg bg-white/20 border border-white/30 text-white text-xs lg:text-[13px] font-bold tracking-wide shadow-2xs backdrop-blur-md">
                       Employee ID: {mentor.empId}
                     </span>
                     <span className="inline-flex items-center gap-1 px-3 py-1 bg-emerald-400/20 border border-emerald-300/30 text-emerald-200 font-bold text-xs rounded-lg shadow-2xs backdrop-blur-md">
@@ -636,8 +638,8 @@ export default function MentorProfilePage({ mentorData: propMentorData }) {
                     </span>
                   </div>
 
-                  {/* Contact Info, Role & Department Horizontal Row with Subtle Vertical Dividers */}
-                  <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3.5 sm:gap-5 pt-1 text-xs sm:text-[13px] font-medium text-purple-100">
+                  {/* Contact Info & Department Horizontal Row with Subtle Vertical Dividers */}
+                  <div className="flex flex-wrap items-center justify-start gap-4 lg:gap-5 pt-1 text-xs lg:text-[13px] font-medium text-purple-100">
                     {/* Phone Number */}
                     <div className="flex items-center gap-2">
                       <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/20 text-white shadow-2xs border border-white/25 shrink-0 backdrop-blur-xs">
@@ -649,9 +651,9 @@ export default function MentorProfilePage({ mentorData: propMentorData }) {
                     </div>
 
                     {/* Divider 1 */}
-                    <div className="hidden sm:block h-4 w-[1px] bg-white/25 self-center" />
+                    <div className="h-4 w-[1px] bg-white/25 self-center" />
 
-                    {/* Email */}
+                    {/* Email ID */}
                     <div className="flex items-center gap-2">
                       <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/20 text-white shadow-2xs border border-white/25 shrink-0 backdrop-blur-xs">
                         <Mail size={14} className="stroke-[2.2]" />
@@ -662,7 +664,7 @@ export default function MentorProfilePage({ mentorData: propMentorData }) {
                     </div>
 
                     {/* Divider 2 */}
-                    <div className="hidden sm:block h-4 w-[1px] bg-white/25 self-center" />
+                    <div className="h-4 w-[1px] bg-white/25 self-center" />
 
                     {/* Department */}
                     <div className="flex items-center gap-2">
@@ -677,36 +679,122 @@ export default function MentorProfilePage({ mentorData: propMentorData }) {
                 </div>
               </div>
 
-              {/* Upper Right Action: View Digital ID Card Button */}
-              <div className="shrink-0 flex items-center self-center md:self-start">
+              {/* Upper Right Action: View Digital Card Button */}
+              <div className="shrink-0 flex items-center self-start">
                 <button
                   type="button"
                   onClick={() => setShowDigitalCard(true)}
-                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-purple-50 text-[#5531dc] font-bold text-xs sm:text-sm tracking-tight transition-all active:scale-95 shadow-md hover:shadow-lg cursor-pointer group/btn"
+                  className="inline-flex items-center gap-2 px-3.5 py-2 lg:px-4 lg:py-2.5 rounded-xl bg-white hover:bg-purple-50 text-[#5531dc] font-bold text-xs lg:text-sm tracking-tight transition-all active:scale-95 shadow-md hover:shadow-lg cursor-pointer group/btn"
                 >
-                  <CreditCard size={16} className="text-[#5531dc] group-hover/btn:scale-110 transition-transform stroke-[2.2]" />
+                  <CreditCard size={15} className="text-[#5531dc] group-hover/btn:scale-110 transition-transform stroke-[2.2]" />
                   <span>View Digital ID Card</span>
                 </button>
+              </div>
+            </div>
+
+            {/* ==================================================================== */}
+            {/* 2. MOBILE VIEW (flex on mobile, hidden on md and above)               */}
+            {/* ==================================================================== */}
+            <div className="relative z-10 flex md:hidden flex-col items-center w-full">
+              {/* 1. Top Corner: View Digital ID Card Button */}
+              <div className="w-full flex justify-end mb-1">
+                <button
+                  type="button"
+                  onClick={() => setShowDigitalCard(true)}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-purple-50 text-[#5531dc] font-bold text-xs tracking-tight transition-all active:scale-95 shadow-md hover:shadow-lg cursor-pointer group/btn"
+                >
+                  <CreditCard size={14} className="text-[#5531dc] group-hover/btn:scale-110 transition-transform stroke-[2.2]" />
+                  <span>View Digital ID Card</span>
+                </button>
+              </div>
+
+              {/* 2. Middle: Profile Image */}
+              <div className="relative shrink-0 mb-3">
+                <div className="h-24 w-24 rounded-full ring-[4px] ring-white shadow-xl shadow-purple-950/40 overflow-hidden bg-white flex items-center justify-center border border-white/40 mx-auto">
+                  <img
+                    src={mentor.avatar}
+                    alt={mentor.fullName}
+                    className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+                    onError={(e) => {
+                      e.target.style.display = 'none';
+                      if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
+                    }}
+                  />
+                  <div className="hidden h-full w-full bg-gradient-to-tr from-purple-600 to-indigo-600 text-white font-bold text-3xl items-center justify-center">
+                    {(mentor.firstName || 'K').charAt(0)}
+                  </div>
+                </div>
+              </div>
+
+              {/* Mentor Full Name & Badges */}
+              <div className="flex flex-col items-center text-center space-y-1 mb-3">
+                <h2 className="text-2xl font-bold text-white tracking-tight leading-tight">
+                  {mentor.fullName}
+                </h2>
+                <div className="flex flex-wrap items-center justify-center gap-2">
+                  <span className="inline-flex items-center px-3.5 py-1 rounded-lg bg-white/20 border border-white/30 text-white text-xs font-bold tracking-wide shadow-2xs backdrop-blur-md">
+                    Employee ID: {mentor.empId}
+                  </span>
+                  <span className="inline-flex items-center gap-1 px-3 py-1 bg-emerald-400/20 border border-emerald-300/30 text-emerald-200 font-bold text-xs rounded-lg shadow-2xs backdrop-blur-md">
+                    <Check size={13} className="stroke-[3]" /> {mentor.status}
+                  </span>
+                </div>
+              </div>
+
+              {/* 3. Details in TWO ROWS */}
+              <div className="w-full max-w-2xl flex flex-col items-center gap-2 text-xs font-medium text-purple-100">
+                {/* Row 1: Contact Info (Phone & Email) */}
+                <div className="flex flex-wrap items-center justify-center gap-3">
+                  <div className="flex items-center gap-2">
+                    <div className="flex h-6 w-6 items-center justify-center rounded-full bg-white/20 text-white shadow-2xs border border-white/25 shrink-0 backdrop-blur-xs">
+                      <Phone size={12} className="fill-white stroke-[1.5]" />
+                    </div>
+                    <span className="font-semibold text-white tracking-tight">
+                      {mentor.phone}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <div className="flex h-6 w-6 items-center justify-center rounded-full bg-white/20 text-white shadow-2xs border border-white/25 shrink-0 backdrop-blur-xs">
+                      <Mail size={13} className="stroke-[2.2]" />
+                    </div>
+                    <span className="font-semibold text-white">
+                      {mentor.collegeEmail}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Row 2: Department */}
+                <div className="flex flex-wrap items-center justify-center gap-3">
+                  <div className="flex items-center gap-2">
+                    <div className="flex h-6 w-6 items-center justify-center rounded-full bg-white/20 text-white shadow-2xs border border-white/25 shrink-0 backdrop-blur-xs">
+                      <Building2 size={13} className="stroke-[2.2]" />
+                    </div>
+                    <span className="font-semibold text-white">
+                      {mentor.department}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
           {/* ==================================================================== */}
-          {/* TAB NAVIGATION BUTTONS                                               */}
+          {/* TAB NAVIGATION BUTTONS (SINGLE LINE ON ALL DEVICES)                  */}
           {/* ==================================================================== */}
-          <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 p-1.5 flex items-center justify-between sm:justify-start gap-1 sm:gap-2.5 overflow-x-auto">
+          <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 p-1.5 flex items-center justify-start gap-1 sm:gap-2.5 overflow-x-auto scrollbar-none flex-nowrap">
             {/* 1. Personal & Contact Details (Default Active) */}
             <button
               type="button"
               onClick={() => setActiveTab('personal')}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all relative cursor-pointer ${
+              className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all relative shrink-0 whitespace-nowrap cursor-pointer ${
                 activeTab === 'personal'
                   ? 'text-[#5531dc] font-bold bg-[#f6f2fe]'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
               }`}
             >
-              <User size={17} className={activeTab === 'personal' ? 'text-[#5531dc]' : 'text-slate-400'} />
-              <span>Personal & Contact Info</span>
+              <User size={16} className={activeTab === 'personal' ? 'text-[#5531dc]' : 'text-slate-400'} />
+              <span className="whitespace-nowrap">Personal & Contact Info</span>
               {activeTab === 'personal' && (
                 <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-[#5531dc] rounded-full" />
               )}
@@ -716,19 +804,20 @@ export default function MentorProfilePage({ mentorData: propMentorData }) {
             <button
               type="button"
               onClick={() => setActiveTab('professional')}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all relative cursor-pointer ${
+              className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all relative shrink-0 whitespace-nowrap cursor-pointer ${
                 activeTab === 'professional'
                   ? 'text-[#5531dc] font-bold bg-[#f6f2fe]'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
               }`}
             >
-              <Briefcase size={17} className={activeTab === 'professional' ? 'text-[#5531dc]' : 'text-slate-400'} />
-              <span>Professional Details</span>
+              <Briefcase size={16} className={activeTab === 'professional' ? 'text-[#5531dc]' : 'text-slate-400'} />
+              <span className="whitespace-nowrap">Professional Details</span>
               {activeTab === 'professional' && (
                 <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-[#5531dc] rounded-full" />
               )}
             </button>
           </div>
+
 
           {/* ==================================================================== */}
           {/* TAB 1: PERSONAL & CONTACT DETAILS (DEFAULT ACTIVE)                   */}

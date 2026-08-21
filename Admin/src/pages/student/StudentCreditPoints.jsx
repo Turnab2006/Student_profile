@@ -324,81 +324,81 @@ export default function StudentCreditPoints({ hideHeader = false }) {
         </button>
       </div>
 
-      {/* 4 Metric Cards Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* 4 Metric Cards Row (2 rows on mobile) */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
         {/* 1. Total Credit Points Earned (out of 100) */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-200/90 border-l-[3.5px] border-l-[#2563eb] shadow-md shadow-slate-200/50 flex items-center gap-4 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-300/40 transition-all duration-200">
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-blue-50 text-[#2563eb] border border-blue-100/60 shadow-2xs">
-            <Trophy size={22} className="stroke-[2.2]" />
+        <div className="bg-white p-3 sm:p-5 rounded-2xl border border-slate-200/90 border-l-[3.5px] border-l-[#2563eb] shadow-md shadow-slate-200/50 flex items-center gap-2.5 sm:gap-4 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-300/40 transition-all duration-200">
+          <div className="flex h-9 w-9 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-blue-50 text-[#2563eb] border border-blue-100/60 shadow-2xs">
+            <Trophy size={18} className="sm:w-[22px] sm:h-[22px] stroke-[2.2]" />
           </div>
           <div className="min-w-0">
-            <p className="text-[11px] font-bold text-gray-500 uppercase tracking-wider truncate">
-              TOTAL POINTS EARNED
+            <p className="text-[10px] sm:text-[11px] font-bold text-gray-500 uppercase tracking-wider truncate">
+              TOTAL POINTS
             </p>
-            <div className="flex items-baseline gap-1.5 my-0.5">
-              <span className="text-2xl font-extrabold text-gray-900 tracking-tight">
+            <div className="flex items-baseline gap-1 my-0.5">
+              <span className="text-lg sm:text-2xl font-extrabold text-gray-900 tracking-tight">
                 {totalEarnedPoints}
               </span>
-              <span className="text-xs font-bold text-gray-400">/ 100</span>
+              <span className="text-[10px] sm:text-xs font-bold text-gray-400">/ 100</span>
             </div>
-            <div className="flex items-center gap-1.5 text-xs text-blue-600 font-medium">
-              <TrendingUp size={13} />
-              <span>{Math.min(100, Math.round((totalEarnedPoints / 100) * 100))}% of Degree Goal</span>
+            <div className="flex items-center gap-1 text-[10px] sm:text-xs text-blue-600 font-medium truncate">
+              <TrendingUp size={12} className="shrink-0" />
+              <span className="truncate">{Math.min(100, Math.round((totalEarnedPoints / 100) * 100))}% of Goal</span>
             </div>
           </div>
         </div>
 
         {/* 2. Credit Points Earned in Current Semester */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-200/90 border-l-[3.5px] border-l-emerald-500 shadow-md shadow-slate-200/50 flex items-center gap-4 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-300/40 transition-all duration-200">
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-100/60 shadow-2xs">
-            <Sparkles size={22} className="stroke-[2.2]" />
+        <div className="bg-white p-3 sm:p-5 rounded-2xl border border-slate-200/90 border-l-[3.5px] border-l-emerald-500 shadow-md shadow-slate-200/50 flex items-center gap-2.5 sm:gap-4 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-300/40 transition-all duration-200">
+          <div className="flex h-9 w-9 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-100/60 shadow-2xs">
+            <Sparkles size={18} className="sm:w-[22px] sm:h-[22px] stroke-[2.2]" />
           </div>
           <div className="min-w-0">
-            <p className="text-[11px] font-bold text-gray-500 uppercase tracking-wider truncate">
-              CURRENT SEMESTER EARNED
+            <p className="text-[10px] sm:text-[11px] font-bold text-gray-500 uppercase tracking-wider truncate">
+              CURRENT SEMESTER
             </p>
-            <p className="text-2xl font-extrabold text-gray-900 tracking-tight my-0.5">
+            <p className="text-lg sm:text-2xl font-extrabold text-gray-900 tracking-tight my-0.5">
               {currentSemPoints}
             </p>
-            <p className="text-xs text-emerald-600 font-medium truncate">
+            <p className="text-[10px] sm:text-xs text-emerald-600 font-medium truncate">
               Semester 5 (Active)
             </p>
           </div>
         </div>
 
         {/* 3. Pending Credit Points */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-200/90 border-l-[3.5px] border-l-amber-500 shadow-md shadow-slate-200/50 flex items-center gap-4 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-300/40 transition-all duration-200">
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-amber-50 text-amber-600 border border-amber-100/60 shadow-2xs">
-            <Clock size={22} className="stroke-[2.2]" />
+        <div className="bg-white p-3 sm:p-5 rounded-2xl border border-slate-200/90 border-l-[3.5px] border-l-amber-500 shadow-md shadow-slate-200/50 flex items-center gap-2.5 sm:gap-4 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-300/40 transition-all duration-200">
+          <div className="flex h-9 w-9 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-amber-50 text-amber-600 border border-amber-100/60 shadow-2xs">
+            <Clock size={18} className="sm:w-[22px] sm:h-[22px] stroke-[2.2]" />
           </div>
           <div className="min-w-0">
-            <p className="text-[11px] font-bold text-gray-500 uppercase tracking-wider truncate">
+            <p className="text-[10px] sm:text-[11px] font-bold text-gray-500 uppercase tracking-wider truncate">
               PENDING POINTS
             </p>
-            <p className="text-2xl font-extrabold text-gray-900 tracking-tight my-0.5">
+            <p className="text-lg sm:text-2xl font-extrabold text-gray-900 tracking-tight my-0.5">
               {pendingPoints}
             </p>
-            <p className="text-xs text-amber-600 font-medium truncate">
-              {pendingCount} claim{pendingCount === 1 ? "" : "s"} under review
+            <p className="text-[10px] sm:text-xs text-amber-600 font-medium truncate">
+              {pendingCount} claim{pendingCount === 1 ? "" : "s"}
             </p>
           </div>
         </div>
 
         {/* 4. Status About Credit Point Earned (100/100 Complete: Success / Not Complete / Failed) */}
-        <div className="bg-white p-5 rounded-2xl border border-slate-200/90 border-l-[3.5px] border-l-purple-500 shadow-md shadow-slate-200/50 flex items-center gap-4 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-300/40 transition-all duration-200">
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-purple-50 text-purple-600 border border-purple-100/60 shadow-2xs">
-            <ShieldCheck size={22} className="stroke-[2.2]" />
+        <div className="bg-white p-3 sm:p-5 rounded-2xl border border-slate-200/90 border-l-[3.5px] border-l-purple-500 shadow-md shadow-slate-200/50 flex items-center gap-2.5 sm:gap-4 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-300/40 transition-all duration-200">
+          <div className="flex h-9 w-9 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-purple-50 text-purple-600 border border-purple-100/60 shadow-2xs">
+            <ShieldCheck size={18} className="sm:w-[22px] sm:h-[22px] stroke-[2.2]" />
           </div>
           <div className="min-w-0">
-            <p className="text-[11px] font-bold text-gray-500 uppercase tracking-wider truncate">
-              DEGREE STATUS (100/100)
+            <p className="text-[10px] sm:text-[11px] font-bold text-gray-500 uppercase tracking-wider truncate">
+              DEGREE STATUS
             </p>
-            <div className="flex items-center gap-1.5 my-0.5">
-              <span className={`text-base sm:text-lg font-bold ${degreeStatus.color} truncate`}>
+            <div className="flex items-center gap-1 my-0.5">
+              <span className={`text-sm sm:text-base font-bold ${degreeStatus.color} truncate`}>
                 {degreeStatus.label}
               </span>
             </div>
-            <p className="text-[11px] text-gray-500 font-normal truncate" title={degreeStatus.desc}>
+            <p className="text-[10px] sm:text-[11px] text-gray-500 font-normal truncate" title={degreeStatus.desc}>
               {degreeStatus.desc}
             </p>
           </div>
@@ -634,12 +634,12 @@ export default function StudentCreditPoints({ hideHeader = false }) {
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-gradient-to-r from-[#2563eb] via-[#1d4ed8] to-[#1e40af] text-white text-xs font-bold uppercase tracking-wider select-none">
-                  <th className="py-3.5 px-5 text-left w-[32%] min-w-[240px]">Activity / Certificate</th>
-                  <th className="py-3.5 px-4 text-center w-[15%] min-w-[130px]">Category</th>
-                  <th className="py-3.5 px-4 text-center w-[13%] min-w-[110px]">Semester</th>
-                  <th className="py-3.5 px-4 text-center w-[18%] min-w-[160px]">Date &amp; Issuer</th>
-                  <th className="py-3.5 px-4 text-center w-[10%] min-w-[90px]">Points</th>
-                  <th className="py-3.5 px-5 text-center w-[12%] min-w-[130px]">Status</th>
+                  <th className="py-3.5 px-5 text-left w-[32%] min-w-[240px] whitespace-nowrap">Activity / Certificate</th>
+                  <th className="py-3.5 px-4 text-center w-[15%] min-w-[130px] whitespace-nowrap">Category</th>
+                  <th className="py-3.5 px-4 text-center w-[13%] min-w-[110px] whitespace-nowrap">Semester</th>
+                  <th className="py-3.5 px-4 text-center w-[18%] min-w-[160px] whitespace-nowrap">Date &amp; Issuer</th>
+                  <th className="py-3.5 px-4 text-center w-[10%] min-w-[90px] whitespace-nowrap">Points</th>
+                  <th className="py-3.5 px-5 text-center w-[12%] min-w-[130px] whitespace-nowrap">Status</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 text-xs sm:text-sm">

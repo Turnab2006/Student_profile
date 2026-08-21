@@ -1,9 +1,10 @@
 /* Team Section Styles */
 .trackademy-landing-root .team-section {
-    padding: 3.5rem 0;
-    background-color: #ffffff;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    padding: 4.5rem 0;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    font-family: var(--tlp-font-family);
     width: 100%;
+    position: relative;
 }
 
 .trackademy-landing-root .team-container {
@@ -15,31 +16,53 @@
 
 .trackademy-landing-root .team-header {
     text-align: center;
-    max-width: 48rem;
+    max-width: 46rem;
     margin: 0 auto 3.5rem;
 }
 
+.trackademy-landing-root .team-label-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 1rem;
+    border-radius: 9999px;
+    background-color: var(--tlp-badge-bg, #eff6ff);
+    border: 1px solid var(--tlp-badge-border, #dbeafe);
+    margin-bottom: 0.75rem;
+}
+
+.trackademy-landing-root .team-label {
+    font-size: var(--tlp-badge-size, 0.875rem);
+    font-weight: var(--tlp-badge-weight, 600);
+    color: var(--tlp-badge-color, #2563eb);
+    letter-spacing: -0.01em;
+    font-family: var(--tlp-font-family);
+}
+
 .trackademy-landing-root .team-title {
-    margin-top: 0.75rem;
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: #101828;
-    line-height: 1.25;
-    letter-spacing: -0.02em;
+    margin: 0.75rem 0 0 0;
+    font-size: var(--tlp-heading-size-mobile, 1.875rem);
+    font-weight: var(--tlp-heading-weight, 700);
+    line-height: var(--tlp-heading-line-height, 1.25);
+    letter-spacing: var(--tlp-heading-letter-spacing, -0.025em);
+    color: var(--tlp-heading-color, #0f172a);
+    font-family: var(--tlp-font-family);
 }
 
 .trackademy-landing-root .team-subtitle {
-    margin-top: 1rem;
-    font-size: 1rem;
-    color: #475467;
-    line-height: 1.5;
+    margin: 0.85rem 0 0 0;
+    font-size: var(--tlp-subtext-size-mobile, 1rem);
+    font-weight: var(--tlp-subtext-weight, 400);
+    line-height: var(--tlp-subtext-line-height, 1.65);
+    color: var(--tlp-subtext-color, #475467);
+    font-family: var(--tlp-font-family);
 }
 
+/* Grid & Cards */
 .trackademy-landing-root .team-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 3.5rem 2rem;
-    margin-top: 3rem;
+    gap: 1.5rem;
     justify-items: center;
 }
 
@@ -48,48 +71,120 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    max-width: 18rem;
+    width: 100%;
+    max-width: 20rem;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 1.25rem;
+    padding: 2rem 1.5rem 1.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03), 0 2px 4px -2px rgba(0, 0, 0, 0.03);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
 }
 
-.trackademy-landing-root .team-avatar-container {
+.trackademy-landing-root .team-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #3b82f6, #6366f1, #8b5cf6);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.trackademy-landing-root .team-card:hover {
+    transform: translateY(-5px);
+    border-color: #cbd5e1;
+    box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+}
+
+.trackademy-landing-root .team-card:hover::before {
+    opacity: 1;
+}
+
+/* Avatar */
+.trackademy-landing-root .team-avatar-wrapper {
     position: relative;
     margin-bottom: 1.25rem;
 }
 
+.trackademy-landing-root .team-avatar-ring {
+    padding: 3px;
+    background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%);
+    border-radius: 50%;
+    transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.trackademy-landing-root .team-card:hover .team-avatar-ring {
+    transform: scale(1.04);
+    background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+}
+
 .trackademy-landing-root .team-avatar {
-    width: 80px;
-    height: 80px;
+    width: 90px;
+    height: 90px;
     border-radius: 50%;
     object-fit: cover;
-    border: 1px solid #E4E7EC;
-    box-shadow: 0px 4px 6px -2px rgba(16, 24, 40, 0.03), 0px 12px 16px -4px rgba(16, 24, 40, 0.08);
     display: block;
+    background-color: #f1f5f9;
+    border: 2px solid #ffffff;
+}
+
+/* Member Details */
+.trackademy-landing-root .team-card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    flex: 1;
 }
 
 .trackademy-landing-root .team-member-name {
-    font-size: 1.125rem;
-    font-weight: 600;
-    color: #101828;
-    margin-bottom: 0.25rem;
+    font-size: var(--tlp-card-title-size-mobile, 1.125rem);
+    font-weight: var(--tlp-card-title-weight, 700);
+    line-height: var(--tlp-card-title-line-height, 1.35);
+    letter-spacing: var(--tlp-card-title-letter-spacing, -0.015em);
+    color: var(--tlp-heading-color, #0f172a);
+    margin: 0 0 0.4rem 0;
+    font-family: var(--tlp-font-family);
 }
 
-.trackademy-landing-root .team-member-role {
-    font-size: 0.95rem;
-    color: #4776e4;
-    font-weight: 500;
-    margin-bottom: 0.75rem;
+.trackademy-landing-root .team-member-role-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    background-color: var(--tlp-badge-bg, #eff6ff);
+    border: 1px solid var(--tlp-badge-border, #dbeafe);
+    margin-bottom: 0.85rem;
+}
+
+.trackademy-landing-root .team-member-role-badge span {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--tlp-badge-color, #2563eb);
+    letter-spacing: 0.01em;
+    font-family: var(--tlp-font-family);
 }
 
 .trackademy-landing-root .team-member-bio {
-    font-size: 0.95rem;
-    color: #475467;
-    line-height: 1.5;
-    margin-bottom: 1.25rem;
+    font-size: var(--tlp-card-text-size, 0.9375rem);
+    font-weight: var(--tlp-card-text-weight, 400);
+    color: var(--tlp-card-text-color, #475467);
+    line-height: var(--tlp-card-text-line-height, 1.6);
+    margin: 0 0 1.25rem 0;
+    flex: 1;
+    font-family: var(--tlp-font-family);
 }
 
+/* Social Buttons */
 .trackademy-landing-root .team-socials {
     display: flex;
-    gap: 1rem;
+    gap: 0.65rem;
     justify-content: center;
     list-style: none;
     margin: 0;
@@ -97,47 +192,70 @@
 }
 
 .trackademy-landing-root .team-social-link {
-    color: #98A2B3;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #64748b;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    transition: color 0.15s ease;
+    transition: all 0.2s ease;
     text-decoration: none;
 }
 
 .trackademy-landing-root .team-social-link:hover {
-    color: #4776e4;
+    background-color: #eff6ff;
+    color: #2563eb;
+    border-color: #bfdbfe;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.12);
+}
+
+.trackademy-landing-root .team-social-link--github:hover {
+    background-color: #0f172a;
+    color: #ffffff;
+    border-color: #0f172a;
+    box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.2);
+}
+
+.trackademy-landing-root .team-social-link--linkedin:hover {
+    background-color: #0a66c2;
+    color: #ffffff;
+    border-color: #0a66c2;
+    box-shadow: 0 4px 6px -1px rgba(10, 102, 194, 0.2);
 }
 
 /* Responsive sizes */
-@media (min-width: 576px) {
+@media (min-width: 640px) {
     .trackademy-landing-root .team-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 1.75rem;
     }
 }
 
 @media (min-width: 768px) {
     .trackademy-landing-root .team-section {
-        padding: 5rem 0;
+        padding: 5.5rem 0;
     }
 
     .trackademy-landing-root .team-title {
-        font-size: 2.25rem;
+        font-size: var(--tlp-heading-size-desktop, 2.25rem);
     }
 
     .trackademy-landing-root .team-subtitle {
-        font-size: 1.125rem;
+        font-size: var(--tlp-subtext-size-desktop, 1.0625rem);
     }
 
-    .trackademy-landing-root .team-avatar {
-        width: 96px;
-        height: 96px;
+    .trackademy-landing-root .team-member-name {
+        font-size: var(--tlp-card-title-size-desktop, 1.25rem);
     }
 }
 
 @media (min-width: 1024px) {
     .trackademy-landing-root .team-grid {
         grid-template-columns: repeat(4, 1fr);
-        gap: 4rem 2rem;
+        gap: 1.5rem;
     }
 }

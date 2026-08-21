@@ -415,7 +415,7 @@ export default function Attendances({ onNavigate, onOpenSidebar }) {
       )}
 
       {/* Top Header */}
-      <header className="h-[65px] bg-white border-b border-gray-100 px-6 flex items-center justify-between shrink-0 shadow-2xs">
+      <header className="sticky top-0 z-30 h-[65px] bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-2xs">
         <div className="flex items-center gap-3">
           <button
             type="button"

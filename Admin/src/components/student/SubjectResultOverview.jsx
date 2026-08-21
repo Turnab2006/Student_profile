@@ -91,50 +91,50 @@ export default function SubjectResultOverview({
         <table className="w-full text-left border-collapse min-w-[760px]">
           <thead>
             <tr className="bg-[#f0f6ff]/90 text-xs font-bold text-[#1d61e7] rounded-2xl overflow-hidden">
-              <th className="py-4 px-5 rounded-l-2xl">
-                <div className="flex items-center gap-1.5">
+              <th className="py-4 px-5 rounded-l-2xl whitespace-nowrap">
+                <div className="flex items-center gap-1.5 whitespace-nowrap">
                   <Hash size={14} className="text-[#1d61e7] stroke-[2.4]" />
                   <span>SUBJECT CODE</span>
                 </div>
               </th>
-              <th className="py-4 px-5">
-                <div className="flex items-center gap-1.5">
+              <th className="py-4 px-5 whitespace-nowrap">
+                <div className="flex items-center gap-1.5 whitespace-nowrap">
                   <BookOpen size={14} className="text-[#1d61e7] stroke-[2.4]" />
                   <span>SUBJECT NAME</span>
                 </div>
               </th>
-              <th className="py-4 px-5 text-center">
-                <div className="flex items-center justify-center gap-1.5">
+              <th className="py-4 px-5 text-center whitespace-nowrap">
+                <div className="flex items-center justify-center gap-1.5 whitespace-nowrap">
                   <Clock size={14} className="text-[#1d61e7] stroke-[2.4]" />
                   <span>CREDITS</span>
                 </div>
               </th>
-              <th className="py-4 px-5 text-center">
-                <div className="flex items-center justify-center gap-1.5">
+              <th className="py-4 px-5 text-center whitespace-nowrap">
+                <div className="flex items-center justify-center gap-1.5 whitespace-nowrap">
                   <FlaskConical size={14} className="text-[#1d61e7] stroke-[2.4]" />
                   <span>INTERNAL</span>
                 </div>
               </th>
-              <th className="py-4 px-5 text-center">
-                <div className="flex items-center justify-center gap-1.5">
+              <th className="py-4 px-5 text-center whitespace-nowrap">
+                <div className="flex items-center justify-center gap-1.5 whitespace-nowrap">
                   <FileText size={14} className="text-[#1d61e7] stroke-[2.4]" />
                   <span>THEORY</span>
                 </div>
               </th>
-              <th className="py-4 px-5 text-center">
-                <div className="flex items-center justify-center gap-1.5">
+              <th className="py-4 px-5 text-center whitespace-nowrap">
+                <div className="flex items-center justify-center gap-1.5 whitespace-nowrap">
                   <CheckCircle2 size={14} className="text-[#1d61e7] stroke-[2.4]" />
                   <span>TOTAL</span>
                 </div>
               </th>
-              <th className="py-4 px-5 text-center">
-                <div className="flex items-center justify-center gap-1.5">
+              <th className="py-4 px-5 text-center whitespace-nowrap">
+                <div className="flex items-center justify-center gap-1.5 whitespace-nowrap">
                   <Award size={14} className="text-[#1d61e7] stroke-[2.4]" />
                   <span>GRADE</span>
                 </div>
               </th>
-              <th className="py-4 px-5 rounded-r-2xl text-center">
-                <div className="flex items-center justify-center gap-1.5">
+              <th className="py-4 px-5 rounded-r-2xl text-center whitespace-nowrap">
+                <div className="flex items-center justify-center gap-1.5 whitespace-nowrap">
                   <Star size={14} className="text-[#1d61e7] stroke-[2.4]" />
                   <span>POINT</span>
                 </div>

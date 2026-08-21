@@ -320,7 +320,7 @@ export default function AddStudent({ onNavigate, onOpenSidebar }) {
   if (step === 2) {
     return (
       <div className="flex-1 h-full flex flex-col overflow-hidden bg-gray-50">
-        <header className="h-[65px] bg-white border-b border-gray-100 px-6 flex items-center justify-between shrink-0 shadow-2xs">
+        <header className="sticky top-0 z-30 h-[65px] bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-2xs">
           <div className="flex items-center gap-3">
           <button
             type="button"
@@ -335,7 +335,7 @@ export default function AddStudent({ onNavigate, onOpenSidebar }) {
           </button>
             <div>
               <h1 className="text-lg sm:text-xl font-bold text-gray-800 tracking-tight truncate">Add Student</h1>
-              <nav className="flex items-center gap-1.5 text-xs text-gray-400 mt-0.5">
+              <nav className="hidden sm:flex items-center gap-1.5 text-xs text-gray-400 mt-0.5">
                 <span className="hover:text-gray-600 cursor-pointer" onClick={() => onNavigate?.("students")}>Students</span>
                 <span>&gt;</span>
                 <span className="hover:text-gray-600 cursor-pointer" onClick={() => setStep(1)}>Add Student</span>
@@ -548,7 +548,7 @@ export default function AddStudent({ onNavigate, onOpenSidebar }) {
   if (step === 3) {
     return (
       <div className="flex-1 h-full flex flex-col overflow-hidden bg-gray-50">
-        <header className="h-[65px] bg-white border-b border-gray-100 px-6 flex items-center justify-between shrink-0 shadow-2xs">
+        <header className="sticky top-0 z-30 h-[65px] bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-2xs">
           <div className="flex items-center gap-3">
           <button
             type="button"
@@ -563,7 +563,7 @@ export default function AddStudent({ onNavigate, onOpenSidebar }) {
           </button>
             <div>
               <h1 className="text-lg sm:text-xl font-bold text-gray-800 tracking-tight truncate">Add Student</h1>
-              <nav className="flex items-center gap-1.5 text-xs text-gray-400 mt-0.5">
+              <nav className="hidden sm:flex items-center gap-1.5 text-xs text-gray-400 mt-0.5">
                 <span className="hover:text-gray-600 cursor-pointer" onClick={() => onNavigate?.("students")}>Students</span>
                 <span>&gt;</span>
                 <span className="hover:text-gray-600 cursor-pointer" onClick={() => setStep(1)}>Add Student</span>
@@ -811,7 +811,7 @@ export default function AddStudent({ onNavigate, onOpenSidebar }) {
 
   return (
     <div className="flex-1 h-full flex flex-col overflow-hidden">
-      <header className="h-[65px] bg-white border-b border-gray-100 px-6 flex items-center justify-between shrink-0 shadow-2xs">
+      <header className="sticky top-0 z-30 h-[65px] bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-2xs">
         <div className="flex items-center gap-3">
           <button
             type="button"
@@ -826,7 +826,7 @@ export default function AddStudent({ onNavigate, onOpenSidebar }) {
           </button>
           <div>
             <h1 className="text-lg sm:text-xl font-bold text-gray-800 tracking-tight truncate">Add Student</h1>
-            <nav className="flex items-center gap-1.5 text-xs text-gray-400 mt-0.5">
+            <nav className="hidden sm:flex items-center gap-1.5 text-xs text-gray-400 mt-0.5">
               <span className="hover:text-gray-600 cursor-pointer" onClick={() => onNavigate?.("students")}>Students</span>
               <span>&gt;</span>
               <span className="text-[#0da651] font-semibold">Add Student</span>

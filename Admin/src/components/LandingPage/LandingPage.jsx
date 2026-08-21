@@ -333,111 +333,102 @@ export function Feature() {
             <div className="feature-container">
                 <div className="feature-header">
                     <div className="feature-label-badge">
-                        <span className="feature-label">Features</span>
+                        <span className="feature-label">Platform Capabilities</span>
                     </div>
-                    <h2 className="feature-title">Everything You Need, All in One Place</h2>
+                    <h2 className="feature-title">Everything You Need to Power Academic Excellence</h2>
                     <p className="feature-subtitle">
-                        Powerful tools designed to simplify the educational journey and drive better student outcomes through intuitive design.
+                        A unified academic ecosystem engineered to streamline evaluations, automate attendance, verify co-curricular credentials, and connect your entire campus.
                     </p>
                 </div>
 
                 <div className="feature-grid">
-                    {/* Card 1: Grades & Feedback */}
+                    {/* Card 1: Grades & Performance Analytics */}
                     <div className="feature-card">
                         <div className="feature-card__icon-slot"> 
                             <svg className="feature-card__icon" width="60" height="60" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="8" y="5" width="30" height="34" rx="4" fill="#EAF4FF" stroke="#1D5FA7" strokeWidth="2.5" />
-                                <path d="M29 5v8a3 3 0 0 0 3 3h5" fill="#B9DDFF" stroke="#1D5FA7" strokeWidth="2.5" strokeLinejoin="round" />
-                                <path d="M14 20l3 3 6-7" stroke="#1D5FA7" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" />
-                                <path d="M14 29l3 3 6-7" stroke="#1D5FA7" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" />
-                                <path d="M26 21h8M26 30h6" stroke="#7FB3E8" strokeWidth="2.5" strokeLinecap="round" />
+                                <rect x="8" y="5" width="30" height="36" rx="5" fill="#EAF4FF" stroke="#1D5FA7" strokeWidth="2.5" />
+                                <path d="M29 5v8a3 3 0 0 0 3 3h6" fill="#B9DDFF" stroke="#1D5FA7" strokeWidth="2.5" strokeLinejoin="round" />
+                                <path d="M14 18h9M14 24h18M14 30h14" stroke="#1D5FA7" strokeWidth="2.5" strokeLinecap="round" />
+                                <path d="M29 27l3 3 6-6" stroke="#2563EB" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" />
+                                <circle cx="17" cy="35" r="3" fill="#B9DDFF" stroke="#1D5FA7" strokeWidth="2" />
                             </svg>
                         </div>
-                        <h3 className="feature-card__title">Grades & Feedback</h3>
-                        <p className="feature-card__description">Track academic performance and provide meaningful feedback to students</p>
+                        <h3 className="feature-card__title">Grades & Results Tracking</h3>
+                        <p className="feature-card__description">Real-time semester SGPA calculation, subject score breakdowns, and downloadable official grade cards.</p>
                     </div>
 
-                    {/* Card 2: Profile Management */}
+                    {/* Card 2: Smart Attendance Tracking */}
                     <div className="feature-card feature-card--border-left">
                         <div className="feature-card__icon-slot">
                             <svg className="feature-card__icon" width="60" height="60" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="23" cy="23" r="18" fill="#EAF4FF" stroke="#1D5FA7" strokeWidth="2.5" />
-                                <circle cx="23" cy="18" r="6" fill="#B9DDFF" stroke="#1D5FA7" strokeWidth="2.5" />
-                                <path d="M12 36c2-8 6-12 11-12s9 4 11 12" fill="#B9DDFF" stroke="#1D5FA7" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                                <rect x="7" y="10" width="32" height="28" rx="5" fill="#EAF4FF" stroke="#1D5FA7" strokeWidth="2.5" />
+                                <path d="M7 18h32" stroke="#1D5FA7" strokeWidth="2.5" />
+                                <path d="M15 6v6M31 6v6" stroke="#1D5FA7" strokeWidth="2.5" strokeLinecap="round" />
+                                <path d="M15 27l3 3 6-6" stroke="#16A34A" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" />
+                                <circle cx="30" cy="27" r="4" fill="#B9DDFF" stroke="#1D5FA7" strokeWidth="2" />
                             </svg>
                         </div>
-                        <h3 className="feature-card__title">Profile Management</h3>
-                        <p className="feature-card__description">Manage complete profile with secure access controls</p>
+                        <h3 className="feature-card__title">Smart Attendance Monitoring</h3>
+                        <p className="feature-card__description">Live class-wise attendance monitoring with automatic threshold warnings and subject percentage analytics.</p>
                     </div>
 
-                    {/* Card 3: Advanced Analytics */}
+                    {/* Card 3: Profile & Digital ID Card */}
                     <div className="feature-card feature-card--border-left">
                         <div className="feature-card__icon-slot">
                             <svg className="feature-card__icon" width="60" height="60" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="7" y="7" width="35" height="32" rx="5" fill="#EAF4FF" stroke="#1D5FA7" strokeWidth="2.5" />
-                                <path d="M7 15h35" stroke="#1D5FA7" strokeWidth="2.5" />
-                                <path d="M15 33V27M22 33V22M29 33V25M35 33V18" stroke="#7FB3E8" strokeWidth="2.7" strokeLinecap="round" />
-                                <path d="M13 25l8-7 8 4 7-9" stroke="#1D5FA7" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                                <circle cx="13" cy="25" r="2" fill="#1D5FA7" />
-                                <circle cx="21" cy="18" r="2" fill="#1D5FA7" />
-                                <circle cx="29" cy="22" r="2" fill="#1D5FA7" />
-                                <circle cx="36" cy="13" r="2" fill="#1D5FA7" />
+                                <rect x="6" y="8" width="34" height="30" rx="5" fill="#EAF4FF" stroke="#1D5FA7" strokeWidth="2.5" />
+                                <circle cx="16" cy="20" r="4.5" fill="#B9DDFF" stroke="#1D5FA7" strokeWidth="2.2" />
+                                <path d="M10 32c1-3 3.5-5 6-5s5 2 6 5" fill="#B9DDFF" stroke="#1D5FA7" strokeWidth="2.2" strokeLinecap="round" />
+                                <path d="M26 18h8M26 23h6M26 28h5" stroke="#7FB3E8" strokeWidth="2.4" strokeLinecap="round" />
+                                <rect x="29" y="11" width="7" height="4" rx="1.5" fill="#1D5FA7" />
                             </svg>
                         </div>
-                        <h3 className="feature-card__title">Advanced Analytics</h3>
-                        <p className="feature-card__description">Data-driven insights for academic excellence</p>
+                        <h3 className="feature-card__title">Digital ID & Verified Profiles</h3>
+                        <p className="feature-card__description">Centralized profile records with QR-ready verified Digital ID cards for fast campus identification.</p>
                     </div>
 
-                    {/* Card 4: Attendance Tracking */}
+                    {/* Card 4: Mentorship & Mentee Directory */}
                     <div className="feature-card feature-card--border-top">
                         <div className="feature-card__icon-slot">
                             <svg className="feature-card__icon" width="60" height="60" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="7" y="12" width="32" height="26" rx="4" fill="#EAF4FF" stroke="#1D5FA7" strokeWidth="2.5" />
-                                <path d="M7 19h32" stroke="#1D5FA7" strokeWidth="2.5" />
-                                <path d="M18 12V8h10v4" stroke="#1D5FA7" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                                <circle cx="16" cy="27" r="3.5" fill="#B9DDFF" stroke="#1D5FA7" strokeWidth="2.2" />
-                                <path d="M10 36c1.2-4.5 3.5-7 6-7s4.8 2.5 6 7" fill="#B9DDFF" stroke="#1D5FA7" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-                                <path d="M26 26h7M26 32h5" stroke="#7FB3E8" strokeWidth="2.4" strokeLinecap="round" />
-                                <path d="M31 26l3 3 6-7" stroke="#1D5FA7" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
+                                <circle cx="17" cy="18" r="5" fill="#B9DDFF" stroke="#1D5FA7" strokeWidth="2.5" />
+                                <path d="M8 34c1.5-5 5-8 9-8s7.5 3 9 8" fill="#B9DDFF" stroke="#1D5FA7" strokeWidth="2.5" strokeLinecap="round" />
+                                <circle cx="31" cy="16" r="3.5" fill="#EAF4FF" stroke="#1D5FA7" strokeWidth="2.2" />
+                                <path d="M26 31c1-3 3-5 5-5s4 2 5 5" stroke="#1D5FA7" strokeWidth="2.2" strokeLinecap="round" />
+                                <path d="M28 20l4-3 4 3" stroke="#2563EB" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
                             </svg>
                         </div>
-                        <h3 className="feature-card__title">Attendance Tracking</h3>
-                        <p className="feature-card__description">Automated attendance management and reports</p>
+                        <h3 className="feature-card__title">Faculty Mentorship Network</h3>
+                        <p className="feature-card__description">Direct mentee monitoring, attendance alerts, messaging channels, and personalized student guidance.</p>
                     </div>
 
-                    {/* Card 5: Academic Calendar */}
+                    {/* Card 5: Notice & Circular Broadcast */}
                     <div className="feature-card feature-card--border-left feature-card--border-top">
                         <div className="feature-card__icon-slot">
                             <svg className="feature-card__icon" width="60" height="60" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="8" y="10" width="30" height="28" rx="4" fill="#EAF4FF" stroke="#1D5FA7" strokeWidth="2.5" />
-                                <path d="M8 18h30" stroke="#1D5FA7" strokeWidth="2.5" />
-                                <path d="M16 7v7M30 7v7" stroke="#1D5FA7" strokeWidth="2.5" strokeLinecap="round" />
-                                <rect x="14" y="23" width="5" height="5" rx="1.3" fill="#B9DDFF" />
-                                <rect x="22" y="23" width="5" height="5" rx="1.3" fill="#B9DDFF" />
-                                <rect x="30" y="23" width="5" height="5" rx="1.3" fill="#B9DDFF" />
-                                <path d="M16 33l3 3 7-8" stroke="#1D5FA7" strokeWidth="2.7" strokeLinecap="round" strokeLinejoin="round" />
+                                <path d="M8 26V18a2 2 0 0 1 2-2h4l10-6v24l-10-6h-4a2 2 0 0 1-2-2z" fill="#EAF4FF" stroke="#1D5FA7" strokeWidth="2.5" strokeLinejoin="round" />
+                                <path d="M10 26l2 9h4l-2-9" fill="#B9DDFF" stroke="#1D5FA7" strokeWidth="2.5" strokeLinejoin="round" />
+                                <path d="M28 17a5 5 0 0 1 0 10M32 14a9 9 0 0 1 0 16" stroke="#2563EB" strokeWidth="2.5" strokeLinecap="round" />
+                                <circle cx="11" cy="21" r="1.5" fill="#1D5FA7" />
                             </svg>
                         </div>
-                        <h3 className="feature-card__title">Academic Calendar</h3>
-                        <p className="feature-card__description">Organize events and deadlines efficiently</p>
+                        <h3 className="feature-card__title">Notice & Circular Broadcasts</h3>
+                        <p className="feature-card__description">Targeted institutional announcements with priority tags, PDF attachments, and instant notice board updates.</p>
                     </div>
 
-                    {/* Card 6: AI Assistance */}
+                    {/* Card 6: Co-curricular Credit Points & Activities */}
                     <div className="feature-card feature-card--border-left feature-card--border-top">
                         <div className="feature-card__icon-slot">
                             <svg className="feature-card__icon" width="60" height="60" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="10" y="13" width="26" height="21" rx="7" fill="#EAF4FF" stroke="#1D5FA7" strokeWidth="2.5" />
-                                <path d="M17 13V9M29 13V9" stroke="#1D5FA7" strokeWidth="2.5" strokeLinecap="round" />
-                                <circle cx="18" cy="23" r="2.2" fill="#1D5FA7" />
-                                <circle cx="28" cy="23" r="2.2" fill="#1D5FA7" />
-                                <path d="M19 28c2.5 2 5.5 2 8 0" stroke="#1D5FA7" strokeWidth="2.5" strokeLinecap="round" />
-                                <path d="M5 24h5M36 24h5" stroke="#1D5FA7" strokeWidth="2.5" strokeLinecap="round" />
-                                <path d="M23 34v4M17 38h12" stroke="#1D5FA7" strokeWidth="2.5" strokeLinecap="round" />
-                                <path d="M36 7l1.5 4 4 1.5-4 1.5-1.5 4-1.5-4-4-1.5 4-1.5z" fill="#B9DDFF" stroke="#1D5FA7" strokeWidth="2" strokeLinejoin="round" />
+                                <path d="M13 10h20v11a10 10 0 0 1-20 0V10z" fill="#EAF4FF" stroke="#1D5FA7" strokeWidth="2.5" strokeLinejoin="round" />
+                                <path d="M13 14H8a3 3 0 0 0-3 3v2a4 4 0 0 0 4 4h4" stroke="#1D5FA7" strokeWidth="2.5" strokeLinejoin="round" />
+                                <path d="M33 14h5a3 3 0 0 1 3 3v2a4 4 0 0 1-4 4h-4" stroke="#1D5FA7" strokeWidth="2.5" strokeLinejoin="round" />
+                                <path d="M23 21v8M17 37h12M19 29h8v8h-8z" stroke="#1D5FA7" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                                <path d="M23 13l1.5 3 3.5.5-2.5 2.5.5 3.5-3-1.5-3 1.5.5-3.5-2.5-2.5 3.5-.5z" fill="#F59E0B" stroke="#D97706" strokeWidth="1.5" strokeLinejoin="round" />
                             </svg>
                         </div>
-                        <h3 className="feature-card__title">AI Assistance</h3>
-                        <p className="feature-card__description">Get intelligent insights and recommendations for better outcomes</p>
+                        <h3 className="feature-card__title">Credit Points & Activities</h3>
+                        <p className="feature-card__description">Record hackathons, research papers, and co-curricular achievements with verified mentor credit approvals.</p>
                     </div>
                 </div>
             </div>
@@ -456,38 +447,42 @@ export function Overview() {
                     <div className="overview-label-badge">
                         <span className="overview-label">Portals Overview</span>
                     </div>
-                    <h2 className="overview-title">Beautiful analytics to grow smarter</h2>
+                    <h2 className="overview-title">One Platform. Three Tailored Portals.</h2>
                     <p className="overview-subtitle">
-                        Powerful, self-serve product and growth analytics to help you convert, engage, and retain more users. Trusted by over 4,000 startups.
+                        Purpose-built environments designed specifically for students, faculty mentors, and academic administrators to collaborate, track progress, and excel.
                     </p>
                 </div>
 
                 <div className="overview-rows">
-                    {/* Row 1 */}
-                    <div className="overview-row">
+                    {/* Row 1: Student Portal */}
+                    <div className="overview-row overview-row--student">
                         <div className="overview-text-col">
+                            <div className="overview-portal-badge overview-portal-badge--student">
+                                Student Portal
+                            </div>
                             <div className="overview-title-container">
-                                <div className="overview-icon-box">
+                                <div className="overview-icon-box overview-icon-box--student">
                                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                        <path d="M22 10v6M2 10l10-5 10 5-10 5z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                        <path d="M6 12v5c3 3 9 3 12 0v-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                     </svg>
                                 </div>
-                                <h3 className="overview-row-title">Share team inboxes</h3>
+                                <h3 className="overview-row-title">Empowering Students to Excel</h3>
                             </div>
                             <p className="overview-row-desc">
-                                Whether you have a team of 2 or 200, our shared team inboxes keep everyone on the same page and in the loop.
+                                A personalized academic hub where students can track semester-wise results, subject attendance, co-curricular credit points, downloadable grade cards, and official notices in real time.
                             </p>
                             <ul className="overview-checklist">
                                 {[
-                                    "Leverage automation to move fast",
-                                    "Always give customers a human to chat to",
-                                    "Automate customer support and close leads faster",
+                                    "Live attendance tracking with subject breakdown and percentage alerts",
+                                    "Instant semester SGPA, grade cards and academic performance analytics",
+                                    "Verified Digital ID Card and co-curricular credit points tracker",
                                 ].map((feat, idx) => (
                                     <li key={idx} className="overview-check-item">
                                         <div className="overview-check-icon">
                                             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <circle cx="12" cy="12" r="10" stroke="#7F56D9" strokeWidth="2" fill="#F9F5FF" />
-                                                <path d="M8.5 12.5L11 15L15.5 9" stroke="#7F56D9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                <circle cx="12" cy="12" r="10" stroke="#2563eb" strokeWidth="2" fill="#eff6ff" />
+                                                <path d="M8.5 12.5L11 15L15.5 9" stroke="#2563eb" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                             </svg>
                                         </div>
                                         <span>{feat}</span>
@@ -507,31 +502,37 @@ export function Overview() {
                         </div>
                     </div>
 
-                    {/* Row 2 */}
-                    <div className="overview-row overview-row--reverse">
+                    {/* Row 2: Mentor Portal */}
+                    <div className="overview-row overview-row--reverse overview-row--mentor">
                         <div className="overview-text-col">
+                            <div className="overview-portal-badge overview-portal-badge--mentor">
+                                Mentor Portal
+                            </div>
                             <div className="overview-title-container">
-                                <div className="overview-icon-box">
+                                <div className="overview-icon-box overview-icon-box--mentor">
                                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                        <circle cx="9" cy="7" r="4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                        <path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                     </svg>
                                 </div>
-                                <h3 className="overview-row-title">Deliver instant answers</h3>
+                                <h3 className="overview-row-title">Actionable Mentee Insights & Guidance</h3>
                             </div>
                             <p className="overview-row-desc">
-                                An all-in-one customer service platform that helps you balance everything your customers need to be happy.
+                                Equips faculty mentors with holistic student records, automated attendance warnings, direct mentee communication channels, and fast credit point evaluations.
                             </p>
                             <ul className="overview-checklist">
                                 {[
-                                    "Keep your customers in the loop with live chat",
-                                    "Embed help articles right on your website",
-                                    "Customers never have to leave the page to find an answer",
+                                    "Comprehensive mentee directory with real-time academic indicators",
+                                    "Direct messaging and proactive academic intervention tools",
+                                    "Fast credit point issuance and co-curricular activity reviews",
                                 ].map((feat, idx) => (
                                     <li key={idx} className="overview-check-item">
                                         <div className="overview-check-icon">
                                             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <circle cx="12" cy="12" r="10" stroke="#7F56D9" strokeWidth="2" fill="#F9F5FF" />
-                                                <path d="M8.5 12.5L11 15L15.5 9" stroke="#7F56D9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                <circle cx="12" cy="12" r="10" stroke="#7656f4" strokeWidth="2" fill="#f5f3ff" />
+                                                <path d="M8.5 12.5L11 15L15.5 9" stroke="#7656f4" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                             </svg>
                                         </div>
                                         <span>{feat}</span>
@@ -551,32 +552,35 @@ export function Overview() {
                         </div>
                     </div>
 
-                    {/* Row 3 */}
-                    <div className="overview-row">
+                    {/* Row 3: Admin Portal */}
+                    <div className="overview-row overview-row--admin">
                         <div className="overview-text-col">
+                            <div className="overview-portal-badge overview-portal-badge--admin">
+                                Admin Portal
+                            </div>
                             <div className="overview-title-container">
-                                <div className="overview-icon-box">
+                                <div className="overview-icon-box overview-icon-box--admin">
                                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" strokeWidth="2" />
-                                        <path d="M18 17V9M12 17V7M6 17v-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                        <path d="M9 12l2 2 4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                     </svg>
                                 </div>
-                                <h3 className="overview-row-title">Manage your team with reports</h3>
+                                <h3 className="overview-row-title">Centralized Governance & Operations</h3>
                             </div>
                             <p className="overview-row-desc">
-                                Measure what matters with Trackademy's easy-to-use reports. You can filter, export, and drilldown on the data in a couple clicks.
+                                Comprehensive administrative command to manage departments, faculty allocations, student admissions, syllabus curricula, circulars, and institutional support.
                             </p>
                             <ul className="overview-checklist">
                                 {[
-                                    "Filter, export, and drilldown on the data quickly",
-                                    "Save, schedule, and automate reports to your inbox",
-                                    "Connect the tools you already use with 100+ integrations",
+                                    "End-to-end student, faculty mentor, and department management",
+                                    "Comprehensive curriculum, semester timetable, and subject controls",
+                                    "Institution-wide notice broadcasting with priority categorizations",
                                 ].map((feat, idx) => (
                                     <li key={idx} className="overview-check-item">
                                         <div className="overview-check-icon">
                                             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <circle cx="12" cy="12" r="10" stroke="#7F56D9" strokeWidth="2" fill="#F9F5FF" />
-                                                <path d="M8.5 12.5L11 15L15.5 9" stroke="#7F56D9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                <circle cx="12" cy="12" r="10" stroke="#4338ca" strokeWidth="2" fill="#eef2ff" />
+                                                <path d="M8.5 12.5L11 15L15.5 9" stroke="#4338ca" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                             </svg>
                                         </div>
                                         <span>{feat}</span>
@@ -606,28 +610,33 @@ export function Overview() {
 // -------------------------------------------------------------
 const DEFAULT_FAQS = [
     {
-        question: 'Who can use the Student Management Portal?',
-        answer: 'The portal is designed for three types of users: students, mentors, and administrators. Each user is given role-based access, meaning they can only view or manage the information relevant to them. Students can check their academic details, mentors can monitor and update performance, and administrators have full control over the system.',
+        category: 'Portal Architecture',
+        question: 'How do the Student, Mentor, and Admin portals communicate with each other?',
+        answer: 'Trackademy unites all three portals under a synchronized academic engine. <strong>Students</strong> track real-time attendance, SGPA results, credit point histories, and circulars; <strong>Mentors</strong> review their assigned mentees, approve co-curricular credits, and communicate directly; and <strong>Administrators</strong> govern departments, semester curricula, faculty assignments, and institution-wide circulars with complete security controls.',
+        open: true
+    },
+    {
+        category: 'Smart Attendance',
+        question: 'How is subject-wise attendance computed and how do low attendance warnings work?',
+        answer: 'Attendance is recorded per lecture session. The system instantly computes individual subject percentages and overall semester averages. Whenever attendance dips below institutional thresholds (e.g. 75%), clear visual warning indicators and notifications are flagged for both student and mentor.',
         open: false
     },
     {
-        question: 'What features are available in the portal?',
-        answer: 'The portal offers a wide range of features including profile management, attendance tracking, academic results, notices, and activity records. All these features are integrated into a single dashboard, making it easy for users to access and manage information without switching between multiple systems.',
+        category: 'Digital Credentials',
+        question: 'What is the Digital ID Card and how does campus verification work?',
+        answer: 'The Digital ID Card is an official, verifiable digital credential accessible on student and mentor profile dashboards. It features key student records (Roll Number, Department, Batch, Blood Group, Emergency Contact) with an interactive 3D front-and-back view for instant campus verification.',
         open: false
     },
     {
-        question: 'How does the AI chatbot help users?',
-        answer: 'The AI-powered chatbot simplifies data access by providing quick summaries of student information. Instead of manually searching through records, users can ask the chatbot and instantly get insights about attendance, performance, and activities. This helps mentors and administrators make faster and more informed decisions.',
+        category: 'Academic Results',
+        question: 'Can students and mentors download verified semester grade cards and SGPA reports?',
+        answer: 'Yes. Students and faculty can view comprehensive internal, theory, and practical mark breakdowns for all completed semesters. Official PDF grade cards featuring SGPA, cumulative CGPA, and letter grade classifications can be downloaded directly with a single click.',
         open: false
     },
     {
-        question: 'Is the portal accessible on mobile devices?',
-        answer: 'Yes, the portal is fully web-based and designed to be responsive across different devices. Users can access it on smartphones, tablets, or desktops without any loss of functionality. This ensures convenience and allows users to stay updated anytime and from anywhere.',
-        open: false
-    },
-    {
-        question: 'What happens if there is incorrect or missing data?',
-        answer: 'If any data is incorrect or missing, authorized users such as mentors or administrators can easily update and correct it through the system. The portal also includes validation mechanisms to reduce errors, ensuring that the stored information remains accurate and reliable.',
+        category: 'Credit Points',
+        question: 'How does the co-curricular activity and credit points approval system operate?',
+        answer: 'Students submit verifiable records for hackathons, research papers, technical workshops, cultural events, and sports. Assigned faculty mentors review the evidence and approve verified credit points that immediately reflect on the student’s profile and graduation records.',
         open: false
     }
 ];
@@ -660,7 +669,7 @@ export function Faq({ faqs = DEFAULT_FAQS, onSupportClick }) {
                         <span className="faq-label">FAQ</span>
                     </div>
                     <h2 className="faq-title">Frequently Asked Questions</h2>
-                    <p className="faq-subtitle">Everything you need to know about the product and billing.</p>
+                    <p className="faq-subtitle">Quick answers to common questions about portals, attendance monitoring, grade cards, and institutional verification.</p>
                 </div>
 
                 <div className="faq-list">
@@ -672,38 +681,76 @@ export function Faq({ faqs = DEFAULT_FAQS, onSupportClick }) {
                                 onClick={() => toggleFaq(index)}
                                 aria-expanded={item.open}
                             >
-                                <span className="faq-question">{item.question}</span>
-                                <svg
-                                    className={`faq-icon ${item.open ? 'faq-icon--rotated' : ''}`}
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2.5"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path d="M19 9l-7 7-7-7" />
-                                </svg>
+                                <div className="faq-question-wrap">
+                                    {item.category && (
+                                        <span className="faq-category-tag">{item.category}</span>
+                                    )}
+                                    <span className="faq-question">{item.question}</span>
+                                </div>
+                                <div className="faq-icon-circle">
+                                    <svg
+                                        className={`faq-icon ${item.open ? 'faq-icon--rotated' : ''}`}
+                                        width="16"
+                                        height="16"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        strokeWidth="2.5"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </div>
                             </button>
 
                             {item.open && (
                                 <div className="faq-content">
-                                    <p dangerouslySetInnerHTML={{ __html: item.answer }} />
+                                    <div className="faq-content-inner">
+                                        <p dangerouslySetInnerHTML={{ __html: item.answer }} />
+                                    </div>
                                 </div>
                             )}
                         </div>
                     ))}
                 </div>
 
-                <p className="faq-footer">
-                    Didn’t find the answer you are looking for?{' '}
-                    <a href="#contact" onClick={handleSupportClick}>
-                        Contact our support
-                    </a>
-                </p>
+                {/* Updated Still Have Questions Card */}
+                <div className="faq-support-card">
+                    <div className="faq-support-main">
+                        <div className="faq-support-icon-box">
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                                <circle cx="9" cy="10" r="1" fill="currentColor" />
+                                <circle cx="12" cy="10" r="1" fill="currentColor" />
+                                <circle cx="15" cy="10" r="1" fill="currentColor" />
+                            </svg>
+                        </div>
+                        <div className="faq-support-info">
+                            <h4 className="faq-support-title">Still have questions?</h4>
+                            <p className="faq-support-desc">Can’t find the answer you’re looking for? Our campus support team is here to assist you.</p>
+                        </div>
+                    </div>
+
+                    <div className="faq-support-actions">
+                        <a href="mailto:support@trackademy.in" className="faq-support-link-email">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <rect width="20" height="16" x="2" y="4" rx="2" />
+                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                            </svg>
+                            <span>support@trackademy.in</span>
+                        </a>
+
+                        <a href="#contact" className="faq-support-btn" onClick={handleSupportClick}>
+                            <span>Contact Support</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                                <polyline points="12 5 19 12 12 19" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
             </div>
         </section>
     );
@@ -781,34 +828,44 @@ export function Team({ members = DEFAULT_MEMBERS }) {
         <section className="team-section" id="team">
             <div className="team-container">
                 <div className="team-header">
-                    <h2 className="team-title">Meet our team</h2>
+                    <div className="team-label-badge">
+                        <span className="team-label">Our Creators</span>
+                    </div>
+                    <h2 className="team-title">Meet the Builders Behind Trackademy</h2>
                     <p className="team-subtitle">
-                        Our mission is to simplify student management through technology, creating a seamless platform that connects students, mentors, and administrators while fostering academic growth and collaboration.
+                        Passionate student engineers and designers dedicated to crafting intuitive, next-generation academic software.
                     </p>
                 </div>
 
                 <div className="team-grid">
                     {members.map((item) => (
                         <div key={item.name} className="team-card">
-                            <div className="team-avatar-container">
-                                <img src={item.avatarUrl} alt={item.name} className="team-avatar" />
+                            <div className="team-avatar-wrapper">
+                                <div className="team-avatar-ring">
+                                    <img src={item.avatarUrl} alt={item.name} className="team-avatar" />
+                                </div>
                             </div>
-                            <h3 className="team-member-name">{item.name}</h3>
-                            <p className="team-member-role">{item.title}</p>
-                            <p className="team-member-bio">{item.summary}</p>
-                            <div className="team-socials">
-                                {item.socials.map((social, idx) => (
-                                    <a
-                                        key={idx}
-                                        href={social.href}
-                                        className="team-social-link"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        aria-label={`${item.name} ${social.platform}`}
-                                    >
-                                        {renderSocialIcon(social.platform)}
-                                    </a>
-                                ))}
+                            <div className="team-card-content">
+                                <h3 className="team-member-name">{item.name}</h3>
+                                <div className="team-member-role-badge">
+                                    <span>{item.title}</span>
+                                </div>
+                                <p className="team-member-bio">{item.summary}</p>
+                                <div className="team-socials">
+                                    {item.socials.map((social, idx) => (
+                                        <a
+                                            key={idx}
+                                            href={social.href}
+                                            className={`team-social-link team-social-link--${social.platform}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            aria-label={`${item.name} ${social.platform}`}
+                                            title={`${item.name}'s ${social.platform.charAt(0).toUpperCase() + social.platform.slice(1)}`}
+                                        >
+                                            {renderSocialIcon(social.platform)}
+                                        </a>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     ))}
@@ -824,14 +881,17 @@ export function Team({ members = DEFAULT_MEMBERS }) {
 export function Contact({
     onContactSubmit,
     contactInfo = {
-        location: 'Canal 5 Rd, Belinghatta, Kolkata, West Bengal 700015',
-        phone: '+91 9853563240',
-        email: 'support@trackademy.com',
+        location: 'Trackademy Campus HQ, Sector V, Bidhannagar, Kolkata, West Bengal 700091',
+        phone: '+91 98300 12345 / +91 33 2357 0000',
+        email: 'support@trackademy.in',
+        hours: 'Monday – Saturday: 9:00 AM – 6:00 PM IST',
     }
 }) {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
+        phone: '',
+        inquiryType: 'student_support',
         subject: '',
         message: ''
     });
@@ -851,10 +911,17 @@ export function Contact({
         if (onContactSubmit) {
             onContactSubmit(formData);
         } else {
-            setStatusMessage(`Thank you, ${formData.name}! Your message has been sent.`);
-            setTimeout(() => setStatusMessage(''), 5000);
+            setStatusMessage(`Thank you, ${formData.name}! Your inquiry regarding "${formData.subject || 'Portal Support'}" has been received. Our team will contact you within 24 hours.`);
+            setTimeout(() => setStatusMessage(''), 6000);
         }
-        setFormData({ name: '', email: '', subject: '', message: '' });
+        setFormData({
+            name: '',
+            email: '',
+            phone: '',
+            inquiryType: 'student_support',
+            subject: '',
+            message: ''
+        });
     };
 
     return (
@@ -867,60 +934,110 @@ export function Contact({
                         <div className="contact-label-badge">
                             <span className="contact-label">CONTACT US</span>
                         </div>
-                        <h2 className="contact-title">Get in Touch</h2>
+                        <h2 className="contact-title">We're Here to Help</h2>
                         <p className="contact-description">
-                            We're here to help and answer any questions you may have about how Trackademy can transform your educational institution.
+                            Have questions about our portals, student grading workflows, attendance integrations, or institutional deployment? Reach out to our dedicated campus support team.
                         </p>
 
-                        <ul className="contact-info-list">
-                            <li className="contact-info-item">
-                                <div className="contact-icon-wrapper">
+                        <div className="contact-cards-grid">
+                            <div className="contact-info-card">
+                                <div className="contact-icon-wrapper contact-icon-wrapper--location">
                                     <svg viewBox="0 0 24 24">
                                         <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
                                         <circle cx="12" cy="10" r="3" />
                                     </svg>
                                 </div>
                                 <div className="contact-info-text">
-                                    <h3 className="contact-info-label">Our Location</h3>
+                                    <h3 className="contact-info-label">Campus Location</h3>
                                     <p className="contact-info-value">{contactInfo.location}</p>
                                 </div>
-                            </li>
+                            </div>
 
-                            <li className="contact-info-item">
-                                <div className="contact-icon-wrapper">
+                            <div className="contact-info-card">
+                                <div className="contact-icon-wrapper contact-icon-wrapper--phone">
                                     <svg viewBox="0 0 24 24">
                                         <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
                                     </svg>
                                 </div>
                                 <div className="contact-info-text">
-                                    <h3 className="contact-info-label">Call Us</h3>
-                                    <p className="contact-info-value">{contactInfo.phone}</p>
+                                    <h3 className="contact-info-label">Helpline Support</h3>
+                                    <p className="contact-info-value">
+                                        <a href="tel:+919830012345" className="contact-link">+91 98300 12345</a> / <a href="tel:+913323570000" className="contact-link">+91 33 2357 0000</a>
+                                    </p>
                                 </div>
-                            </li>
+                            </div>
 
-                            <li className="contact-info-item">
-                                <div className="contact-icon-wrapper">
+                            <div className="contact-info-card">
+                                <div className="contact-icon-wrapper contact-icon-wrapper--email">
                                     <svg viewBox="0 0 24 24">
                                         <rect width="20" height="16" x="2" y="4" rx="2" />
                                         <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
                                     </svg>
                                 </div>
                                 <div className="contact-info-text">
-                                    <h3 className="contact-info-label">Email Support</h3>
-                                    <p className="contact-info-value">{contactInfo.email}</p>
+                                    <h3 className="contact-info-label">Email Inquiries</h3>
+                                    <p className="contact-info-value">
+                                        <a href={`mailto:${contactInfo.email}`} className="contact-link">{contactInfo.email}</a>
+                                    </p>
                                 </div>
-                            </li>
-                        </ul>
+                            </div>
+
+                            <div className="contact-info-card">
+                                <div className="contact-icon-wrapper contact-icon-wrapper--hours">
+                                    <svg viewBox="0 0 24 24">
+                                        <circle cx="12" cy="12" r="10" />
+                                        <polyline points="12 6 12 12 16 14" />
+                                    </svg>
+                                </div>
+                                <div className="contact-info-text">
+                                    <div className="contact-label-row">
+                                        <h3 className="contact-info-label">Working Hours</h3>
+                                        <span className="contact-status-pill">
+                                            <span className="contact-status-dot"></span> Open Today
+                                        </span>
+                                    </div>
+                                    <p className="contact-info-value">{contactInfo.hours}</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     {/* Right Form Column */}
                     <div className="contact-form-card">
+                        <div className="contact-form-header">
+                            <h3 className="contact-form-title">Send Us a Message</h3>
+                            <p className="contact-form-subtitle">Fill in the details below and our academic support team will get back to you promptly.</p>
+                        </div>
+
                         <form onSubmit={handleSubmit} className="contact-form">
                             {statusMessage && (
-                                <div style={{ padding: '10px 14px', background: '#ecfdf5', color: '#065f46', borderRadius: '8px', fontSize: '14px', fontWeight: '500' }}>
-                                    {statusMessage}
+                                <div className="contact-status-alert">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                        <polyline points="22 4 12 14.01 9 11.01" />
+                                    </svg>
+                                    <span>{statusMessage}</span>
                                 </div>
                             )}
+
+                            {/* Inquiry Category */}
+                            <div className="contact-form-group">
+                                <label htmlFor="inquiryType">Inquiry Category</label>
+                                <select
+                                    name="inquiryType"
+                                    id="inquiryType"
+                                    value={formData.inquiryType}
+                                    onChange={handleChange}
+                                    className="contact-select"
+                                    required
+                                >
+                                    <option value="student_support">Student Portal & Academic Support</option>
+                                    <option value="faculty_onboarding">Faculty & Mentor Inquiries</option>
+                                    <option value="institution_demo">Institutional Deployment & Demo</option>
+                                    <option value="technical_issue">Technical & Login Assistance</option>
+                                    <option value="general_query">General Feedback & Other</option>
+                                </select>
+                            </div>
 
                             <div className="contact-form-row">
                                 <div className="contact-form-group">
@@ -929,7 +1046,7 @@ export function Contact({
                                         type="text"
                                         name="name"
                                         id="name"
-                                        placeholder="John Doe"
+                                        placeholder="e.g. Rahul Sharma"
                                         value={formData.name}
                                         onChange={handleChange}
                                         className="contact-input"
@@ -943,7 +1060,7 @@ export function Contact({
                                         type="email"
                                         name="email"
                                         id="email"
-                                        placeholder="john@example.com"
+                                        placeholder="e.g. rahul.sharma@gmail.com"
                                         value={formData.email}
                                         onChange={handleChange}
                                         className="contact-input"
@@ -952,18 +1069,33 @@ export function Contact({
                                 </div>
                             </div>
 
-                            <div className="contact-form-group">
-                                <label htmlFor="subject">Subject</label>
-                                <input
-                                    type="text"
-                                    name="subject"
-                                    id="subject"
-                                    placeholder="How can we help?"
-                                    value={formData.subject}
-                                    onChange={handleChange}
-                                    className="contact-input"
-                                    required
-                                />
+                            <div className="contact-form-row">
+                                <div className="contact-form-group">
+                                    <label htmlFor="phone">Contact Number (Optional)</label>
+                                    <input
+                                        type="tel"
+                                        name="phone"
+                                        id="phone"
+                                        placeholder="+91 98765 43210"
+                                        value={formData.phone}
+                                        onChange={handleChange}
+                                        className="contact-input"
+                                    />
+                                </div>
+
+                                <div className="contact-form-group">
+                                    <label htmlFor="subject">Subject</label>
+                                    <input
+                                        type="text"
+                                        name="subject"
+                                        id="subject"
+                                        placeholder="Brief summary of your query"
+                                        value={formData.subject}
+                                        onChange={handleChange}
+                                        className="contact-input"
+                                        required
+                                    />
+                                </div>
                             </div>
 
                             <div className="contact-form-group">
@@ -971,7 +1103,7 @@ export function Contact({
                                 <textarea
                                     name="message"
                                     id="message"
-                                    placeholder="Your message here..."
+                                    placeholder="Please describe your question or requirement in detail..."
                                     value={formData.message}
                                     onChange={handleChange}
                                     className="contact-textarea"
@@ -980,7 +1112,7 @@ export function Contact({
                             </div>
 
                             <button type="submit" className="contact-btn-submit">
-                                <span>Send Message</span>
+                                <span>Send Inquiry</span>
                                 <svg viewBox="0 0 24 24">
                                     <line x1="22" y1="2" x2="11" y2="13" />
                                     <polygon points="22 2 15 22 11 13 2 9 22 2" />

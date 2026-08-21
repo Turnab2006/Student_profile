@@ -306,7 +306,7 @@ export default function StudentNotices({
       )}
 
       {!hideHeader && (
-        <header className="h-[65px] bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-2xs font-['Roboto',sans-serif]">
+        <header className="sticky top-0 z-30 h-[65px] bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-2xs font-['Roboto',sans-serif]">
           <div>
             <h1 className="text-lg sm:text-xl font-bold text-gray-800 tracking-tight truncate">
               Notices
@@ -671,12 +671,12 @@ export default function StudentNotices({
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className={`${isMentorMode ? 'bg-gradient-to-r from-[#7656f4] via-[#6845f2] to-[#5531dc]' : 'bg-gradient-to-r from-[#2563eb] via-[#1d4ed8] to-[#1e40af]'} text-white text-xs font-bold uppercase tracking-wider select-none`}>
-                    <th className="py-3.5 px-6 text-left min-w-[320px]">Notice</th>
-                    <th className="py-3.5 px-4 text-center min-w-[110px]">Priority</th>
-                    <th className="py-3.5 px-4 text-center min-w-[120px]">Category</th>
-                    <th className="py-3.5 px-5 text-left min-w-[150px]">Published On</th>
-                    <th className="py-3.5 px-4 text-center min-w-[130px]">Attachments</th>
-                    <th className="py-3.5 px-6 text-right min-w-[100px]">Action</th>
+                    <th className="py-3.5 px-6 text-left min-w-[320px] whitespace-nowrap">Notice</th>
+                    <th className="py-3.5 px-4 text-center min-w-[110px] whitespace-nowrap">Priority</th>
+                    <th className="py-3.5 px-4 text-center min-w-[120px] whitespace-nowrap">Category</th>
+                    <th className="py-3.5 px-5 text-left min-w-[150px] whitespace-nowrap">Published On</th>
+                    <th className="py-3.5 px-4 text-center min-w-[130px] whitespace-nowrap">Attachments</th>
+                    <th className="py-3.5 px-6 text-right min-w-[100px] whitespace-nowrap">Action</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100/80 text-sm">

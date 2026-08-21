@@ -61,3 +61,9 @@ body {
 .hover-shake:hover {
   animation: text-shake 0.35s ease-in-out;
 }
+
+/* Ensure all table header text stays in one single line across all portals */
+th {
+  white-space: nowrap;
+}
+

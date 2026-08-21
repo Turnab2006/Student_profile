@@ -273,7 +273,7 @@ export default function Support({ onNavigate, onOpenSidebar, isMentor = false })
     <div className={`flex-1 ${isMentor ? "w-full" : "h-full flex flex-col overflow-hidden bg-[#f6f8fb] font-['Roboto',sans-serif]"}`}>
       {/* Top Header Navbar */}
       {!isMentor && (
-        <header className="h-[65px] bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-2xs font-['Roboto',sans-serif]">
+        <header className="sticky top-0 z-30 h-[65px] bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-2xs font-['Roboto',sans-serif]">
           <div className="flex items-center gap-3 min-w-0 w-full sm:w-auto">
             <button
               type="button"
