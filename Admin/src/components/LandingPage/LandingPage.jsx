@@ -271,14 +271,15 @@ export function Hero({
                             >
                                 Get Started
                             </button>
-                            <button
-                                type="button"
+                            <a
+                                href="https://drive.google.com/file/d/13WCqAj7OJoy1DoUNWZl4NQH8Ci24o24X/view"
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 className="btn btn-secondary"
                                 id="demo-btn"
-                                onClick={onBookDemo}
                             >
-                                Book Demo
-                            </button>
+                                Watch Demo
+                            </a>
                         </div>
                     </div>
 
