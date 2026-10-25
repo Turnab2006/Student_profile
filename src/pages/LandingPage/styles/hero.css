@@ -1,0 +1,416 @@
+/* Hero Section Styles */
+.trackademy-landing-root .hero {
+    padding: 20px 0 50px 0;
+    background: #ffffff;
+    display: grid;
+    align-items: center;
+    transition: padding 0.6s ease;
+    width: 100%;
+}
+
+.trackademy-landing-root .hero .tlp-container,
+.trackademy-landing-root .hero .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+}
+
+.trackademy-landing-root .hero-content {
+    display: grid;
+    min-height: 70vh;
+    height: auto;
+    grid-template-columns: 0.8fr 1fr;
+    grid-template-rows: auto 150px;
+    gap: 20px;
+    align-items: center;
+    transition: gap 0.6s ease, grid-template-columns 0.6s ease;
+}
+
+.trackademy-landing-root .hero-text,
+.trackademy-landing-root .hero-image,
+.trackademy-landing-root .feature-wrapper {
+    min-width: 0;
+}
+
+.trackademy-landing-root .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1rem;
+    padding: 6px 20px;
+    width: fit-content;
+    max-width: 340px;
+    background: #EEF4FF;
+    border-radius: 40px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #2d2d2d;
+    font-family: var(--tlp-font-family);
+    line-height: normal;
+}
+
+.trackademy-landing-root .hero-text {
+    grid-area: 1/1/2/2;
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    justify-content: start;
+}
+
+.trackademy-landing-root .hero-text h2 {
+    font-family: var(--tlp-font-family);
+    font-size: 58px;
+    color: var(--tlp-dark-color, #0f172a);
+    margin-bottom: 40px;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+}
+
+.trackademy-landing-root .hero-text span.highlight {
+    background: linear-gradient(91deg, #147FEB 18.53%, #FB8FFF 94.92%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: inline-block;
+}
+
+.trackademy-landing-root .hero-image {
+    grid-area: 1/2/3/3;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.6s ease;
+}
+
+.trackademy-landing-root .hero-image img {
+    width: 100%;
+    max-height: 560px;
+    object-fit: contain;
+    padding-left: 30px;
+    margin-top: 75px;
+}
+
+.trackademy-landing-root .button-div {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+}
+
+.trackademy-landing-root .btn {
+    padding: 10px 40px;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    font-family: var(--tlp-font-family);
+    cursor: pointer;
+    line-height: 1.3;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.trackademy-landing-root .btn:active {
+    transform: scale(0.98);
+}
+
+.trackademy-landing-root .btn-primary,
+.trackademy-landing-root #get-started {
+    background: linear-gradient(135deg, #6E99FF 0%, #5B85F0 100%);
+    color: #ffffff;
+    border: none;
+    box-shadow: 0 4px 14px rgba(91, 133, 240, 0.35);
+}
+
+.trackademy-landing-root .btn-primary:hover,
+.trackademy-landing-root #get-started:hover {
+    background: linear-gradient(135deg, #5b85f0 0%, #4a72db 100%);
+    box-shadow: 0 6px 20px rgba(91, 133, 240, 0.45);
+}
+
+.trackademy-landing-root .btn-secondary,
+.trackademy-landing-root #demo-btn {
+    border: 3px solid #6E99FF;
+    color: #5B85F0;
+    background: transparent;
+}
+
+.trackademy-landing-root .btn-secondary:hover,
+.trackademy-landing-root #demo-btn:hover {
+    background: rgba(110, 153, 255, 0.08);
+}
+
+/* Features below hero */
+.trackademy-landing-root .feature-wrapper {
+    grid-area: 2/1/3/2;
+    display: flex;
+    align-items: center;
+    gap: 35px;
+    padding: 12px;
+    background: #ffffff;
+    width: fit-content;
+    border-top: 2px solid #5c86ff;
+    border-right: 2px solid #5c86ff;
+    border-top-right-radius: 18px;
+}
+
+.trackademy-landing-root .feature-box {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: relative;
+}
+
+.trackademy-landing-root .feature-box:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    right: -13px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 50px;
+    background: #bdbdbd;
+}
+
+.trackademy-landing-root .icon-box {
+    border-radius: 10px;
+    background: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.trackademy-landing-root .icon-box img {
+    width: 80px;
+    height: 80px;
+}
+
+.trackademy-landing-root .hero .text h3 {
+    font-size: var(--tlp-card-title-size-mobile, 1.125rem);
+    color: #0f172a;
+    font-weight: 700;
+    margin-bottom: 0px;
+    font-family: var(--tlp-font-family);
+}
+
+.trackademy-landing-root .hero .text p {
+    font-size: var(--tlp-card-text-size, 0.9375rem);
+    color: var(--tlp-card-text-color, #475467);
+    line-height: 1.4;
+    font-family: var(--tlp-font-family);
+}
+
+/* Responsive Media Queries */
+@media (max-width: 1200px) {
+    .trackademy-landing-root .hero-text h2 {
+        font-size: 56px;
+    }
+
+    .trackademy-landing-root .hero-content {
+        gap: 10px;
+        grid-template-columns: 0.95fr 1fr;
+    }
+
+    .trackademy-landing-root .feature-wrapper {
+        margin-top: 2rem;
+    }
+}
+
+@media (max-width: 1024px) {
+    .trackademy-landing-root .hero {
+        padding: 16px 0 60px 0;
+    }
+
+    .trackademy-landing-root .hero-content {
+        min-height: auto;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        gap: 24px;
+    }
+
+    .trackademy-landing-root .hero-text {
+        grid-area: auto;
+    }
+
+    .trackademy-landing-root .hero-image {
+        grid-area: auto;
+        order: 2;
+    }
+
+    .trackademy-landing-root .hero-image img {
+        max-height: 460px;
+        margin-top: 0;
+        padding-left: 0;
+    }
+
+    .trackademy-landing-root .feature-wrapper {
+        grid-area: auto;
+        order: 3;
+        width: 100%;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 18px;
+    }
+
+    .trackademy-landing-root .feature-box {
+        flex: 1;
+    }
+
+    .trackademy-landing-root .feature-box:not(:last-child)::after {
+        right: -11px;
+    }
+}
+
+@media (max-width: 768px) {
+    .trackademy-landing-root .hero {
+        padding: 35px 0 0 0;
+    }
+
+    .trackademy-landing-root .tag {
+        font-size: 14px;
+        padding: 4px 14px;
+        margin-bottom: 0.9rem;
+        width: 250px;
+    }
+
+    .trackademy-landing-root .hero-text {
+        margin-top: 0;
+    }
+
+    .trackademy-landing-root .hero-text h2 {
+        font-size: 35px;
+        margin-bottom: 30px;
+        line-height: 1.2;
+    }
+
+    .trackademy-landing-root .button-div {
+        flex-direction: row;
+        gap: 8px;
+    }
+
+    .trackademy-landing-root .btn {
+        width: 100%;
+        padding: 8px 12px;
+        font-size: 18px;
+        border-radius: 10px;
+    }
+
+    .trackademy-landing-root .btn-secondary,
+    .trackademy-landing-root #demo-btn {
+        border: 2px solid #6E99FF;
+    }
+
+    .trackademy-landing-root .hero-image img {
+        max-height: 320px;
+        margin: 10px 0;
+    }
+
+    .trackademy-landing-root .feature-wrapper {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+        padding: 16px 10px 18px;
+        border-top: none;
+        border-right: none;
+    }
+
+    .trackademy-landing-root .feature-box {
+        gap: 12px;
+        padding-bottom: 14px;
+    }
+
+    .trackademy-landing-root .feature-box:not(:last-child)::after {
+        content: none;
+    }
+
+    .trackademy-landing-root .feature-box:not(:last-child) {
+        border-bottom: 1px solid #d7d7d7;
+    }
+
+    .trackademy-landing-root .icon-box {
+        width: 60px;
+        height: 58px;
+        flex: 0 0 56px;
+    }
+
+    .trackademy-landing-root .icon-box img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .trackademy-landing-root .hero .text h3 {
+        font-size: 17px;
+    }
+
+    .trackademy-landing-root .hero .text p {
+        font-size: 13px;
+    }
+}
+
+/* Quick Access Portal Chips in Hero */
+.trackademy-landing-root .hero-portals-quicklinks {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 22px;
+}
+
+.trackademy-landing-root .hero-portals-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #64748b;
+    margin-right: 4px;
+}
+
+.trackademy-landing-root .hero-portal-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    font-family: var(--tlp-font-family);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.trackademy-landing-root .hero-portal-chip:hover {
+    transform: translateY(-1.5px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.trackademy-landing-root .hero-portal-chip--student {
+    color: #2563eb;
+    background: #eff6ff;
+    border-color: #bfdbfe;
+}
+.trackademy-landing-root .hero-portal-chip--student:hover {
+    background: #dbeafe;
+}
+
+.trackademy-landing-root .hero-portal-chip--mentor {
+    color: #7656f4;
+    background: #f5f3ff;
+    border-color: #ddd6fe;
+}
+.trackademy-landing-root .hero-portal-chip--mentor:hover {
+    background: #ede9fe;
+}
+
+.trackademy-landing-root .hero-portal-chip--admin {
+    color: #0da651;
+    background: #eaf8f1;
+    border-color: #bbf7d0;
+}
+.trackademy-landing-root .hero-portal-chip--admin:hover {
+    background: #d1fae5;
+}

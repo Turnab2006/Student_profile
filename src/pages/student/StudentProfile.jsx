@@ -1,0 +1,1961 @@
+import { useState, useRef, useEffect } from "react";
+import JsBarcode from "jsbarcode";
+import {
+  ArrowLeft,
+  Search,
+  Bell,
+  ChevronDown,
+  Mail,
+  Phone,
+  Building,
+  Building2,
+  GraduationCap,
+  CalendarDays,
+  Calendar,
+  Award,
+  BookOpen,
+  CheckCircle2,
+  FileText,
+  Droplet,
+  CreditCard,
+  MapPin,
+  Globe,
+  Home,
+  ShieldCheck,
+  Shield,
+  User,
+  Users,
+  Briefcase,
+  X,
+  Check,
+  Clock,
+  CheckCircle,
+  Edit3,
+  Hash,
+  Star,
+  Download,
+  Share2,
+  FlaskConical,
+  ClipboardList,
+  Megaphone,
+  Utensils,
+  Trophy,
+  Headphones,
+  RotateCw,
+  PieChart,
+  Info,
+  UserCheck,
+  CalendarClock,
+  UserX,
+  Menu,
+  Settings,
+  LogOut,
+  HelpCircle,
+  AlertTriangle,
+} from "lucide-react";
+import { initialStudentData } from "../../data/studentProfileData";
+import tuhinaAvatar from "../../assets/studentAssests/tuhina_avatar.jpg";
+import idCardFront from "../../assets/studentAssests/ID card front.png";
+import idCardBack from "../../assets/studentAssests/ID card back.png";
+import dummySign from "../../assets/studentAssests/dummy sign.svg";
+import SubjectAttendanceOverview from "../../components/student/SubjectAttendanceOverview";
+import SubjectResultOverview from "../../components/student/SubjectResultOverview";
+import AdminProfile from "../../components/admin/AdminProfile";
+
+function MentorProfileHeaderWidget({ user, onNavigate, onLogout }) {
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(3);
+  const containerRef = useRef(null);
+
+  const currentUser = {
+    name: user?.name || "Kaushik Chatterjee",
+    firstName: user?.firstName || user?.name?.split(" ")[0] || "Kaushik",
+    role: user?.role || "Senior Mentor",
+    avatar: user?.avatar || "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=320&q=80",
+    initials: user?.initials || (user?.name ? user.name.charAt(0) : "K"),
+  };
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (containerRef.current && !containerRef.current.contains(e.target)) {
+        setProfileOpen(false);
+        setNotifOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const navigateTo = (tab) => {
+    setProfileOpen(false);
+    setNotifOpen(false);
+    if (onNavigate) onNavigate(tab);
+  };
+
+  return (
+    <div className="flex items-center gap-2 sm:gap-4 relative select-none shrink-0" ref={containerRef}>
+      {/* Notification Bell */}
+      <div className="relative">
+        <button
+          type="button"
+          onClick={() => {
+            setNotifOpen((prev) => !prev);
+            setProfileOpen(false);
+          }}
+          className="relative flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-xl text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-all cursor-pointer focus:outline-none"
+          title="Notifications"
+        >
+          <Bell size={18} />
+          {unreadCount > 0 && (
+            <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[10px] font-bold text-white shadow-sm animate-pulse">
+              {unreadCount}
+            </span>
+          )}
+        </button>
+
+        {/* Notifications Dropdown */}
+        {notifOpen && (
+          <div className="absolute right-0 top-full mt-2.5 w-72 sm:w-80 rounded-2xl border border-gray-100 bg-white p-3 shadow-2xl z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+            <div className="flex items-center justify-between border-b border-gray-100 pb-2.5 px-1">
+              <div className="flex items-center gap-2">
+                <h4 className="text-xs font-bold text-gray-800">Notifications</h4>
+                {unreadCount > 0 && (
+                  <span className="rounded-full bg-rose-100 px-2 py-0.5 text-[10px] font-bold text-rose-600">
+                    {unreadCount} New
+                  </span>
+                )}
+              </div>
+              <button
+                type="button"
+                onClick={() => setUnreadCount(0)}
+                className="text-[11px] font-semibold text-emerald-600 hover:underline cursor-pointer"
+              >
+                Mark all read
+              </button>
+            </div>
+
+            <div className="py-2 space-y-2 max-h-72 overflow-y-auto">
+              <div
+                className="flex items-start gap-3 p-2 rounded-xl hover:bg-gray-50 transition-colors cursor-pointer"
+                onClick={() => navigateTo("notices")}
+              >
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600">
+                  <Megaphone size={15} />
+                </div>
+                <div className="flex-1 overflow-hidden">
+                  <p className="text-xs font-bold text-gray-800 leading-tight">New Project Deadline Extended</p>
+                  <p className="text-[11px] text-gray-500 leading-tight mt-0.5 line-clamp-2">Final term project deadline is extended to Aug 15.</p>
+                  <p className="text-[10px] text-gray-400 font-medium mt-1">10 mins ago</p>
+                </div>
+              </div>
+
+              <div
+                className="flex items-start gap-3 p-2 rounded-xl hover:bg-gray-50 transition-colors cursor-pointer"
+                onClick={() => navigateTo("attendance")}
+              >
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-amber-100 text-amber-600">
+                  <AlertTriangle size={15} />
+                </div>
+                <div className="flex-1 overflow-hidden">
+                  <p className="text-xs font-bold text-gray-800 leading-tight">Mentee Attendance Alert</p>
+                  <p className="text-[11px] text-gray-500 leading-tight mt-0.5 line-clamp-2">2 mentees are below 75% attendance threshold.</p>
+                  <p className="text-[10px] text-gray-400 font-medium mt-1">1 hour ago</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="border-t border-gray-100 pt-2 text-center">
+              <button
+                type="button"
+                onClick={() => navigateTo("notices")}
+                className="w-full py-1.5 text-xs font-semibold text-[#0da651] hover:bg-emerald-50 rounded-xl transition-colors cursor-pointer"
+              >
+                View All Notices
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Help Circle Button */}
+      <button
+        type="button"
+        onClick={() => navigateTo("support")}
+        className="hidden sm:flex h-9 w-9 items-center justify-center rounded-xl text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-all cursor-pointer focus:outline-none"
+        title="Support Center"
+      >
+        <HelpCircle size={18} />
+      </button>
+
+      {/* Divider */}
+      <div className="hidden sm:block h-5 w-[1px] bg-gray-200" />
+
+      {/* User Profile Block */}
+      <div className="relative">
+        <button
+          type="button"
+          onClick={() => {
+            setProfileOpen((prev) => !prev);
+            setNotifOpen(false);
+          }}
+          className="flex items-center gap-2.5 sm:gap-3 p-1 rounded-xl hover:bg-gray-100/70 transition-all cursor-pointer focus:outline-none group"
+        >
+          {/* Avatar on LEFT with online green dot */}
+          <div className="relative">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden bg-gradient-to-br from-purple-100 to-indigo-100 flex items-center justify-center border border-gray-200 shadow-sm">
+              {currentUser.avatar ? (
+                <img
+                  src={currentUser.avatar}
+                  alt={currentUser.name}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    e.target.style.display = "none";
+                    if (e.target.nextSibling) e.target.nextSibling.style.display = "flex";
+                  }}
+                />
+              ) : null}
+              <span className={`${currentUser.avatar ? "hidden " : ""}w-full h-full flex items-center justify-center text-xs font-bold text-[#7656f4]`}>
+                {currentUser.initials}
+              </span>
+            </div>
+            <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-white" />
+          </div>
+
+          {/* Name & Role Text on RIGHT */}
+          <div className="text-left leading-tight hidden sm:block">
+            <p className="text-sm font-semibold text-gray-900 group-hover:text-[#7656f4] transition-colors">
+              {currentUser.name}
+            </p>
+            <p className="text-xs text-gray-500 capitalize font-medium">{currentUser.role}</p>
+          </div>
+
+          {/* Chevron Icon */}
+          <ChevronDown
+            size={15}
+            className={`text-gray-500 transition-transform duration-200 ${profileOpen ? "rotate-180 text-[#7656f4]" : "group-hover:text-gray-700"
+              }`}
+          />
+        </button>
+
+        {/* Profile Dropdown Menu */}
+        {profileOpen && (
+          <div className="absolute right-0 top-full mt-2.5 w-44 rounded-2xl border border-slate-200 bg-white p-1.5 shadow-xl z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+            <div className="space-y-0.5">
+              <button
+                type="button"
+                onClick={() => navigateTo("settings")}
+                className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-gray-700 rounded-xl hover:bg-purple-50 hover:text-[#7656f4] transition-colors cursor-pointer group"
+              >
+                <Settings size={15} className="text-gray-400 group-hover:text-[#7656f4]" />
+                <span>Settings</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setProfileOpen(false);
+                  if (onLogout) onLogout();
+                  else if (onNavigate) onNavigate("logout");
+                }}
+                className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-rose-600 rounded-xl hover:bg-rose-50 transition-colors cursor-pointer"
+              >
+                <LogOut size={15} className="text-rose-500" />
+                <span>Logout</span>
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function Barcode({ value, width = 1.25, height = 38, fontSize = 11, font = "Roboto, sans-serif" }) {
+  const svgRef = useRef(null);
+
+  useEffect(() => {
+    if (svgRef.current && value) {
+      try {
+        JsBarcode(svgRef.current, String(value), {
+          format: "CODE128",
+          width,
+          height,
+          displayValue: true,
+          font,
+          fontSize,
+          fontOptions: "bold",
+          margin: 0,
+          background: "transparent",
+          lineColor: "#0f172a",
+        });
+      } catch (e) {
+        console.error("Barcode generation error:", e);
+      }
+    }
+  }, [value, width, height, fontSize, font]);
+
+  return <svg ref={svgRef} className="max-w-full" />;
+}
+
+function DigitalStudentIDSection({ student, onBack, showToast }) {
+  const [isCardFlipped, setIsCardFlipped] = useState(false);
+  const [cardViewMode, setCardViewMode] = useState("interactive");
+  const collegeRoll = student.academicDetails?.collegeRollNo || "CSE2022077";
+  const univRoll = student.academicDetails?.universityRollNo || "RTU/2022/CS/12345";
+  const university = student.academicDetails?.university || "Rajasthan Technical University";
+  const univRole = student.academicDetails?.universityRole || "Regular";
+  const course = student.course || "B.Tech";
+  const dept = student.department || "Computer Science & Engineering";
+  const phone = student.phone || student.additionalDetails?.phoneNumber || "+91-9123930828";
+  const collegeEmail = student.additionalDetails?.collegeEmail || "tanuka.s@edusmart.edu";
+  const fullAddress =
+    student.addressDetails?.fullAddress ||
+    "Flat 4B, Greenwood Heights, Plot 14, Salt Lake Sector V, Bidhannagar, Kolkata, West Bengal - 700091";
+
+  return (
+    <div className="w-full space-y-3.5 pb-8 animate-in fade-in duration-200">
+      {/* 1. Top Banner / Header Card with Primary Blue Gradient & White Accents */}
+      <div className="bg-gradient-to-r from-[#1d4ed8] via-[#2563eb] to-[#3b82f6] rounded-2xl border border-blue-400/30 p-3.5 sm:px-5 sm:py-3.5 shadow-md shadow-blue-600/15 flex items-center justify-between gap-4 relative overflow-hidden text-white">
+        {/* Subtle Decorative White Dot Matrix */}
+        <div
+          className="absolute inset-0 pointer-events-none opacity-15"
+          style={{
+            backgroundImage: `radial-gradient(#ffffff 1.2px, transparent 1.2px)`,
+            backgroundSize: "14px 14px",
+          }}
+        />
+
+        {/* Ambient Glow Effect */}
+        <div className="absolute -right-10 -top-10 w-40 h-40 bg-white/15 rounded-full blur-2xl pointer-events-none" />
+        <div className="absolute -left-10 -bottom-10 w-40 h-40 bg-sky-400/20 rounded-full blur-2xl pointer-events-none" />
+
+        {/* Left Header Info: Frosted Back Arrow + White Shield Badge + White Title/Subtitle */}
+        <div className="relative z-10 flex items-center gap-3 sm:gap-3.5 min-w-0">
+          <button
+            type="button"
+            onClick={onBack}
+            className="flex h-9 w-9 items-center justify-center text-white/90 hover:text-white bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl transition-all cursor-pointer shrink-0 -ml-1 backdrop-blur-xs shadow-2xs active:scale-95"
+            title="Back to Student Profile"
+            aria-label="Back"
+          >
+            <ArrowLeft size={20} className="stroke-[2.4]" />
+          </button>
+
+          <div className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-2xl bg-white text-blue-600 shadow-md shadow-blue-950/20 shrink-0">
+            <ShieldCheck size={22} className="stroke-[2.4]" />
+          </div>
+
+          <div className="min-w-0">
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <h1 className="text-base sm:text-lg font-bold text-white tracking-tight leading-tight">
+                Digital Student ID
+              </h1>
+              <CheckCircle2 size={16} className="text-sky-300 stroke-[2.2] shrink-0" />
+            </div>
+            <p className="text-xs sm:text-[13px] text-blue-100/90 font-normal mt-0.5 truncate">
+              Your verified digital identity for campus services and beyond
+            </p>
+          </div>
+        </div>
+
+        {/* Right Verified Badge (Frosted Glass Pill) */}
+        <div className="relative z-10 flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/15 hover:bg-white/20 border border-white/30 text-white text-xs sm:text-[13px] font-semibold backdrop-blur-md shadow-2xs shrink-0 transition-colors">
+          <Shield size={14} className="text-sky-300 stroke-[2.4]" />
+          <span>Verified Identity</span>
+        </div>
+      </div>
+
+      {/* 2. Main 2-Column Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5 items-start">
+        {/* Left Column (Span 7): Physical-Style Digital ID Card + Action Buttons + Blockchain Banner */}
+        <div className="lg:col-span-7 space-y-3.5">
+
+          {/* A. Digital ID Card with 3D Flip Animation */}
+          <div className="space-y-2">
+            <div
+              className="group [perspective:1400px] w-full cursor-pointer select-none"
+              onClick={() => setIsCardFlipped((prev) => !prev)}
+              title="Click or hover to flip ID Card"
+            >
+              {/* 3D Rotating Wrapper */}
+              <div
+                className={`relative w-full transition-transform duration-700 [transform-style:preserve-3d] min-h-[380px] sm:min-h-[400px] ${isCardFlipped ? "[transform:rotateY(-180deg)]" : "[@media(hover:hover)]:group-hover:[transform:rotateY(-180deg)]"
+                  }`}
+              >
+                {/* ======================================================== */}
+                {/* FRONT FACE (ID card front.png)                           */}
+                {/* ======================================================== */}
+                <div className="w-full h-full [backface-visibility:hidden] rounded-3xl bg-white border border-slate-200/90 shadow-md p-5 sm:p-6 flex flex-col justify-between overflow-hidden">
+                  {cardViewMode === "official" ? (
+                    <div className="w-full h-full flex items-center justify-center p-0">
+                      <img
+                        src={idCardFront}
+                        alt="Official ID Card Front"
+                        className="w-full h-full object-contain rounded-2xl"
+                      />
+                    </div>
+                  ) : (
+                    <>
+                  {/* Top Row: Trackademy Logo & Active Pill */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-11 w-11 items-center justify-center rounded-full bg-white border border-slate-200/90 shadow-2xs p-0.5 shrink-0 overflow-hidden">
+                        <img
+                          src="/favicon.svg"
+                          alt="Trackademy Logo"
+                          className="h-full w-full object-contain rounded-full"
+                        />
+                      </div>
+                      <div>
+                        <h2 className="text-lg sm:text-[20px] font-bold text-[#0055a5] tracking-tight leading-tight">
+                          Trackademy
+                        </h2>
+                        <p className="text-[11px] text-slate-500 font-medium">
+                          Empowering Future Leaders
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#edf9f0] border border-[#bbf0c8] text-[#16a34a] text-xs font-bold shadow-2xs">
+                      <span className="h-2 w-2 rounded-full bg-[#16a34a]" />
+                      <span>Active</span>
+                    </div>
+                  </div>
+
+                  {/* Middle Section: Soft Sky-Blue Container with Photo & Info */}
+                  <div className="bg-[#edf5fb] rounded-2xl p-4 sm:p-5 border border-sky-100/90 my-2.5">
+                    <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-5">
+                      {/* Student Photo with Cyan-Blue Glow Border */}
+                      <div className="relative shrink-0">
+                        <div className="h-28 w-28 sm:h-32 sm:w-32 rounded-2xl border-[3px] border-[#38bdf8] p-0.5 overflow-hidden bg-white shadow-xs flex items-center justify-center">
+                          <img
+                            src={tuhinaAvatar}
+                            alt={student.name || "Tanuka Saha"}
+                            className="h-full w-full object-cover rounded-[13px]"
+                            onError={(e) => {
+                              e.target.src = tuhinaAvatar;
+                            }}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Student Credentials */}
+                      <div className="flex flex-col items-center sm:items-start text-center sm:text-left space-y-1 flex-1 min-w-0">
+                        <h3 className="text-xl sm:text-[26px] font-bold mb-2  mt-2 text-[#0055a5] tracking-tight">
+                          {student.name || "Tanuka Saha"}
+                        </h3>
+
+                        <p className="text-xs sm:text-[15px] font-bold text-[#5c708a] tracking-wide pt-1 ">
+                          {collegeRoll} | {univRoll}
+                        </p>
+
+                        <p className="text-xs sm:text-[15px] font-semibold text-[#5c708a] pt-1">
+                          {course} | {dept}
+                        </p>
+
+                        <p className="text-xs sm:text-[15px] font-semibold text-[#5c708a] pt-1">
+                          {university} ({univRole})
+                        </p>
+
+                        {/* Principle Dummy Signature */}
+                        <div className="pt-2 self-center sm:self-end flex flex-col items-center sm:items-end">
+                          <img
+                            src={dummySign}
+                            alt="Principal Signature"
+                            className="h-10 sm:h-12 w-auto object-contain brightness-90 contrast-125"
+                          />
+                          <p className="text-[11px] sm:text-xs font-bold text-[#0055a5] tracking-tight mt-0.5">
+                            John Doe (Principle)
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Bottom Row: Valid Until & Barcode */}
+                  <div className="flex items-center justify-between pt-1">
+                    <div>
+                      <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                        VALID UNTILL
+                      </p>
+                      <p className="text-xl sm:text-2xl font-bold text-[#0055a5] mt-0.5 leading-none">
+                        May 2027
+                      </p>
+                    </div>
+
+                    {/* Barcode generated via react-barcode using student college roll number */}
+                    <div className="shrink-0 flex items-center justify-end">
+                      <Barcode
+                        value={collegeRoll}
+                        width={1.25}
+                        height={38}
+                        fontSize={11}
+                        margin={0}
+                        displayValue={true}
+                        font="Roboto"
+                        fontOptions="bold"
+                        background="transparent"
+                        lineColor="#0f172a"
+                      />
+                    </div>
+                  </div>
+
+                    </>
+                  )}
+                </div>
+
+                {/* ======================================================== */}
+                {/* BACK FACE (ID card back.png)                             */}
+                {/* ======================================================== */}
+                <div className="absolute inset-0 w-full h-full [backface-visibility:hidden] [transform:rotateY(180deg)] rounded-3xl bg-white border border-slate-200/90 shadow-md p-5 sm:p-6 flex flex-col justify-between overflow-hidden">
+                  {cardViewMode === "official" ? (
+                    <div className="w-full h-full flex items-center justify-center p-0">
+                      <img
+                        src={idCardBack}
+                        alt="Official ID Card Back"
+                        className="w-full h-full object-contain rounded-2xl"
+                      />
+                    </div>
+                  ) : (
+                    <>
+                  {/* Top Row: Trackademy Logo & Active Pill */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-11 w-11 items-center justify-center rounded-full bg-white border border-slate-200/90 shadow-2xs p-0.5 shrink-0 overflow-hidden">
+                        <img
+                          src="/favicon.svg"
+                          alt="Trackademy Logo"
+                          className="h-full w-full object-contain rounded-full"
+                        />
+                      </div>
+                      <div>
+                        <h2 className="text-lg sm:text-[20px] font-bold text-[#0055a5] tracking-tight leading-tight">
+                          Trackademy
+                        </h2>
+                        <p className="text-[11px] text-slate-500 font-medium">
+                          Empowering Future Leaders
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#edf9f0] border border-[#bbf0c8] text-[#16a34a] text-xs font-bold shadow-2xs">
+                      <span className="h-2 w-2 rounded-full bg-[#16a34a]" />
+                      <span>Active</span>
+                    </div>
+                  </div>
+
+                  {/* Middle Section: Soft Sky-Blue Container with Contact & Address */}
+                  <div className="bg-[#edf5fb] rounded-2xl p-4 sm:p-5 border border-sky-100/90 space-y-3.5 my-2.5 flex-1 flex flex-col justify-center">
+                    {/* Phone */}
+                    <div className="flex items-center gap-3.5">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#dbeafe] text-[#2563eb] shrink-0 shadow-2xs">
+                        <Phone size={18} className="stroke-[2.2]" />
+                      </div>
+                      <span className="text-xs sm:text-sm font-bold text-[#475569]">
+                        {phone}
+                      </span>
+                    </div>
+
+                    {/* Email */}
+                    <div className="flex items-center gap-3.5">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#dbeafe] text-[#2563eb] shrink-0 shadow-2xs">
+                        <Mail size={18} className="stroke-[2.2]" />
+                      </div>
+                      <span className="text-xs sm:text-sm font-bold text-[#475569] truncate">
+                        {collegeEmail}
+                      </span>
+                    </div>
+
+                    {/* Address */}
+                    <div className="flex items-start gap-3.5">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#dbeafe] text-[#2563eb] shrink-0 shadow-2xs mt-0.5">
+                        <Home size={18} className="stroke-[2.2]" />
+                      </div>
+                      <span className="text-xs sm:text-sm font-bold text-[#475569] leading-snug">
+                        {fullAddress}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Bottom Row: Valid Until & Barcode */}
+                  <div className="flex items-center justify-between pt-1">
+                    <div>
+                      <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                        VALID UNTILL
+                      </p>
+                      <p className="text-xl sm:text-2xl font-bold text-[#0055a5] mt-0.5 leading-none">
+                        May 2027
+                      </p>
+                    </div>
+
+                    {/* Barcode generated via react-barcode */}
+                    <div className="shrink-0 flex items-center justify-end">
+                      <Barcode
+                        value={collegeRoll}
+                        width={1.25}
+                        height={38}
+                        fontSize={11}
+                        margin={0}
+                        displayValue={true}
+                        font="Roboto"
+                        fontOptions="bold"
+                        background="transparent"
+                        lineColor="#0f172a"
+                      />
+                    </div>
+                  </div>
+
+                    </>
+                  )}
+                </div>
+
+              </div>
+            </div>
+
+            {/* Flip & View Mode Hints */}
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsCardFlipped((prev) => !prev);
+                }}
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 hover:bg-blue-50 text-slate-600 hover:text-blue-600 text-xs font-medium transition-colors cursor-pointer shadow-2xs"
+              >
+                <RotateCw
+                  size={12}
+                  className={`text-blue-600 transition-transform duration-500 ${isCardFlipped ? "rotate-180" : ""
+                    }`}
+                />
+                <span>{isCardFlipped ? "Click to View Front Side" : "Click / Hover to View Back Side"}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setCardViewMode((prev) => (prev === "interactive" ? "official" : "interactive"));
+                }}
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-600 text-xs font-semibold transition-colors cursor-pointer shadow-2xs border border-blue-200/80"
+              >
+                <span>{cardViewMode === "interactive" ? "Switch to Official Card Scan" : "Switch to Live Interactive Card"}</span>
+              </button>
+            </div>
+          </div>
+
+          {/* B. Action Buttons */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <a
+              href={isCardFlipped ? idCardBack : idCardFront}
+              download={isCardFlipped ? "Trackademy_Student_ID_Card_Back.png" : "Trackademy_Student_ID_Card_Front.png"}
+              className="flex items-center justify-center gap-2 py-3 px-5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm shadow-xs transition-colors cursor-pointer text-center"
+            >
+              <Download size={16} className="stroke-[2.2]" />
+              <span>Download ID Card ({isCardFlipped ? "Back" : "Front"})</span>
+            </a>
+
+            <button
+              type="button"
+              onClick={() => {
+                if (navigator.clipboard) {
+                  navigator.clipboard.writeText(window.location.href);
+                  if (showToast) showToast("Digital ID card link copied to clipboard!");
+                  else alert("Digital ID card link copied to clipboard!");
+                }
+              }}
+              className="flex items-center justify-center gap-2 py-3 px-5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200/90 text-slate-700 font-bold text-xs sm:text-sm shadow-2xs transition-colors cursor-pointer"
+            >
+              <Share2 size={16} className="stroke-[2.2]" />
+              <span>Share ID</span>
+            </button>
+          </div>
+
+        </div>
+
+        {/* Right Column (Span 5): Contact Information & Where to Use Your ID */}
+        <div className="lg:col-span-5 space-y-4">
+
+          {/* A. Contact Information Card */}
+          <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-md shadow-slate-200/60 space-y-3.5">
+            <div className="flex items-center gap-2.5 text-blue-600">
+              <User size={18} className="stroke-[2.2]" />
+              <div>
+                <h3 className="text-sm sm:text-base font-bold text-slate-800">Contact Information</h3>
+                <p className="text-xs text-slate-400 font-normal">Linked to your student account</p>
+              </div>
+            </div>
+
+            <div className="space-y-2.5 pt-1">
+              {/* Email */}
+              <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50/70 border border-slate-100 hover:border-blue-100 transition-colors">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                  <Mail size={16} />
+                </div>
+                <div className="overflow-hidden">
+                  <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Email</p>
+                  <p className="text-xs sm:text-sm font-bold text-slate-800 truncate">
+                    {student.email || student.additionalDetails?.personalEmail || "tanuka.saha@gmail.com"}
+                  </p>
+                </div>
+              </div>
+
+              {/* Phone */}
+              <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50/70 border border-slate-100 hover:border-blue-100 transition-colors">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                  <Phone size={16} />
+                </div>
+                <div className="overflow-hidden">
+                  <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Phone</p>
+                  <p className="text-xs sm:text-sm font-bold text-slate-800 truncate">
+                    {student.phone || student.additionalDetails?.phoneNumber || "+91 91239 30828"}
+                  </p>
+                </div>
+              </div>
+
+              {/* Enrollment */}
+              <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50/70 border border-slate-100 hover:border-blue-100 transition-colors">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                  <CalendarDays size={16} />
+                </div>
+                <div className="overflow-hidden">
+                  <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Enrollment</p>
+                  <p className="text-xs sm:text-sm font-bold text-slate-800 truncate">
+                    August 2022
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* B. Where to Use Your ID Card */}
+          <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-md shadow-slate-200/60 space-y-3.5">
+            <div className="flex items-center gap-2 text-blue-600">
+              <MapPin size={18} className="stroke-[2.2]" />
+              <h3 className="text-sm sm:text-base font-bold text-slate-800">Where to Use Your ID</h3>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2.5 pt-1">
+              <div className="flex items-center gap-2.5 p-2.5 sm:p-3 rounded-xl bg-slate-50/70 border border-slate-100 text-slate-700 text-xs sm:text-sm font-semibold hover:border-blue-200 hover:bg-blue-50/30 transition-colors">
+                <div className="text-blue-600 shrink-0">
+                  <BookOpen size={16} />
+                </div>
+                <span className="truncate">Library Access</span>
+              </div>
+
+              <div className="flex items-center gap-2.5 p-2.5 sm:p-3 rounded-xl bg-slate-50/70 border border-slate-100 text-slate-700 text-xs sm:text-sm font-semibold hover:border-blue-200 hover:bg-blue-50/30 transition-colors">
+                <div className="text-blue-600 shrink-0">
+                  <FlaskConical size={16} />
+                </div>
+                <span className="truncate">Lab Entry</span>
+              </div>
+
+              <div className="flex items-center gap-2.5 p-2.5 sm:p-3 rounded-xl bg-slate-50/70 border border-slate-100 text-slate-700 text-xs sm:text-sm font-semibold hover:border-blue-200 hover:bg-blue-50/30 transition-colors">
+                <div className="text-blue-600 shrink-0">
+                  <ClipboardList size={16} />
+                </div>
+                <span className="truncate">Exam Halls</span>
+              </div>
+
+              <div className="flex items-center gap-2.5 p-2.5 sm:p-3 rounded-xl bg-slate-50/70 border border-slate-100 text-slate-700 text-xs sm:text-sm font-semibold hover:border-blue-200 hover:bg-blue-50/30 transition-colors">
+                <div className="text-blue-600 shrink-0">
+                  <Megaphone size={16} />
+                </div>
+                <span className="truncate">Campus Events</span>
+              </div>
+
+              <div className="flex items-center gap-2.5 p-2.5 sm:p-3 rounded-xl bg-slate-50/70 border border-slate-100 text-slate-700 text-xs sm:text-sm font-semibold hover:border-blue-200 hover:bg-blue-50/30 transition-colors">
+                <div className="text-blue-600 shrink-0">
+                  <Utensils size={16} />
+                </div>
+                <span className="truncate">Cafeteria</span>
+              </div>
+
+              <div className="flex items-center gap-2.5 p-2.5 sm:p-3 rounded-xl bg-slate-50/70 border border-slate-100 text-slate-700 text-xs sm:text-sm font-semibold hover:border-blue-200 hover:bg-blue-50/30 transition-colors">
+                <div className="text-blue-600 shrink-0">
+                  <Trophy size={16} />
+                </div>
+                <span className="truncate">Sports Facilities</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      {/* 3. Bottom Footer Bar */}
+      <div className="w-full bg-white rounded-2xl border border-slate-200/80 p-3.5 sm:p-4 shadow-xs flex flex-wrap items-center justify-between gap-3 text-xs text-slate-600">
+        <div className="flex items-center gap-2.5">
+          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-50 text-blue-600 shrink-0">
+            <ShieldCheck size={14} />
+          </div>
+          <span className="font-medium">
+            This digital ID is valid across all Trackademy campus services and partner institutions.
+          </span>
+        </div>
+
+        <div className="flex items-center gap-2 text-slate-500">
+          <Headphones size={15} className="text-blue-600" />
+          <span>
+            Need Help?{" "}
+            <button
+              type="button"
+              onClick={() => showToast("Connecting to Student Support Desk...")}
+              className="text-blue-600 font-semibold hover:underline cursor-pointer"
+            >
+              Contact Support
+            </button>
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function StudentProfile({
+  onBack,
+  onNavigate,
+  onOpenSidebar,
+  studentData: propStudentData,
+  userRole = "student",
+  user,
+  onLogout,
+  defaultTab = "academic",
+  hideHeader = false,
+  showDigitalCard: propShowDigitalCard,
+  onToggleDigitalCard,
+}) {
+  const [student] = useState(propStudentData || initialStudentData);
+  const [activeTab, setActiveTab] = useState(defaultTab || "academic");
+  const [internalShowDigitalCard, setInternalShowDigitalCard] = useState(false);
+  const isDigitalCard = propShowDigitalCard !== undefined ? propShowDigitalCard : internalShowDigitalCard;
+
+  const handleSetShowDigitalCard = (val) => {
+    if (onToggleDigitalCard) {
+      onToggleDigitalCard(val);
+    }
+    setInternalShowDigitalCard(val);
+  };
+
+  const [toastMessage, setToastMessage] = useState(null);
+  const [showAttendanceInfo, setShowAttendanceInfo] = useState(false);
+
+  function showToast(msg) {
+    setToastMessage(msg);
+    setTimeout(() => {
+      setToastMessage(null);
+    }, 3500);
+  }
+
+  return (
+    <div className="flex-1 h-full w-full min-h-0 bg-gray-50/50 text-slate-800 flex flex-col overflow-hidden">
+      {/* Toast Alert */}
+      {toastMessage && (
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-emerald-600 text-white px-5 py-3.5 rounded-xl shadow-2xl animate-in fade-in slide-in-from-bottom-4 duration-200">
+          <CheckCircle className="w-5 h-5 text-white" />
+          <span className="text-sm font-medium">{toastMessage}</span>
+          <button
+            onClick={() => setToastMessage(null)}
+            className="ml-2 text-emerald-200 hover:text-white cursor-pointer"
+          >
+            <X size={16} />
+          </button>
+        </div>
+      )}
+
+      {/* Top Header matching original admin portal */}
+      {!hideHeader && (
+        <header className="sticky top-0 z-30 h-[65px] bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-2xs">
+          {/* Left: Mobile Sidebar Trigger + Back Button & Title & Breadcrumbs */}
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => {
+                if (onOpenSidebar) onOpenSidebar();
+                else window.dispatchEvent(new CustomEvent("toggle-mobile-sidebar"));
+              }}
+              className="h-10 w-10 rounded-xl bg-gray-100/80 hover:bg-gray-200 active:scale-95 flex items-center justify-center text-gray-700 lg:hidden cursor-pointer transition-all shrink-0"
+              aria-label="Open sidebar"
+            >
+              <Menu size={20} />
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                if (isDigitalCard) {
+                  handleSetShowDigitalCard(false);
+                } else if (onBack) {
+                  onBack();
+                } else if (onNavigate) {
+                  onNavigate(userRole === "mentor" ? "mentees" : "students");
+                }
+              }}
+              className="h-9 w-9 rounded-xl bg-gray-100/80 hover:bg-gray-200 active:scale-95 flex items-center justify-center text-gray-700 cursor-pointer transition-all shrink-0"
+              title="Go Back"
+              aria-label="Go Back"
+            >
+              <ArrowLeft size={18} />
+            </button>
+
+            <div className="min-w-0">
+              <h1 className="text-lg sm:text-xl font-bold text-gray-800 tracking-tight truncate">
+                {isDigitalCard ? "Digital Student ID" : "Student Profile"}
+              </h1>
+              <nav className="hidden sm:flex items-center gap-1.5 text-xs text-gray-400 mt-0.5">
+                <span
+                  className="hover:text-gray-600 cursor-pointer"
+                  onClick={() => {
+                    if (onBack) {
+                      onBack();
+                    } else if (onNavigate) {
+                      onNavigate(userRole === "mentor" ? "mentees" : "students");
+                    }
+                  }}
+                >
+                  {userRole === "mentor" ? "Mentee" : "Students"}
+                </span>
+                <span>&gt;</span>
+                <span
+                  className={`cursor-pointer ${isDigitalCard
+                      ? "hover:text-gray-600"
+                      : (userRole === "mentor" ? "text-[#7656f4] font-semibold" : "text-[#0da651] font-semibold")
+                    }`}
+                  onClick={() => handleSetShowDigitalCard(false)}
+                >
+                  {userRole === "mentor" ? "View Mentee" : "View Students"}
+                </span>
+                {isDigitalCard && (
+                  <>
+                    <span>&gt;</span>
+                    <span className={userRole === "mentor" ? "text-[#7656f4] font-semibold" : "text-[#0da651] font-semibold"}>
+                      Digital ID Card
+                    </span>
+                  </>
+                )}
+              </nav>
+            </div>
+          </div>
+
+          {/* Right: If mentor, render MentorProfileHeaderWidget. If admin, render AdminProfile */}
+          {userRole === "mentor" ? (
+            <MentorProfileHeaderWidget user={user} onNavigate={onNavigate} onLogout={onLogout} />
+          ) : (
+            <AdminProfile name="John Doe" role="Super Admin" avatar="JD" onNavigate={onNavigate} />
+          )}
+        </header>
+      )}
+
+      {/* Main Profile Page Body with spacing matching dashboard */}
+      <main className="flex-1 overflow-y-auto overflow-x-hidden p-2 sm:px-5 sm:py-3.5 font-['Roboto',sans-serif]">
+        {isDigitalCard ? (
+          <DigitalStudentIDSection
+            student={student}
+            onBack={() => handleSetShowDigitalCard(false)}
+            showToast={showToast}
+          />
+        ) : (
+          <div className="w-full space-y-3.5 pb-8">
+
+            {/* ==================================================================== */}
+            {/* UPPER USER INFO CARD (DEEP PORTAL GRADIENT WITH WHITE CONTRAST)      */}
+            {/* ==================================================================== */}
+            <div className={`relative overflow-hidden rounded-2xl p-4 sm:p-5 lg:p-6 shadow-md group ${userRole === "mentor"
+                ? "bg-gradient-to-r from-[#7656f4] via-[#6845f2] to-[#5531dc] border border-purple-600/30 text-white shadow-purple-900/10"
+                : "bg-gradient-to-r from-[#2563eb] via-[#1d4ed8] to-[#1e40af] border border-blue-600/30 text-white shadow-blue-900/15"
+              }`}>
+
+              {/* Ambient Sky/Blue Gradient Glow */}
+              <div className="absolute -right-16 -top-16 w-56 h-56 bg-white/10 rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute -left-16 -bottom-16 w-56 h-56 bg-white/10 rounded-full blur-3xl pointer-events-none" />
+
+              {/* Decorative Dot Matrix on Background */}
+              <div
+                className="absolute inset-0 pointer-events-none opacity-20"
+                style={{
+                  backgroundImage: `radial-gradient(rgba(255,255,255,0.7) 1.2px, transparent 1.2px)`,
+                  backgroundSize: "14px 14px",
+                }}
+              />
+
+              {/* ==================================================================== */}
+              {/* 1. DESKTOP VIEW (hidden on mobile, flex on md and above)              */}
+              {/* ==================================================================== */}
+              <div className="relative z-10 hidden md:flex items-start justify-between gap-6">
+                {/* Left Column: Avatar & Details */}
+                <div className="flex items-center gap-6">
+                  {/* Student Avatar with White Ring */}
+                  <div className="relative shrink-0">
+                    <div className="h-28 w-28 lg:h-32 lg:w-32 rounded-full ring-[4px] ring-white/90 shadow-[0_4px_18px_rgba(0,0,0,0.25)] overflow-hidden bg-white flex items-center justify-center border-2 border-white">
+                      <img
+                        src={student.avatar && student.avatar !== "/tanuka_saha_avatar.png" ? student.avatar : tuhinaAvatar}
+                        alt={student.name || "Tanuka Saha"}
+                        className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+                        onError={(e) => {
+                          e.target.src = tuhinaAvatar;
+                        }}
+                      />
+                      <div className="hidden h-full w-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white font-bold text-3xl items-center justify-center">
+                        {(student.name || "TS").slice(0, 2).toUpperCase()}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Middle Student Info Details */}
+                  <div className="flex flex-col items-start space-y-2">
+                    {/* Student Full Name */}
+                    <h2 className="text-2xl lg:text-[28px] font-bold text-white tracking-tight leading-tight">
+                      {student.name || "Tanuka Saha"}
+                    </h2>
+
+                    {/* Student ID / Roll Pill Badge */}
+                    <div>
+                      <span className="inline-flex items-center px-3.5 py-1 mb-2 rounded-lg bg-white/20 border border-white/30 text-white text-xs lg:text-[13px] font-bold tracking-wide shadow-2xs backdrop-blur-md">
+                        {student.rollNo || student.id || "CSE2024012"}
+                      </span>
+                    </div>
+
+                    {/* Contact Info, Course & Department Horizontal Row with Subtle Vertical Dividers */}
+                    <div className="flex flex-wrap items-center justify-start gap-4 lg:gap-5 pt-1 text-xs lg:text-[13px] font-medium text-blue-100/90">
+                      {/* Phone Number */}
+                      <div className="flex items-center gap-2">
+                        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/20 text-white shadow-2xs border border-white/25 shrink-0 backdrop-blur-xs">
+                          <Phone size={13} className="fill-white stroke-[1.5]" />
+                        </div>
+                        <span className="font-semibold text-white tracking-tight">
+                          {student.phone || student.additionalDetails?.phoneNumber || "+91 9123930828"}
+                        </span>
+                      </div>
+
+                      {/* Divider 1 */}
+                      <div className="h-4 w-[1px] bg-white/25 self-center" />
+
+                      {/* Email ID */}
+                      <div className="flex items-center gap-2">
+                        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/20 text-white shadow-2xs border border-white/25 shrink-0 backdrop-blur-xs">
+                          <Mail size={14} className="stroke-[2.2]" />
+                        </div>
+                        <span className="font-semibold text-white">
+                          {student.email || student.additionalDetails?.personalEmail || "tanuka.saha@gmail.com"}
+                        </span>
+                      </div>
+
+                      {/* Divider 2 */}
+                      <div className="h-4 w-[1px] bg-white/25 self-center" />
+
+                      {/* Course: BTech */}
+                      <div className="flex items-center gap-2">
+                        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/20 text-white shadow-2xs border border-white/25 shrink-0 backdrop-blur-xs">
+                          <GraduationCap size={14} className="stroke-[2.2]" />
+                        </div>
+                        <span className="font-semibold text-white">
+                          {student.course || "BTech"}
+                        </span>
+                      </div>
+
+                      {/* Divider 3 */}
+                      <div className="h-4 w-[1px] bg-white/25 self-center" />
+
+                      {/* Department */}
+                      <div className="flex items-center gap-2">
+                        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/20 text-white shadow-2xs border border-white/25 shrink-0 backdrop-blur-xs">
+                          <Building size={14} className="stroke-[2.2]" />
+                        </div>
+                        <span className="font-semibold text-white">
+                          {student.department || "Computer Science & Engineering"}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Upper Right Action: View Digital Card Button */}
+                <div className="shrink-0 flex items-center self-start">
+                  <button
+                    type="button"
+                    onClick={() => handleSetShowDigitalCard(true)}
+                    className="inline-flex items-center gap-2 px-3.5 py-2 lg:px-4 lg:py-2.5 rounded-xl bg-white hover:bg-blue-50 text-[#2563eb] border border-white/80 text-xs lg:text-sm font-bold tracking-tight transition-all active:scale-95 shadow-md hover:shadow-lg cursor-pointer group/btn"
+                  >
+                    <CreditCard size={15} className="text-[#2563eb] group-hover/btn:scale-110 transition-transform stroke-[2.2]" />
+                    <span>View Digital ID Card</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* ==================================================================== */}
+              {/* 2. MOBILE VIEW (flex on mobile, hidden on md and above)               */}
+              {/* ==================================================================== */}
+              <div className="relative z-10 flex md:hidden flex-col items-center w-full">
+                {/* 1. Top Corner: View Digital ID Card Button */}
+                <div className="w-full flex justify-end mb-1">
+                  <button
+                    type="button"
+                    onClick={() => handleSetShowDigitalCard(true)}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-blue-50 text-[#2563eb] border border-white/80 text-xs font-bold tracking-tight transition-all active:scale-95 shadow-md hover:shadow-lg cursor-pointer group/btn"
+                  >
+                    <CreditCard size={14} className="text-[#2563eb] group-hover/btn:scale-110 transition-transform stroke-[2.2]" />
+                    <span>View Digital ID Card</span>
+                  </button>
+                </div>
+
+                {/* 2. Middle: Profile Image */}
+                <div className="relative shrink-0 mb-3">
+                  <div className="h-24 w-24 rounded-full ring-[4px] ring-white/90 shadow-[0_4px_18px_rgba(0,0,0,0.25)] overflow-hidden bg-white flex items-center justify-center border-2 border-white mx-auto">
+                    <img
+                      src={student.avatar && student.avatar !== "/tanuka_saha_avatar.png" ? student.avatar : tuhinaAvatar}
+                      alt={student.name || "Tanuka Saha"}
+                      className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+                      onError={(e) => {
+                        e.target.src = tuhinaAvatar;
+                      }}
+                    />
+                    <div className="hidden h-full w-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white font-bold text-3xl items-center justify-center">
+                      {(student.name || "TS").slice(0, 2).toUpperCase()}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Student Full Name & Roll Badge */}
+                <div className="flex flex-col items-center text-center space-y-1 mb-3">
+                  <h2 className="text-2xl font-bold text-white tracking-tight leading-tight">
+                    {student.name || "Tanuka Saha"}
+                  </h2>
+                  <div>
+                    <span className="inline-flex items-center px-3.5 py-1 rounded-lg bg-white/20 border border-white/30 text-white text-xs font-bold tracking-wide shadow-2xs backdrop-blur-md">
+                      {student.rollNo || student.id || "CSE2024012"}
+                    </span>
+                  </div>
+                </div>
+
+                {/* 3. Details in TWO ROWS */}
+                <div className="w-full max-w-2xl flex flex-col items-center gap-2 text-xs font-medium text-blue-100/90">
+                  {/* Row 1: Contact Info (Phone & Email) */}
+                  <div className="flex flex-wrap items-center justify-center gap-3">
+                    <div className="flex items-center gap-2">
+                      <div className="flex h-6 w-6 items-center justify-center rounded-full bg-white/20 text-white shadow-2xs border border-white/25 shrink-0 backdrop-blur-xs">
+                        <Phone size={12} className="fill-white stroke-[1.5]" />
+                      </div>
+                      <span className="font-semibold text-white tracking-tight">
+                        {student.phone || student.additionalDetails?.phoneNumber || "+91 9123930828"}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <div className="flex h-6 w-6 items-center justify-center rounded-full bg-white/20 text-white shadow-2xs border border-white/25 shrink-0 backdrop-blur-xs">
+                        <Mail size={13} className="stroke-[2.2]" />
+                      </div>
+                      <span className="font-semibold text-white">
+                        {student.email || student.additionalDetails?.personalEmail || "tanuka.saha@gmail.com"}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Row 2: Academic Info (Course & Department) */}
+                  <div className="flex flex-wrap items-center justify-center gap-3">
+                    <div className="flex items-center gap-2">
+                      <div className="flex h-6 w-6 items-center justify-center rounded-full bg-white/20 text-white shadow-2xs border border-white/25 shrink-0 backdrop-blur-xs">
+                        <GraduationCap size={13} className="stroke-[2.2]" />
+                      </div>
+                      <span className="font-semibold text-white">
+                        {student.course || "BTech"}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <div className="flex h-6 w-6 items-center justify-center rounded-full bg-white/20 text-white shadow-2xs border border-white/25 shrink-0 backdrop-blur-xs">
+                        <Building size={13} className="stroke-[2.2]" />
+                      </div>
+                      <span className="font-semibold text-white">
+                        {student.department || "Computer Science & Engineering"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* ==================================================================== */}
+            {/* TAB NAVIGATION BUTTONS (SINGLE LINE ON ALL DEVICES)                  */}
+            {/* ==================================================================== */}
+            <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 p-1.5 flex items-center justify-start gap-1 sm:gap-2.5 overflow-x-auto scrollbar-none flex-nowrap">
+              {/* 1. Academic Tab (Default Active) */}
+              <button
+                type="button"
+                onClick={() => setActiveTab("academic")}
+                className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all relative shrink-0 whitespace-nowrap ${activeTab === "academic"
+                  ? "text-blue-600 font-bold bg-blue-50/70"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                  }`}
+              >
+                <GraduationCap size={16} className={activeTab === "academic" ? "text-blue-600 shrink-0" : "text-slate-400 shrink-0"} />
+                <span className="whitespace-nowrap">Academics</span>
+                {activeTab === "academic" && (
+                  <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-blue-600 rounded-full" />
+                )}
+              </button>
+
+              {/* 2. Personal Info Tab */}
+              <button
+                type="button"
+                onClick={() => setActiveTab("personal")}
+                className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all relative shrink-0 whitespace-nowrap ${(activeTab === "personal" || activeTab === "parents")
+                  ? "text-blue-600 font-bold bg-blue-50/70"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                  }`}
+              >
+                <User size={16} className={(activeTab === "personal" || activeTab === "parents") ? "text-blue-600 shrink-0" : "text-slate-400 shrink-0"} />
+                <span className="whitespace-nowrap">Personal Info</span>
+                {(activeTab === "personal" || activeTab === "parents") && (
+                  <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-blue-600 rounded-full" />
+                )}
+              </button>
+
+              {/* 3. Result Tab */}
+              <button
+                type="button"
+                onClick={() => setActiveTab("result")}
+                className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all relative shrink-0 whitespace-nowrap ${activeTab === "result"
+                  ? "text-blue-600 font-bold bg-blue-50/70"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                  }`}
+              >
+                <Clock size={16} className={activeTab === "result" ? "text-blue-600 shrink-0" : "text-slate-400 shrink-0"} />
+                <span className="whitespace-nowrap">Result</span>
+                {activeTab === "result" && (
+                  <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-blue-600 rounded-full" />
+                )}
+              </button>
+
+              {/* 4. Attendance Tab */}
+              <button
+                type="button"
+                onClick={() => setActiveTab("attendance")}
+                className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all relative shrink-0 whitespace-nowrap ${activeTab === "attendance"
+                  ? "text-blue-600 font-bold bg-blue-50/70"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                  }`}
+              >
+                <Calendar size={16} className={activeTab === "attendance" ? "text-blue-600 shrink-0" : "text-slate-400 shrink-0"} />
+                <span className="whitespace-nowrap">Attendance</span>
+                {activeTab === "attendance" && (
+                  <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-blue-600 rounded-full" />
+                )}
+              </button>
+            </div>
+
+
+            {/* ==================================================================== */}
+            {/* TAB 1: ACADEMIC DETAILS (DEFAULT ACTIVE)                             */}
+            {/* ==================================================================== */}
+            {activeTab === "academic" && (
+              <div className="space-y-3.5 animate-in fade-in duration-200">
+                {/* 1. Academic Information Card */}
+                <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 lg:p-6 shadow-md shadow-slate-200/60 space-y-3.5">
+                  <div className="flex items-center gap-2.5 text-blue-600 border-b border-slate-100 pb-3">
+                    <FileText size={18} className="stroke-[2.2]" />
+                    <h3 className="text-sm sm:text-base font-bold text-slate-800">
+                      Academic Information
+                    </h3>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 pt-0.5">
+                    {/* 1. University / Institution */}
+                    <div className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                        <Building2 size={18} />
+                      </div>
+                      <div className="overflow-hidden">
+                        <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">University / Institution</p>
+                        <p className="text-xs sm:text-sm font-bold text-slate-800 truncate" title={student.academicDetails?.institution || "Rajasthan Technical University, Kota"}>
+                          {student.academicDetails?.institution || "Rajasthan Technical University, Kota"}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* 2. University Role */}
+                    <div className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                        <User size={18} />
+                      </div>
+                      <div className="overflow-hidden">
+                        <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">University Role</p>
+                        <p className="text-xs sm:text-sm font-bold text-slate-800 truncate">
+                          {student.academicDetails?.universityRole || "Regular"}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* 3. Admission Batch */}
+                    <div className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                        <CalendarDays size={18} />
+                      </div>
+                      <div className="overflow-hidden">
+                        <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Admission Batch</p>
+                        <p className="text-xs sm:text-sm font-bold text-slate-800 truncate">
+                          {student.academicDetails?.admissionBatch || student.batch || "2022 - 2026"}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* 4. ABC ID */}
+                    <div className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                        <ShieldCheck size={18} />
+                      </div>
+                      <div className="overflow-hidden">
+                        <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">ABC ID</p>
+                        <p className="text-xs sm:text-sm font-bold text-slate-800 tracking-wider truncate">
+                          {student.academicDetails?.abcId || student.abcId || "9284-1823-9012"}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* 5. Registration Number */}
+                    <div className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                        <FileText size={18} />
+                      </div>
+                      <div className="overflow-hidden">
+                        <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Registration Number</p>
+                        <p className="text-xs sm:text-sm font-bold text-slate-800 truncate">
+                          {student.academicDetails?.registrationNumber || student.registrationNo || "22CS100123"}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* 6. University Roll No */}
+                    <div className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                        <Hash size={18} />
+                      </div>
+                      <div className="overflow-hidden">
+                        <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">University Roll No</p>
+                        <p className="text-xs sm:text-sm font-bold text-slate-800 truncate">
+                          {student.academicDetails?.enrollmentNumber || student.rollNo || "RTU/2022/CS/12345"}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* 7. Current Year */}
+                    <div className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                        <Award size={18} />
+                      </div>
+                      <div className="overflow-hidden">
+                        <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Current Year</p>
+                        <p className="text-xs sm:text-sm font-bold text-slate-800 truncate">
+                          {student.academicDetails?.currentYear || student.year || "Third Year"}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* 8. Current Semester */}
+                    <div className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                        <GraduationCap size={18} />
+                      </div>
+                      <div className="overflow-hidden">
+                        <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Current Semester</p>
+                        <p className="text-xs sm:text-sm font-bold text-slate-800 truncate">
+                          {student.academicDetails?.currentSemester || student.semester || "VI Semester"}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* 9. College Roll Number */}
+                    <div className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                        <Hash size={18} />
+                      </div>
+                      <div className="overflow-hidden">
+                        <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">College Roll Number</p>
+                        <p className="text-xs sm:text-sm font-bold text-slate-800 truncate">
+                          {student.academicDetails?.collegeRollNo || student.collegeRoll || "CSE2022077"}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 2. Mentor Details Card */}
+                <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 lg:p-6 shadow-md shadow-slate-200/60 space-y-3.5">
+                  <div className="flex items-center gap-2.5 text-blue-600 border-b border-slate-100 pb-3">
+                    <Users size={18} className="stroke-[2.2]" />
+                    <h3 className="text-sm sm:text-base font-bold text-slate-800">
+                      Mentor Details
+                    </h3>
+                  </div>
+
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center pt-1">
+                    {/* Left Column: Avatar & Mentor Name/Department */}
+                    <div className="lg:col-span-6 flex flex-col sm:flex-row items-center gap-5 sm:gap-6 text-center sm:text-left">
+                      {/* Mentor Profile Image with Star Badge */}
+                      <div className="relative shrink-0">
+                        <div className="h-24 w-24 sm:h-28 sm:w-28 rounded-full ring-4 ring-white shadow-md overflow-hidden bg-slate-100 border border-slate-200 flex items-center justify-center">
+                          <img
+                            src={student.mentorDetails?.avatar || "/rahul_sharma_avatar.png"}
+                            alt={student.mentorDetails?.name || "Mentor"}
+                            className="h-full w-full object-cover"
+                            onError={(e) => {
+                              e.target.style.display = "none";
+                              if (e.target.nextSibling) e.target.nextSibling.style.display = "flex";
+                            }}
+                          />
+                          <div className="hidden h-full w-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white font-bold text-2xl items-center justify-center">
+                            {(student.mentorDetails?.name || "RS").slice(0, 2).toUpperCase()}
+                          </div>
+                        </div>
+
+                        {/* Small Star Badge at bottom right */}
+                        <div className="absolute bottom-0.5 right-0.5 h-7 w-7 rounded-full bg-emerald-500 text-white ring-2 ring-white flex items-center justify-center shadow-sm">
+                          <Star size={13} className="fill-white stroke-[1.5]" />
+                        </div>
+                      </div>
+
+                      {/* Mentor Name & Department */}
+                      <div className="space-y-2.5">
+                        <div>
+                          <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+                            Mentor Name
+                          </p>
+                          <p className="text-base sm:text-lg font-extrabold text-slate-900 mt-0.5">
+                            {student.mentorDetails?.name || student.mentor || "Prof. Rahul Sharma"}
+                          </p>
+                        </div>
+
+                        <div>
+                          <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+                            Department
+                          </p>
+                          <p className="text-xs sm:text-sm font-semibold text-slate-800 mt-0.5">
+                            {student.mentorDetails?.department || student.department || "Computer Science Engineering"}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Vertical Divider for Desktop */}
+                    <div className="hidden lg:flex lg:col-span-1 justify-center">
+                      <div className="h-24 w-[1px] bg-slate-200/80" />
+                    </div>
+
+                    {/* Right Column: Email, Phone, Office Location */}
+                    <div className="lg:col-span-5 space-y-3">
+                      {/* Email */}
+                      <div className="flex items-center gap-3.5 p-2 rounded-xl hover:bg-slate-50/80 transition-colors">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                          <Mail size={16} />
+                        </div>
+                        <div className="overflow-hidden">
+                          <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Email</p>
+                          <p className="text-xs sm:text-sm font-semibold text-slate-800 truncate" title={student.mentorDetails?.email || "rahul.sharma@edusmart.edu"}>
+                            {student.mentorDetails?.email || "rahul.sharma@edusmart.edu"}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Phone */}
+                      <div className="flex items-center gap-3.5 p-2 rounded-xl hover:bg-slate-50/80 transition-colors">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                          <Phone size={16} />
+                        </div>
+                        <div className="overflow-hidden">
+                          <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Phone</p>
+                          <p className="text-xs sm:text-sm font-semibold text-slate-800 truncate">
+                            {student.mentorDetails?.phone || "+91 91234 56789"}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Office Location */}
+                      <div className="flex items-center gap-3.5 p-2 rounded-xl hover:bg-slate-50/80 transition-colors">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                          <MapPin size={16} />
+                        </div>
+                        <div className="overflow-hidden">
+                          <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Office Location</p>
+                          <p className="text-xs sm:text-sm font-semibold text-slate-800 truncate">
+                            {student.mentorDetails?.officeLocation || "Block B, Room 203"}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ==================================================================== */}
+            {/* TAB 2: PERSONAL INFO (ADDITIONAL, ADDRESS & PARENTS DETAILS)          */}
+            {/* ==================================================================== */}
+            {(activeTab === "personal" || activeTab === "parents") && (
+              <div className="space-y-3.5 animate-in fade-in duration-200">
+
+                {/* 1. Additional Details Card */}
+                <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 lg:p-6 shadow-md shadow-slate-200/60 space-y-3.5">
+                  <div className="flex items-center gap-2.5 text-blue-600 border-b border-slate-100 pb-3">
+                    <FileText size={18} className="stroke-[2.2]" />
+                    <h3 className="text-sm sm:text-base font-bold text-slate-800">
+                      Additional Details
+                    </h3>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 pt-0.5">
+                    {/* Personal Email */}
+                    <div className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                        <Mail size={18} />
+                      </div>
+                      <div className="overflow-hidden">
+                        <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Personal Email</p>
+                        <p className="text-xs sm:text-sm font-bold text-slate-800 truncate" title={student.additionalDetails?.personalEmail || student.email || "tanuka.saha@gmail.com"}>
+                          {student.additionalDetails?.personalEmail || student.email || "tanuka.saha@gmail.com"}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Phone Number */}
+                    <div className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                        <Phone size={18} />
+                      </div>
+                      <div className="overflow-hidden">
+                        <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Phone Number</p>
+                        <p className="text-xs sm:text-sm font-bold text-slate-800 truncate">
+                          {student.additionalDetails?.phoneNumber || student.phone || "+91 9123930828"}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* College Email */}
+                    <div className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                        <Mail size={18} />
+                      </div>
+                      <div className="overflow-hidden">
+                        <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">College Email</p>
+                        <p className="text-xs sm:text-sm font-bold text-slate-800 truncate" title={student.additionalDetails?.collegeEmail || "tanuka.s@edusmart.edu"}>
+                          {student.additionalDetails?.collegeEmail || "tanuka.s@edusmart.edu"}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Blood Group */}
+                    <div className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                        <Droplet size={18} />
+                      </div>
+                      <div className="overflow-hidden">
+                        <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Blood Group</p>
+                        <p className="text-xs sm:text-sm font-bold text-slate-800">
+                          {student.additionalDetails?.bloodGroup || "O+"}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Date of Birth */}
+                    <div className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                        <CalendarDays size={18} />
+                      </div>
+                      <div className="overflow-hidden">
+                        <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Date of Birth</p>
+                        <p className="text-xs sm:text-sm font-bold text-slate-800">
+                          {student.additionalDetails?.dateOfBirth || "12 May 2004"}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Gender */}
+                    <div className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                        <User size={18} />
+                      </div>
+                      <div className="overflow-hidden">
+                        <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Gender</p>
+                        <p className="text-xs sm:text-sm font-bold text-slate-800">
+                          {student.additionalDetails?.gender || student.gender || "Female"}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Aadhar Card Number */}
+                    <div className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                        <CreditCard size={18} />
+                      </div>
+                      <div className="overflow-hidden">
+                        <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Aadhar Card Number</p>
+                        <p className="text-xs sm:text-sm font-bold text-slate-800 tracking-wider">
+                          {student.additionalDetails?.aadharCardNumber || "4521 8901 2345"}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 2. Address Details Card */}
+                <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 lg:p-6 shadow-md shadow-slate-200/60 space-y-3.5">
+                  <div className="flex items-center gap-2.5 text-blue-600 border-b border-slate-100 pb-3">
+                    <MapPin size={18} className="stroke-[2.2]" />
+                    <h3 className="text-sm sm:text-base font-bold text-slate-800">
+                      Address Details
+                    </h3>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 pt-0.5">
+                    {/* Country */}
+                    <div className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                        <Globe size={18} />
+                      </div>
+                      <div className="overflow-hidden">
+                        <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Country</p>
+                        <p className="text-xs sm:text-sm font-bold text-slate-800">{student.addressDetails?.country || "India"}</p>
+                      </div>
+                    </div>
+
+                    {/* State */}
+                    <div className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                        <BookOpen size={18} />
+                      </div>
+                      <div className="overflow-hidden">
+                        <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">State</p>
+                        <p className="text-xs sm:text-sm font-bold text-slate-800">{student.addressDetails?.state || "West Bengal"}</p>
+                      </div>
+                    </div>
+
+                    {/* District */}
+                    <div className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                        <Building size={18} />
+                      </div>
+                      <div className="overflow-hidden">
+                        <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">District</p>
+                        <p className="text-xs sm:text-sm font-bold text-slate-800">{student.addressDetails?.district || "Kolkata"}</p>
+                      </div>
+                    </div>
+
+                    {/* Pin Code */}
+                    <div className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                        <MapPin size={18} />
+                      </div>
+                      <div className="overflow-hidden">
+                        <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Pin Code</p>
+                        <p className="text-xs sm:text-sm font-bold text-slate-800">{student.addressDetails?.pinCode || "700091"}</p>
+                      </div>
+                    </div>
+
+                    {/* Postal Address */}
+                    <div className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                        <Mail size={18} />
+                      </div>
+                      <div className="overflow-hidden">
+                        <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Postal Address</p>
+                        <p className="text-xs sm:text-sm font-bold text-slate-800 truncate" title={student.addressDetails?.postalAddress || "Plot 14, Salt Lake Sector V"}>
+                          {student.addressDetails?.postalAddress || "Plot 14, Salt Lake Sector V"}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Police Station */}
+                    <div className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                        <ShieldCheck size={18} />
+                      </div>
+                      <div className="overflow-hidden">
+                        <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Police Station</p>
+                        <p className="text-xs sm:text-sm font-bold text-slate-800 truncate" title={student.addressDetails?.policeStation || "Bidhannagar East Police Station"}>
+                          {student.addressDetails?.policeStation || "Bidhannagar East Police Station"}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Full Address */}
+                    <div className="col-span-1 sm:col-span-2 lg:col-span-3 flex items-center gap-3 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                        <Home size={18} />
+                      </div>
+                      <div className="overflow-hidden">
+                        <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Full Address</p>
+                        <p className="text-xs sm:text-sm font-bold text-slate-800">
+                          {student.addressDetails?.fullAddress || "Flat 4B, Greenwood Heights, Plot 14, Salt Lake Sector V, Bidhannagar, Kolkata, West Bengal - 700091"}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 3. Combined Parents Details Card */}
+                <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 lg:p-6 shadow-md shadow-slate-200/60 space-y-4">
+                  <div className="flex items-center gap-2.5 text-blue-600 border-b border-slate-100 pb-3">
+                    <Users size={18} className="stroke-[2.2]" />
+                    <h3 className="text-sm sm:text-base font-bold text-slate-800">
+                      Parents Details
+                    </h3>
+                  </div>
+
+                  {/* Father's Details Sub-section */}
+                  <div className="space-y-2.5 pt-0.5">
+                    <div className="flex items-center gap-2 text-slate-800">
+                      <span className="h-2 w-2 rounded-full bg-blue-600" />
+                      <h4 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-700">
+                        Father&apos;s Details
+                      </h4>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+                      {/* Full Name */}
+                      <div className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                          <User size={18} />
+                        </div>
+                        <div className="overflow-hidden">
+                          <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Full Name</p>
+                          <p className="text-xs sm:text-sm font-bold text-slate-800 truncate">{student.fatherDetails?.fullName || "Subhash Saha"}</p>
+                        </div>
+                      </div>
+
+                      {/* Email Address */}
+                      <div className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                          <Mail size={18} />
+                        </div>
+                        <div className="overflow-hidden">
+                          <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Email Address</p>
+                          <p className="text-xs sm:text-sm font-bold text-slate-800 truncate" title={student.fatherDetails?.emailAddress || "subhash.saha@gmail.com"}>
+                            {student.fatherDetails?.emailAddress || "subhash.saha@gmail.com"}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Phone Number */}
+                      <div className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                          <Phone size={18} />
+                        </div>
+                        <div className="overflow-hidden">
+                          <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Phone Number</p>
+                          <p className="text-xs sm:text-sm font-bold text-slate-800 truncate">{student.fatherDetails?.phoneNumber || "+91 9123930820"}</p>
+                        </div>
+                      </div>
+
+                      {/* Occupation */}
+                      <div className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                          <Briefcase size={18} />
+                        </div>
+                        <div className="overflow-hidden">
+                          <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Occupation</p>
+                          <p className="text-xs sm:text-sm font-bold text-slate-800 truncate">{student.fatherDetails?.occupation || "Business Executive"}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Subtle Divider */}
+                  <div className="border-t border-slate-100 my-1" />
+
+                  {/* Mother's Details Sub-section */}
+                  <div className="space-y-2.5">
+                    <div className="flex items-center gap-2 text-slate-800">
+                      <span className="h-2 w-2 rounded-full bg-blue-600" />
+                      <h4 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-700">
+                        Mother&apos;s Details
+                      </h4>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+                      {/* Full Name */}
+                      <div className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                          <User size={18} />
+                        </div>
+                        <div className="overflow-hidden">
+                          <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Full Name</p>
+                          <p className="text-xs sm:text-sm font-bold text-slate-800 truncate">{student.motherDetails?.fullName || "Ananya Saha"}</p>
+                        </div>
+                      </div>
+
+                      {/* Email Address */}
+                      <div className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                          <Mail size={18} />
+                        </div>
+                        <div className="overflow-hidden">
+                          <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Email Address</p>
+                          <p className="text-xs sm:text-sm font-bold text-slate-800 truncate" title={student.motherDetails?.emailAddress || "ananya.saha@gmail.com"}>
+                            {student.motherDetails?.emailAddress || "ananya.saha@gmail.com"}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Phone Number */}
+                      <div className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                          <Phone size={18} />
+                        </div>
+                        <div className="overflow-hidden">
+                          <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Phone Number</p>
+                          <p className="text-xs sm:text-sm font-bold text-slate-800 truncate">{student.motherDetails?.phoneNumber || "+91 9123930821"}</p>
+                        </div>
+                      </div>
+
+                      {/* Occupation */}
+                      <div className="flex items-center gap-3 p-3.5 rounded-xl border border-slate-100 bg-[#fafcff] hover:border-blue-200 transition-colors">
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                          <Briefcase size={18} />
+                        </div>
+                        <div className="overflow-hidden">
+                          <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wide">Occupation</p>
+                          <p className="text-xs sm:text-sm font-bold text-slate-800 truncate">{student.motherDetails?.occupation || "Professor"}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Info Note Footer */}
+                  <div className="flex items-center gap-3 p-3.5 rounded-xl bg-blue-50/70 border border-blue-200/70 text-blue-900 text-xs sm:text-sm shadow-2xs mt-2">
+                    <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-600 text-white font-bold text-xs">
+                      i
+                    </div>
+                    <p className="font-medium text-slate-700">
+                      For any correction in parent or personal details, please contact the administration office.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ==================================================================== */}
+            {/* TAB 3: RESULT DETAILS                                                */}
+            {/* ==================================================================== */}
+            {activeTab === "result" && (
+              <div className="space-y-3.5 animate-in fade-in duration-200">
+                {/* 1. Academic Grade Performance Card (Combined) */}
+                <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 lg:p-6 shadow-md shadow-slate-200/60 space-y-3.5">
+                  <div className="flex items-center gap-2.5 text-blue-600 border-b border-slate-100 pb-3">
+                    <Award size={18} className="stroke-[2.2]" />
+                    <h3 className="text-sm sm:text-base font-bold text-slate-800">
+                      Academic Grade Performance
+                    </h3>
+                  </div>
+
+                  {/* Semester Progression Grid */}
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 pt-0.5">
+                    {(student.resultDetails?.semesters || []).map((s, idx) => (
+                      <div
+                        key={s.sem}
+                        className={`p-3.5 rounded-xl border text-center transition-all ${idx === 5
+                          ? "bg-blue-50/60 border-blue-300 ring-2 ring-blue-100/80"
+                          : "bg-[#fafcff] border-slate-100 hover:border-blue-200"
+                          }`}
+                      >
+                        <p className="text-xs font-bold text-slate-500">{s.sem}</p>
+                        <p className="text-xl sm:text-2xl font-extrabold text-blue-700 my-1.5">
+                          {s.sgpa}
+                        </p>
+                        <span
+                          className={`inline-block text-[10px] font-bold px-2.5 py-0.5 rounded-full ${s.status === "Passed"
+                            ? "bg-emerald-100 text-emerald-700"
+                            : "bg-amber-100 text-amber-700"
+                            }`}
+                        >
+                          {s.status}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Reusable Semester Detailed Grade Table Component with matching header style */}
+                <SubjectResultOverview
+                  subjects={student.resultDetails?.sem5Grades}
+                  title="Last Published Result (Semester 5)"
+                  headerVariant="profile"
+                  cardClassName="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 lg:p-6 shadow-md shadow-slate-200/60 space-y-3.5"
+                />
+              </div>
+            )}
+
+            {/* ==================================================================== */}
+            {/* TAB 4: ATTENDANCE DETAILS                                            */}
+            {/* ==================================================================== */}
+            {activeTab === "attendance" && (
+              <div className="space-y-3.5 animate-in fade-in duration-200">
+                {/* Top Attendance Metric Header */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                  {/* 1. Overall Attendance (Emerald Theme) */}
+                  <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-3.5 hover:border-emerald-200 transition-colors">
+                    <div className="h-12 w-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 border border-emerald-100/80 shadow-2xs">
+                      <CheckCircle2 size={24} className="stroke-[2.2]" />
+                    </div>
+                    <div className="overflow-hidden">
+                      <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Overall Attendance</p>
+                      <p className="text-xl sm:text-2xl font-extrabold text-emerald-600 mt-0.5">
+                        {student.attendanceDetails?.overallPercentage || "95.0"}%
+                      </p>
+                      <p className="text-[11px] text-slate-500 font-medium truncate">Above minimum (75%)</p>
+                    </div>
+                  </div>
+
+                  {/* 2. Present Classes (Blue Theme) */}
+                  <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-3.5 hover:border-blue-200 transition-colors">
+                    <div className="h-12 w-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 border border-blue-100/80 shadow-2xs">
+                      <UserCheck size={24} className="stroke-[2.2]" />
+                    </div>
+                    <div className="overflow-hidden">
+                      <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Present Classes</p>
+                      <p className="text-xl sm:text-2xl font-extrabold text-slate-800 mt-0.5">
+                        {student.attendanceDetails?.presentDays || 172} / {student.attendanceDetails?.totalWorkingDays || 180}
+                      </p>
+                      <p className="text-[11px] text-blue-600 font-medium truncate">Recorded lectures</p>
+                    </div>
+                  </div>
+
+                  {/* 3. Leaves Approved (Yellow Theme) */}
+                  <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-3.5 hover:border-amber-200 transition-colors">
+                    <div className="h-12 w-12 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center shrink-0 border border-amber-100/80 shadow-2xs">
+                      <CalendarClock size={24} className="stroke-[2.2]" />
+                    </div>
+                    <div className="overflow-hidden">
+                      <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Leaves Approved</p>
+                      <p className="text-xl sm:text-2xl font-extrabold text-slate-800 mt-0.5">
+                        {student.attendanceDetails?.leavesApproved || 6} Days
+                      </p>
+                      <p className="text-[11px] text-amber-600 font-medium truncate">Medical & Event excused</p>
+                    </div>
+                  </div>
+
+                  {/* 4. Absence Status (Rose Theme) */}
+                  <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-3.5 hover:border-rose-200 transition-colors">
+                    <div className="h-12 w-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center shrink-0 border border-rose-100/80 shadow-2xs">
+                      <UserX size={24} className="stroke-[2.2]" />
+                    </div>
+                    <div className="overflow-hidden">
+                      <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Absence Status</p>
+                      <p className="text-xl sm:text-2xl font-extrabold text-slate-800 mt-0.5">
+                        {student.attendanceDetails?.unexcusedAbsent || 2} Days
+                      </p>
+                      <p className="text-[11px] text-rose-500 font-medium truncate">Regular standing</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Reusable Subject Attendance Overview Component */}
+                <SubjectAttendanceOverview
+                  subjects={student.attendanceDetails?.subjectAttendanceDetails}
+                />
+              </div>
+            )}
+
+          </div>
+        )}
+      </main>
+    </div>
+  );
+}

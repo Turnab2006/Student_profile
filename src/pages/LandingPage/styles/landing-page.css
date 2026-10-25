@@ -1,0 +1,217 @@
+/* Trackademy Landing Page - Core Base Styles & Tailwind Compatibility Layer */
+@import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Roboto:wght@400;500;700&display=swap');
+
+/* Smooth Scrolling */
+html {
+    scroll-behavior: smooth !important;
+}
+
+.trackademy-landing-root section[id],
+.trackademy-landing-root div[id] {
+    scroll-margin-top: 85px;
+}
+
+/* Root Scoping Container */
+.trackademy-landing-root {
+    --tlp-primary-color: #2563EB;
+    --tlp-primary-hover: #1d4ed8;
+    --tlp-primary-gradient: linear-gradient(135deg, #6E99FF 0%, #5B85F0 100%);
+    --tlp-highlight-gradient: linear-gradient(91deg, #147FEB 18.53%, #FB8FFF 94.92%);
+    --tlp-dark-color: #0f172a;
+    --tlp-text-color: #334155;
+    --tlp-text-muted: #475467;
+    --tlp-bg-color: #ffffff;
+    --tlp-border-color: #E4E7EC;
+
+    /* Standardized Landing Page Typography Tokens */
+    --tlp-font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --tlp-badge-size: 0.875rem; /* 14px */
+    --tlp-badge-weight: 600;
+    --tlp-badge-color: #2563eb;
+    --tlp-badge-bg: #eff6ff;
+    --tlp-badge-border: #dbeafe;
+
+    --tlp-heading-size-mobile: 1.875rem; /* 30px */
+    --tlp-heading-size-desktop: 2.25rem; /* 36px */
+    --tlp-heading-weight: 700;
+    --tlp-heading-line-height: 1.25;
+    --tlp-heading-letter-spacing: -0.025em;
+    --tlp-heading-color: #0f172a;
+
+    --tlp-subtext-size-mobile: 1rem; /* 16px */
+    --tlp-subtext-size-desktop: 1.0625rem; /* 17px */
+    --tlp-subtext-weight: 400;
+    --tlp-subtext-line-height: 1.65;
+    --tlp-subtext-color: #475467;
+
+    --tlp-card-title-size-mobile: 1.125rem; /* 18px */
+    --tlp-card-title-size-desktop: 1.25rem; /* 20px */
+    --tlp-card-title-weight: 700;
+    --tlp-card-title-line-height: 1.35;
+    --tlp-card-title-letter-spacing: -0.015em;
+
+    --tlp-card-text-size: 0.9375rem; /* 15px */
+    --tlp-card-text-weight: 400;
+    --tlp-card-text-line-height: 1.6;
+    --tlp-card-text-color: #475467;
+
+    /* Base Typography */
+    font-family: var(--tlp-font-family);
+    color: var(--tlp-text-color);
+    background-color: var(--tlp-bg-color);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
+}
+
+/* Ensure box-sizing containment */
+.trackademy-landing-root *,
+.trackademy-landing-root *::before,
+.trackademy-landing-root *::after {
+    box-sizing: border-box;
+}
+
+/* Tailwind Preflight Defenses: Reset & Normalization within Landing Root */
+.trackademy-landing-root h1,
+.trackademy-landing-root h2,
+.trackademy-landing-root h3,
+.trackademy-landing-root h4,
+.trackademy-landing-root h5,
+.trackademy-landing-root h6 {
+    margin: 0;
+    font-weight: 700;
+    color: var(--tlp-dark-color);
+}
+
+.trackademy-landing-root p {
+    margin: 0;
+}
+
+.trackademy-landing-root a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.trackademy-landing-root button {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    color: inherit;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+
+.trackademy-landing-root ul,
+.trackademy-landing-root ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.trackademy-landing-root img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.trackademy-landing-root svg {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Isolated Container Utility (Avoids collision with Tailwind .container) */
+.trackademy-landing-root .tlp-container,
+.trackademy-landing-root .container {
+    width: 100%;
+    max-width: 1450px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+@media (max-width: 768px) {
+
+    .trackademy-landing-root .tlp-container,
+    .trackademy-landing-root .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+
+/* Stats Banner Section */
+.trackademy-landing-root .stats-banner-section {
+    padding: 2rem 0;
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+    width: 100%;
+}
+
+.trackademy-landing-root .stats-banner-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+}
+
+@media (min-width: 768px) {
+    .trackademy-landing-root .stats-banner-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+    }
+}
+
+.trackademy-landing-root .stat-banner-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: #ffffff;
+    border-radius: 1rem;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.trackademy-landing-root .stat-banner-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px -2px rgba(0,0,0,0.06);
+}
+
+.trackademy-landing-root .stat-banner-icon-slot {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.trackademy-landing-root .stat-banner-icon-slot img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+}
+
+.trackademy-landing-root .stat-banner-number {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1.2;
+    margin: 0;
+    font-family: var(--tlp-font-family);
+}
+
+.trackademy-landing-root .stat-banner-label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #64748b;
+    margin-top: 0.2rem;
+    line-height: 1.2;
+    font-family: var(--tlp-font-family);
+}
