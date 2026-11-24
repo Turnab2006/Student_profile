@@ -77,8 +77,7 @@ export function Navbar({
     navItems = [
         { label: 'Home', href: '#home' },
         { label: 'Features', href: '#features' },
-        { label: 'Portals', href: '#about' },
-        { label: 'Creators', href: '#team' },
+        { label: 'About', href: '#about' },
         { label: 'Contact', href: '#contact' },
     ],
     logoSrc = trackademyLogo,
