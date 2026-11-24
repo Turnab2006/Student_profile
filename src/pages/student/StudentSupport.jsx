@@ -197,7 +197,7 @@ export default function StudentSupport({ hideHeader = false }) {
       {/* ========================================================================= */}
       {/* 1. UPPER BLUE HERO BANNER                                                 */}
       {/* ========================================================================= */}
-      <section className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#2384FD] via-[#1d6fd6] to-[#174eb8] border border-blue-600/30 p-5 sm:p-6 shadow-sm text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <section className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#2384FD] via-[#1d6fd6] to-[#174eb8] border border-blue-600/30 p-5 sm:p-6 shadow-sm text-white flex flex-col md:flex-row md:items-center justify-between gap-4">
         {/* Ambient Glows */}
         <div className="absolute -right-10 -top-10 w-48 h-48 bg-white/10 rounded-full blur-2xl pointer-events-none" />
         <div className="absolute -left-10 -bottom-10 w-48 h-48 bg-white/10 rounded-full blur-2xl pointer-events-none" />
@@ -218,10 +218,10 @@ export default function StudentSupport({ hideHeader = false }) {
         </div>
 
         {/* Upper Header Right Buttons (Dummy / Visual only) */}
-        <div className="relative z-10 flex items-center gap-2.5 self-stretch sm:self-auto justify-end flex-wrap">
+        <div className="relative z-10 flex flex-col md:flex-row items-center justify-center md:justify-end gap-2.5 w-full md:w-auto pt-1 md:pt-0">
           <button
             type="button"
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs sm:text-sm font-semibold backdrop-blur-sm border border-white/25 transition-all cursor-pointer shadow-xs active:scale-95"
+            className="w-full max-w-[260px] md:w-auto flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs sm:text-sm font-semibold backdrop-blur-sm border border-white/25 transition-all cursor-pointer shadow-xs active:scale-95"
           >
             <Search size={15} />
             <span>Track Ticket Status</span>
@@ -229,7 +229,7 @@ export default function StudentSupport({ hideHeader = false }) {
 
           <button
             type="button"
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white text-[#2384FD] hover:bg-blue-50 text-xs sm:text-sm font-bold transition-all cursor-pointer shadow-sm active:scale-95"
+            className="w-full max-w-[260px] md:w-auto flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white text-[#2384FD] hover:bg-blue-50 text-xs sm:text-sm font-bold transition-all cursor-pointer shadow-sm active:scale-95"
           >
             <History size={15} />
             <span>Ticket History</span>

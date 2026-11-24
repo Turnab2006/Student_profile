@@ -92,8 +92,78 @@ export default function SubjectAttendanceOverview({
         </div>
       )}
 
-      {/* Main Table Layout */}
-      <div className="overflow-x-auto">
+      {/* Mobile Subject Attendance Overview Table (Visible on mobile < md: 3 Columns Only) */}
+      <div className="block md:hidden w-full overflow-hidden">
+        <table className="w-full text-left border-collapse">
+          <thead>
+            <tr className={`${isMentorMode ? "bg-[#f8f6fe] text-[#7656f4]" : "bg-[#f0f6ff]/90 text-[#1d61e7]"} text-[11px] font-bold rounded-xl overflow-hidden`}>
+              <th className="py-2.5 px-2.5 rounded-l-xl text-left">
+                <div className="flex items-center gap-1.5">
+                  <BookOpen size={13} className={`${isMentorMode ? "text-[#7656f4]" : "text-[#1d61e7]"} stroke-[2.4]`} />
+                  <span>Subject Name</span>
+                </div>
+              </th>
+              <th className="py-2.5 px-2 text-center whitespace-nowrap">
+                <div className="flex items-center justify-center gap-1 whitespace-nowrap">
+                  <Calendar size={13} className={`${isMentorMode ? "text-[#7656f4]" : "text-[#1d61e7]"} stroke-[2.4]`} />
+                  <span>Attended</span>
+                </div>
+              </th>
+              <th className="py-2.5 px-2.5 rounded-r-xl text-center whitespace-nowrap">
+                <div className="flex items-center justify-center gap-1 whitespace-nowrap">
+                  <Clock size={13} className={`${isMentorMode ? "text-[#7656f4]" : "text-[#1d61e7]"} stroke-[2.4]`} />
+                  <span>Attendance %</span>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-slate-100">
+            {items.map((item) => {
+              const subCode = item.code || item.subjectCode;
+              const subName = item.name || item.subject;
+              const attendedCount = Number(item.attended) || 0;
+              const totalCount = Number(item.total) || 60;
+              const displayPct = item.percentage !== undefined
+                ? item.percentage
+                : Math.round((attendedCount / totalCount) * 100);
+              const numericPct = Number(displayPct);
+
+              let statusBadge = "bg-[#edf9f0] text-[#16a34a]";
+              if (numericPct < 75) {
+                statusBadge = "bg-[#fef2f2] text-[#dc2626]";
+              } else if (numericPct <= 80) {
+                statusBadge = "bg-[#fefce8] text-[#ca8a04]";
+              }
+
+              return (
+                <tr key={`mobile-${subCode}`} className="hover:bg-slate-50/70 transition-colors">
+                  {/* 1. Complete Subject Name (Allowed to wrap naturally) */}
+                  <td className="py-3 px-2.5 rounded-l-xl text-left align-middle">
+                    <span className="font-semibold text-slate-800 text-xs leading-snug break-words">
+                      {subName}
+                    </span>
+                  </td>
+
+                  {/* 2. Classes Attended (e.g. 35/40) */}
+                  <td className="py-3 px-2 text-center align-middle font-bold text-slate-700 text-xs whitespace-nowrap">
+                    {attendedCount} / {totalCount}
+                  </td>
+
+                  {/* 3. Attendance Percentage (e.g. 87.5%) */}
+                  <td className="py-3 px-2.5 rounded-r-xl text-center align-middle whitespace-nowrap">
+                    <span className={`inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-extrabold ${statusBadge} shadow-2xs`}>
+                      {displayPct}%
+                    </span>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Main Desktop Table Layout (Visible on md+: 5 Columns Completely Unchanged) */}
+      <div className="hidden md:block overflow-x-auto">
         <table className="w-full text-left border-collapse min-w-[720px]">
           <thead>
             <tr className={`${isMentorMode ? "bg-[#f8f6fe] text-[#7656f4]" : "bg-[#f0f6ff]/90 text-[#1d61e7]"} text-xs font-bold rounded-2xl overflow-hidden`}>

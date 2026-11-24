@@ -16,6 +16,7 @@ export default function SubjectResultOverview({
   title = "Subject Marks & Grade Breakdown",
   showHeader = true,
   cardClassName = "bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 lg:p-6 shadow-md shadow-slate-200/60 space-y-3.5",
+  mobileCondensed = true,
 }) {
   const [showResultInfo, setShowResultInfo] = useState(false);
 
@@ -87,55 +88,71 @@ export default function SubjectResultOverview({
       )}
 
       {/* Main Table Layout */}
-      <div className="overflow-x-auto">
-        <table className="w-full text-left border-collapse min-w-[760px]">
+      <div className="overflow-x-auto -mx-1 sm:mx-0 touch-pan-x scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
+        <table className={`w-full text-left border-collapse ${mobileCondensed ? "min-w-full md:min-w-[760px]" : "min-w-[600px] sm:min-w-[760px]"}`}>
           <thead>
-            <tr className="bg-[#f0f6ff]/90 text-xs font-bold text-[#1d61e7] rounded-2xl overflow-hidden">
-              <th className="py-4 px-5 rounded-l-2xl whitespace-nowrap">
+            <tr className="bg-[#f0f6ff]/90 text-[11px] sm:text-xs font-bold text-[#1d61e7] rounded-xl sm:rounded-2xl overflow-hidden">
+              {/* 1. Subject Code (Hidden on mobile if mobileCondensed) */}
+              <th className={`${mobileCondensed ? "hidden md:table-cell" : ""} py-3 px-3 sm:py-4 sm:px-5 md:rounded-l-2xl whitespace-nowrap`}>
                 <div className="flex items-center gap-1.5 whitespace-nowrap">
-                  <Hash size={14} className="text-[#1d61e7] stroke-[2.4]" />
+                  <Hash size={13} className="text-[#1d61e7] stroke-[2.4] sm:w-3.5 sm:h-3.5" />
                   <span>SUBJECT CODE</span>
                 </div>
               </th>
-              <th className="py-4 px-5 whitespace-nowrap">
+
+              {/* 2. Subject Name (Left-rounded on mobile if mobileCondensed) */}
+              <th className={`py-3 px-3 sm:py-4 sm:px-5 ${mobileCondensed ? "rounded-l-xl md:rounded-l-none" : "rounded-l-xl sm:rounded-l-2xl"} whitespace-nowrap`}>
                 <div className="flex items-center gap-1.5 whitespace-nowrap">
-                  <BookOpen size={14} className="text-[#1d61e7] stroke-[2.4]" />
+                  <BookOpen size={13} className="text-[#1d61e7] stroke-[2.4] sm:w-3.5 sm:h-3.5" />
                   <span>SUBJECT NAME</span>
                 </div>
               </th>
-              <th className="py-4 px-5 text-center whitespace-nowrap">
+
+              {/* 3. Credits (Hidden on mobile if mobileCondensed) */}
+              <th className={`${mobileCondensed ? "hidden md:table-cell" : ""} py-3 px-2.5 sm:py-4 sm:px-5 text-center whitespace-nowrap`}>
                 <div className="flex items-center justify-center gap-1.5 whitespace-nowrap">
-                  <Clock size={14} className="text-[#1d61e7] stroke-[2.4]" />
+                  <Clock size={13} className="text-[#1d61e7] stroke-[2.4] sm:w-3.5 sm:h-3.5" />
                   <span>CREDITS</span>
                 </div>
               </th>
-              <th className="py-4 px-5 text-center whitespace-nowrap">
+
+              {/* 4. Internal (Hidden on mobile if mobileCondensed) */}
+              <th className={`${mobileCondensed ? "hidden md:table-cell" : ""} py-3 px-2.5 sm:py-4 sm:px-5 text-center whitespace-nowrap`}>
                 <div className="flex items-center justify-center gap-1.5 whitespace-nowrap">
-                  <FlaskConical size={14} className="text-[#1d61e7] stroke-[2.4]" />
+                  <FlaskConical size={13} className="text-[#1d61e7] stroke-[2.4] sm:w-3.5 sm:h-3.5" />
                   <span>INTERNAL</span>
                 </div>
               </th>
-              <th className="py-4 px-5 text-center whitespace-nowrap">
+
+              {/* 5. Theory (Hidden on mobile if mobileCondensed) */}
+              <th className={`${mobileCondensed ? "hidden md:table-cell" : ""} py-3 px-2.5 sm:py-4 sm:px-5 text-center whitespace-nowrap`}>
                 <div className="flex items-center justify-center gap-1.5 whitespace-nowrap">
-                  <FileText size={14} className="text-[#1d61e7] stroke-[2.4]" />
+                  <FileText size={13} className="text-[#1d61e7] stroke-[2.4] sm:w-3.5 sm:h-3.5" />
                   <span>THEORY</span>
                 </div>
               </th>
-              <th className="py-4 px-5 text-center whitespace-nowrap">
+
+              {/* 6. Total Marks (Always visible) */}
+              <th className="py-3 px-2.5 sm:py-4 sm:px-5 text-center whitespace-nowrap w-24 sm:w-auto">
                 <div className="flex items-center justify-center gap-1.5 whitespace-nowrap">
-                  <CheckCircle2 size={14} className="text-[#1d61e7] stroke-[2.4]" />
-                  <span>TOTAL</span>
+                  <CheckCircle2 size={13} className="text-[#1d61e7] stroke-[2.4] sm:w-3.5 sm:h-3.5" />
+                  <span className="hidden sm:inline">TOTAL</span>
+                  <span className="sm:hidden">TOTAL MARKS</span>
                 </div>
               </th>
-              <th className="py-4 px-5 text-center whitespace-nowrap">
+
+              {/* 7. Grade (Right-rounded on mobile if mobileCondensed) */}
+              <th className={`py-3 px-2.5 sm:py-4 sm:px-5 ${mobileCondensed ? "rounded-r-xl md:rounded-r-none" : ""} text-center whitespace-nowrap w-20 sm:w-auto`}>
                 <div className="flex items-center justify-center gap-1.5 whitespace-nowrap">
-                  <Award size={14} className="text-[#1d61e7] stroke-[2.4]" />
+                  <Award size={13} className="text-[#1d61e7] stroke-[2.4] sm:w-3.5 sm:h-3.5" />
                   <span>GRADE</span>
                 </div>
               </th>
-              <th className="py-4 px-5 rounded-r-2xl text-center whitespace-nowrap">
+
+              {/* 8. Point (Hidden on mobile if mobileCondensed) */}
+              <th className={`${mobileCondensed ? "hidden md:table-cell" : ""} py-3 px-3 sm:py-4 sm:px-5 rounded-r-xl sm:rounded-r-2xl text-center whitespace-nowrap`}>
                 <div className="flex items-center justify-center gap-1.5 whitespace-nowrap">
-                  <Star size={14} className="text-[#1d61e7] stroke-[2.4]" />
+                  <Star size={13} className="text-[#1d61e7] stroke-[2.4] sm:w-3.5 sm:h-3.5" />
                   <span>POINT</span>
                 </div>
               </th>
@@ -163,47 +180,47 @@ export default function SubjectResultOverview({
 
               return (
                 <tr key={subCode} className="hover:bg-slate-50/70 transition-colors">
-                  {/* 1. Subject Code */}
-                  <td className="py-4 px-5 font-extrabold text-blue-600 text-sm tracking-tight">
+                  {/* 1. Subject Code (Hidden on mobile if mobileCondensed) */}
+                  <td className={`${mobileCondensed ? "hidden md:table-cell" : ""} py-3.5 px-3 sm:py-4 sm:px-5 font-extrabold text-blue-600 text-xs sm:text-sm tracking-tight whitespace-nowrap`}>
                     {subCode}
                   </td>
 
                   {/* 2. Subject Name */}
-                  <td className="py-4 px-5 font-semibold text-slate-800 text-sm">
+                  <td className="py-3.5 px-3 sm:py-4 sm:px-5 font-semibold text-slate-800 text-xs sm:text-sm min-w-0 break-words whitespace-normal leading-snug">
                     {subName}
                   </td>
 
-                  {/* 3. Credits */}
-                  <td className="py-4 px-5 text-center font-bold text-slate-700 text-xs sm:text-sm">
+                  {/* 3. Credits (Hidden on mobile if mobileCondensed) */}
+                  <td className={`${mobileCondensed ? "hidden md:table-cell" : ""} py-3.5 px-2.5 sm:py-4 sm:px-5 text-center font-bold text-slate-700 text-xs sm:text-sm whitespace-nowrap`}>
                     {credits}
                   </td>
 
-                  {/* 4. Internal */}
-                  <td className="py-4 px-5 text-center font-medium text-slate-600 text-xs sm:text-sm">
+                  {/* 4. Internal (Hidden on mobile if mobileCondensed) */}
+                  <td className={`${mobileCondensed ? "hidden md:table-cell" : ""} py-3.5 px-2.5 sm:py-4 sm:px-5 text-center font-medium text-slate-600 text-xs sm:text-sm whitespace-nowrap`}>
                     {internal}
                   </td>
 
-                  {/* 5. Theory */}
-                  <td className="py-4 px-5 text-center font-medium text-slate-600 text-xs sm:text-sm">
+                  {/* 5. Theory (Hidden on mobile if mobileCondensed) */}
+                  <td className={`${mobileCondensed ? "hidden md:table-cell" : ""} py-3.5 px-2.5 sm:py-4 sm:px-5 text-center font-medium text-slate-600 text-xs sm:text-sm whitespace-nowrap`}>
                     {theory}
                   </td>
 
-                  {/* 6. Total */}
-                  <td className="py-4 px-5 text-center font-extrabold text-slate-900 text-xs sm:text-sm">
+                  {/* 6. Total Marks */}
+                  <td className="py-3.5 px-2.5 sm:py-4 sm:px-5 text-center font-extrabold text-slate-900 text-xs sm:text-sm whitespace-nowrap">
                     {total}
                   </td>
 
                   {/* 7. Grade Badge */}
-                  <td className="py-4 px-5 text-center">
+                  <td className="py-3.5 px-2.5 sm:py-4 sm:px-5 text-center whitespace-nowrap">
                     <span
-                      className={`inline-flex items-center justify-center h-7 min-w-7 px-2.5 rounded-lg font-extrabold text-xs shadow-2xs ${gradeBadge}`}
+                      className={`inline-flex items-center justify-center h-6 min-w-6 sm:h-7 sm:min-w-7 px-2.5 sm:px-2.5 rounded-lg font-extrabold text-[11px] sm:text-xs shadow-2xs ${gradeBadge}`}
                     >
                       {grade}
                     </span>
                   </td>
 
-                  {/* 8. Point */}
-                  <td className="py-4 px-5 text-center font-extrabold text-slate-800 text-sm">
+                  {/* 8. Point (Hidden on mobile if mobileCondensed) */}
+                  <td className={`${mobileCondensed ? "hidden md:table-cell" : ""} py-3.5 px-3 sm:py-4 sm:px-5 text-center font-extrabold text-slate-800 text-xs sm:text-sm whitespace-nowrap`}>
                     {point}
                   </td>
                 </tr>

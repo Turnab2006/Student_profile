@@ -46,37 +46,37 @@ export default function SemesterAttendanceDetail({
         isMentorMode
           ? "bg-gradient-to-r from-[#5b32e8] via-[#7656f4] to-[#9073fa] border-purple-400/30 shadow-purple-700/15"
           : "bg-gradient-to-r from-[#1d4ed8] via-[#2563eb] to-[#3b82f6] border-blue-400/30 shadow-blue-700/15"
-      } rounded-2xl border shadow-lg p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-['Roboto',sans-serif]`}>
+      } rounded-2xl border shadow-lg p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 sm:gap-4 font-['Roboto',sans-serif]`}>
 
         {/* Soft light gradient highlight on the right side for optimal button contrast */}
         <div className="absolute right-0 top-0 bottom-0 w-1/2 bg-gradient-to-l from-white/12 via-white/5 to-transparent pointer-events-none" />
 
         {/* Left: Back Button & Dynamic Semester Title */}
-        <div className="flex items-center gap-3.5 z-10">
+        <div className="flex items-center gap-2.5 sm:gap-3.5 z-10 min-w-0">
           <button
             type="button"
             onClick={onBack}
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/15 hover:bg-white/25 active:bg-white/30 border border-white/25 text-white shadow-xs backdrop-blur-md transition-all cursor-pointer group active:scale-95"
+            className="flex h-9 w-9 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-xl bg-white/15 hover:bg-white/25 active:bg-white/30 border border-white/25 text-white shadow-xs backdrop-blur-md transition-all cursor-pointer group active:scale-95"
             title="Go back to Semester Attendance"
           >
-            <ArrowLeft size={19} className="group-hover:-translate-x-0.5 transition-transform stroke-[2.4]" />
+            <ArrowLeft size={18} className="sm:w-[19px] sm:h-[19px] group-hover:-translate-x-0.5 transition-transform stroke-[2.4]" />
           </button>
 
-          <div className="ml-1 sm:ml-2">
-            <h1 className="text-xl sm:text-xl font-bold text-white tracking-tight leading-tight drop-shadow-xs">
+          <div className="ml-0.5 sm:ml-2 min-w-0">
+            <h1 className="text-lg sm:text-xl font-bold text-white tracking-tight leading-tight drop-shadow-xs truncate">
               {getOrdinalSemester(semNum)}
             </h1>
-            <p className={`text-xs sm:text-xs ${isMentorMode ? "text-purple-100/90" : "text-blue-100/90"} font-medium mt-0.5`}>
+            <p className={`text-[11px] sm:text-xs ${isMentorMode ? "text-purple-100/90" : "text-blue-100/90"} font-medium mt-0.5 truncate`}>
               Academic Year {semester?.academicYear || "2024 - 2025"} &bull; Total Classes Held: <strong className="text-white font-bold">{semester?.totalHeld || 60}</strong>
             </p>
           </div>
         </div>
 
-        {/* Right: Quick Action Buttons & Semester Pager */}
-        <div className="flex items-center gap-2.5 flex-wrap sm:flex-nowrap z-10">
+        {/* Right: Quick Action Buttons & Semester Pager (Centered on mobile) */}
+        <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-2.5 z-10 w-full sm:w-auto">
           {/* Semester Prev/Next Navigator */}
           {allSemesters.length > 0 && (
-            <div className="flex items-center gap-1 bg-white/15 backdrop-blur-md p-1 rounded-xl border border-white/25 shadow-xs">
+            <div className="self-center sm:self-auto flex items-center justify-center gap-1 bg-white/15 backdrop-blur-md p-1 rounded-xl border border-white/25 shadow-xs">
               <button
                 type="button"
                 disabled={!prevSem}
@@ -101,11 +101,11 @@ export default function SemesterAttendanceDetail({
             </div>
           )}
 
-          {/* Download Report Button (High-contrast White CTA) */}
+          {/* Download Report Button (Centered horizontally on mobile) */}
           <button
             type="button"
             onClick={() => onDownload && onDownload(semester)}
-            className={`inline-flex items-center gap-2 px-4 py-2.5 bg-white ${
+            className={`self-center sm:self-auto inline-flex items-center justify-center gap-2 px-4 py-2 sm:py-2.5 bg-white ${
               isMentorMode ? "hover:bg-purple-50 text-[#7656f4] shadow-purple-950/20" : "hover:bg-blue-50 text-[#1d4ed8] shadow-blue-950/20"
             } rounded-xl text-xs sm:text-sm font-extrabold transition-all shadow-md hover:shadow-lg active:scale-95 cursor-pointer`}
           >

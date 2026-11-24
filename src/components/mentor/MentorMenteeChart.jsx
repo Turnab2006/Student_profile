@@ -7,7 +7,7 @@ export default function MentorMenteeChart({ onNavigate, mentees = STUDENTS_DATA 
   const inactive = total - active;
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-3.5 sm:p-4 shadow-sm flex flex-col justify-between">
+    <div className="rounded-2xl border border-slate-200 bg-white p-3.5 sm:p-4 shadow-sm flex flex-col justify-between w-full h-full">
       <div>
         <div className="flex items-center justify-between pb-3 border-b border-slate-100 mb-2">
           <div className="flex items-center gap-2 text-sm sm:text-base font-bold text-[#0F172A]">
@@ -17,8 +17,8 @@ export default function MentorMenteeChart({ onNavigate, mentees = STUDENTS_DATA 
         </div>
 
         {/* Circular Donut Gauge */}
-        <div className="relative flex items-center justify-center my-4">
-          <svg className="w-[180px] h-[180px] transform -rotate-90" viewBox="0 0 120 120">
+        <div className="relative flex items-center justify-center my-3 sm:my-4">
+          <svg className="w-[150px] h-[150px] sm:w-[180px] sm:h-[180px] transform -rotate-90" viewBox="0 0 120 120">
             {/* Background track */}
             <circle
               cx="60"
@@ -43,10 +43,10 @@ export default function MentorMenteeChart({ onNavigate, mentees = STUDENTS_DATA 
             />
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-            <span className="text-4xl font-bold text-[#7656f4] tracking-tight leading-none transition-all">
+            <span className="text-3xl sm:text-4xl font-bold text-[#7656f4] tracking-tight leading-none transition-all">
               {total}
             </span>
-            <span className="text-xs text-gray-400 font-medium mt-3">
+            <span className="text-[11px] sm:text-xs text-gray-400 font-medium mt-2 sm:mt-3">
               Total Mentees
             </span>
           </div>
@@ -56,24 +56,24 @@ export default function MentorMenteeChart({ onNavigate, mentees = STUDENTS_DATA 
       {/* Bottom Stats Split Box */}
       <div
         onClick={() => onNavigate && onNavigate('mentees')}
-        className="grid grid-cols-2 gap-2.5 p-2.5 bg-[#F8FAFC] rounded-xl border border-slate-200/80 cursor-pointer hover:bg-gray-100/60 transition-colors"
+        className="grid grid-cols-2 gap-2 sm:gap-2.5 p-2 sm:p-2.5 bg-[#F8FAFC] rounded-xl border border-slate-200/80 cursor-pointer hover:bg-gray-100/60 transition-colors"
       >
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-full bg-[#ECFDF5] text-[#10B981] flex items-center justify-center shrink-0 border border-[#D1FAE5]">
-            <Users size={16} />
+        <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
+          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#ECFDF5] text-[#10B981] flex items-center justify-center shrink-0 border border-[#D1FAE5]">
+            <Users size={14} className="sm:w-4 sm:h-4" />
           </div>
-          <div>
-            <p className="text-sm font-bold text-gray-900 leading-tight">{active}</p>
-            <p className="text-[10px] text-gray-500 font-medium">Active Mentees</p>
+          <div className="min-w-0">
+            <p className="text-xs sm:text-sm font-bold text-gray-900 leading-tight">{active}</p>
+            <p className="text-[10px] text-gray-500 font-medium truncate">Active Mentees</p>
           </div>
         </div>
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-full bg-[#F3EEFF] text-[#7656f4] flex items-center justify-center shrink-0 border border-[#E4D9FF]">
-            <Users size={16} />
+        <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
+          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#F3EEFF] text-[#7656f4] flex items-center justify-center shrink-0 border border-[#E4D9FF]">
+            <Users size={14} className="sm:w-4 sm:h-4" />
           </div>
-          <div>
-            <p className="text-sm font-bold text-gray-900 leading-tight">{inactive}</p>
-            <p className="text-[10px] text-gray-500 font-medium">On Leave</p>
+          <div className="min-w-0">
+            <p className="text-xs sm:text-sm font-bold text-gray-900 leading-tight">{inactive}</p>
+            <p className="text-[10px] text-gray-500 font-medium truncate">On Leave</p>
           </div>
         </div>
       </div>

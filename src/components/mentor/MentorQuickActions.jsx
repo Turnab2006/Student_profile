@@ -45,13 +45,13 @@ const actions = [
 
 export default function MentorQuickActions({ onNavigate }) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 shadow-sm flex flex-col justify-between">
+    <div className="rounded-2xl border border-slate-200 bg-white p-3.5 sm:p-5 shadow-sm flex flex-col justify-between w-full h-full">
       <div className="flex items-center gap-2 pb-2 border-b border-slate-100 mb-2.5 text-sm sm:text-base font-bold text-[#0F172A]">
         <Zap size={18} className="text-slate-700" />
         <h3>Quick Actions</h3>
       </div>
 
-      <div className="grid grid-cols-2 gap-2.5 flex-1">
+      <div className="grid grid-cols-2 gap-2 sm:gap-2.5 flex-1">
         {actions.map((action) => {
           const Icon = action.icon;
           return (
@@ -59,14 +59,14 @@ export default function MentorQuickActions({ onNavigate }) {
               key={action.title}
               type="button"
               onClick={() => onNavigate && onNavigate(action.tab, action.tab === 'attendance')}
-              className={`rounded-2xl border ${action.borderTone} ${action.tone} p-3 flex flex-col items-center justify-center gap-2 transition-all hover:scale-[1.02] hover:shadow-xs cursor-pointer group`}
+              className={`rounded-2xl border ${action.borderTone} ${action.tone} p-2.5 sm:p-3 flex flex-col items-center justify-center gap-1.5 sm:gap-2 transition-all hover:scale-[1.02] hover:shadow-xs cursor-pointer group`}
             >
-              <div className={`w-14 h-14 rounded-full ${action.iconBg} shadow-2xs flex items-center justify-center ${action.iconTone} group-hover:scale-110 transition-transform`}>
-                <Icon size={24} className="stroke-[2]" />
+              <div className={`w-11 h-11 sm:w-14 sm:h-14 rounded-full ${action.iconBg} shadow-2xs flex items-center justify-center ${action.iconTone} group-hover:scale-110 transition-transform`}>
+                <Icon size={20} className="sm:w-6 sm:h-6 stroke-[2]" />
               </div>
-              <div className={`flex items-center gap-1 text-[12px] font-bold ${action.textTone}`}>
-                <span>{action.title}</span>
-                <ChevronRight size={14} className="stroke-[2.5]" />
+              <div className={`flex items-center justify-center gap-0.5 sm:gap-1 text-[11px] sm:text-[12px] font-bold ${action.textTone} text-center leading-tight`}>
+                <span className="truncate">{action.title}</span>
+                <ChevronRight size={13} className="shrink-0 stroke-[2.5]" />
               </div>
             </button>
           );

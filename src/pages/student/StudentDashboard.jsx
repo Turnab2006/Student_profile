@@ -339,7 +339,7 @@ export default function StudentDashboard({ onLogout }) {
         return <StudentNotices onNavigate={setCurrentPage} hideHeader={true} />;
 
       case "settings":
-        return <StudentSettings hideHeader={true} />;
+        return <StudentSettings hideHeader={true} onNavigate={handleNavigate} />;
 
       case "support":
         return <StudentSupport hideHeader={true} />;

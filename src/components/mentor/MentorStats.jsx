@@ -74,18 +74,18 @@ const defaultCardStyles = {
 
 function renderStatIcon(keyType, Icon) {
   if (keyType === "attendance" || keyType === "check") {
-    return <CheckCircle2 size={24} className="fill-[#22C55E] text-white" />;
+    return <CheckCircle2 className="w-5 h-5 sm:w-6 sm:h-6 fill-[#22C55E] text-white" />;
   }
   if (keyType === "credits" || keyType === "star") {
-    return <Star size={22} className="fill-[#3B82F6] text-[#3B82F6]" />;
+    return <Star className="w-4 h-4 sm:w-[22px] sm:h-[22px] fill-[#3B82F6] text-[#3B82F6]" />;
   }
   if (keyType === "results" || keyType === "trend") {
-    return <TrendingUp size={23} className="stroke-[2.5]" />;
+    return <TrendingUp className="w-5 h-5 sm:w-[23px] sm:h-[23px] stroke-[2.5]" />;
   }
   if (typeof Icon === "function") {
-    return <Icon size={23} className="stroke-[2.2]" />;
+    return <Icon className="w-5 h-5 sm:w-[23px] sm:h-[23px] stroke-[2.2]" />;
   }
-  return <Users size={23} className="stroke-[2.2]" />;
+  return <Users className="w-5 h-5 sm:w-[23px] sm:h-[23px] stroke-[2.2]" />;
 }
 
 export default function MentorStats({ items = [], onNavigate }) {
@@ -122,11 +122,11 @@ export default function MentorStats({ items = [], onNavigate }) {
             onClick={() => {
               if (pageKey && onNavigate) onNavigate(pageKey);
             }}
-            className={`rounded-2xl border p-2.5 sm:px-4 sm:py-4 shadow-sm ${cardClass} cursor-pointer hover:shadow-md hover:scale-[1.01] transition-all`}
+            className={`rounded-2xl border p-2 sm:px-4 sm:py-4 shadow-sm ${cardClass} cursor-pointer hover:shadow-md hover:scale-[1.01] transition-all flex flex-col justify-center min-w-0`}
           >
-            <div className="flex items-center gap-2.5 sm:gap-4">
+            <div className="flex items-center gap-2 sm:gap-3.5 min-w-0">
               <div
-                className={`flex h-9 w-9 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl ${iconWrap}`}
+                className={`flex h-8 w-8 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl ${iconWrap}`}
               >
                 {renderStatIcon(keyType, Icon)}
               </div>
@@ -136,7 +136,7 @@ export default function MentorStats({ items = [], onNavigate }) {
                   {label}
                 </div>
                 <div
-                  className={`text-lg sm:text-[24px] font-extrabold leading-none mt-1 mb-0.5 ${valueClass}`}
+                  className={`text-base sm:text-[24px] font-extrabold leading-tight mt-0.5 mb-0.5 truncate ${valueClass}`}
                 >
                   {value}
                 </div>

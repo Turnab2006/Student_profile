@@ -311,7 +311,7 @@ export default function StudentCreditPoints({ hideHeader = false }) {
       )}
 
       {/* Top Header Card with Claim Button */}
-      <div className="bg-gradient-to-r from-[#2563eb] via-[#1d4ed8] to-[#1e40af] text-white rounded-2xl border border-blue-600/30 shadow-md shadow-blue-500/20 p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="bg-gradient-to-r from-[#2563eb] via-[#1d4ed8] to-[#1e40af] text-white rounded-2xl border border-blue-600/30 shadow-md shadow-blue-500/20 p-4 sm:p-5 md:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3.5 sm:gap-4">
         <div className="space-y-0.5">
           <div className="flex items-center gap-2">
             <h1 className="text-lg sm:text-xl font-bold text-white tracking-tight">
@@ -326,11 +326,11 @@ export default function StudentCreditPoints({ hideHeader = false }) {
           </p>
         </div>
 
-        {/* Claim Activity Points Button with white background and blue text */}
+        {/* Claim Activity Points Button with white background and blue text (full-width on mobile) */}
         <button
           type="button"
           onClick={() => showToast("Claim request registered! Please submit your verified certificate copy to your faculty mentor.")}
-          className="flex items-center gap-2 px-4 sm:px-5 py-2.5 bg-white hover:bg-blue-50 text-[#2563eb] rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer shadow-sm hover:shadow-md active:scale-95 whitespace-nowrap shrink-0 border border-white/60"
+          className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 bg-white hover:bg-blue-50 text-[#2563eb] rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer shadow-sm hover:shadow-md active:scale-95 whitespace-nowrap shrink-0 border border-white/60"
         >
           <Sparkles size={16} className="stroke-[2.5] text-[#2563eb]" />
           <span>Claim Activity Points</span>
@@ -340,102 +340,102 @@ export default function StudentCreditPoints({ hideHeader = false }) {
       {/* 4 Metric Cards Row (2 rows on mobile) */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
         {/* 1. Total Credit Points Earned (out of 100) */}
-        <div className="bg-white p-3 sm:p-5 rounded-2xl border border-slate-200/90 border-l-[3.5px] border-l-[#2563eb] shadow-md shadow-slate-200/50 flex items-center gap-2.5 sm:gap-4 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-300/40 transition-all duration-200">
-          <div className="flex h-9 w-9 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-blue-50 text-[#2563eb] border border-blue-100/60 shadow-2xs">
-            <Trophy size={18} className="sm:w-[22px] sm:h-[22px] stroke-[2.2]" />
+        <div className="bg-white p-2.5 sm:p-5 rounded-2xl border border-slate-200/90 border-l-[3.5px] border-l-[#2563eb] shadow-md shadow-slate-200/50 flex items-center gap-2 sm:gap-4 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-300/40 transition-all duration-200 min-w-0">
+          <div className="flex h-8 w-8 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-blue-50 text-[#2563eb] border border-blue-100/60 shadow-2xs">
+            <Trophy size={16} className="sm:w-[22px] sm:h-[22px] stroke-[2.2]" />
           </div>
-          <div className="min-w-0">
-            <p className="text-[10px] sm:text-[11px] font-bold text-gray-500 uppercase tracking-wider truncate">
+          <div className="min-w-0 flex-1">
+            <p className="text-[10px] sm:text-[11px] font-bold text-gray-500 uppercase tracking-wider whitespace-normal sm:truncate leading-tight">
               TOTAL POINTS
             </p>
             <div className="flex items-baseline gap-1 my-0.5">
-              <span className="text-lg sm:text-2xl font-extrabold text-gray-900 tracking-tight">
+              <span className="text-base sm:text-2xl font-extrabold text-gray-900 tracking-tight">
                 {totalEarnedPoints}
               </span>
               <span className="text-[10px] sm:text-xs font-bold text-gray-400">/ 100</span>
             </div>
-            <div className="flex items-center gap-1 text-[10px] sm:text-xs text-blue-600 font-medium truncate">
-              <TrendingUp size={12} className="shrink-0" />
-              <span className="truncate">{Math.min(100, Math.round((totalEarnedPoints / 100) * 100))}% of Goal</span>
+            <div className="flex items-center gap-1 text-[10px] sm:text-xs text-blue-600 font-medium whitespace-normal sm:truncate leading-tight">
+              <TrendingUp size={11} className="shrink-0" />
+              <span className="whitespace-normal sm:truncate">{Math.min(100, Math.round((totalEarnedPoints / 100) * 100))}% of Goal</span>
             </div>
           </div>
         </div>
 
         {/* 2. Credit Points Earned in Current Semester */}
-        <div className="bg-white p-3 sm:p-5 rounded-2xl border border-slate-200/90 border-l-[3.5px] border-l-emerald-500 shadow-md shadow-slate-200/50 flex items-center gap-2.5 sm:gap-4 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-300/40 transition-all duration-200">
-          <div className="flex h-9 w-9 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-100/60 shadow-2xs">
-            <Sparkles size={18} className="sm:w-[22px] sm:h-[22px] stroke-[2.2]" />
+        <div className="bg-white p-2.5 sm:p-5 rounded-2xl border border-slate-200/90 border-l-[3.5px] border-l-emerald-500 shadow-md shadow-slate-200/50 flex items-center gap-2 sm:gap-4 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-300/40 transition-all duration-200 min-w-0">
+          <div className="flex h-8 w-8 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-emerald-50 text-emerald-600 border border-emerald-100/60 shadow-2xs">
+            <Sparkles size={16} className="sm:w-[22px] sm:h-[22px] stroke-[2.2]" />
           </div>
-          <div className="min-w-0">
-            <p className="text-[10px] sm:text-[11px] font-bold text-gray-500 uppercase tracking-wider truncate">
+          <div className="min-w-0 flex-1">
+            <p className="text-[10px] sm:text-[11px] font-bold text-gray-500 uppercase tracking-wider whitespace-normal sm:truncate leading-tight">
               CURRENT SEMESTER
             </p>
-            <p className="text-lg sm:text-2xl font-extrabold text-gray-900 tracking-tight my-0.5">
+            <p className="text-base sm:text-2xl font-extrabold text-gray-900 tracking-tight my-0.5">
               {currentSemPoints}
             </p>
-            <p className="text-[10px] sm:text-xs text-emerald-600 font-medium truncate">
+            <p className="text-[10px] sm:text-xs text-emerald-600 font-medium whitespace-normal sm:truncate leading-tight">
               Semester 5 (Active)
             </p>
           </div>
         </div>
 
         {/* 3. Pending Credit Points */}
-        <div className="bg-white p-3 sm:p-5 rounded-2xl border border-slate-200/90 border-l-[3.5px] border-l-amber-500 shadow-md shadow-slate-200/50 flex items-center gap-2.5 sm:gap-4 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-300/40 transition-all duration-200">
-          <div className="flex h-9 w-9 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-amber-50 text-amber-600 border border-amber-100/60 shadow-2xs">
-            <Clock size={18} className="sm:w-[22px] sm:h-[22px] stroke-[2.2]" />
+        <div className="bg-white p-2.5 sm:p-5 rounded-2xl border border-slate-200/90 border-l-[3.5px] border-l-amber-500 shadow-md shadow-slate-200/50 flex items-center gap-2 sm:gap-4 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-300/40 transition-all duration-200 min-w-0">
+          <div className="flex h-8 w-8 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-amber-50 text-amber-600 border border-amber-100/60 shadow-2xs">
+            <Clock size={16} className="sm:w-[22px] sm:h-[22px] stroke-[2.2]" />
           </div>
-          <div className="min-w-0">
-            <p className="text-[10px] sm:text-[11px] font-bold text-gray-500 uppercase tracking-wider truncate">
+          <div className="min-w-0 flex-1">
+            <p className="text-[10px] sm:text-[11px] font-bold text-gray-500 uppercase tracking-wider whitespace-normal sm:truncate leading-tight">
               PENDING POINTS
             </p>
-            <p className="text-lg sm:text-2xl font-extrabold text-gray-900 tracking-tight my-0.5">
+            <p className="text-base sm:text-2xl font-extrabold text-gray-900 tracking-tight my-0.5">
               {pendingPoints}
             </p>
-            <p className="text-[10px] sm:text-xs text-amber-600 font-medium truncate">
+            <p className="text-[10px] sm:text-xs text-amber-600 font-medium whitespace-normal sm:truncate leading-tight">
               {pendingCount} claim{pendingCount === 1 ? "" : "s"}
             </p>
           </div>
         </div>
 
         {/* 4. Status About Credit Point Earned (100/100 Complete: Success / Not Complete / Failed) */}
-        <div className="bg-white p-3 sm:p-5 rounded-2xl border border-slate-200/90 border-l-[3.5px] border-l-purple-500 shadow-md shadow-slate-200/50 flex items-center gap-2.5 sm:gap-4 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-300/40 transition-all duration-200">
-          <div className="flex h-9 w-9 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-purple-50 text-purple-600 border border-purple-100/60 shadow-2xs">
-            <ShieldCheck size={18} className="sm:w-[22px] sm:h-[22px] stroke-[2.2]" />
+        <div className="bg-white p-2.5 sm:p-5 rounded-2xl border border-slate-200/90 border-l-[3.5px] border-l-purple-500 shadow-md shadow-slate-200/50 flex items-center gap-2 sm:gap-4 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-300/40 transition-all duration-200 min-w-0">
+          <div className="flex h-8 w-8 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-purple-50 text-purple-600 border border-purple-100/60 shadow-2xs">
+            <ShieldCheck size={16} className="sm:w-[22px] sm:h-[22px] stroke-[2.2]" />
           </div>
-          <div className="min-w-0">
-            <p className="text-[10px] sm:text-[11px] font-bold text-gray-500 uppercase tracking-wider truncate">
+          <div className="min-w-0 flex-1">
+            <p className="text-[10px] sm:text-[11px] font-bold text-gray-500 uppercase tracking-wider whitespace-normal sm:truncate leading-tight">
               DEGREE STATUS
             </p>
             <div className="flex items-center gap-1 my-0.5">
-              <span className={`text-sm sm:text-base font-bold ${degreeStatus.color} truncate`}>
+              <span className={`text-xs sm:text-base font-bold ${degreeStatus.color} truncate`}>
                 {degreeStatus.label}
               </span>
             </div>
-            <p className="text-[10px] sm:text-[11px] text-gray-500 font-normal truncate" title={degreeStatus.desc}>
+            <p className="text-[9.5px] sm:text-[11px] text-gray-500 font-normal whitespace-normal sm:truncate leading-tight" title={degreeStatus.desc}>
               {degreeStatus.desc}
             </p>
           </div>
         </div>
       </div>
 
-      {/* Primary Tab Navigation for Credit Point Requests (Compact height & left aligned) */}
-      <div className="bg-white p-1.5 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 flex items-center justify-start gap-1.5 sm:gap-2 overflow-x-auto scrollbar-none">
+      {/* Primary Tab Navigation for Credit Point Requests (Compact height, 3 columns on mobile, no horizontal scroll) */}
+      <div className="bg-white p-1.5 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 w-full grid grid-cols-3 md:flex md:w-auto items-center justify-start gap-1 sm:gap-2 overflow-x-hidden md:overflow-x-auto scrollbar-none">
         <button
           type="button"
           onClick={() => {
             setActiveTab("pending");
             setStatusFilter("all");
           }}
-          className={`flex items-center gap-2 py-1.5 px-3.5 sm:px-4 rounded-xl text-xs sm:text-[13px] font-bold transition-all cursor-pointer shrink-0 ${
+          className={`flex items-center justify-center md:justify-start gap-1 sm:gap-2 py-2 md:py-1.5 px-1.5 sm:px-4 rounded-xl text-xs sm:text-[13px] font-bold transition-all cursor-pointer ${
             activeTab === "pending"
               ? "bg-amber-500 text-white shadow-sm shadow-amber-500/20"
               : "text-slate-600 hover:text-slate-900 hover:bg-amber-50/60"
           }`}
         >
-          <Clock size={15} />
-          <span>Pending Requests</span>
+          <Clock size={14} className="sm:w-[15px] sm:h-[15px] shrink-0" />
+          <span className="truncate">Pending<span className="hidden min-[420px]:inline"> Requests</span></span>
           <span
-            className={`px-2 py-0.5 rounded-full text-[11px] font-extrabold ${
+            className={`px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-extrabold shrink-0 ${
               activeTab === "pending"
                 ? "bg-white/20 text-white"
                 : "bg-amber-100 text-amber-700"
@@ -451,16 +451,16 @@ export default function StudentCreditPoints({ hideHeader = false }) {
             setActiveTab("approved");
             setStatusFilter("all");
           }}
-          className={`flex items-center gap-2 py-1.5 px-3.5 sm:px-4 rounded-xl text-xs sm:text-[13px] font-bold transition-all cursor-pointer shrink-0 ${
+          className={`flex items-center justify-center md:justify-start gap-1 sm:gap-2 py-2 md:py-1.5 px-1.5 sm:px-4 rounded-xl text-xs sm:text-[13px] font-bold transition-all cursor-pointer ${
             activeTab === "approved"
               ? "bg-emerald-600 text-white shadow-sm shadow-emerald-500/20"
               : "text-slate-600 hover:text-slate-900 hover:bg-emerald-50/60"
           }`}
         >
-          <CheckCircle2 size={15} />
-          <span>Accepted Requests</span>
+          <CheckCircle2 size={14} className="sm:w-[15px] sm:h-[15px] shrink-0" />
+          <span className="truncate">Accepted<span className="hidden min-[420px]:inline"> Requests</span></span>
           <span
-            className={`px-2 py-0.5 rounded-full text-[11px] font-extrabold ${
+            className={`px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-extrabold shrink-0 ${
               activeTab === "approved"
                 ? "bg-white/20 text-white"
                 : "bg-emerald-100 text-emerald-700"
@@ -476,16 +476,16 @@ export default function StudentCreditPoints({ hideHeader = false }) {
             setActiveTab("failed");
             setStatusFilter("all");
           }}
-          className={`flex items-center gap-2 py-1.5 px-3.5 sm:px-4 rounded-xl text-xs sm:text-[13px] font-bold transition-all cursor-pointer shrink-0 ${
+          className={`flex items-center justify-center md:justify-start gap-1 sm:gap-2 py-2 md:py-1.5 px-1.5 sm:px-4 rounded-xl text-xs sm:text-[13px] font-bold transition-all cursor-pointer ${
             activeTab === "failed"
               ? "bg-rose-600 text-white shadow-sm shadow-rose-500/20"
               : "text-slate-600 hover:text-slate-900 hover:bg-rose-50/60"
           }`}
         >
-          <XCircle size={15} />
-          <span>Rejected Requests</span>
+          <XCircle size={14} className="sm:w-[15px] sm:h-[15px] shrink-0" />
+          <span className="truncate">Rejected<span className="hidden min-[420px]:inline"> Requests</span></span>
           <span
-            className={`px-2 py-0.5 rounded-full text-[11px] font-extrabold ${
+            className={`px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-extrabold shrink-0 ${
               activeTab === "failed"
                 ? "bg-white/20 text-white"
                 : "bg-rose-100 text-rose-700"
@@ -497,16 +497,16 @@ export default function StudentCreditPoints({ hideHeader = false }) {
       </div>
 
       {/* History Filter Box Container matching image style */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white px-4 py-2.5 sm:px-5 sm:py-3 rounded-[20px] border border-slate-200/90 shadow-md shadow-slate-200/50 font-['Roboto',sans-serif]">
-        {/* Left Column: Search Bar */}
-        <div className="relative w-full sm:w-[320px] md:w-[380px] lg:w-[440px] shrink-0">
-          <Search size={17} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-2.5 md:gap-3 bg-white p-3 sm:px-5 sm:py-3 rounded-[20px] border border-slate-200/90 shadow-md shadow-slate-200/50 font-['Roboto',sans-serif]">
+        {/* Row 1: Search Bar (Full width on mobile, constrained on desktop) */}
+        <div className="relative w-full md:w-[320px] lg:w-[440px] shrink-0">
+          <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
             type="text"
             placeholder="Search activity, certificate, or issuer..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-9 py-2 bg-slate-50 border border-slate-200/90 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all shadow-2xs"
+            className="w-full h-10 pl-10 pr-9 py-2 bg-slate-50 border border-slate-200/90 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all shadow-2xs"
           />
           {searchQuery && (
             <button
@@ -519,123 +519,129 @@ export default function StudentCreditPoints({ hideHeader = false }) {
           )}
         </div>
 
-        {/* Right Column: Status Filter + Category Filter + Sort Dropdown + Grid/List View Toggle (Last, Right Corner) */}
-        <div className="flex flex-wrap sm:flex-nowrap items-center justify-between sm:justify-end gap-2 sm:gap-2.5 w-full sm:w-auto">
-          {/* Status Filter Dropdown */}
-          <div className="relative shrink-0">
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="appearance-none min-w-[130px] px-3.5 py-2 pr-8 border border-slate-200/90 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 transition-colors whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563eb] cursor-pointer shadow-2xs"
-            >
-              <option value="all">All Status</option>
-              <option value="approved">Approved ({historyList.filter(i => i.status === 'Approved').length})</option>
-              <option value="pending">Pending ({pendingCount})</option>
-              <option value="failed">Approval Failed ({failedCount})</option>
-            </select>
-            <ChevronDown size={14} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
+        {/* Right Controls Container */}
+        <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between md:justify-end gap-2.5 w-full md:w-auto">
+          {/* Row 2 on Mobile: All Status and All Categories side-by-side in 2 columns */}
+          <div className="grid grid-cols-2 gap-2 w-full md:flex md:w-auto md:items-center md:gap-2.5">
+            {/* Status Filter Dropdown */}
+            <div className="relative w-full md:w-auto shrink-0">
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="appearance-none w-full md:w-auto md:min-w-[130px] h-10 px-3 py-2 pr-8 border border-slate-200/90 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 transition-colors whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563eb] cursor-pointer shadow-2xs"
+              >
+                <option value="all">All Status</option>
+                <option value="approved">Approved ({historyList.filter(i => i.status === 'Approved').length})</option>
+                <option value="pending">Pending ({pendingCount})</option>
+                <option value="failed">Approval Failed ({failedCount})</option>
+              </select>
+              <ChevronDown size={14} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
+            </div>
+
+            {/* Category Filter Dropdown */}
+            <div className="relative w-full md:w-auto shrink-0">
+              <select
+                value={categoryFilter}
+                onChange={(e) => setCategoryFilter(e.target.value)}
+                className="appearance-none w-full md:w-auto md:min-w-[130px] h-10 px-3 py-2 pr-8 border border-slate-200/90 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 transition-colors whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563eb] cursor-pointer shadow-2xs"
+              >
+                <option value="all">All Categories</option>
+                <option value="technical">Technical</option>
+                <option value="certifications">Certifications</option>
+                <option value="attendance">Attendance</option>
+                <option value="workshops">Workshops</option>
+                <option value="extracurricular">Extracurricular</option>
+              </select>
+              <ChevronDown size={14} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
+            </div>
           </div>
 
-          {/* Category Filter Dropdown */}
-          <div className="relative shrink-0">
-            <select
-              value={categoryFilter}
-              onChange={(e) => setCategoryFilter(e.target.value)}
-              className="appearance-none min-w-[130px] px-3.5 py-2 pr-8 border border-slate-200/90 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 transition-colors whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563eb] cursor-pointer shadow-2xs"
-            >
-              <option value="all">All Categories</option>
-              <option value="technical">Technical</option>
-              <option value="certifications">Certifications</option>
-              <option value="attendance">Attendance</option>
-              <option value="workshops">Workshops</option>
-              <option value="extracurricular">Extracurricular</option>
-            </select>
-            <ChevronDown size={14} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
-          </div>
+          {/* Row 3 on Mobile: Sort Dropdown + Grid/List Toggle */}
+          <div className="flex items-center justify-between gap-2 w-full md:w-auto md:gap-2.5">
+            {/* Sort Dropdown */}
+            <div className="relative flex-1 md:flex-initial shrink-0">
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="appearance-none w-full md:w-auto md:min-w-[140px] h-10 px-3 py-2 pr-8 border border-slate-200/90 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 transition-colors whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563eb] cursor-pointer shadow-2xs"
+              >
+                <option value="newest">Sort: Latest First</option>
+                <option value="points-high">Sort: Highest Points</option>
+                <option value="points-low">Sort: Lowest Points</option>
+                <option value="title-asc">Sort: Title (A-Z)</option>
+              </select>
+              <ChevronDown size={14} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
+            </div>
 
-          {/* Sort Dropdown */}
-          <div className="relative shrink-0">
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="appearance-none min-w-[140px] px-3.5 py-2 pr-8 border border-slate-200/90 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 transition-colors whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563eb] cursor-pointer shadow-2xs"
-            >
-              <option value="newest">Sort: Latest First</option>
-              <option value="points-high">Sort: Highest Points</option>
-              <option value="points-low">Sort: Lowest Points</option>
-              <option value="title-asc">Sort: Title (A-Z)</option>
-            </select>
-            <ChevronDown size={14} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
-          </div>
-
-          {/* View Mode Toggle Buttons (Last, Right Corner) */}
-          <div className="bg-white border border-slate-200/90 rounded-2xl p-1 shadow-2xs inline-flex items-center gap-1 shrink-0">
-            <button
-              type="button"
-              onClick={() => setViewMode("grid")}
-              title="Grid View"
-              className={`p-2 rounded-xl transition-all cursor-pointer ${
-                viewMode === "grid"
-                  ? "bg-blue-50 text-[#2563eb] border border-blue-200 shadow-2xs"
-                  : "text-slate-400 hover:text-slate-600 hover:bg-slate-50"
-              }`}
-            >
-              <LayoutGrid size={18} />
-            </button>
-            <button
-              type="button"
-              onClick={() => setViewMode("list")}
-              title="List View"
-              className={`p-2 rounded-xl transition-all cursor-pointer ${
-                viewMode === "list"
-                  ? "bg-blue-50 text-[#2563eb] border border-blue-200 shadow-2xs"
-                  : "text-slate-400 hover:text-slate-600 hover:bg-slate-50"
-              }`}
-            >
-              <List size={18} />
-            </button>
+            {/* View Mode Toggle Buttons (Last, Right Corner) */}
+            <div className="h-10 bg-white border border-slate-200/90 rounded-xl p-1 shadow-2xs inline-flex items-center gap-1 shrink-0">
+              <button
+                type="button"
+                onClick={() => setViewMode("grid")}
+                title="Grid View"
+                className={`h-8 w-8 flex items-center justify-center p-1.5 rounded-lg transition-all cursor-pointer ${
+                  viewMode === "grid"
+                    ? "bg-blue-50 text-[#2563eb] border border-blue-200 shadow-2xs"
+                    : "text-slate-400 hover:text-slate-600 hover:bg-slate-50"
+                }`}
+              >
+                <LayoutGrid size={16} />
+              </button>
+              <button
+                type="button"
+                onClick={() => setViewMode("list")}
+                title="List View"
+                className={`h-8 w-8 flex items-center justify-center p-1.5 rounded-lg transition-all cursor-pointer ${
+                  viewMode === "list"
+                    ? "bg-blue-50 text-[#2563eb] border border-blue-200 shadow-2xs"
+                    : "text-slate-400 hover:text-slate-600 hover:bg-slate-50"
+                }`}
+              >
+                <List size={16} />
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Context Banner For Active Tab */}
       {activeTab === "pending" && (
-        <div className="bg-amber-50/90 border border-amber-200/90 rounded-2xl p-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-amber-900 text-xs sm:text-sm font-medium animate-in fade-in duration-150">
+        <div className="bg-amber-50/90 border border-amber-200/90 rounded-2xl p-2.5 sm:p-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-amber-900 text-xs sm:text-sm font-medium animate-in fade-in duration-150">
           <div className="flex items-center gap-2.5">
-            <Clock size={18} className="text-amber-600 shrink-0" />
-            <span>
+            <Clock size={16} className="text-amber-600 shrink-0" />
+            <span className="leading-snug">
               Showing <strong>{sortedHistory.length} pending credit claim{sortedHistory.length === 1 ? "" : "s"}</strong> currently awaiting faculty mentor review.
             </span>
           </div>
-          <span className="text-xs font-bold text-amber-700 bg-amber-100/90 px-2.5 py-1 rounded-lg shrink-0">
+          <span className="self-start sm:self-auto text-[11px] sm:text-xs font-bold text-amber-700 bg-amber-100/90 px-2.5 py-1 rounded-lg shrink-0">
             Pending Points: +{pendingPoints} Pts
           </span>
         </div>
       )}
 
       {activeTab === "approved" && (
-        <div className="bg-emerald-50/90 border border-emerald-200/90 rounded-2xl p-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-emerald-900 text-xs sm:text-sm font-medium animate-in fade-in duration-150">
+        <div className="bg-emerald-50/90 border border-emerald-200/90 rounded-2xl p-2.5 sm:p-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-emerald-900 text-xs sm:text-sm font-medium animate-in fade-in duration-150">
           <div className="flex items-center gap-2.5">
-            <CheckCircle2 size={18} className="text-emerald-600 shrink-0" />
-            <span>
+            <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
+            <span className="leading-snug">
               Showing <strong>{sortedHistory.length} accepted activit{sortedHistory.length === 1 ? "y" : "ies"}</strong> contributing to your academic MAR points.
             </span>
           </div>
-          <span className="text-xs font-bold text-emerald-700 bg-emerald-100/90 px-2.5 py-1 rounded-lg shrink-0">
+          <span className="self-start sm:self-auto text-[11px] sm:text-xs font-bold text-emerald-700 bg-emerald-100/90 px-2.5 py-1 rounded-lg shrink-0">
             Total Approved: {totalEarnedPoints} / 100 Pts
           </span>
         </div>
       )}
 
       {activeTab === "failed" && (
-        <div className="bg-rose-50/90 border border-rose-200/90 rounded-2xl p-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-rose-900 text-xs sm:text-sm font-medium animate-in fade-in duration-150">
+        <div className="bg-rose-50/90 border border-rose-200/90 rounded-2xl p-2.5 sm:p-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-rose-900 text-xs sm:text-sm font-medium animate-in fade-in duration-150">
           <div className="flex items-center gap-2.5">
-            <AlertCircle size={18} className="text-rose-600 shrink-0" />
-            <span>
+            <AlertCircle size={16} className="text-rose-600 shrink-0" />
+            <span className="leading-snug">
               Showing <strong>{sortedHistory.length} rejected request{sortedHistory.length === 1 ? "" : "s"}</strong> with mentor review remarks and guidance.
             </span>
           </div>
-          <span className="text-xs font-bold text-rose-700 bg-rose-100/90 px-2.5 py-1 rounded-lg shrink-0">
+          <span className="self-start sm:self-auto text-[11px] sm:text-xs font-bold text-rose-700 bg-rose-100/90 px-2.5 py-1 rounded-lg shrink-0">
             Action Required
           </span>
         </div>

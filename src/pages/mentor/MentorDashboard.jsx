@@ -188,22 +188,24 @@ export default function MentorDashboard({ user, onLogout }) {
     }
 
     return (
-      <main className="space-y-2.5 p-2 sm:px-5 sm:py-2.5">
+      <main className="space-y-2.5 p-2 sm:px-5 sm:py-2.5 pb-6 sm:pb-8 w-full max-w-full overflow-x-hidden">
         {/* Top Section: Mentor Profile Hero Card */}
-        <section className="w-full">
+        <section className="w-full min-w-0">
           <MentorProfileCard mentor={user || MENTOR_DETAILS} />
         </section>
 
         {/* Stats Section: 4 Stat Cards */}
-        <section>
+        <section className="w-full min-w-0">
           <MentorStats items={stats} onNavigate={handleNavigate} />
         </section>
 
         {/* Bottom 3 Columns: Total Mentees, Quick Actions, Real-time Calendar */}
-        <section className="grid gap-2.5 sm:grid-cols-2 xl:grid-cols-[1fr_1fr_1fr]">
+        <section className="grid gap-2.5 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 w-full min-w-0">
           <MentorMenteeChart onNavigate={handleNavigate} mentees={STUDENTS_DATA} />
           <MentorQuickActions onNavigate={handleNavigate} />
-          <MentorCalendar />
+          <div className="md:col-span-2 xl:col-span-1 w-full min-w-0">
+            <MentorCalendar />
+          </div>
         </section>
       </main>
     );
@@ -302,7 +304,7 @@ export default function MentorDashboard({ user, onLogout }) {
       />
 
       {/* Right Content Pane */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden lg:ml-[250px]">
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden lg:ml-[250px] h-screen">
         <MentorNavbar
           activeTab={activeTab}
           user={user}

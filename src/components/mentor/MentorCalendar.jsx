@@ -49,7 +49,7 @@ export default function MentorCalendar() {
   };
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5 shadow-sm flex flex-col justify-between">
+    <div className="rounded-2xl border border-slate-200 bg-white p-3.5 sm:p-5 shadow-sm flex flex-col justify-between w-full h-full">
       <div>
         <div className="flex items-center justify-between pb-2 border-b border-slate-100 mb-2.5">
           <div className="flex items-center gap-2 text-sm sm:text-base font-bold text-[#0F172A]">
@@ -70,7 +70,7 @@ export default function MentorCalendar() {
         </div>
 
         {/* Month Navigation */}
-        <div className="flex items-center justify-between px-1 mb-6">
+        <div className="flex items-center justify-between px-1 mb-3.5 sm:mb-6">
           <button
             type="button"
             aria-label="Previous month"

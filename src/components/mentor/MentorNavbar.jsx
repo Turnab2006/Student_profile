@@ -123,21 +123,21 @@ export default function MentorNavbar({
   };
 
   return (
-    <header className="sticky top-0 z-30 h-[65px] bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-2xs w-full font-['Roboto',sans-serif]">
+    <header className="sticky top-0 z-30 h-[56px] sm:h-[65px] bg-white border-b border-gray-100 px-2.5 sm:px-6 flex items-center justify-between shrink-0 shadow-2xs w-full font-['Roboto',sans-serif]">
       {/* Left side: Mobile menu button + Title & Subtitle matching Admin header */}
-      <div className="flex items-center gap-2 sm:gap-3 min-w-0 pr-2">
+      <div className="flex items-center gap-1.5 sm:gap-3 min-w-0 pr-1">
         {onOpenSidebar && (
           <button
             type="button"
             onClick={onOpenSidebar}
-            className="h-10 w-10 rounded-xl bg-gray-100/80 hover:bg-gray-200 active:scale-95 flex items-center justify-center text-gray-700 lg:hidden cursor-pointer transition-all shrink-0"
+            className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl bg-gray-100/80 hover:bg-gray-200 active:scale-95 flex items-center justify-center text-gray-700 lg:hidden cursor-pointer transition-all shrink-0"
             aria-label="Open sidebar"
           >
-            <Menu size={20} />
+            <Menu size={19} />
           </button>
         )}
         <div className="min-w-0">
-          <h1 className="text-lg sm:text-xl font-bold text-gray-800 tracking-tight truncate">
+          <h1 className="text-base sm:text-xl font-bold text-gray-800 tracking-tight truncate">
             {currentMeta.title}
           </h1>
           <p className="text-xs text-gray-400 mt-0.5 truncate hidden sm:block">
@@ -147,7 +147,7 @@ export default function MentorNavbar({
       </div>
 
       {/* Right side: Bell + Help Circle + Divider + User Profile */}
-      <div className="flex items-center gap-2 sm:gap-3.5 relative select-none shrink-0" ref={containerRef}>
+      <div className="flex items-center gap-1 sm:gap-3.5 relative select-none shrink-0" ref={containerRef}>
         {/* Notification Bell */}
         <div className="relative">
           <button
@@ -156,13 +156,13 @@ export default function MentorNavbar({
               setNotifOpen((prev) => !prev);
               setProfileOpen(false);
             }}
-            className="relative flex h-9 w-9 items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors cursor-pointer focus:outline-none"
+            className="relative flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors cursor-pointer focus:outline-none"
             title="Notifications"
             aria-label="Notifications"
           >
-            <Bell size={19} className="stroke-[1.8]" />
+            <Bell size={18} className="stroke-[1.8]" />
             {unreadCount > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[#FF4D4F] px-1 text-[10px] font-bold text-white shadow-sm ring-2 ring-white">
+              <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-[16px] sm:h-[18px] sm:min-w-[18px] items-center justify-center rounded-full bg-[#FF4D4F] px-1 text-[9px] sm:text-[10px] font-bold text-white shadow-sm ring-1.5 sm:ring-2 ring-white">
                 {unreadCount}
               </span>
             )}
@@ -170,7 +170,7 @@ export default function MentorNavbar({
 
           {/* Notifications Dropdown */}
           {notifOpen && (
-            <div className="absolute right-0 top-full mt-2.5 w-72 sm:w-80 rounded-2xl border border-gray-100 bg-white p-3 shadow-2xl z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+            <div className="absolute right-0 top-full mt-2 w-[calc(100vw-24px)] max-w-xs sm:w-80 rounded-2xl border border-gray-100 bg-white p-3 shadow-2xl z-50 animate-in fade-in slide-in-from-top-2 duration-150">
               <div className="flex items-center justify-between border-b border-gray-100 pb-2.5 px-1">
                 <div className="flex items-center gap-2">
                   <h4 className="text-xs font-bold text-gray-800">Notifications</h4>
@@ -228,11 +228,11 @@ export default function MentorNavbar({
         <button
           type="button"
           onClick={() => navigateTo('support')}
-          className="flex h-9 w-9 items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors cursor-pointer focus:outline-none"
+          className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors cursor-pointer focus:outline-none"
           title="Support Center"
           aria-label="Support Center"
         >
-          <HelpCircle size={19} className="stroke-[1.8]" />
+          <HelpCircle size={18} className="stroke-[1.8]" />
         </button>
 
         {/* Divider */}
@@ -246,12 +246,12 @@ export default function MentorNavbar({
               setProfileOpen((prev) => !prev);
               setNotifOpen(false);
             }}
-            className="flex items-center gap-2.5 sm:gap-3 p-1 rounded-xl hover:bg-gray-100/70 transition-all cursor-pointer focus:outline-none group"
+            className="flex items-center gap-1.5 sm:gap-3 p-0.5 sm:p-1 rounded-xl hover:bg-gray-100/70 transition-all cursor-pointer focus:outline-none group"
             aria-expanded={profileOpen}
           >
             {/* Avatar on LEFT with online green dot */}
             <div className="relative">
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden bg-gradient-to-br from-purple-100 to-indigo-100 flex items-center justify-center border border-gray-200 shadow-xs ring-2 ring-purple-500/20">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full overflow-hidden bg-gradient-to-br from-purple-100 to-indigo-100 flex items-center justify-center border border-gray-200 shadow-xs ring-2 ring-purple-500/20">
                 {currentUser.avatar ? (
                   <img
                     src={currentUser.avatar}
@@ -267,7 +267,7 @@ export default function MentorNavbar({
                   {currentUser.initials}
                 </span>
               </div>
-              <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-white" />
+              <span className="absolute bottom-0 right-0 h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-emerald-500 ring-2 ring-white" />
             </div>
 
             {/* Name & Role Text on RIGHT */}
@@ -280,7 +280,7 @@ export default function MentorNavbar({
 
             {/* Chevron Icon */}
             <ChevronDown
-              size={15}
+              size={14}
               className={`text-gray-500 transition-transform duration-200 ${
                 profileOpen ? 'rotate-180 text-[#7656f4]' : 'group-hover:text-gray-700'
               }`}
@@ -289,7 +289,7 @@ export default function MentorNavbar({
 
           {/* Profile Dropdown Menu */}
           {profileOpen && (
-            <div className="absolute right-0 top-full mt-2.5 w-48 rounded-2xl border border-slate-200 bg-white p-1.5 shadow-xl z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+            <div className="absolute right-0 top-full mt-2 w-44 sm:w-48 rounded-2xl border border-slate-200 bg-white p-1.5 shadow-xl z-50 animate-in fade-in slide-in-from-top-2 duration-150">
               <div className="space-y-0.5">
                 <button
                   type="button"

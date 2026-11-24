@@ -286,15 +286,15 @@ export default function StudentResults({
         />
       ) : (
         /* Main Semester Results Card Container */
-        <div className="bg-white rounded-3xl border border-slate-200/90 shadow-md shadow-slate-200/60 p-5 sm:p-7 lg:p-8 space-y-6 animate-in fade-in duration-200">
+        <div className="bg-white rounded-3xl border border-slate-200/90 shadow-md shadow-slate-200/60 p-3.5 sm:p-7 lg:p-8 space-y-5 sm:space-y-6 animate-in fade-in duration-200">
           
           {/* Card Header with Icon, Title, and Filter Dropdown */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-xl bg-[#eef5ff] text-[#1d61e7] shrink-0 shadow-2xs">
-                <FileText size={20} className="stroke-[2.2]" />
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <div className="flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-xl bg-[#eef5ff] text-[#1d61e7] shrink-0 shadow-2xs">
+                <FileText size={18} className="sm:w-5 sm:h-5 stroke-[2.2]" />
               </div>
-              <h2 className="text-lg sm:text-xl font-bold text-slate-900 tracking-tight">
+              <h2 className="text-base sm:text-xl font-bold text-slate-900 tracking-tight">
                 Semester Results
               </h2>
             </div>
@@ -304,7 +304,7 @@ export default function StudentResults({
               <button
                 type="button"
                 onClick={() => setFilterDropdownOpen((prev) => !prev)}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs sm:text-sm font-semibold text-slate-700 shadow-2xs transition-all cursor-pointer"
+                className="flex items-center gap-2 px-3.5 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs sm:text-sm font-semibold text-slate-700 shadow-2xs transition-all cursor-pointer"
               >
                 <Calendar size={14} className="text-[#1d61e7]" />
                 <span>
@@ -393,65 +393,149 @@ export default function StudentResults({
           {/* Horizontal Divider Line with margin below */}
           <div className="border-b border-slate-100 my-1" />
 
-          {/* 4 Stat Cards: Reduced width placed in two rows on mobile */}
+          {/* 4 Stat Cards: Reduced width placed in two rows on mobile with zero text clipping */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
             {/* 1. Total Semesters */}
-            <div className="bg-white p-2.5 sm:p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-2.5 sm:gap-3.5 hover:border-blue-200 transition-colors">
+            <div className="bg-white p-2.5 sm:p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-2 sm:gap-3.5 hover:border-blue-200 transition-colors min-w-0">
               <div className="h-9 w-9 sm:h-12 sm:w-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 border border-blue-100/80 shadow-2xs">
                 <GraduationCap size={18} className="sm:w-6 sm:h-6 stroke-[2.2]" />
               </div>
-              <div className="overflow-hidden">
-                <p className="text-[10px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-wider truncate">TOTAL SEMESTERS</p>
-                <p className="text-lg sm:text-2xl font-extrabold text-slate-900 mt-0.5">
+              <div className="overflow-hidden min-w-0 flex-1">
+                <p className="text-[9px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-wider truncate">TOTAL SEMESTERS</p>
+                <p className="text-base sm:text-2xl font-extrabold text-slate-900 mt-0.5">
                   {totalSems}
                 </p>
               </div>
             </div>
 
             {/* 2. Average SGPA */}
-            <div className="bg-white p-2.5 sm:p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-2.5 sm:gap-3.5 hover:border-emerald-200 transition-colors">
+            <div className="bg-white p-2.5 sm:p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-2 sm:gap-3.5 hover:border-emerald-200 transition-colors min-w-0">
               <div className="h-9 w-9 sm:h-12 sm:w-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 border border-emerald-100/80 shadow-2xs">
                 <TrendingUp size={18} className="sm:w-6 sm:h-6 stroke-[2.2]" />
               </div>
-              <div className="overflow-hidden">
-                <p className="text-[10px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-wider truncate">AVERAGE SGPA</p>
-                <p className="text-lg sm:text-2xl font-extrabold text-slate-900 mt-0.5">
+              <div className="overflow-hidden min-w-0 flex-1">
+                <p className="text-[9px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-wider truncate">AVERAGE SGPA</p>
+                <p className="text-base sm:text-2xl font-extrabold text-slate-900 mt-0.5">
                   {avgSGPA}
                 </p>
               </div>
             </div>
 
             {/* 3. Highest SGPA */}
-            <div className="bg-white p-2.5 sm:p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-2.5 sm:gap-3.5 hover:border-purple-200 transition-colors">
+            <div className="bg-white p-2.5 sm:p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-2 sm:gap-3.5 hover:border-purple-200 transition-colors min-w-0">
               <div className="h-9 w-9 sm:h-12 sm:w-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0 border border-purple-100/80 shadow-2xs">
                 <Trophy size={18} className="sm:w-6 sm:h-6 stroke-[2.2]" />
               </div>
-              <div className="overflow-hidden">
-                <p className="text-[10px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-wider truncate">HIGHEST SGPA</p>
-                <p className="text-lg sm:text-2xl font-extrabold text-slate-900 mt-0.5">
-                  {highestSem.sgpa}
-                </p>
-                <p className="text-[10px] sm:text-[11px] font-medium text-slate-500 truncate mt-0.5">Sem {highestSem.semester}</p>
+              <div className="overflow-hidden min-w-0 flex-1">
+                <p className="text-[9px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-wider truncate">HIGHEST SGPA</p>
+                <div className="flex items-baseline gap-1 mt-0.5">
+                  <p className="text-base sm:text-2xl font-extrabold text-slate-900">
+                    {highestSem.sgpa}
+                  </p>
+                  <span className="text-[9px] sm:text-[11px] font-medium text-slate-500 truncate">Sem {highestSem.semester}</span>
+                </div>
               </div>
             </div>
 
             {/* 4. Overall Grade */}
-            <div className="bg-white p-2.5 sm:p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-2.5 sm:gap-3.5 hover:border-amber-200 transition-colors">
+            <div className="bg-white p-2.5 sm:p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-2 sm:gap-3.5 hover:border-amber-200 transition-colors min-w-0">
               <div className="h-9 w-9 sm:h-12 sm:w-12 rounded-xl bg-amber-50 text-amber-500 flex items-center justify-center shrink-0 border border-amber-100/80 shadow-2xs">
                 <Award size={18} className="sm:w-6 sm:h-6 stroke-[2.2]" />
               </div>
-              <div className="overflow-hidden">
-                <p className="text-[10px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-wider truncate">OVERALL GRADE</p>
-                <p className="text-lg sm:text-2xl font-extrabold text-slate-900 mt-0.5">
-                  A
-                </p>
-                <p className="text-[10px] sm:text-[11px] font-medium text-slate-500 truncate mt-0.5">Excellent</p>
+              <div className="overflow-hidden min-w-0 flex-1">
+                <p className="text-[9px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-wider truncate">OVERALL GRADE</p>
+                <div className="flex items-baseline gap-1 mt-0.5">
+                  <p className="text-base sm:text-2xl font-extrabold text-slate-900">
+                    A
+                  </p>
+                  <span className="text-[9px] sm:text-[11px] font-medium text-slate-500 truncate">Excellent</span>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Results Data Table matching Attendance layout, font size, space, and colors */}
-          <div className="overflow-x-auto">
+          {/* Mobile Semester Results Table (Visible on mobile < md: 4 Columns: Semester, SGPA, View Details, Action) */}
+          <div className="block md:hidden w-full overflow-hidden">
+            <table className="w-full text-left border-separate border-spacing-y-2">
+              <thead>
+                <tr className="bg-[#f0f6ff]/90 text-[11px] font-bold text-[#1d61e7] rounded-xl overflow-hidden">
+                  <th className="py-2.5 px-2.5 rounded-l-xl text-center whitespace-nowrap">
+                    Semester
+                  </th>
+                  <th className="py-2.5 px-2 text-center whitespace-nowrap">
+                    <div className="flex items-center justify-center gap-1 whitespace-nowrap">
+                      <span>SGPA</span>
+                      <Info size={12} className="text-[#1d61e7] stroke-[2.4]" />
+                    </div>
+                  </th>
+                  <th className="py-2.5 px-1.5 text-center whitespace-nowrap">
+                    View Details
+                  </th>
+                  <th className="py-2.5 px-2 rounded-r-xl text-center whitespace-nowrap">
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredResults.map((sem) => (
+                  <tr
+                    key={sem.id}
+                    className={`${sem.rowBgClass} transition-all duration-150 rounded-xl shadow-2xs hover:shadow-sm cursor-pointer`}
+                    onClick={() => setActiveDetailSemester(sem)}
+                  >
+                    {/* 1. Semester */}
+                    <td className="py-2.5 px-2.5 rounded-l-xl text-center whitespace-nowrap">
+                      <span className="font-bold text-slate-800 text-xs">
+                        Sem {sem.semester}
+                      </span>
+                    </td>
+
+                    {/* 2. SGPA */}
+                    <td className="py-2.5 px-2 text-center whitespace-nowrap">
+                      <span className="font-extrabold text-slate-900 text-xs">
+                        {sem.sgpa}
+                      </span>
+                    </td>
+
+                    {/* 3. View Details */}
+                    <td className="py-2.5 px-1.5 text-center whitespace-nowrap">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setActiveDetailSemester(sem);
+                        }}
+                        className="inline-flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-lg bg-blue-50/90 hover:bg-blue-600 text-blue-600 hover:text-white border border-blue-200/70 text-xs font-bold transition-all shadow-2xs active:scale-95 cursor-pointer"
+                        title={`View Semester ${sem.semester} details`}
+                      >
+                        <Eye size={12} className="stroke-[2.4]" />
+                        <span className="hidden min-[360px]:inline">View</span>
+                      </button>
+                    </td>
+
+                    {/* 4. Action */}
+                    <td className="py-2.5 px-1.5 rounded-r-xl text-center whitespace-nowrap">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDownload(sem);
+                        }}
+                        className="inline-flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-lg border border-blue-200 bg-white hover:bg-blue-50 text-[#1d61e7] text-xs font-bold transition-all shadow-2xs active:scale-95 cursor-pointer"
+                        title={`Download Grade Card for Semester ${sem.semester}`}
+                      >
+                        <Download size={12} className="stroke-[2.5]" />
+                        <span className="hidden min-[375px]:inline">Download</span>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Desktop Results Data Table (Visible on md+: 8 Columns completely unchanged) */}
+          <div className="hidden md:block overflow-x-auto">
             <table className="w-full text-left border-separate border-spacing-y-2.5 min-w-[800px]">
               <thead>
                 <tr className="bg-[#f0f6ff]/90 text-xs font-bold text-[#1d61e7] rounded-2xl overflow-hidden">

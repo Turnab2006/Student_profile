@@ -90,20 +90,28 @@ export default function LoginPage({ initialRole = 'student', onLoginSuccess, onB
       <div className="fixed top-[-80px] right-[-80px] w-96 h-96 bg-blue-100/40 rounded-full blur-3xl pointer-events-none" />
       <div className="fixed bottom-[-80px] left-[-80px] w-96 h-96 bg-emerald-100/40 rounded-full blur-3xl pointer-events-none" />
 
-      {/* Top Bar with Back Button */}
-      <header className="relative z-20 w-full px-4 sm:px-8 py-3 flex items-center justify-between flex-shrink-0">
+      {/* Top Bar with Back Button & System Status Badge */}
+      <header className="relative z-20 w-full px-3.5 sm:px-8 py-2.5 sm:py-3.5 flex items-center justify-between gap-2.5 flex-shrink-0">
         <button
           type="button"
           onClick={onBackToLanding}
-          className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-slate-700 hover:text-slate-900 bg-white hover:bg-slate-100 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl border border-slate-200 shadow-sm transition-all active:scale-95 cursor-pointer font-roboto"
+          className="group inline-flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-semibold text-slate-700 hover:text-slate-900 bg-white/95 hover:bg-white active:bg-slate-100 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full border border-slate-200/90 shadow-xs hover:shadow transition-all active:scale-95 cursor-pointer font-roboto whitespace-nowrap flex-shrink-0"
+          title="Return to Landing Page"
         >
-          <ArrowLeft size={16} />
-          <span>Back to Landing Page</span>
+          <ArrowLeft size={15} className="text-slate-500 group-hover:text-slate-900 transition-transform group-hover:-translate-x-0.5 flex-shrink-0" />
+          <span className="hidden sm:inline">Back to Landing Page</span>
+          <span className="hidden min-[360px]:inline sm:hidden">Back to Landing</span>
+          <span className="min-[360px]:hidden">Back</span>
         </button>
 
-        <div className="inline-flex items-center gap-2 bg-white px-3 py-1.5 rounded-full border border-slate-200 text-xs text-slate-600 shadow-sm font-roboto">
-          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          <span className="font-medium">Institutional ERP Active</span>
+        <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-white/95 backdrop-blur-xs px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-full border border-slate-200/90 text-xs text-slate-600 shadow-xs font-roboto whitespace-nowrap flex-shrink-0 select-none">
+          <span className="relative flex h-2 w-2 flex-shrink-0">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+          </span>
+          <span className="font-medium hidden sm:inline">Institutional ERP Active</span>
+          <span className="font-medium hidden min-[360px]:inline sm:hidden">ERP Active</span>
+          <span className="font-medium min-[360px]:hidden">Active</span>
         </div>
       </header>
 
@@ -131,43 +139,43 @@ export default function LoginPage({ initialRole = 'student', onLoginSuccess, onB
           </div>
 
           {/* Role Selection Buttons (Student first & default, Mentor, Admin) */}
-          <div className="grid grid-cols-3 gap-2 bg-slate-100 p-1.5 rounded-2xl mb-5 border border-slate-200/70">
+          <div className="grid grid-cols-3 gap-1.5 sm:gap-2 bg-slate-100 p-1.5 rounded-2xl mb-5 border border-slate-200/70">
             <button
               type="button"
               onClick={() => handleRoleChange('student')}
-              className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+              className={`flex items-center justify-center gap-1.5 sm:gap-2 py-2 sm:py-2.5 px-2 sm:px-3 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap ${
                 role === 'student'
                   ? PORTAL_ROLES.student.activeTabClass
                   : PORTAL_ROLES.student.inactiveTabClass
               }`}
             >
-              <GraduationCap size={16} />
+              <GraduationCap size={15} className="flex-shrink-0" />
               <span>Student</span>
             </button>
 
             <button
               type="button"
               onClick={() => handleRoleChange('mentor')}
-              className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+              className={`flex items-center justify-center gap-1.5 sm:gap-2 py-2 sm:py-2.5 px-2 sm:px-3 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap ${
                 role === 'mentor'
                   ? PORTAL_ROLES.mentor.activeTabClass
                   : PORTAL_ROLES.mentor.inactiveTabClass
               }`}
             >
-              <UserCheck size={15} />
+              <UserCheck size={15} className="flex-shrink-0" />
               <span>Mentor</span>
             </button>
 
             <button
               type="button"
               onClick={() => handleRoleChange('admin')}
-              className={`flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+              className={`flex items-center justify-center gap-1.5 sm:gap-2 py-2 sm:py-2.5 px-2 sm:px-3 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap ${
                 role === 'admin'
                   ? PORTAL_ROLES.admin.activeTabClass
                   : PORTAL_ROLES.admin.inactiveTabClass
               }`}
             >
-              <Shield size={15} />
+              <Shield size={15} className="flex-shrink-0" />
               <span>Admin</span>
             </button>
           </div>

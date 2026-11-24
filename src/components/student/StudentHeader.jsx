@@ -136,19 +136,19 @@ export default function StudentHeader({
   }, []);
 
   return (
-    <header className="sticky top-0 z-30 h-[65px] bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-2xs font-['Roboto',sans-serif] w-full">
+    <header className="sticky top-0 z-30 h-[60px] sm:h-[65px] bg-white border-b border-gray-100 px-2.5 sm:px-6 flex items-center justify-between shrink-0 shadow-2xs font-['Roboto',sans-serif] w-full">
       {/* Left: Mobile Toggle + Page Title / Breadcrumb matching Admin Portal header */}
-      <div className="flex items-center gap-2 sm:gap-3 min-w-0 pr-2">
+      <div className="flex items-center gap-1.5 sm:gap-3 min-w-0 pr-1 sm:pr-2">
         <button
           type="button"
           onClick={onOpenSidebar}
-          className="h-10 w-10 rounded-xl bg-gray-100/80 hover:bg-gray-200 active:scale-95 flex items-center justify-center text-gray-700 lg:hidden cursor-pointer transition-all shrink-0"
+          className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl bg-gray-100/80 hover:bg-gray-200 active:scale-95 flex items-center justify-center text-gray-700 lg:hidden cursor-pointer transition-all shrink-0"
           aria-label="Open sidebar"
         >
-          <Menu size={20} />
+          <Menu size={19} />
         </button>
         <div className="min-w-0">
-          <h1 className="text-lg sm:text-xl font-bold text-gray-800 tracking-tight truncate">
+          <h1 className="text-base sm:text-xl font-bold text-gray-800 tracking-tight truncate">
             {activePage === "profile" && isDigitalCardActive
               ? "Digital Student ID"
               : activePage === "attendances" && isAttendanceDetailActive
@@ -200,7 +200,7 @@ export default function StudentHeader({
       </div>
 
       {/* Right: Actions + Profile Dropdown matching Admin Profile layout */}
-      <div className="flex items-center gap-2 sm:gap-3.5 relative select-none shrink-0" ref={containerRef}>
+      <div className="flex items-center gap-1 sm:gap-3.5 relative select-none shrink-0" ref={containerRef}>
         {/* 1. Notification Bell Icon with Red Badge */}
         <div className="relative">
           <button
@@ -209,13 +209,13 @@ export default function StudentHeader({
               setNotifOpen((prev) => !prev);
               setProfileOpen(false);
             }}
-            className="relative flex h-9 w-9 items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors cursor-pointer focus:outline-none"
+            className="relative flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors cursor-pointer focus:outline-none"
             title="Notifications"
             aria-label="Notifications"
           >
-            <Bell size={19} className="stroke-[1.8]" />
+            <Bell size={18} className="stroke-[1.8]" />
             {unreadCount > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[#FF4D4F] px-1 text-[10px] font-bold text-white shadow-sm ring-2 ring-white">
+              <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-[16px] sm:h-[18px] sm:min-w-[18px] items-center justify-center rounded-full bg-[#FF4D4F] px-1 text-[9px] sm:text-[10px] font-bold text-white shadow-sm ring-2 ring-white">
                 {unreadCount}
               </span>
             )}
@@ -223,7 +223,7 @@ export default function StudentHeader({
 
           {/* Notification Dropdown */}
           {notifOpen && (
-            <div className="absolute right-0 top-full mt-2.5 w-72 sm:w-80 rounded-2xl border border-gray-100 bg-white p-3 shadow-2xl z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+            <div className="absolute right-0 top-full mt-2 w-[calc(100vw-24px)] max-w-xs sm:w-80 rounded-2xl border border-gray-100 bg-white p-3 shadow-2xl z-50 animate-in fade-in slide-in-from-top-2 duration-150">
               <div className="flex items-center justify-between border-b border-gray-100 pb-2.5 px-1">
                 <div className="flex items-center gap-2">
                   <h4 className="text-xs font-bold text-gray-800">Notifications</h4>
@@ -282,11 +282,11 @@ export default function StudentHeader({
         <button
           type="button"
           onClick={() => handleNav("support")}
-          className="flex h-9 w-9 items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors cursor-pointer focus:outline-none"
+          className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors cursor-pointer focus:outline-none"
           title="Support Center"
           aria-label="Support Center"
         >
-          <HelpCircle size={19} className="stroke-[1.8]" />
+          <HelpCircle size={18} className="stroke-[1.8]" />
         </button>
 
         {/* Vertical Divider */}
@@ -300,12 +300,12 @@ export default function StudentHeader({
               setProfileOpen((prev) => !prev);
               setNotifOpen(false);
             }}
-            className="flex items-center gap-2.5 sm:gap-3 p-1 rounded-xl hover:bg-gray-100/70 transition-all cursor-pointer focus:outline-none group"
+            className="flex items-center gap-1.5 sm:gap-3 p-0.5 sm:p-1 rounded-xl hover:bg-gray-100/70 transition-all cursor-pointer focus:outline-none group"
             aria-expanded={profileOpen}
           >
             {/* Avatar on LEFT */}
             <div className="relative">
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden border border-gray-200 shadow-xs ring-2 ring-blue-500/20 bg-slate-100 flex items-center justify-center">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full overflow-hidden border border-gray-200 shadow-xs ring-2 ring-blue-500/20 bg-slate-100 flex items-center justify-center">
                 <img
                   src={avatarUrl}
                   alt={studentName}
@@ -319,7 +319,7 @@ export default function StudentHeader({
                   {studentName.charAt(0)}
                 </div>
               </div>
-              <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-white" />
+              <span className="absolute bottom-0 right-0 h-2 sm:h-2.5 w-2 sm:w-2.5 rounded-full bg-emerald-500 ring-2 ring-white" />
             </div>
 
             {/* Name & Role Text */}
@@ -332,8 +332,8 @@ export default function StudentHeader({
 
             {/* Chevron Icon */}
             <ChevronDown
-              size={15}
-              className={`text-gray-500 transition-transform duration-200 ${
+              size={14}
+              className={`text-gray-500 transition-transform duration-200 sm:w-[15px] sm:h-[15px] ${
                 profileOpen ? "rotate-180 text-blue-600" : "group-hover:text-gray-700"
               }`}
             />
