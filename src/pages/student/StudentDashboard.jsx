@@ -745,7 +745,7 @@ export default function StudentDashboard({ onLogout }) {
       />
 
       {/* Right Content Pane */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden lg:ml-[250px]">
         {/* Student Top Header with Barlow font, dynamic title/subtitle, bell badge 3, help circle, profile dropdown */}
         <StudentHeader
           activePage={currentPage}

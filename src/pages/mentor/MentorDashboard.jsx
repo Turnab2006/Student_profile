@@ -265,7 +265,7 @@ export default function MentorDashboard({ user, onLogout }) {
         />
 
         {/* Right Content Pane for Student Profile */}
-        <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
+        <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden lg:ml-[250px]">
           <StudentProfile
             studentData={studentToDisplay}
             onBack={() => handleNavigate('mentees')}
@@ -302,7 +302,7 @@ export default function MentorDashboard({ user, onLogout }) {
       />
 
       {/* Right Content Pane */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden lg:ml-[250px]">
         <MentorNavbar
           activeTab={activeTab}
           user={user}

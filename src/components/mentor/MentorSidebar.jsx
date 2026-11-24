@@ -117,7 +117,7 @@ export default function MentorSidebar({
 }) {
   return (
     <aside
-      className={`fixed inset-y-0 left-0 z-50 flex h-full w-[250px] shrink-0 flex-col border-r border-gray-100 bg-white font-['Roboto',sans-serif] shadow-xl transition-transform duration-300 ease-in-out lg:static lg:z-auto lg:w-[250px] lg:translate-x-0 lg:shadow-none select-none ${open ? 'translate-x-0' : '-translate-x-full'
+      className={`fixed inset-y-0 left-0 z-50 flex w-[250px] shrink-0 flex-col overflow-hidden border-r border-gray-100 bg-white font-['Roboto',sans-serif] shadow-xl transition-transform duration-300 ease-in-out lg:w-[250px] lg:translate-x-0 lg:shadow-none select-none ${open ? 'translate-x-0' : '-translate-x-full'
         }`}
     >
       {/* Brand Logo Header */}
@@ -142,7 +142,7 @@ export default function MentorSidebar({
       </div>
 
       {/* Nav List matching Student and Admin sidebars */}
-      <nav className="flex-1 px-3.5 py-3.5 space-y-4 overflow-y-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+      <nav className="flex-1 overflow-hidden px-3.5 py-3.5 space-y-4">
         {menuGroups.map((group) => (
           <div key={group.title}>
             <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider px-3 mb-1.5 font-roboto select-none">
@@ -160,7 +160,7 @@ export default function MentorSidebar({
                       if (onSelectTab) onSelectTab(item.id);
                       if (onClose) onClose();
                     }}
-                    className={`relative w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-sm transition-all duration-200 cursor-pointer group ${isActive
+                    className={`relative w-full flex items-center gap-3 px-3.5 py-2 rounded-xl text-sm transition-all duration-200 cursor-pointer group ${isActive
                         ? 'bg-[#f0eaff] text-[#7656f4] font-semibold shadow-xs'
                         : 'text-[#5A6A80] hover:bg-gray-50 hover:text-gray-900 hover:translate-x-1 font-medium'
                       }`}
