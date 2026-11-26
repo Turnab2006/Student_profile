@@ -160,12 +160,12 @@ export default function MentorSettings({ hideHeader = false, onNavigate }) {
           </p>
         </div>
 
-        {/* Hero Save Action Button */}
-        <div className="relative z-10 flex items-center gap-2.5 self-stretch sm:self-auto justify-end flex-wrap">
+        {/* Hero Save Action Button (Horizontally centered on mobile, right-aligned on desktop) */}
+        <div className="relative z-10 flex items-center justify-center sm:justify-end w-full sm:w-auto shrink-0 pt-2 sm:pt-0">
           <button
             type="button"
             onClick={handleSave}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-[#7656f4] hover:bg-purple-50 text-xs sm:text-sm font-bold transition-all cursor-pointer shadow-sm active:scale-95"
+            className="flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-white text-[#7656f4] hover:bg-purple-50 text-xs sm:text-sm font-bold transition-all cursor-pointer shadow-sm active:scale-95"
           >
             <Save size={15} className="stroke-[2.5]" />
             <span>Save All Settings</span>
@@ -245,7 +245,7 @@ export default function MentorSettings({ hideHeader = false, onNavigate }) {
       {/* ========================================================================= */}
       {/* 3. TABS NAVIGATION (Modern Elevated Segmented Control)                   */}
       {/* ========================================================================= */}
-      <div className="bg-white p-1.5 rounded-2xl border border-slate-200/90 shadow-2xs flex items-center gap-1.5 overflow-x-auto">
+      <div className="bg-white p-1.5 rounded-2xl border border-slate-200/90 shadow-2xs grid grid-cols-2 gap-1 w-full md:inline-flex md:w-auto md:items-center md:gap-1.5 overflow-x-visible md:overflow-x-auto">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -254,14 +254,14 @@ export default function MentorSettings({ hideHeader = false, onNavigate }) {
               key={tab.id}
               type="button"
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap ${
+              className={`flex items-center justify-center gap-1.5 md:gap-2 px-2 md:px-5 py-2.5 rounded-xl text-[11px] md:text-sm font-semibold md:font-bold transition-all cursor-pointer whitespace-nowrap ${
                 isActive
                   ? "bg-[#7656F4] text-white shadow-md shadow-purple-500/25 scale-[1.01]"
                   : "text-slate-600 hover:text-slate-900 hover:bg-slate-100/80"
               }`}
             >
-              <Icon size={16} />
-              <span>{tab.label}</span>
+              <Icon className="w-3.5 h-3.5 md:w-4 md:h-4 shrink-0" size={16} />
+              <span className="truncate md:overflow-visible">{tab.label}</span>
             </button>
           );
         })}

@@ -160,12 +160,12 @@ export default function Settings({ onNavigate, onOpenSidebar }) {
               </p>
             </div>
 
-            {/* Upper Action Buttons */}
-            <div className="relative z-10 flex items-center gap-2.5 self-stretch sm:self-auto justify-end flex-wrap">
+            {/* Upper Action Buttons (Horizontally centered on mobile, right-aligned on desktop) */}
+            <div className="relative z-10 flex items-center justify-center sm:justify-end w-full sm:w-auto shrink-0 pt-2 sm:pt-0">
               <button
                 type="button"
                 onClick={handleSave}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-[#0da651] hover:bg-emerald-50 text-xs sm:text-sm font-bold transition-all cursor-pointer shadow-sm active:scale-95"
+                className="flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-white text-[#0da651] hover:bg-emerald-50 text-xs sm:text-sm font-bold transition-all cursor-pointer shadow-sm active:scale-95"
               >
                 <Save size={15} className="stroke-[2.5]" />
                 <span>Save All Settings</span>

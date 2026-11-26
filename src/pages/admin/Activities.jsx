@@ -104,7 +104,6 @@ function FilterDropdown({ value, onChange, options, isMentor = false, isStudent 
 
 export default function Activities({ onNavigate, onOpenSidebar, isMentor = false, isStudent = false, user = null }) {
   const [activitiesList, setActivitiesList] = useState([]);
-  const [selected, setSelected] = useState([]);
   const [view, setView] = useState("grid"); // 'grid' or 'list'
   const [query, setQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
@@ -286,18 +285,6 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
   });
 
   const visibleActivities = sortedActivities;
-  const visibleActivityIds = visibleActivities.map((activity) => activity.id);
-  const allVisibleSelected =
-    visibleActivityIds.length > 0 && visibleActivityIds.every((id) => selected.includes(id));
-
-  const toggleAll = () =>
-    setSelected((prev) =>
-      allVisibleSelected
-        ? prev.filter((id) => !visibleActivityIds.includes(id))
-        : Array.from(new Set([...prev, ...visibleActivityIds]))
-    );
-  const toggleOne = (id) =>
-    setSelected((prev) => (prev.includes(id) ? prev.filter((r) => r !== id) : [...prev, id]));
 
   return (
     <div className={`flex-1 ${isMentor || isStudent ? 'w-full' : 'h-full flex flex-col overflow-hidden bg-[#f8fafc]'}`}>
@@ -732,14 +719,6 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                             ? "bg-gradient-to-r from-[#7656f4] via-[#6845f2] to-[#5531dc]"
                             : "bg-gradient-to-r from-[#0da651] via-[#0e9f4e] to-[#09803d]"
                         } text-white text-xs font-bold uppercase tracking-wider`}>
-                          <th className="w-10 py-3.5 px-4 text-center">
-                            <input
-                              type="checkbox"
-                              checked={allVisibleSelected}
-                              onChange={toggleAll}
-                              className={`rounded border-white/40 cursor-pointer ${isStudent ? "accent-[#2563eb]" : isMentor ? "accent-[#7656f4]" : "accent-emerald-800"}`}
-                            />
-                          </th>
                           <th className="py-3.5 px-4 text-left">ACTIVITY</th>
                           <th className="py-3.5 px-4 text-center">TYPE</th>
                           <th className="py-3.5 px-4 text-left">DATE & TIME</th>
@@ -752,7 +731,7 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                       <tbody className="divide-y divide-gray-100 text-xs sm:text-sm">
                         {visibleActivities.length === 0 ? (
                           <tr>
-                            <td colSpan={8} className="py-12 text-center text-gray-400 text-sm">
+                            <td colSpan={7} className="py-12 text-center text-gray-400 text-sm">
                               No activities found matching your criteria.
                             </td>
                           </tr>
@@ -760,24 +739,8 @@ export default function Activities({ onNavigate, onOpenSidebar, isMentor = false
                           visibleActivities.map((a) => (
                             <tr
                               key={a.id}
-                              className={`hover:bg-gray-50/60 transition-colors ${
-                                selected.includes(a.id)
-                                  ? isStudent
-                                    ? "bg-blue-50/40"
-                                    : isMentor
-                                    ? "bg-purple-50/40"
-                                    : "bg-emerald-50/30"
-                                  : ""
-                              }`}
+                              className="hover:bg-gray-50/60 transition-colors"
                             >
-                              <td className="px-4 py-3 text-center">
-                                <input
-                                  type="checkbox"
-                                  checked={selected.includes(a.id)}
-                                  onChange={() => toggleOne(a.id)}
-                                  className={`rounded border-gray-300 cursor-pointer ${isStudent ? "accent-[#2563eb]" : isMentor ? "accent-[#7656f4]" : "accent-primary"}`}
-                                />
-                              </td>
                               <td className="px-4 py-3">
                                 <div className="flex items-center gap-3">
                                   {a.image ? (

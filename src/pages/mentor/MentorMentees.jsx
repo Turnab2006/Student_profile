@@ -423,16 +423,16 @@ export default function MentorMentees({ onNavigate }) {
       {viewMode === 'list' ? (
         /* TABLE LIST VIEW MATCHING SCREENSHOT EXACTLY */
         <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden transition-all">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
+          <div className="overflow-x-auto w-full">
+            <table className="w-full min-w-[750px] text-left border-collapse table-fixed">
               <thead>
                 <tr className="bg-[#f0eaff] text-[#7656f4] text-[11.5px] font-extrabold uppercase tracking-wider border-b border-[#e2d9fd]">
-                  <th className="py-3.5 px-4 sm:px-5 whitespace-nowrap">MENTEE</th>
-                  <th className="py-3.5 px-4 whitespace-nowrap">ID / COLLEGE ROLL NO.</th>
-                  <th className="py-3.5 px-4 whitespace-nowrap">DEPARTMENT</th>
-                  <th className="py-3.5 px-4 whitespace-nowrap">EMAIL</th>
-                  <th className="py-3.5 px-4 whitespace-nowrap">CONTACT</th>
-                  <th className="py-3.5 px-4 text-center whitespace-nowrap">ACTIONS</th>
+                  <th className="py-3.5 px-4 w-[220px] min-w-[200px] whitespace-nowrap">MENTEE</th>
+                  <th className="py-3.5 px-4 w-[160px] min-w-[160px] whitespace-nowrap">ID / COLLEGE ROLL NO.</th>
+                  <th className="py-3.5 px-4 w-[170px] min-w-[160px] whitespace-nowrap">DEPARTMENT</th>
+                  <th className="py-3.5 px-4 w-[180px] min-w-[160px] whitespace-nowrap">EMAIL</th>
+                  <th className="py-3.5 px-4 w-[140px] min-w-[140px] whitespace-nowrap">CONTACT</th>
+                  <th className="py-3.5 px-4 pr-5 sm:pr-6 w-[110px] min-w-[110px] text-center whitespace-nowrap">ACTIONS</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 text-slate-700 font-normal">
@@ -443,10 +443,10 @@ export default function MentorMentees({ onNavigate }) {
                       className="hover:bg-[#f0eaff]/40 transition-colors group"
                     >
                       {/* MENTEE (Avatar + Name) */}
-                      <td className="py-3.5 px-4 sm:px-5">
+                      <td className="py-3.5 px-4 min-w-[200px]">
                         <div
                           onClick={() => handleViewProfile(mentee)}
-                          className="flex items-center gap-3 cursor-pointer group"
+                          className="flex items-center gap-3 cursor-pointer group min-w-0"
                         >
                           <div className="relative flex-shrink-0">
                             <img
@@ -468,8 +468,8 @@ export default function MentorMentees({ onNavigate }) {
                               />
                             )}
                           </div>
-                          <div>
-                            <span className="font-bold text-[13px] text-slate-900 group-hover:text-[#7656f4] group-hover:underline transition-colors block">
+                          <div className="flex-1 min-w-0">
+                            <span className="font-bold text-[13px] text-slate-900 group-hover:text-[#7656f4] group-hover:underline transition-colors block truncate">
                               {mentee.name}
                             </span>
                           </div>
@@ -477,37 +477,37 @@ export default function MentorMentees({ onNavigate }) {
                       </td>
 
                       {/* ID / COLLEGE ROLL NO. (Pill badge) */}
-                      <td className="py-3.5 px-4">
-                        <span className="inline-block px-3 py-1 bg-[#f0eaff] text-[#7656f4] border border-[#e2d9fd] rounded-full text-[12px] font-semibold tracking-wide">
+                      <td className="py-3.5 px-4 min-w-[160px]">
+                        <span className="inline-block px-3 py-1 bg-[#f0eaff] text-[#7656f4] border border-[#e2d9fd] rounded-full text-[12px] font-semibold tracking-wide whitespace-nowrap">
                           {mentee.rollNo}
                         </span>
                       </td>
 
                       {/* DEPARTMENT */}
-                      <td className="py-3.5 px-4">
-                        <span className="text-slate-800 font-medium text-[13px] leading-snug block">
+                      <td className="py-3.5 px-4 min-w-[160px]">
+                        <span className="text-slate-800 font-medium text-[13px] leading-snug block whitespace-nowrap truncate">
                           {mentee.department}
                         </span>
                       </td>
 
                       {/* EMAIL (Student / Mentee Email) */}
-                      <td className="py-3.5 px-4">
-                        <div className="flex items-center gap-2 text-slate-700">
+                      <td className="py-3.5 px-4 min-w-[160px]">
+                        <div className="flex items-center gap-2 text-slate-700 whitespace-nowrap min-w-0">
                           <Mail size={14} className="text-[#7656f4] flex-shrink-0" />
-                          <span className="text-[13px]">{mentee.studentEmail || mentee.email}</span>
+                          <span className="text-[13px] truncate">{mentee.studentEmail || mentee.email}</span>
                         </div>
                       </td>
 
                       {/* CONTACT (Phone number only) */}
-                      <td className="py-3.5 px-4">
-                        <div className="flex items-center gap-2 text-slate-700">
+                      <td className="py-3.5 px-4 min-w-[140px]">
+                        <div className="flex items-center gap-2 text-slate-700 whitespace-nowrap">
                           <PhoneCall size={14} className="text-[#7656f4] flex-shrink-0" />
                           <span className="text-[13px] font-medium">{mentee.phone}</span>
                         </div>
                       </td>
 
                       {/* ACTIONS (Eye + Message) */}
-                      <td className="py-3.5 px-4">
+                      <td className="py-3.5 px-4 pr-5 sm:pr-6 min-w-[110px]">
                         <div className="flex items-center justify-center gap-2.5">
                           {/* View Profile Action */}
                           <button

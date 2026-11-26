@@ -72,9 +72,9 @@ function DigitalMentorIDSection({ mentor = MENTOR_DETAILS, onBack, showToast }) 
   const fullAddress = currentMentor.location || MENTOR_DETAILS.location;
 
   return (
-    <div className="w-full space-y-3.5 pb-8 animate-in fade-in duration-200">
+    <div className="w-full space-y-3.5 pb-10 sm:pb-8 animate-in fade-in duration-200">
       {/* 1. Top Banner / Header Card with Deep Vibrant Purple Gradient */}
-      <div className="bg-gradient-to-r from-[#4f2bd8] via-[#633ef2] to-[#7450fa] rounded-2xl border border-purple-300/30 p-3.5 sm:px-5 sm:py-3.5 shadow-lg shadow-purple-950/20 flex items-center justify-between gap-4 relative overflow-hidden text-white">
+      <div className="bg-gradient-to-r from-[#4f2bd8] via-[#633ef2] to-[#7450fa] rounded-2xl border border-purple-300/30 p-3.5 md:px-5 md:py-3.5 shadow-lg shadow-purple-950/20 relative overflow-hidden text-white w-full">
         {/* Subtle Decorative White Dot Matrix */}
         <div
           className="absolute inset-0 pointer-events-none opacity-15"
@@ -88,39 +88,81 @@ function DigitalMentorIDSection({ mentor = MENTOR_DETAILS, onBack, showToast }) 
         <div className="absolute -right-10 -top-10 w-40 h-40 bg-white/15 rounded-full blur-2xl pointer-events-none" />
         <div className="absolute -left-10 -bottom-10 w-40 h-40 bg-purple-300/20 rounded-full blur-2xl pointer-events-none" />
 
-        {/* Left Header Info: Back Arrow + Shield Badge + Title */}
-        <div className="relative z-10 flex items-center gap-3 sm:gap-3.5 min-w-0">
+        {/* Mobile View (< md): Clean, compact single-row flex layout */}
+        <div className="relative z-10 flex items-start gap-2.5 w-full md:hidden">
+          {/* Left: Compact back button */}
           <button
             type="button"
             onClick={onBack}
-            className="flex h-9 w-9 items-center justify-center text-white/90 hover:text-white bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl transition-all cursor-pointer shrink-0 -ml-1 backdrop-blur-xs shadow-2xs active:scale-95"
+            className="flex h-7 w-7 items-center justify-center text-white/90 hover:text-white bg-white/10 hover:bg-white/20 border border-white/20 rounded-lg transition-all cursor-pointer shrink-0 mt-0.5 backdrop-blur-xs shadow-2xs active:scale-95"
             title="Back to Mentor Profile"
             aria-label="Back"
           >
-            <ArrowLeft size={20} className="stroke-[2.4]" />
+            <ArrowLeft size={15} className="stroke-[2.4]" />
           </button>
 
-          <div className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-2xl bg-white text-[#5531dc] shadow-md shadow-purple-950/30 shrink-0">
-            <ShieldCheck size={22} className="stroke-[2.4]" />
+          {/* Next to back button: White circular shield icon */}
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white text-[#5531dc] shadow-md shadow-purple-950/30 shrink-0 mt-0.5">
+            <ShieldCheck size={18} className="stroke-[2.4]" />
           </div>
 
-          <div className="min-w-0">
-            <div className="flex items-center gap-1.5 sm:gap-2">
-              <h1 className="text-base sm:text-lg font-bold text-white tracking-tight leading-tight">
+          {/* Right content column */}
+          <div className="flex-1 min-w-0">
+            {/* Top line: Title + small checkmark */}
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <h1 className="text-sm font-bold text-white tracking-tight leading-snug">
                 Digital Faculty & Mentor ID
               </h1>
-              <CheckCircle2 size={16} className="text-purple-200 stroke-[2.2] shrink-0" />
+              <CheckCircle2 size={14} className="text-purple-200 stroke-[2.2] shrink-0" />
             </div>
-            <p className="text-xs sm:text-[13px] text-purple-100/90 font-normal mt-0.5 truncate">
+
+            {/* Second line: Subtitle */}
+            <p className="text-[11px] text-white/85 leading-tight mt-0.5">
               Verified digital faculty identity for academic and mentorship access
             </p>
+
+            {/* Third line: Verified Faculty pill badge */}
+            <div className="inline-flex items-center gap-1 mt-2 px-2.5 py-0.5 rounded-full bg-white/15 border border-white/30 text-white text-[11px] font-semibold backdrop-blur-md shadow-2xs whitespace-nowrap">
+              <Shield size={12} className="text-purple-200 stroke-[2.4]" />
+              <span>Verified Faculty</span>
+            </div>
           </div>
         </div>
 
-        {/* Right Verified Badge (Frosted Glass Pill) */}
-        <div className="relative z-10 flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/15 hover:bg-white/20 border border-white/30 text-white text-xs sm:text-[13px] font-semibold backdrop-blur-md shadow-2xs shrink-0 transition-colors">
-          <Shield size={14} className="text-purple-200 stroke-[2.4]" />
-          <span>Verified Faculty</span>
+        {/* Desktop View (>= md): Preserved 100% untouched */}
+        <div className="relative z-10 hidden md:flex items-center justify-between gap-4 w-full">
+          <div className="flex items-center gap-3.5 min-w-0">
+            <button
+              type="button"
+              onClick={onBack}
+              className="flex h-9 w-9 items-center justify-center text-white/90 hover:text-white bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl transition-all cursor-pointer shrink-0 -ml-1 backdrop-blur-xs shadow-2xs active:scale-95"
+              title="Back to Mentor Profile"
+              aria-label="Back"
+            >
+              <ArrowLeft size={20} className="stroke-[2.4]" />
+            </button>
+
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-[#5531dc] shadow-md shadow-purple-950/30 shrink-0">
+              <ShieldCheck size={22} className="stroke-[2.4]" />
+            </div>
+
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-2">
+                <h1 className="text-lg font-bold text-white tracking-tight leading-snug">
+                  Digital Faculty & Mentor ID
+                </h1>
+                <CheckCircle2 size={16} className="text-purple-200 stroke-[2.2] shrink-0" />
+              </div>
+              <p className="text-[13px] text-purple-100/90 font-normal mt-0.5 leading-relaxed truncate">
+                Verified digital faculty identity for academic and mentorship access
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/15 hover:bg-white/20 border border-white/30 text-white text-[13px] font-semibold backdrop-blur-md shadow-2xs shrink-0 transition-colors">
+            <Shield size={14} className="text-purple-200 stroke-[2.4]" />
+            <span>Verified Faculty</span>
+          </div>
         </div>
       </div>
 
@@ -137,46 +179,46 @@ function DigitalMentorIDSection({ mentor = MENTOR_DETAILS, onBack, showToast }) 
             >
               {/* 3D Rotating Wrapper */}
               <div
-                className={`relative w-full transition-transform duration-700 [transform-style:preserve-3d] min-h-[380px] sm:min-h-[400px] ${
+                className={`relative w-full transition-transform duration-700 [transform-style:preserve-3d] min-h-[440px] sm:min-h-[400px] ${
                   isCardFlipped ? '[transform:rotateY(-180deg)]' : '[@media(hover:hover)]:group-hover:[transform:rotateY(-180deg)]'
                 }`}
               >
                 {/* ======================================================== */}
                 {/* FRONT FACE (Mentor ID Card)                              */}
                 {/* ======================================================== */}
-                <div className="w-full h-full [backface-visibility:hidden] rounded-3xl bg-white border border-slate-200/90 shadow-md p-5 sm:p-6 flex flex-col justify-between overflow-hidden">
+                <div className="w-full h-full [backface-visibility:hidden] rounded-3xl bg-white border border-slate-200/90 shadow-md p-4 sm:p-6 flex flex-col justify-between overflow-hidden">
                   {/* Top Row: Trackademy Logo & Active Pill */}
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-11 w-11 items-center justify-center rounded-full bg-white border border-slate-200/90 shadow-2xs p-0.5 shrink-0 overflow-hidden">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+                      <div className="flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-white border border-slate-200/90 shadow-2xs p-0.5 shrink-0 overflow-hidden">
                         <img
                           src="/favicon.svg"
                           alt="Trackademy Logo"
                           className="h-full w-full object-contain rounded-full"
                         />
                       </div>
-                      <div>
-                        <h2 className="text-lg sm:text-[20px] font-bold text-[#4927b5] tracking-tight leading-tight">
+                      <div className="min-w-0">
+                        <h2 className="text-base sm:text-[20px] font-bold text-[#4927b5] tracking-tight leading-tight truncate">
                           Trackademy
                         </h2>
-                        <p className="text-[11px] text-slate-500 font-medium">
+                        <p className="text-[10px] sm:text-[11px] text-slate-500 font-medium truncate">
                           Faculty & Mentor Directory
                         </p>
                       </div>
                     </div>
 
-                    <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#edf9f0] border border-[#bbf0c8] text-[#16a34a] text-xs font-bold shadow-2xs">
-                      <span className="h-2 w-2 rounded-full bg-[#16a34a]" />
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 sm:px-3.5 sm:py-1 rounded-full bg-[#edf9f0] border border-[#bbf0c8] text-[#16a34a] text-[11px] sm:text-xs font-bold shadow-2xs shrink-0 whitespace-nowrap">
+                      <span className="h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-[#16a34a] shrink-0" />
                       <span>Active Faculty</span>
                     </div>
                   </div>
 
                   {/* Middle Section: Soft Lavender/Purple Container with Photo & Info */}
-                  <div className="bg-[#f6f2fe] rounded-2xl p-4 sm:p-5 border border-purple-100/90 my-2.5">
-                    <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-5">
+                  <div className="bg-[#f6f2fe] rounded-2xl p-3.5 sm:p-5 border border-purple-100/90 my-2 sm:my-2.5 w-full">
+                    <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3.5 sm:gap-5 w-full">
                       {/* Mentor Photo with Purple Ring */}
                       <div className="relative shrink-0">
-                        <div className="h-28 w-28 sm:h-32 sm:w-32 rounded-2xl border-[3px] border-[#6846f6] p-0.5 overflow-hidden bg-white shadow-xs flex items-center justify-center">
+                        <div className="h-24 w-24 sm:h-32 sm:w-32 rounded-2xl border-[3px] border-[#6846f6] p-0.5 overflow-hidden bg-white shadow-xs flex items-center justify-center mx-auto">
                           <img
                             src={mentor.avatar}
                             alt={mentor.fullName}
@@ -186,31 +228,31 @@ function DigitalMentorIDSection({ mentor = MENTOR_DETAILS, onBack, showToast }) 
                       </div>
 
                       {/* Mentor Credentials */}
-                      <div className="flex flex-col items-center sm:items-start text-center sm:text-left space-y-1 flex-1 min-w-0">
-                        <h3 className="text-xl sm:text-[24px] font-bold mb-1 mt-1 text-[#4927b5] tracking-tight">
+                      <div className="flex flex-col items-center sm:items-start text-center sm:text-left space-y-0.5 sm:space-y-1 flex-1 min-w-0 w-full">
+                        <h3 className="text-lg sm:text-[24px] font-bold mb-0.5 sm:mb-1 text-[#4927b5] tracking-tight break-words max-w-full">
                           {mentor.fullName}
                         </h3>
 
-                        <p className="text-xs sm:text-[14px] font-bold text-[#64748b] tracking-wide">
+                        <p className="text-xs sm:text-[14px] font-bold text-[#64748b] tracking-wide pt-0.5">
                           Employee ID: {empId}
                         </p>
 
-                        <p className="text-xs sm:text-[14px] font-semibold text-[#64748b]">
+                        <p className="text-xs sm:text-[14px] font-semibold text-[#64748b] pt-0.5">
                           {designation}
                         </p>
 
-                        <p className="text-xs sm:text-[14px] font-semibold text-[#64748b]">
+                        <p className="text-xs sm:text-[14px] font-semibold text-[#64748b] pt-0.5">
                           {department}
                         </p>
 
                         {/* Principal Signature */}
-                        <div className="pt-2 self-center sm:self-end flex flex-col items-center sm:items-end">
+                        <div className="pt-1.5 sm:pt-2 self-center sm:self-end flex flex-col items-center sm:items-end">
                           <img
                             src={dummySign}
                             alt="Director Signature"
-                            className="h-10 sm:h-12 w-auto object-contain brightness-90 contrast-125"
+                            className="h-8 sm:h-12 w-auto object-contain brightness-90 contrast-125"
                           />
-                          <p className="text-[11px] sm:text-xs font-bold text-[#4927b5] tracking-tight mt-0.5">
+                          <p className="text-[10px] sm:text-xs font-bold text-[#4927b5] tracking-tight mt-0.5">
                             Dean / Director
                           </p>
                         </div>
@@ -219,23 +261,23 @@ function DigitalMentorIDSection({ mentor = MENTOR_DETAILS, onBack, showToast }) 
                   </div>
 
                   {/* Bottom Row: Valid Until & Barcode */}
-                  <div className="flex items-center justify-between pt-1">
-                    <div>
-                      <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                  <div className="flex items-center justify-between gap-2 pt-1.5 sm:pt-1">
+                    <div className="shrink-0">
+                      <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400">
                         VALID UNTIL
                       </p>
-                      <p className="text-xl sm:text-2xl font-bold text-[#4927b5] mt-0.5 leading-none">
+                      <p className="text-xs sm:text-xl lg:text-2xl font-bold text-[#4927b5] mt-0.5 leading-tight whitespace-nowrap">
                         Permanent / Active
                       </p>
                     </div>
 
                     {/* Barcode generated via react-barcode using employee ID */}
-                    <div className="shrink-0 flex items-center justify-end">
+                    <div className="shrink-0 flex items-center justify-end max-w-[58%] sm:max-w-none overflow-hidden">
                       <Barcode
                         value={`EMP${empId}`}
-                        width={1.25}
-                        height={38}
-                        fontSize={11}
+                        width={1.15}
+                        height={34}
+                        fontSize={10}
                         margin={0}
                         displayValue={true}
                         font="Roboto"
@@ -250,39 +292,39 @@ function DigitalMentorIDSection({ mentor = MENTOR_DETAILS, onBack, showToast }) 
                 {/* ======================================================== */}
                 {/* BACK FACE                                                */}
                 {/* ======================================================== */}
-                <div className="absolute inset-0 w-full h-full [backface-visibility:hidden] [transform:rotateY(180deg)] rounded-3xl bg-white border border-slate-200/90 shadow-md p-5 sm:p-6 flex flex-col justify-between overflow-hidden">
+                <div className="absolute inset-0 w-full h-full [backface-visibility:hidden] [transform:rotateY(180deg)] rounded-3xl bg-white border border-slate-200/90 shadow-md p-4 sm:p-6 flex flex-col justify-between overflow-hidden">
                   {/* Top Row: Trackademy Logo & Active Pill */}
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-11 w-11 items-center justify-center rounded-full bg-white border border-slate-200/90 shadow-2xs p-0.5 shrink-0 overflow-hidden">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+                      <div className="flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-white border border-slate-200/90 shadow-2xs p-0.5 shrink-0 overflow-hidden">
                         <img
                           src="/favicon.svg"
                           alt="Trackademy Logo"
                           className="h-full w-full object-contain rounded-full"
                         />
                       </div>
-                      <div>
-                        <h2 className="text-lg sm:text-[20px] font-bold text-[#4927b5] tracking-tight leading-tight">
+                      <div className="min-w-0">
+                        <h2 className="text-base sm:text-[20px] font-bold text-[#4927b5] tracking-tight leading-tight truncate">
                           Trackademy
                         </h2>
-                        <p className="text-[11px] text-slate-500 font-medium">
+                        <p className="text-[10px] sm:text-[11px] text-slate-500 font-medium truncate">
                           Faculty & Mentor Directory
                         </p>
                       </div>
                     </div>
 
-                    <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#edf9f0] border border-[#bbf0c8] text-[#16a34a] text-xs font-bold shadow-2xs">
-                      <span className="h-2 w-2 rounded-full bg-[#16a34a]" />
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 sm:px-3.5 sm:py-1 rounded-full bg-[#edf9f0] border border-[#bbf0c8] text-[#16a34a] text-[11px] sm:text-xs font-bold shadow-2xs shrink-0 whitespace-nowrap">
+                      <span className="h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-[#16a34a] shrink-0" />
                       <span>Active Faculty</span>
                     </div>
                   </div>
 
                   {/* Middle Section: Soft Lavender Container with Contact & Location */}
-                  <div className="bg-[#f6f2fe] rounded-2xl p-4 sm:p-5 border border-purple-100/90 space-y-3.5 my-2.5 flex-1 flex flex-col justify-center">
+                  <div className="bg-[#f6f2fe] rounded-2xl p-3.5 sm:p-5 border border-purple-100/90 space-y-2.5 sm:space-y-3.5 my-2 sm:my-2.5 flex-1 flex flex-col justify-center">
                     {/* Phone */}
-                    <div className="flex items-center gap-3.5">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-100 text-[#6846f6] shrink-0 shadow-2xs">
-                        <Phone size={18} className="stroke-[2.2]" />
+                    <div className="flex items-center gap-3 sm:gap-3.5">
+                      <div className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-purple-100 text-[#6846f6] shrink-0 shadow-2xs">
+                        <Phone size={16} className="stroke-[2.2] sm:w-[18px] sm:h-[18px]" />
                       </div>
                       <span className="text-xs sm:text-sm font-bold text-[#475569]">
                         {phone}
@@ -290,9 +332,9 @@ function DigitalMentorIDSection({ mentor = MENTOR_DETAILS, onBack, showToast }) 
                     </div>
 
                     {/* Email */}
-                    <div className="flex items-center gap-3.5">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-100 text-[#6846f6] shrink-0 shadow-2xs">
-                        <Mail size={18} className="stroke-[2.2]" />
+                    <div className="flex items-center gap-3 sm:gap-3.5">
+                      <div className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-purple-100 text-[#6846f6] shrink-0 shadow-2xs">
+                        <Mail size={16} className="stroke-[2.2] sm:w-[18px] sm:h-[18px]" />
                       </div>
                       <span className="text-xs sm:text-sm font-bold text-[#475569] truncate">
                         {collegeEmail}
@@ -300,9 +342,9 @@ function DigitalMentorIDSection({ mentor = MENTOR_DETAILS, onBack, showToast }) 
                     </div>
 
                     {/* Address / Office */}
-                    <div className="flex items-start gap-3.5">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-100 text-[#6846f6] shrink-0 shadow-2xs mt-0.5">
-                        <Home size={18} className="stroke-[2.2]" />
+                    <div className="flex items-start gap-3 sm:gap-3.5">
+                      <div className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-purple-100 text-[#6846f6] shrink-0 shadow-2xs mt-0.5">
+                        <Home size={16} className="stroke-[2.2] sm:w-[18px] sm:h-[18px]" />
                       </div>
                       <span className="text-xs sm:text-sm font-bold text-[#475569] leading-snug">
                         {fullAddress}
@@ -311,22 +353,22 @@ function DigitalMentorIDSection({ mentor = MENTOR_DETAILS, onBack, showToast }) 
                   </div>
 
                   {/* Bottom Row: Valid Until & Barcode */}
-                  <div className="flex items-center justify-between pt-1">
-                    <div>
-                      <p className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
+                  <div className="flex items-center justify-between gap-2 pt-1.5 sm:pt-1">
+                    <div className="shrink-0">
+                      <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-slate-400">
                         VALID UNTIL
                       </p>
-                      <p className="text-xl sm:text-2xl font-bold text-[#4927b5] mt-0.5 leading-none">
+                      <p className="text-xs sm:text-xl lg:text-2xl font-bold text-[#4927b5] mt-0.5 leading-tight whitespace-nowrap">
                         Permanent / Active
                       </p>
                     </div>
 
-                    <div className="shrink-0 flex items-center justify-end">
+                    <div className="shrink-0 flex items-center justify-end max-w-[58%] sm:max-w-none overflow-hidden">
                       <Barcode
                         value={`EMP${empId}`}
-                        width={1.25}
-                        height={38}
-                        fontSize={11}
+                        width={1.15}
+                        height={34}
+                        fontSize={10}
                         margin={0}
                         displayValue={true}
                         font="Roboto"
@@ -356,7 +398,12 @@ function DigitalMentorIDSection({ mentor = MENTOR_DETAILS, onBack, showToast }) 
                     isCardFlipped ? 'rotate-180' : ''
                   }`}
                 />
-                <span>{isCardFlipped ? 'Click to View Front Side' : 'Click / Hover to View Back Side'}</span>
+                <span className="sm:hidden">
+                  {isCardFlipped ? 'Tap card to view front side' : 'Tap card to view back side'}
+                </span>
+                <span className="hidden sm:inline">
+                  {isCardFlipped ? 'Click to View Front Side' : 'Click / Hover to View Back Side'}
+                </span>
               </button>
             </div>
           </div>
@@ -675,19 +722,7 @@ export default function MentorProfilePage({ mentorData: propMentorData }) {
             {/* 2. MOBILE VIEW (flex on mobile, hidden on md and above)               */}
             {/* ==================================================================== */}
             <div className="relative z-10 flex md:hidden flex-col items-center w-full">
-              {/* 1. Top Corner: View Digital ID Card Button */}
-              <div className="w-full flex justify-end mb-1">
-                <button
-                  type="button"
-                  onClick={() => setShowDigitalCard(true)}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-purple-50 text-[#5531dc] font-bold text-xs tracking-tight transition-all active:scale-95 shadow-md hover:shadow-lg cursor-pointer group/btn"
-                >
-                  <CreditCard size={14} className="text-[#5531dc] group-hover/btn:scale-110 transition-transform stroke-[2.2]" />
-                  <span>View Digital ID Card</span>
-                </button>
-              </div>
-
-              {/* 2. Middle: Profile Image */}
+              {/* 1. Profile Image */}
               <div className="relative shrink-0 mb-3">
                 <div className="h-24 w-24 rounded-full ring-[4px] ring-white shadow-xl shadow-purple-950/40 overflow-hidden bg-white flex items-center justify-center border border-white/40 mx-auto">
                   <img
@@ -705,77 +740,86 @@ export default function MentorProfilePage({ mentorData: propMentorData }) {
                 </div>
               </div>
 
-              {/* Mentor Full Name & Badges */}
+              {/* 2. Mentor Full Name & Badges */}
               <div className="flex flex-col items-center text-center space-y-1 mb-3">
-                <h2 className="text-2xl font-bold text-white tracking-tight leading-tight">
+                <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight leading-tight">
                   {mentor.fullName}
                 </h2>
                 <div className="flex flex-wrap items-center justify-center gap-2">
-                  <span className="inline-flex items-center px-3.5 py-1 rounded-lg bg-white/20 border border-white/30 text-white text-xs font-bold tracking-wide shadow-2xs backdrop-blur-md">
+                  <span className="inline-flex items-center px-3 py-0.5 rounded-lg bg-white/20 border border-white/30 text-white text-[11px] sm:text-xs font-bold tracking-wide shadow-2xs backdrop-blur-md">
                     Employee ID: {mentor.empId}
                   </span>
-                  <span className="inline-flex items-center gap-1 px-3 py-1 bg-emerald-400/20 border border-emerald-300/30 text-emerald-200 font-bold text-xs rounded-lg shadow-2xs backdrop-blur-md">
-                    <Check size={13} className="stroke-[3]" /> {mentor.status}
+                  <span className="inline-flex items-center gap-1 px-3 py-0.5 bg-emerald-400/20 border border-emerald-300/30 text-emerald-200 font-bold text-[11px] sm:text-xs rounded-lg shadow-2xs backdrop-blur-md">
+                    <Check size={12} className="stroke-[3]" /> {mentor.status}
                   </span>
                 </div>
               </div>
 
-              {/* 3. Details in TWO ROWS */}
-              <div className="w-full max-w-2xl flex flex-col items-center gap-2 text-xs font-medium text-purple-100">
-                {/* Row 1: Contact Info (Phone & Email) */}
-                <div className="flex flex-wrap items-center justify-center gap-3">
-                  <div className="flex items-center gap-2">
-                    <div className="flex h-6 w-6 items-center justify-center rounded-full bg-white/20 text-white shadow-2xs border border-white/25 shrink-0 backdrop-blur-xs">
-                      <Phone size={12} className="fill-white stroke-[1.5]" />
-                    </div>
-                    <span className="font-semibold text-white tracking-tight">
-                      {mentor.phone}
-                    </span>
+              {/* 3. Details in Centered Vertical Stack */}
+              <div className="w-full flex flex-col items-center gap-2.5 text-xs sm:text-sm font-medium text-purple-100">
+                {/* Phone Number */}
+                <div className="flex items-center gap-2">
+                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-white/20 text-white shadow-2xs border border-white/25 shrink-0 backdrop-blur-xs">
+                    <Phone size={12} className="fill-white stroke-[1.5]" />
                   </div>
-
-                  <div className="flex items-center gap-2">
-                    <div className="flex h-6 w-6 items-center justify-center rounded-full bg-white/20 text-white shadow-2xs border border-white/25 shrink-0 backdrop-blur-xs">
-                      <Mail size={13} className="stroke-[2.2]" />
-                    </div>
-                    <span className="font-semibold text-white">
-                      {mentor.collegeEmail}
-                    </span>
-                  </div>
+                  <span className="font-semibold text-white tracking-tight">
+                    {mentor.phone}
+                  </span>
                 </div>
 
-                {/* Row 2: Department */}
-                <div className="flex flex-wrap items-center justify-center gap-3">
-                  <div className="flex items-center gap-2">
-                    <div className="flex h-6 w-6 items-center justify-center rounded-full bg-white/20 text-white shadow-2xs border border-white/25 shrink-0 backdrop-blur-xs">
-                      <Building2 size={13} className="stroke-[2.2]" />
-                    </div>
-                    <span className="font-semibold text-white">
-                      {mentor.department}
-                    </span>
+                {/* Email ID */}
+                <div className="flex items-center gap-2 text-center">
+                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-white/20 text-white shadow-2xs border border-white/25 shrink-0 backdrop-blur-xs">
+                    <Mail size={13} className="stroke-[2.2]" />
                   </div>
+                  <span className="font-semibold text-white break-all">
+                    {mentor.collegeEmail}
+                  </span>
                 </div>
+
+                {/* Department */}
+                <div className="flex items-center gap-2 text-center">
+                  <div className="flex h-6 w-6 items-center justify-center rounded-full bg-white/20 text-white shadow-2xs border border-white/25 shrink-0 backdrop-blur-xs">
+                    <Building2 size={13} className="stroke-[2.2]" />
+                  </div>
+                  <span className="font-semibold text-white">
+                    {mentor.department}
+                  </span>
+                </div>
+              </div>
+
+              {/* 4. Action: View Digital ID Card Button (Centered at bottom) */}
+              <div className="w-full flex justify-center pt-4">
+                <button
+                  type="button"
+                  onClick={() => setShowDigitalCard(true)}
+                  className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-white hover:bg-purple-50 text-[#5531dc] font-bold text-xs sm:text-sm tracking-tight transition-all active:scale-95 shadow-md hover:shadow-lg cursor-pointer mx-auto"
+                >
+                  <CreditCard size={15} className="text-[#5531dc] stroke-[2.2]" />
+                  <span>View Digital ID Card</span>
+                </button>
               </div>
             </div>
           </div>
 
           {/* ==================================================================== */}
-          {/* TAB NAVIGATION BUTTONS (SINGLE LINE ON ALL DEVICES)                  */}
+          {/* TAB NAVIGATION BUTTONS                                               */}
           {/* ==================================================================== */}
-          <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 p-1.5 flex items-center justify-start gap-1 sm:gap-2.5 overflow-x-auto scrollbar-none flex-nowrap">
+          <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 p-1.5 grid grid-cols-2 w-full md:flex md:w-auto md:items-center md:justify-start gap-1 sm:gap-2.5 overflow-hidden md:overflow-x-auto">
             {/* 1. Personal & Contact Details (Default Active) */}
             <button
               type="button"
               onClick={() => setActiveTab('personal')}
-              className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all relative shrink-0 whitespace-nowrap cursor-pointer ${
+              className={`flex items-center justify-center gap-1.5 sm:gap-2 px-2 py-2 sm:px-4 sm:py-2.5 rounded-xl text-[11px] sm:text-xs md:text-sm font-semibold transition-all relative cursor-pointer text-center whitespace-nowrap ${
                 activeTab === 'personal'
                   ? 'text-[#5531dc] font-bold bg-[#f6f2fe]'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
               }`}
             >
-              <User size={16} className={activeTab === 'personal' ? 'text-[#5531dc]' : 'text-slate-400'} />
-              <span className="whitespace-nowrap">Personal & Contact Info</span>
+              <User size={15} className={`shrink-0 ${activeTab === 'personal' ? 'text-[#5531dc]' : 'text-slate-400'}`} />
+              <span className="truncate sm:whitespace-normal">Personal & Contact Info</span>
               {activeTab === 'personal' && (
-                <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-[#5531dc] rounded-full" />
+                <span className="absolute bottom-0 left-2 right-2 sm:left-3 sm:right-3 h-0.5 bg-[#5531dc] rounded-full" />
               )}
             </button>
 
@@ -783,16 +827,16 @@ export default function MentorProfilePage({ mentorData: propMentorData }) {
             <button
               type="button"
               onClick={() => setActiveTab('professional')}
-              className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all relative shrink-0 whitespace-nowrap cursor-pointer ${
+              className={`flex items-center justify-center gap-1.5 sm:gap-2 px-2 py-2 sm:px-4 sm:py-2.5 rounded-xl text-[11px] sm:text-xs md:text-sm font-semibold transition-all relative cursor-pointer text-center whitespace-nowrap ${
                 activeTab === 'professional'
                   ? 'text-[#5531dc] font-bold bg-[#f6f2fe]'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
               }`}
             >
-              <Briefcase size={16} className={activeTab === 'professional' ? 'text-[#5531dc]' : 'text-slate-400'} />
-              <span className="whitespace-nowrap">Professional Details</span>
+              <Briefcase size={15} className={`shrink-0 ${activeTab === 'professional' ? 'text-[#5531dc]' : 'text-slate-400'}`} />
+              <span className="truncate sm:whitespace-normal">Professional Details</span>
               {activeTab === 'professional' && (
-                <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-[#5531dc] rounded-full" />
+                <span className="absolute bottom-0 left-2 right-2 sm:left-3 sm:right-3 h-0.5 bg-[#5531dc] rounded-full" />
               )}
             </button>
           </div>
@@ -804,22 +848,22 @@ export default function MentorProfilePage({ mentorData: propMentorData }) {
           {activeTab === 'personal' && (
             <div className="space-y-3.5 animate-in fade-in duration-200">
               {/* 1. Personal Details Card */}
-              <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 lg:p-6 shadow-md shadow-slate-200/60 space-y-3.5">
-                <div className="flex items-center gap-2.5 text-[#5531dc] border-b border-slate-100 pb-3">
+              <div className="bg-white rounded-2xl border border-slate-200/90 p-3.5 sm:p-5 lg:p-6 shadow-md shadow-slate-200/60 space-y-3 sm:space-y-3.5">
+                <div className="flex items-center gap-2.5 text-[#5531dc] border-b border-slate-100 pb-2.5 sm:pb-3">
                   <User size={18} className="stroke-[2.2]" />
                   <h3 className="text-sm sm:text-base font-bold text-slate-800">
                     Personal Information
                   </h3>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 pt-0.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-3.5 pt-0.5">
                   {/* First Name */}
-                  <div className="flex items-center gap-3 p-3.5 rounded-xl border border-purple-100/90 bg-[#f8f5fe] hover:border-purple-300 hover:bg-[#f2ecfd] transition-all">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#ede5ff] text-[#5531dc]">
-                      <User size={18} />
+                  <div className="flex items-center gap-2.5 sm:gap-3 p-3 sm:p-3.5 rounded-xl border border-purple-100/90 bg-[#f8f5fe] hover:border-purple-300 hover:bg-[#f2ecfd] transition-all">
+                    <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-[#ede5ff] text-[#5531dc]">
+                      <User size={16} />
                     </div>
                     <div className="overflow-hidden">
-                      <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wide">First Name</p>
+                      <p className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wide">First Name</p>
                       <p className="text-xs sm:text-sm font-bold text-slate-900 truncate">
                         {mentor.firstName}
                       </p>
@@ -827,12 +871,12 @@ export default function MentorProfilePage({ mentorData: propMentorData }) {
                   </div>
 
                   {/* Middle Name */}
-                  <div className="flex items-center gap-3 p-3.5 rounded-xl border border-purple-100/90 bg-[#f8f5fe] hover:border-purple-300 hover:bg-[#f2ecfd] transition-all">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#ede5ff] text-[#5531dc]">
-                      <User size={18} />
+                  <div className="flex items-center gap-2.5 sm:gap-3 p-3 sm:p-3.5 rounded-xl border border-purple-100/90 bg-[#f8f5fe] hover:border-purple-300 hover:bg-[#f2ecfd] transition-all">
+                    <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-[#ede5ff] text-[#5531dc]">
+                      <User size={16} />
                     </div>
                     <div className="overflow-hidden">
-                      <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wide">Middle Name</p>
+                      <p className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wide">Middle Name</p>
                       <p className="text-xs sm:text-sm font-bold text-slate-900 truncate">
                         {mentor.middleName || '—'}
                       </p>
@@ -840,12 +884,12 @@ export default function MentorProfilePage({ mentorData: propMentorData }) {
                   </div>
 
                   {/* Last Name */}
-                  <div className="flex items-center gap-3 p-3.5 rounded-xl border border-purple-100/90 bg-[#f8f5fe] hover:border-purple-300 hover:bg-[#f2ecfd] transition-all">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#ede5ff] text-[#5531dc]">
-                      <User size={18} />
+                  <div className="flex items-center gap-2.5 sm:gap-3 p-3 sm:p-3.5 rounded-xl border border-purple-100/90 bg-[#f8f5fe] hover:border-purple-300 hover:bg-[#f2ecfd] transition-all">
+                    <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-[#ede5ff] text-[#5531dc]">
+                      <User size={16} />
                     </div>
                     <div className="overflow-hidden">
-                      <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wide">Last Name</p>
+                      <p className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wide">Last Name</p>
                       <p className="text-xs sm:text-sm font-bold text-slate-900 truncate">
                         {mentor.lastName}
                       </p>
@@ -853,12 +897,12 @@ export default function MentorProfilePage({ mentorData: propMentorData }) {
                   </div>
 
                   {/* Employee ID */}
-                  <div className="flex items-center gap-3 p-3.5 rounded-xl border border-purple-100/90 bg-[#f8f5fe] hover:border-purple-300 hover:bg-[#f2ecfd] transition-all">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#ede5ff] text-[#5531dc]">
-                      <IdCard size={18} />
+                  <div className="flex items-center gap-2.5 sm:gap-3 p-3 sm:p-3.5 rounded-xl border border-purple-100/90 bg-[#f8f5fe] hover:border-purple-300 hover:bg-[#f2ecfd] transition-all">
+                    <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-[#ede5ff] text-[#5531dc]">
+                      <IdCard size={16} />
                     </div>
                     <div className="overflow-hidden">
-                      <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wide">Employee ID</p>
+                      <p className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wide">Employee ID</p>
                       <p className="text-xs sm:text-sm font-bold text-slate-900 truncate">
                         {mentor.empId}
                       </p>
@@ -866,12 +910,12 @@ export default function MentorProfilePage({ mentorData: propMentorData }) {
                   </div>
 
                   {/* Gender */}
-                  <div className="flex items-center gap-3 p-3.5 rounded-xl border border-purple-100/90 bg-[#f8f5fe] hover:border-purple-300 hover:bg-[#f2ecfd] transition-all">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#ede5ff] text-[#5531dc]">
-                      <User size={18} />
+                  <div className="flex items-center gap-2.5 sm:gap-3 p-3 sm:p-3.5 rounded-xl border border-purple-100/90 bg-[#f8f5fe] hover:border-purple-300 hover:bg-[#f2ecfd] transition-all">
+                    <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-[#ede5ff] text-[#5531dc]">
+                      <User size={16} />
                     </div>
                     <div className="overflow-hidden">
-                      <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wide">Gender</p>
+                      <p className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wide">Gender</p>
                       <p className="text-xs sm:text-sm font-bold text-slate-900 truncate">
                         {mentor.gender}
                       </p>
@@ -879,12 +923,12 @@ export default function MentorProfilePage({ mentorData: propMentorData }) {
                   </div>
 
                   {/* Aadhar Card Number */}
-                  <div className="flex items-center gap-3 p-3.5 rounded-xl border border-purple-100/90 bg-[#f8f5fe] hover:border-purple-300 hover:bg-[#f2ecfd] transition-all">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#ede5ff] text-[#5531dc]">
-                      <ShieldCheck size={18} />
+                  <div className="flex items-center gap-2.5 sm:gap-3 p-3 sm:p-3.5 rounded-xl border border-purple-100/90 bg-[#f8f5fe] hover:border-purple-300 hover:bg-[#f2ecfd] transition-all">
+                    <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-[#ede5ff] text-[#5531dc]">
+                      <ShieldCheck size={16} />
                     </div>
                     <div className="overflow-hidden">
-                      <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wide">Aadhar Card No.</p>
+                      <p className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wide">Aadhar Card No.</p>
                       <p className="text-xs sm:text-sm font-bold text-slate-900 truncate">
                         {mentor.aadharNumber}
                       </p>
@@ -894,22 +938,22 @@ export default function MentorProfilePage({ mentorData: propMentorData }) {
               </div>
 
               {/* 2. Contact Information Card */}
-              <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 lg:p-6 shadow-md shadow-slate-200/60 space-y-3.5">
-                <div className="flex items-center gap-2.5 text-[#5531dc] border-b border-slate-100 pb-3">
+              <div className="bg-white rounded-2xl border border-slate-200/90 p-3.5 sm:p-5 lg:p-6 shadow-md shadow-slate-200/60 space-y-3 sm:space-y-3.5">
+                <div className="flex items-center gap-2.5 text-[#5531dc] border-b border-slate-100 pb-2.5 sm:pb-3">
                   <Phone size={18} className="stroke-[2.2]" />
                   <h3 className="text-sm sm:text-base font-bold text-slate-800">
                     Contact Details
                   </h3>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 pt-0.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-3.5 pt-0.5">
                   {/* Phone Number */}
-                  <div className="flex items-center gap-3 p-3.5 rounded-xl border border-purple-100/90 bg-[#f8f5fe] hover:border-purple-300 hover:bg-[#f2ecfd] transition-all">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#ede5ff] text-[#5531dc]">
-                      <Phone size={18} />
+                  <div className="flex items-center gap-2.5 sm:gap-3 p-3 sm:p-3.5 rounded-xl border border-purple-100/90 bg-[#f8f5fe] hover:border-purple-300 hover:bg-[#f2ecfd] transition-all">
+                    <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-[#ede5ff] text-[#5531dc]">
+                      <Phone size={16} />
                     </div>
                     <div className="overflow-hidden">
-                      <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wide">Phone Number</p>
+                      <p className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wide">Phone Number</p>
                       <p className="text-xs sm:text-sm font-bold text-slate-900 truncate">
                         {mentor.phone}
                       </p>
@@ -917,12 +961,12 @@ export default function MentorProfilePage({ mentorData: propMentorData }) {
                   </div>
 
                   {/* Personal Email */}
-                  <div className="flex items-center gap-3 p-3.5 rounded-xl border border-purple-100/90 bg-[#f8f5fe] hover:border-purple-300 hover:bg-[#f2ecfd] transition-all">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#ede5ff] text-[#5531dc]">
-                      <Mail size={18} />
+                  <div className="flex items-center gap-2.5 sm:gap-3 p-3 sm:p-3.5 rounded-xl border border-purple-100/90 bg-[#f8f5fe] hover:border-purple-300 hover:bg-[#f2ecfd] transition-all">
+                    <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-[#ede5ff] text-[#5531dc]">
+                      <Mail size={16} />
                     </div>
                     <div className="overflow-hidden">
-                      <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wide">Personal Email</p>
+                      <p className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wide">Personal Email</p>
                       <p className="text-xs sm:text-sm font-bold text-slate-900 truncate" title={mentor.personalEmail}>
                         {mentor.personalEmail}
                       </p>
@@ -930,12 +974,12 @@ export default function MentorProfilePage({ mentorData: propMentorData }) {
                   </div>
 
                   {/* College Email */}
-                  <div className="flex items-center gap-3 p-3.5 rounded-xl border border-purple-100/90 bg-[#f8f5fe] hover:border-purple-300 hover:bg-[#f2ecfd] transition-all">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#ede5ff] text-[#5531dc]">
-                      <Mail size={18} />
+                  <div className="flex items-center gap-2.5 sm:gap-3 p-3 sm:p-3.5 rounded-xl border border-purple-100/90 bg-[#f8f5fe] hover:border-purple-300 hover:bg-[#f2ecfd] transition-all">
+                    <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-[#ede5ff] text-[#5531dc]">
+                      <Mail size={16} />
                     </div>
                     <div className="overflow-hidden">
-                      <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wide">College Email</p>
+                      <p className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wide">College Email</p>
                       <p className="text-xs sm:text-sm font-bold text-slate-900 truncate" title={mentor.collegeEmail}>
                         {mentor.collegeEmail}
                       </p>
@@ -943,12 +987,12 @@ export default function MentorProfilePage({ mentorData: propMentorData }) {
                   </div>
 
                   {/* Campus Office Location */}
-                  <div className="sm:col-span-2 lg:col-span-3 flex items-center gap-3 p-3.5 rounded-xl border border-purple-100/90 bg-[#f8f5fe] hover:border-purple-300 hover:bg-[#f2ecfd] transition-all">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#ede5ff] text-[#5531dc]">
-                      <MapPin size={18} />
+                  <div className="sm:col-span-2 lg:col-span-3 flex items-center gap-2.5 sm:gap-3 p-3 sm:p-3.5 rounded-xl border border-purple-100/90 bg-[#f8f5fe] hover:border-purple-300 hover:bg-[#f2ecfd] transition-all">
+                    <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-[#ede5ff] text-[#5531dc]">
+                      <MapPin size={16} />
                     </div>
                     <div className="overflow-hidden">
-                      <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wide">Office Location</p>
+                      <p className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wide">Office Location</p>
                       <p className="text-xs sm:text-sm font-bold text-slate-900 truncate">
                         {mentor.location}
                       </p>
@@ -965,22 +1009,22 @@ export default function MentorProfilePage({ mentorData: propMentorData }) {
           {activeTab === 'professional' && (
             <div className="space-y-3.5 animate-in fade-in duration-200">
               {/* Professional Information Card */}
-              <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 lg:p-6 shadow-md shadow-slate-200/60 space-y-3.5">
-                <div className="flex items-center gap-2.5 text-[#5531dc] border-b border-slate-100 pb-3">
+              <div className="bg-white rounded-2xl border border-slate-200/90 p-3.5 sm:p-5 lg:p-6 shadow-md shadow-slate-200/60 space-y-3 sm:space-y-3.5">
+                <div className="flex items-center gap-2.5 text-[#5531dc] border-b border-slate-100 pb-2.5 sm:pb-3">
                   <Briefcase size={18} className="stroke-[2.2]" />
                   <h3 className="text-sm sm:text-base font-bold text-slate-800">
                     Professional & Academic Details
                   </h3>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 pt-0.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-3.5 pt-0.5">
                   {/* Department */}
-                  <div className="flex items-center gap-3 p-3.5 rounded-xl border border-purple-100/90 bg-[#f8f5fe] hover:border-purple-300 hover:bg-[#f2ecfd] transition-all">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#ede5ff] text-[#5531dc]">
-                      <Building2 size={18} />
+                  <div className="flex items-center gap-2.5 sm:gap-3 p-3 sm:p-3.5 rounded-xl border border-purple-100/90 bg-[#f8f5fe] hover:border-purple-300 hover:bg-[#f2ecfd] transition-all">
+                    <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-[#ede5ff] text-[#5531dc]">
+                      <Building2 size={16} />
                     </div>
                     <div className="overflow-hidden">
-                      <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wide">Department</p>
+                      <p className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wide">Department</p>
                       <p className="text-xs sm:text-sm font-bold text-slate-900 truncate">
                         {mentor.department}
                       </p>
@@ -988,12 +1032,12 @@ export default function MentorProfilePage({ mentorData: propMentorData }) {
                   </div>
 
                   {/* Designation / Role */}
-                  <div className="flex items-center gap-3 p-3.5 rounded-xl border border-purple-100/90 bg-[#f8f5fe] hover:border-purple-300 hover:bg-[#f2ecfd] transition-all">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#ede5ff] text-[#5531dc]">
-                      <Briefcase size={18} />
+                  <div className="flex items-center gap-2.5 sm:gap-3 p-3 sm:p-3.5 rounded-xl border border-purple-100/90 bg-[#f8f5fe] hover:border-purple-300 hover:bg-[#f2ecfd] transition-all">
+                    <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-[#ede5ff] text-[#5531dc]">
+                      <Briefcase size={16} />
                     </div>
                     <div className="overflow-hidden">
-                      <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wide">Designation / Role</p>
+                      <p className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wide">Designation / Role</p>
                       <p className="text-xs sm:text-sm font-bold text-slate-900 truncate">
                         {mentor.designation}
                       </p>
@@ -1001,12 +1045,12 @@ export default function MentorProfilePage({ mentorData: propMentorData }) {
                   </div>
 
                   {/* Qualification */}
-                  <div className="flex items-center gap-3 p-3.5 rounded-xl border border-purple-100/90 bg-[#f8f5fe] hover:border-purple-300 hover:bg-[#f2ecfd] transition-all">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#ede5ff] text-[#5531dc]">
-                      <GraduationCap size={18} />
+                  <div className="flex items-center gap-2.5 sm:gap-3 p-3 sm:p-3.5 rounded-xl border border-purple-100/90 bg-[#f8f5fe] hover:border-purple-300 hover:bg-[#f2ecfd] transition-all">
+                    <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-[#ede5ff] text-[#5531dc]">
+                      <GraduationCap size={16} />
                     </div>
                     <div className="overflow-hidden">
-                      <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wide">Qualification</p>
+                      <p className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wide">Qualification</p>
                       <p className="text-xs sm:text-sm font-bold text-slate-900 truncate" title={mentor.qualification}>
                         {mentor.qualification}
                       </p>
@@ -1014,12 +1058,12 @@ export default function MentorProfilePage({ mentorData: propMentorData }) {
                   </div>
 
                   {/* Total Experience */}
-                  <div className="flex items-center gap-3 p-3.5 rounded-xl border border-purple-100/90 bg-[#f8f5fe] hover:border-purple-300 hover:bg-[#f2ecfd] transition-all">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#ede5ff] text-[#5531dc]">
-                      <Clock size={18} />
+                  <div className="flex items-center gap-2.5 sm:gap-3 p-3 sm:p-3.5 rounded-xl border border-purple-100/90 bg-[#f8f5fe] hover:border-purple-300 hover:bg-[#f2ecfd] transition-all">
+                    <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-[#ede5ff] text-[#5531dc]">
+                      <Clock size={16} />
                     </div>
                     <div className="overflow-hidden">
-                      <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wide">Total Experience</p>
+                      <p className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wide">Total Experience</p>
                       <p className="text-xs sm:text-sm font-bold text-slate-900 truncate">
                         {mentor.experience}
                       </p>
@@ -1027,12 +1071,12 @@ export default function MentorProfilePage({ mentorData: propMentorData }) {
                   </div>
 
                   {/* Date of Joining */}
-                  <div className="flex items-center gap-3 p-3.5 rounded-xl border border-purple-100/90 bg-[#f8f5fe] hover:border-purple-300 hover:bg-[#f2ecfd] transition-all">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#ede5ff] text-[#5531dc]">
-                      <CalendarDays size={18} />
+                  <div className="flex items-center gap-2.5 sm:gap-3 p-3 sm:p-3.5 rounded-xl border border-purple-100/90 bg-[#f8f5fe] hover:border-purple-300 hover:bg-[#f2ecfd] transition-all">
+                    <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-[#ede5ff] text-[#5531dc]">
+                      <CalendarDays size={16} />
                     </div>
                     <div className="overflow-hidden">
-                      <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wide">Date of Joining</p>
+                      <p className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wide">Date of Joining</p>
                       <p className="text-xs sm:text-sm font-bold text-slate-900 truncate">
                         {mentor.joiningDate}
                       </p>
@@ -1040,12 +1084,12 @@ export default function MentorProfilePage({ mentorData: propMentorData }) {
                   </div>
 
                   {/* Status */}
-                  <div className="flex items-center gap-3 p-3.5 rounded-xl border border-purple-100/90 bg-[#f8f5fe] hover:border-purple-300 hover:bg-[#f2ecfd] transition-all">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
-                      <CheckCircle2 size={18} />
+                  <div className="flex items-center gap-2.5 sm:gap-3 p-3 sm:p-3.5 rounded-xl border border-purple-100/90 bg-[#f8f5fe] hover:border-purple-300 hover:bg-[#f2ecfd] transition-all">
+                    <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+                      <CheckCircle2 size={16} />
                     </div>
                     <div className="overflow-hidden">
-                      <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wide">Account Status</p>
+                      <p className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wide">Account Status</p>
                       <p className="text-xs sm:text-sm font-bold text-emerald-600 truncate">
                         {mentor.status}
                       </p>
@@ -1055,16 +1099,16 @@ export default function MentorProfilePage({ mentorData: propMentorData }) {
               </div>
 
               {/* Specialization & Responsibilities Card */}
-              <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 lg:p-6 shadow-md shadow-slate-200/60 space-y-3.5">
-                <div className="flex items-center gap-2.5 text-[#5531dc] border-b border-slate-100 pb-3">
+              <div className="bg-white rounded-2xl border border-slate-200/90 p-3.5 sm:p-5 lg:p-6 shadow-md shadow-slate-200/60 space-y-3 sm:space-y-3.5">
+                <div className="flex items-center gap-2.5 text-[#5531dc] border-b border-slate-100 pb-2.5 sm:pb-3">
                   <BookOpen size={18} className="stroke-[2.2]" />
                   <h3 className="text-sm sm:text-base font-bold text-slate-800">
                     Specialization & Responsibilities
                   </h3>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-0.5">
-                  <div className="p-4 bg-[#f8f5fe] rounded-xl border border-purple-100">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3.5 pt-0.5">
+                  <div className="p-3.5 sm:p-4 bg-[#f8f5fe] rounded-xl border border-purple-100">
                     <div className="flex items-center gap-2 text-[#5531dc] font-bold text-sm mb-1.5">
                       <BookOpen size={16} />
                       <h4>Core Teaching Subjects</h4>
@@ -1074,7 +1118,7 @@ export default function MentorProfilePage({ mentorData: propMentorData }) {
                     </p>
                   </div>
 
-                  <div className="p-4 bg-[#f8f5fe] rounded-xl border border-purple-100">
+                  <div className="p-3.5 sm:p-4 bg-[#f8f5fe] rounded-xl border border-purple-100">
                     <div className="flex items-center gap-2 text-[#5531dc] font-bold text-sm mb-1.5">
                       <Clock size={16} />
                       <h4>Office & Mentoring Hours</h4>

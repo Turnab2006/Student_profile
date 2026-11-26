@@ -610,20 +610,20 @@ export default function MentorCreditPoints({ hideHeader = false, onNavigate }) {
             </span>
             <span className="text-purple-100 text-xs font-semibold">• Criteria Threshold: &gt;= 20 Pts/Sem</span>
           </div>
-          <h2 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+          <h2 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight leading-snug">
             Mentee Credit Points &amp; Activity Ledger
           </h2>
-          <p className="text-xs text-purple-50/90 font-normal max-w-xl">
+          <p className="text-xs text-white/90 font-normal leading-relaxed max-w-xl">
             Review submitted student credit point claims, verify certificates, track semester criteria progress, and award faculty merit points.
           </p>
         </div>
 
-        {/* Hero Right Action Buttons */}
-        <div className="relative z-10 flex items-center gap-2.5 self-stretch sm:self-auto justify-end flex-wrap">
+        {/* Hero Action Buttons */}
+        <div className="relative z-10 flex flex-col items-center sm:flex-row sm:items-center gap-2.5 w-full sm:w-auto mt-4 sm:mt-0 sm:justify-end">
           <button
             type="button"
             onClick={() => setActiveTab("requests")}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs sm:text-sm font-semibold backdrop-blur-sm border border-white/25 transition-all cursor-pointer shadow-xs active:scale-95"
+            className="flex items-center justify-center gap-2 w-full max-w-[260px] sm:max-w-none sm:w-auto h-11 sm:h-auto px-4 py-2.5 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs sm:text-sm font-semibold backdrop-blur-sm border border-white/30 transition-all cursor-pointer shadow-xs active:scale-95 whitespace-nowrap"
           >
             <Clock size={15} />
             <span>Pending Requests ({totalPendingRequestsCount})</span>
@@ -631,7 +631,7 @@ export default function MentorCreditPoints({ hideHeader = false, onNavigate }) {
 
           <button
             type="button"
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white text-[#7656f4] hover:bg-purple-50 text-xs sm:text-sm font-bold transition-all cursor-pointer shadow-sm active:scale-95"
+            className="flex items-center justify-center gap-2 w-full max-w-[260px] sm:max-w-none sm:w-auto h-11 sm:h-auto px-4 py-2.5 rounded-xl bg-white text-[#6D4AFF] hover:bg-slate-50 text-xs sm:text-sm font-semibold shadow-sm transition-all cursor-pointer active:scale-95 whitespace-nowrap"
           >
             <Plus size={15} className="stroke-[3]" />
             <span>Issue Credit Points</span>
@@ -721,21 +721,20 @@ export default function MentorCreditPoints({ hideHeader = false, onNavigate }) {
       {/* ========================================================================= */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-2 rounded-2xl border border-slate-200/90 shadow-2xs">
         
-        {/* Toggle Pills */}
         {/* Toggle Pills - Modern Flat Segmented Tabs without Shadows */}
-        <div className="bg-slate-100/90 p-1.5 rounded-2xl border border-slate-200/90 flex items-center gap-1.5 overflow-x-auto">
+        <div className="grid grid-cols-2 gap-1 w-full sm:flex sm:items-center sm:gap-1.5 sm:w-auto bg-slate-100/90 p-1 sm:p-1.5 rounded-2xl border border-slate-200/90 overflow-x-visible">
           <button
             type="button"
             onClick={() => setActiveTab("overview")}
-            className={`flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap ${
+            className={`flex items-center justify-center gap-1.5 px-2 py-2.5 sm:px-5 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap ${
               activeTab === "overview"
-                ? "bg-[#7656F4] text-white"
+                ? "bg-[#7656F4] text-white shadow-2xs"
                 : "text-slate-600 hover:text-slate-900 hover:bg-white/80"
             }`}
           >
-            <Users size={16} />
+            <Users size={15} className="shrink-0 sm:w-4 sm:h-4" />
             <span>Student Records</span>
-            <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
+            <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold shrink-0 ${
               activeTab === "overview" ? "bg-white text-[#7656f4]" : "bg-purple-100 text-[#7656f4]"
             }`}>
               {menteesList.length}
@@ -745,19 +744,20 @@ export default function MentorCreditPoints({ hideHeader = false, onNavigate }) {
           <button
             type="button"
             onClick={() => setActiveTab("requests")}
-            className={`flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap ${
+            className={`flex items-center justify-center gap-1.5 px-2 py-2.5 sm:px-5 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap ${
               activeTab === "requests"
-                ? "bg-[#7656F4] text-white"
+                ? "bg-[#7656F4] text-white shadow-2xs"
                 : "text-slate-600 hover:text-slate-900 hover:bg-white/80"
             }`}
           >
-            <Layers size={16} />
+            <Layers size={15} className="shrink-0 sm:w-4 sm:h-4" />
             <span>Requests &amp; History</span>
             {totalPendingRequestsCount > 0 && (
-              <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold ${
+              <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold shrink-0 ${
                 activeTab === "requests" ? "bg-white text-[#7656f4]" : "bg-amber-100 text-amber-700"
               }`}>
-                {totalPendingRequestsCount} pending
+                <span className="sm:hidden">{totalPendingRequestsCount}</span>
+                <span className="hidden sm:inline">{totalPendingRequestsCount} pending</span>
               </span>
             )}
           </button>
@@ -1063,25 +1063,27 @@ export default function MentorCreditPoints({ hideHeader = false, onNavigate }) {
         <section className="space-y-4 animate-in fade-in duration-200">
           
           {/* Controls Bar: Filters, Categories & View Toggles */}
-          <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-xs flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+          <div className="bg-white p-3 sm:p-4 rounded-2xl border border-slate-200/90 shadow-xs flex flex-col lg:flex-row lg:items-center justify-between gap-3">
             
             {/* Segmented Status Tabs without Shadows */}
-            <div className="bg-slate-100/90 p-1.5 rounded-2xl border border-slate-200/90 flex items-center gap-1.5 overflow-x-auto">
+            <div className="grid grid-cols-3 gap-1 w-full sm:flex sm:items-center sm:gap-1.5 sm:w-auto bg-slate-100/90 p-1 sm:p-1.5 rounded-2xl border border-slate-200/90 overflow-x-visible">
               
               {/* Tab 1: Pending Review */}
               <button
                 type="button"
                 onClick={() => setStatusFilter("pending")}
-                className={`flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap ${
+                className={`flex items-center justify-center gap-1 px-1.5 sm:px-5 py-2 sm:py-2.5 rounded-xl text-[11px] sm:text-sm font-semibold sm:font-bold transition-all cursor-pointer whitespace-nowrap ${
                   statusFilter === "pending"
-                    ? "bg-amber-500 text-white"
+                    ? "bg-[#F59E0B] text-white shadow-2xs"
                     : "text-slate-600 hover:text-slate-900 hover:bg-white/80"
                 }`}
               >
-                <Clock size={15} />
-                <span>Pending Review</span>
+                <Clock size={13} className="shrink-0 sm:w-[15px] sm:h-[15px]" />
+                <span>
+                  Pending<span className="hidden min-[390px]:inline"> Review</span>
+                </span>
                 <span
-                  className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold transition-colors ${
+                  className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold transition-colors shrink-0 ${
                     statusFilter === "pending" ? "bg-white text-amber-600" : "bg-amber-100 text-amber-800"
                   }`}
                 >
@@ -1093,16 +1095,16 @@ export default function MentorCreditPoints({ hideHeader = false, onNavigate }) {
               <button
                 type="button"
                 onClick={() => setStatusFilter("approved")}
-                className={`flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap ${
+                className={`flex items-center justify-center gap-1 px-1.5 sm:px-5 py-2 sm:py-2.5 rounded-xl text-[11px] sm:text-sm font-semibold sm:font-bold transition-all cursor-pointer whitespace-nowrap ${
                   statusFilter === "approved"
-                    ? "bg-emerald-600 text-white"
+                    ? "bg-emerald-600 text-white shadow-2xs"
                     : "text-slate-600 hover:text-slate-900 hover:bg-white/80"
                 }`}
               >
-                <CheckCircle2 size={15} />
+                <CheckCircle2 size={13} className="shrink-0 sm:w-[15px] sm:h-[15px]" />
                 <span>Approved</span>
                 <span
-                  className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold transition-colors ${
+                  className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold transition-colors shrink-0 ${
                     statusFilter === "approved" ? "bg-white text-emerald-700" : "bg-emerald-100 text-emerald-800"
                   }`}
                 >
@@ -1114,16 +1116,16 @@ export default function MentorCreditPoints({ hideHeader = false, onNavigate }) {
               <button
                 type="button"
                 onClick={() => setStatusFilter("failed")}
-                className={`flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer whitespace-nowrap ${
+                className={`flex items-center justify-center gap-1 px-1.5 sm:px-5 py-2 sm:py-2.5 rounded-xl text-[11px] sm:text-sm font-semibold sm:font-bold transition-all cursor-pointer whitespace-nowrap ${
                   statusFilter === "failed"
-                    ? "bg-rose-600 text-white"
+                    ? "bg-rose-600 text-white shadow-2xs"
                     : "text-slate-600 hover:text-slate-900 hover:bg-white/80"
                 }`}
               >
-                <XCircle size={15} />
+                <XCircle size={13} className="shrink-0 sm:w-[15px] sm:h-[15px]" />
                 <span>Rejected</span>
                 <span
-                  className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold transition-colors ${
+                  className={`text-[10px] px-1.5 py-0.5 rounded-full font-bold transition-colors shrink-0 ${
                     statusFilter === "failed" ? "bg-white text-rose-700" : "bg-rose-100 text-rose-800"
                   }`}
                 >

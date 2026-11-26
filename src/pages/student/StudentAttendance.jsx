@@ -236,6 +236,22 @@ export default function StudentAttendance({
     }
   }, [activeDetailSemester]);
 
+  // Close filter dropdown on outside click or tap
+  useEffect(() => {
+    if (!filterDropdownOpen) return;
+    const handleClickOutside = (e) => {
+      if (!e.target.closest('[data-filter-dropdown]')) {
+        setFilterDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, [filterDropdownOpen]);
+
   function showToast(msg) {
     setToastMessage(msg);
     setTimeout(() => {
@@ -300,59 +316,66 @@ export default function StudentAttendance({
         <div className="bg-white rounded-3xl border border-slate-200/90 shadow-md shadow-slate-200/60 p-3.5 sm:p-7 lg:p-8 space-y-5 sm:space-y-6 animate-in fade-in duration-200">
 
           {/* Card Header with Icon, Title, and Filter Dropdown */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
-            <div className="flex items-center gap-2.5 sm:gap-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 sm:gap-4">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
               {onBack && (
-                <button
-                  type="button"
-                  onClick={onBack}
-                  className="flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-xl bg-white border border-slate-200 hover:bg-[#f0eaff] text-slate-700 hover:text-[#7656f4] shadow-2xs transition-all cursor-pointer mr-1 shrink-0 active:scale-95"
-                  title="Back to All Mentees"
-                >
-                  <ArrowLeft size={18} className="sm:w-[19px] sm:h-[19px] stroke-[2.2]" />
-                </button>
+                <div className="mb-1 sm:mb-0">
+                  <button
+                    type="button"
+                    onClick={onBack}
+                    className="flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-full sm:rounded-xl bg-white border border-slate-200 hover:bg-[#f0eaff] text-slate-700 hover:text-[#7656f4] shadow-2xs transition-all cursor-pointer active:scale-95 shrink-0"
+                    title="Back to All Mentees"
+                    aria-label="Back to All Mentees"
+                  >
+                    <ArrowLeft size={18} className="sm:w-[19px] sm:h-[19px] stroke-[2.2]" />
+                  </button>
+                </div>
               )}
-              <div className={`flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-xl shrink-0 shadow-2xs ${isMentor ? 'bg-[#f0eaff] text-[#7656f4]' : 'bg-[#eef5ff] text-[#1d61e7]'}`}>
-                <Users size={18} className="sm:w-5 sm:h-5 stroke-[2.2]" />
-              </div>
-              <div>
-                <h2 className="text-base sm:text-xl font-bold text-slate-900 tracking-tight">
-                  {studentName ? `${studentName}'s Semester Attendance` : "Semester Attendance"}
-                </h2>
-                {studentName && (
-                  <p className="text-[11px] sm:text-xs text-slate-400 font-medium">
-                    View and track semester-wise attendance records
-                  </p>
-                )}
+              <div className="flex items-center gap-3">
+                <div className={`flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-xl shrink-0 shadow-2xs ${isMentor ? 'bg-[#f0eaff] text-[#7656f4]' : 'bg-[#eef5ff] text-[#1d61e7]'}`}>
+                  <Users size={19} className="sm:w-5 sm:h-5 stroke-[2.2]" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <h2 className="text-base sm:text-xl font-bold text-slate-900 tracking-tight leading-snug">
+                    {studentName ? `${studentName}'s Semester Attendance` : "Semester Attendance"}
+                  </h2>
+                  {studentName && (
+                    <p className="text-xs text-slate-500 font-normal sm:font-medium mt-0.5 leading-snug">
+                      View and track semester-wise attendance records
+                    </p>
+                  )}
+                </div>
               </div>
             </div>
 
             {/* Dropdown Filter */}
-            <div className="relative">
+            <div className="relative w-full sm:w-auto" data-filter-dropdown>
               <button
                 type="button"
                 onClick={() => setFilterDropdownOpen((prev) => !prev)}
-                className="flex items-center gap-2 px-3.5 py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs sm:text-sm font-semibold text-slate-700 shadow-2xs transition-all cursor-pointer"
+                className="w-full sm:w-auto flex items-center justify-between gap-2 px-3.5 py-2.5 sm:py-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs sm:text-sm font-semibold text-slate-700 shadow-2xs transition-all cursor-pointer select-none"
               >
-                <Calendar size={14} className={isMentor ? "text-[#7656f4]" : "text-[#1d61e7]"} />
-                <span>
-                  {selectedFilter === "all"
-                    ? "All Semesters"
-                    : selectedFilter === "year1"
-                      ? "Year 1"
-                      : selectedFilter === "year2"
-                        ? "Year 2"
-                        : selectedFilter === "year3"
-                          ? "Year 3"
-                          : selectedFilter === "year4"
-                            ? "Year 4"
-                            : `Semester ${selectedFilter.replace("sem", "")}`}
-                </span>
-                <ChevronDown size={14} className="text-slate-400" />
+                <div className="flex items-center gap-2">
+                  <Calendar size={15} className={isMentor ? "text-[#7656f4]" : "text-[#1d61e7]"} />
+                  <span>
+                    {selectedFilter === "all"
+                      ? "All Semesters"
+                      : selectedFilter === "year1"
+                        ? "Year 1"
+                        : selectedFilter === "year2"
+                          ? "Year 2"
+                          : selectedFilter === "year3"
+                            ? "Year 3"
+                            : selectedFilter === "year4"
+                              ? "Year 4"
+                              : `Semester ${selectedFilter.replace("sem", "")}`}
+                  </span>
+                </div>
+                <ChevronDown size={14} className={`text-slate-400 transition-transform ${filterDropdownOpen ? 'rotate-180 text-[#7656f4]' : ''}`} />
               </button>
 
               {filterDropdownOpen && (
-                <div className="absolute right-0 top-full mt-2 w-48 rounded-xl border border-slate-100 bg-white p-1.5 shadow-xl z-30 animate-in fade-in zoom-in-95 duration-100">
+                <div className="absolute left-0 sm:left-auto sm:right-0 top-full mt-1.5 w-full sm:w-48 rounded-xl border border-slate-200 bg-white p-1.5 shadow-xl z-30 animate-in fade-in zoom-in-95 duration-100">
                   <button
                     type="button"
                     onClick={() => {
@@ -416,68 +439,66 @@ export default function StudentAttendance({
           {/* Horizontal Divider Line with margin below */}
           <div className="border-b border-slate-100 my-1" />
 
-          {/* 4 Stat Cards: Maintained 2-column grid on mobile with equal heights and zero text clipping */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">
+          {/* 4 Stat Cards: 2-column grid on mobile with equal heights and zero text clipping */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3">
 
             {/* 1. Total Semesters (Light Blue / Purple Squircle) */}
-            <div className={`bg-white p-2.5 sm:p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-2 sm:gap-3.5 ${isMentor ? 'hover:border-purple-200' : 'hover:border-blue-200'} transition-colors min-w-0`}>
+            <div className={`bg-white p-3 sm:p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-3.5 ${isMentor ? 'hover:border-purple-200' : 'hover:border-blue-200'} transition-colors min-w-0`}>
               <div className={`h-9 w-9 sm:h-12 sm:w-12 rounded-xl flex items-center justify-center shrink-0 shadow-2xs ${isMentor ? 'bg-[#f0eaff] text-[#7656f4] border border-purple-100/80' : 'bg-blue-50 text-[#1d61e7] border border-blue-100/80'}`}>
                 <Calendar size={18} className="sm:w-6 sm:h-6 stroke-[2.2]" />
               </div>
-              <div className="overflow-hidden min-w-0 flex-1">
-                <p className="text-[9px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-wider truncate">TOTAL SEMESTERS</p>
-                <p className="text-base sm:text-2xl font-extrabold text-slate-900 mt-0.5">
+              <div className="min-w-0 flex-1">
+                <p className="text-[10px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-wide sm:tracking-tight leading-normal sm:leading-tight">
+                  TOTAL SEMESTERS
+                </p>
+                <p className="text-base sm:text-2xl font-extrabold text-slate-900 mt-1.5 sm:mt-0.5 leading-none">
                   {totalSems}
                 </p>
               </div>
             </div>
 
             {/* 2. Average Attendance (Light Green Squircle) */}
-            <div className="bg-white p-2.5 sm:p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-2 sm:gap-3.5 hover:border-emerald-200 transition-colors min-w-0">
+            <div className="bg-white p-3 sm:p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-3.5 hover:border-emerald-200 transition-colors min-w-0">
               <div className="h-9 w-9 sm:h-12 sm:w-12 rounded-xl bg-emerald-50 text-[#16a34a] flex items-center justify-center shrink-0 border border-emerald-100/80 shadow-2xs">
                 <CheckCircle2 size={18} className="sm:w-6 sm:h-6 stroke-[2.2]" />
               </div>
-              <div className="overflow-hidden min-w-0 flex-1">
-                <p className="text-[9px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-wider truncate">AVG ATTENDANCE</p>
-                <p className="text-base sm:text-2xl font-extrabold text-slate-900 mt-0.5">
+              <div className="min-w-0 flex-1">
+                <p className="text-[10px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-wide sm:tracking-tight leading-normal sm:leading-tight">
+                  AVG ATTENDANCE
+                </p>
+                <p className="text-base sm:text-2xl font-extrabold text-slate-900 mt-1.5 sm:mt-0.5 leading-none">
                   {avgAttendance}%
                 </p>
               </div>
             </div>
 
             {/* 3. Highest Attendance (Light Purple/Indigo Squircle) */}
-            <div className="bg-white p-2.5 sm:p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-2 sm:gap-3.5 hover:border-purple-200 transition-colors min-w-0">
+            <div className="bg-white p-3 sm:p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-3.5 hover:border-purple-200 transition-colors min-w-0">
               <div className="h-9 w-9 sm:h-12 sm:w-12 rounded-xl bg-purple-50 text-[#7c3aed] flex items-center justify-center shrink-0 border border-purple-100/80 shadow-2xs">
                 <TrendingUp size={18} className="sm:w-6 sm:h-6 stroke-[2.2]" />
               </div>
-              <div className="overflow-hidden min-w-0 flex-1">
-                <p className="text-[9px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-wider truncate">HIGHEST ATTENDANCE</p>
-                <div className="flex items-baseline gap-1 mt-0.5">
-                  <p className="text-base sm:text-2xl font-extrabold text-slate-900">
-                    {highestAttendance}%
-                  </p>
-                  <span className="text-[9px] sm:text-[11px] font-medium text-slate-500 truncate">
-                    Sem {highestSemNumber}
-                  </span>
-                </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-[10px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-wide sm:tracking-tight leading-normal sm:leading-tight">
+                  HIGHEST ATTENDANCE
+                </p>
+                <p className="text-base sm:text-2xl font-extrabold text-slate-900 mt-1.5 sm:mt-0.5 leading-none">
+                  {highestAttendance}%
+                </p>
               </div>
             </div>
 
             {/* 4. Lowest Attendance (Light Amber Squircle) */}
-            <div className="bg-white p-2.5 sm:p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-2 sm:gap-3.5 hover:border-amber-200 transition-colors min-w-0">
+            <div className="bg-white p-3 sm:p-4 rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/60 flex items-center gap-3.5 hover:border-amber-200 transition-colors min-w-0">
               <div className="h-9 w-9 sm:h-12 sm:w-12 rounded-xl bg-amber-50 text-[#f59e0b] flex items-center justify-center shrink-0 border border-amber-100/80 shadow-2xs">
                 <PieChart size={18} className="sm:w-6 sm:h-6 stroke-[2.2]" />
               </div>
-              <div className="overflow-hidden min-w-0 flex-1">
-                <p className="text-[9px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-wider truncate">LOWEST ATTENDANCE</p>
-                <div className="flex items-baseline gap-1 mt-0.5">
-                  <p className="text-base sm:text-2xl font-extrabold text-slate-900">
-                    {lowestAttendance}%
-                  </p>
-                  <span className="text-[9px] sm:text-[11px] font-medium text-slate-500 truncate">
-                    Sem {lowestSemNumber}
-                  </span>
-                </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-[10px] sm:text-[11px] font-semibold text-slate-400 uppercase tracking-wide sm:tracking-tight leading-normal sm:leading-tight">
+                  LOWEST ATTENDANCE
+                </p>
+                <p className="text-base sm:text-2xl font-extrabold text-slate-900 mt-1.5 sm:mt-0.5 leading-none">
+                  {lowestAttendance}%
+                </p>
               </div>
             </div>
           </div>
@@ -533,11 +554,10 @@ export default function StudentAttendance({
                           e.stopPropagation();
                           setActiveDetailSemester(sem);
                         }}
-                        className={`inline-flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all shadow-2xs active:scale-95 cursor-pointer ${
-                          isMentor
-                            ? 'bg-[#f6f2fe] hover:bg-[#7656f4] text-[#7656f4] hover:text-white border border-[#7656f4]/30 hover:border-[#7656f4]'
-                            : 'bg-blue-50/90 hover:bg-blue-600 text-blue-600 hover:text-white border border-blue-200/70 hover:border-blue-600'
-                        }`}
+                        className={`inline-flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-bold transition-all shadow-2xs active:scale-95 cursor-pointer ${isMentor
+                          ? 'bg-[#f6f2fe] hover:bg-[#7656f4] text-[#7656f4] hover:text-white border border-[#7656f4]/30 hover:border-[#7656f4]'
+                          : 'bg-blue-50/90 hover:bg-blue-600 text-blue-600 hover:text-white border border-blue-200/70 hover:border-blue-600'
+                          }`}
                         title={`View Semester ${sem.semester} details`}
                       >
                         <Eye size={12} className="stroke-[2.4]" />
@@ -553,11 +573,10 @@ export default function StudentAttendance({
                           e.stopPropagation();
                           handleDownload(sem);
                         }}
-                        className={`inline-flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-lg border text-xs font-bold transition-all shadow-2xs active:scale-95 cursor-pointer ${
-                          isMentor
-                            ? 'border-purple-200 bg-white hover:bg-[#f0eaff] text-[#7656f4]'
-                            : 'border-blue-200 bg-white hover:bg-blue-50 text-[#1d61e7]'
-                        }`}
+                        className={`inline-flex items-center justify-center gap-1 px-2.5 py-1.5 rounded-lg border text-xs font-bold transition-all shadow-2xs active:scale-95 cursor-pointer ${isMentor
+                          ? 'border-purple-200 bg-white hover:bg-[#f0eaff] text-[#7656f4]'
+                          : 'border-blue-200 bg-white hover:bg-blue-50 text-[#1d61e7]'
+                          }`}
                         title={`Download Attendance Report for Semester ${sem.semester}`}
                       >
                         <Download size={12} className="stroke-[2.5]" />
@@ -645,11 +664,10 @@ export default function StudentAttendance({
                           e.stopPropagation();
                           setActiveDetailSemester(sem);
                         }}
-                        className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all shadow-2xs hover:shadow-xs active:scale-95 cursor-pointer ${
-                          isMentor
-                            ? 'bg-[#f6f2fe] hover:bg-[#7656f4] text-[#7656f4] hover:text-white border border-[#7656f4]/30 hover:border-[#7656f4]'
-                            : 'bg-blue-50/90 hover:bg-blue-600 text-blue-600 hover:text-white border border-blue-200/70 hover:border-blue-600'
-                        }`}
+                        className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all shadow-2xs hover:shadow-xs active:scale-95 cursor-pointer ${isMentor
+                          ? 'bg-[#f6f2fe] hover:bg-[#7656f4] text-[#7656f4] hover:text-white border border-[#7656f4]/30 hover:border-[#7656f4]'
+                          : 'bg-blue-50/90 hover:bg-blue-600 text-blue-600 hover:text-white border border-blue-200/70 hover:border-blue-600'
+                          }`}
                         title={`View ${sem.semester}th Semester breakdown`}
                       >
                         <Eye size={13} className="stroke-[2.4]" />
@@ -665,11 +683,10 @@ export default function StudentAttendance({
                           e.stopPropagation();
                           handleDownload(sem);
                         }}
-                        className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl border text-xs font-bold transition-all shadow-2xs active:scale-95 cursor-pointer ${
-                          isMentor
-                            ? 'border-purple-200 bg-white hover:bg-[#f0eaff] text-[#7656f4]'
-                            : 'border-blue-200 bg-white hover:bg-blue-50 text-[#1d61e7]'
-                        }`}
+                        className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl border text-xs font-bold transition-all shadow-2xs active:scale-95 cursor-pointer ${isMentor
+                          ? 'border-purple-200 bg-white hover:bg-[#f0eaff] text-[#7656f4]'
+                          : 'border-blue-200 bg-white hover:bg-blue-50 text-[#1d61e7]'
+                          }`}
                       >
                         <Download size={13} className="stroke-[2.5]" />
                         <span>Download</span>

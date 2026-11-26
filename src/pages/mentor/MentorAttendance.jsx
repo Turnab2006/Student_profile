@@ -203,6 +203,25 @@ export default function MentorAttendance({ initialUpload = false }) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
+  // Close filter dropdowns on outside click or tap
+  useEffect(() => {
+    if (!deptDropdownOpen && !programDropdownOpen && !yearDropdownOpen && !semesterDropdownOpen) return;
+    const handleClickOutside = (e) => {
+      if (!e.target.closest('[data-attendance-dropdown]')) {
+        setDeptDropdownOpen(false);
+        setProgramDropdownOpen(false);
+        setYearDropdownOpen(false);
+        setSemesterDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, [deptDropdownOpen, programDropdownOpen, yearDropdownOpen, semesterDropdownOpen]);
+
   // Stepper Full Page View State
   const [isUploadPage, setIsUploadPage] = useState(initialUpload);
   const [uploadStep, setUploadStep] = useState(1); // 1, 2, or 3
@@ -503,39 +522,75 @@ export default function MentorAttendance({ initialUpload = false }) {
           </div>
         )}
 
-        {/* TOP TITLE, SUBTITLE & TOP-RIGHT SEARCH BUTTON */}
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3.5">
-            <div className="w-10 h-10 rounded-full bg-[#f0eaff] text-[#7656f4] flex items-center justify-center font-bold flex-shrink-0 shadow-2xs">
-              <UploadCloud size={20} />
-            </div>
-            <div>
-              <h1 className="text-2xl sm:text-[28px] font-semibold text-[#1e1548] tracking-tight">
-                Upload Attendance
-              </h1>
-              <p className="text-sm text-slate-500 font-medium mt-0.5">
-                {uploadStep === 3
-                  ? 'Review all details and upload your attendance file'
-                  : 'Follow the steps below to upload attendance'}
-              </p>
-            </div>
+        {/* TOP TITLE & SUBTITLE */}
+        <div className="flex items-center gap-3 sm:gap-3.5">
+          <div className="w-10 h-10 rounded-full bg-[#f0eaff] text-[#7656f4] flex items-center justify-center font-bold shrink-0 shadow-2xs">
+            <UploadCloud size={20} />
           </div>
-
-          {uploadStep === 2 && (
-            <button
-              type="button"
-              className="bg-[#7656f4] hover:bg-[#6242e2] text-white px-5 py-2.5 rounded-xl font-bold text-sm flex items-center gap-2.5 transition-all shadow-xs cursor-pointer active:scale-98"
-            >
-              <Search size={17} />
-              <span>Search</span>
-            </button>
-          )}
+          <div>
+            <h1 className="text-xl sm:text-[28px] font-semibold text-[#1e1548] tracking-tight">
+              Upload Attendance
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
+              {uploadStep === 3
+                ? 'Review all details and upload your attendance file'
+                : 'Follow the steps below to upload attendance'}
+            </p>
+          </div>
         </div>
 
         {/* MAIN UPLOAD CARD CONTAINER WITH STEPPER */}
-        <div className="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-2xs flex flex-col gap-8">
-          {/* STEPPER HEADER BAR */}
-          <div className="flex items-center justify-center gap-4 sm:gap-10 pb-5 border-b border-slate-100 overflow-x-auto">
+        <div className="bg-white rounded-2xl sm:rounded-3xl border border-slate-200/80 p-4 sm:p-8 shadow-2xs flex flex-col gap-6 sm:gap-8">
+          {/* MOBILE STEPPER (< sm: Zero horizontal scroll, fits in 360px) */}
+          <div className="sm:hidden pb-4 border-b border-slate-100 flex flex-col gap-2.5">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-[#7656f4] uppercase tracking-wide">
+                Step {uploadStep} of 3
+              </span>
+              <span className="text-xs font-semibold text-slate-700">
+                {uploadStep === 1
+                  ? 'Academic Details'
+                  : uploadStep === 2
+                    ? 'Enter Attendance'
+                    : 'Review & Upload'}
+              </span>
+            </div>
+
+            {/* Progress bar */}
+            <div className="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden">
+              <div
+                className="bg-[#7656f4] h-full rounded-full transition-all duration-300"
+                style={{ width: uploadStep === 1 ? '33.3%' : uploadStep === 2 ? '66.6%' : '100%' }}
+              />
+            </div>
+
+            {/* Compact Step Navigation Badges */}
+            <div className="grid grid-cols-3 gap-1.5 mt-0.5">
+              {[
+                { step: 1, label: '1. Details' },
+                { step: 2, label: '2. Attendance' },
+                { step: 3, label: '3. Review' },
+              ].map(({ step, label }) => (
+                <button
+                  key={step}
+                  type="button"
+                  onClick={() => setUploadStep(step)}
+                  className={`py-1.5 px-1 rounded-lg text-xs font-bold text-center transition-all cursor-pointer truncate ${
+                    uploadStep === step
+                      ? 'bg-[#f0eaff] text-[#7656f4] border border-[#7656f4]/30 shadow-2xs'
+                      : uploadStep > step
+                        ? 'bg-emerald-50 text-emerald-600 border border-emerald-200/60'
+                        : 'bg-slate-50 text-slate-400 border border-slate-200/60'
+                  }`}
+                >
+                  {uploadStep > step ? `✓ ${label.split('. ')[1]}` : label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* DESKTOP STEPPER HEADER BAR (>= sm:) */}
+          <div className="hidden sm:flex items-center justify-center gap-6 lg:gap-10 pb-5 border-b border-slate-100">
             {/* Step 1 */}
             <div className="flex flex-col items-center gap-2 cursor-pointer relative" onClick={() => setUploadStep(1)}>
               <div className="flex items-center gap-2.5">
@@ -727,14 +782,14 @@ export default function MentorAttendance({ initialUpload = false }) {
                 <button
                   type="button"
                   onClick={() => setIsUploadPage(false)}
-                  className="px-6 py-2.5 rounded-xl border border-[#7656f4] text-[#7656f4] bg-white hover:bg-[#f0eaff]/40 text-sm font-bold transition-all cursor-pointer shadow-2xs active:scale-98"
+                  className="px-4 sm:px-6 py-2.5 rounded-xl border border-[#7656f4] text-[#7656f4] bg-white hover:bg-[#f0eaff]/40 text-xs sm:text-sm font-bold transition-all cursor-pointer shadow-2xs active:scale-98"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
                   onClick={() => setUploadStep(2)}
-                  className="px-6 py-2.5 rounded-xl bg-[#7656f4] hover:bg-[#6242e2] text-white text-sm font-bold transition-all shadow-xs flex items-center gap-2 cursor-pointer active:scale-98"
+                  className="px-4 sm:px-6 py-2.5 rounded-xl bg-[#7656f4] hover:bg-[#6242e2] text-white text-xs sm:text-sm font-bold transition-all shadow-xs flex items-center gap-1.5 sm:gap-2 cursor-pointer active:scale-98"
                 >
                   <span>Next</span>
                   <ArrowRight size={16} />
@@ -790,9 +845,9 @@ export default function MentorAttendance({ initialUpload = false }) {
               </div>
 
               {/* BOX 2: SUBJECTS / PAPERS */}
-              <div className="bg-[#fcfbfe] border border-slate-200/80 rounded-2xl p-5 sm:p-6 shadow-2xs flex flex-col gap-5">
+              <div className="bg-[#fcfbfe] border border-slate-200/80 rounded-2xl p-4 sm:p-6 shadow-2xs flex flex-col gap-4 sm:gap-5">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-full bg-[#f0eaff] text-[#7656f4] flex items-center justify-center font-bold">
+                  <div className="w-8 h-8 rounded-full bg-[#f0eaff] text-[#7656f4] flex items-center justify-center font-bold shrink-0">
                     <BookOpen size={18} />
                   </div>
                   <div>
@@ -801,8 +856,48 @@ export default function MentorAttendance({ initialUpload = false }) {
                   </div>
                 </div>
 
-                {/* SUBJECT PAPERS TABLE */}
-                <div className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-2xs">
+                {/* MOBILE 3-COLUMN TABLE VIEW (< md: Clean compact table, zero horizontal scroll) */}
+                <div className="md:hidden bg-white rounded-xl border border-slate-200 overflow-hidden shadow-2xs">
+                  <table className="w-full table-fixed border-collapse">
+                    <thead>
+                      <tr className="bg-slate-50/80 border-b border-slate-200 text-[11px] font-semibold uppercase text-[#6D4AFF] tracking-wider">
+                        <th className="w-[50%] py-2.5 px-3 text-left">PAPER NAME</th>
+                        <th className="w-[25%] py-2.5 px-1 text-center">LECTURES</th>
+                        <th className="w-[25%] py-2.5 px-1 text-center">ATTENDED</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 bg-white">
+                      {subjectPapers.map((paper, idx) => (
+                        <tr key={paper.code} className="hover:bg-[#fbfafd] transition-colors">
+                          <td className="py-2.5 px-3 text-xs font-medium text-slate-800 leading-snug pr-2 align-middle">
+                            {paper.name}
+                          </td>
+                          <td className="py-2.5 px-1 text-center align-middle">
+                            <input
+                              type="number"
+                              min="0"
+                              value={paper.totalLectures}
+                              onChange={(e) => handleSubjectChange(idx, 'totalLectures', e.target.value)}
+                              className="w-14 h-9 text-center text-xs font-semibold rounded-lg border border-slate-200 bg-white focus:border-[#6D4AFF] outline-none shadow-2xs mx-auto block"
+                            />
+                          </td>
+                          <td className="py-2.5 px-1 text-center align-middle">
+                            <input
+                              type="number"
+                              min="0"
+                              value={paper.attendedLectures}
+                              onChange={(e) => handleSubjectChange(idx, 'attendedLectures', e.target.value)}
+                              className="w-14 h-9 text-center text-xs font-semibold rounded-lg border border-slate-200 bg-white focus:border-[#6D4AFF] outline-none shadow-2xs mx-auto block"
+                            />
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* DESKTOP SUBJECT PAPERS TABLE (>= md: Hidden on mobile, completely untouched) */}
+                <div className="hidden md:block bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-2xs">
                   <table className="w-full text-left border-collapse">
                     <thead>
                       <tr className="bg-[#f8f6fe] border-b border-slate-200/80 text-[12px] font-bold text-[#7656f4] uppercase tracking-wider">
@@ -851,27 +946,27 @@ export default function MentorAttendance({ initialUpload = false }) {
               </div>
 
               {/* FOOTER ACTION BUTTONS */}
-              <div className="flex items-center justify-between pt-2">
+              <div className="flex items-center justify-between gap-2 pt-2">
                 <button
                   type="button"
                   onClick={() => setUploadStep(1)}
-                  className="px-6 py-2.5 rounded-xl border border-[#7656f4] text-[#7656f4] bg-white hover:bg-[#f0eaff]/40 text-sm font-bold transition-all cursor-pointer shadow-2xs flex items-center gap-2 active:scale-98"
+                  className="px-4 sm:px-6 py-2.5 rounded-xl border border-[#7656f4] text-[#7656f4] bg-white hover:bg-[#f0eaff]/40 text-xs sm:text-sm font-bold transition-all cursor-pointer shadow-2xs flex items-center gap-1.5 sm:gap-2 active:scale-98"
                 >
                   <ArrowLeft size={16} />
                   <span>Back</span>
                 </button>
-                <div className="flex items-center gap-3.5">
+                <div className="flex items-center gap-2 sm:gap-3.5">
                   <button
                     type="button"
                     onClick={() => setIsUploadPage(false)}
-                    className="px-6 py-2.5 rounded-xl border border-[#7656f4] text-[#7656f4] bg-white hover:bg-[#f0eaff]/40 text-sm font-bold transition-all cursor-pointer shadow-2xs active:scale-98"
+                    className="px-4 sm:px-6 py-2.5 rounded-xl border border-[#7656f4] text-[#7656f4] bg-white hover:bg-[#f0eaff]/40 text-xs sm:text-sm font-bold transition-all cursor-pointer shadow-2xs active:scale-98"
                   >
                     Cancel
                   </button>
                   <button
                     type="button"
                     onClick={() => setUploadStep(3)}
-                    className="px-6 py-2.5 rounded-xl bg-[#7656f4] hover:bg-[#6242e2] text-white text-sm font-bold transition-all shadow-xs flex items-center gap-2 cursor-pointer active:scale-98"
+                    className="px-4 sm:px-6 py-2.5 rounded-xl bg-[#7656f4] hover:bg-[#6242e2] text-white text-xs sm:text-sm font-bold transition-all shadow-xs flex items-center gap-1.5 sm:gap-2 cursor-pointer active:scale-98"
                   >
                     <span>Next</span>
                     <ArrowRight size={16} />
@@ -965,7 +1060,7 @@ export default function MentorAttendance({ initialUpload = false }) {
               </div>
 
               {/* BOX 3: SUBJECTS / PAPERS SUMMARY */}
-              <div className="bg-[#fcfbfe] border border-slate-200/80 rounded-2xl p-5 sm:p-6 shadow-2xs flex flex-col gap-4">
+              <div className="bg-[#fcfbfe] border border-slate-200/80 rounded-2xl p-4 sm:p-6 shadow-2xs flex flex-col gap-4">
                 <div className="flex items-center gap-2.5">
                   <div className="w-8 h-8 rounded-full bg-[#f0eaff] text-[#7656f4] flex items-center justify-center font-bold">
                     <BookOpen size={18} />
@@ -973,8 +1068,77 @@ export default function MentorAttendance({ initialUpload = false }) {
                   <h3 className="text-sm font-bold text-[#7656f4]">Subjects / Papers Summary</h3>
                 </div>
 
-                {/* SUMMARY TABLE */}
-                <div className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-2xs">
+                {/* MOBILE SUMMARY CARDS (< md:) */}
+                <div className="md:hidden space-y-3">
+                  {subjectPapers.map((paper, idx) => {
+                    const pct = paper.totalLectures ? ((paper.attendedLectures / paper.totalLectures) * 100) : 0;
+                    const pctStr = pct.toFixed(2) + '%';
+                    const badgeBg = pct >= 65 ? 'bg-[#dcfce7] text-[#16a34a]' : pct >= 50 ? 'bg-[#fef3c7] text-[#d97706]' : 'bg-[#ffe4e6] text-[#e11d48]';
+
+                    return (
+                      <div
+                        key={paper.code}
+                        className="p-3.5 rounded-xl border border-slate-200 bg-slate-50/50 shadow-2xs space-y-2.5"
+                      >
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="flex items-start gap-2.5 min-w-0 flex-1">
+                            <span className="w-6 h-6 rounded-lg bg-[#f0eaff] text-[#7656f4] text-xs font-bold flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">
+                              #{idx + 1}
+                            </span>
+                            <div className="min-w-0 flex-1">
+                              <h4 className="text-sm font-bold text-slate-800 leading-snug">
+                                {paper.name}
+                              </h4>
+                              <p className="text-xs font-semibold text-slate-400 mt-0.5">
+                                {paper.code}
+                              </p>
+                            </div>
+                          </div>
+                          <span className={`px-2.5 py-0.5 rounded-full font-bold text-xs shrink-0 ${badgeBg}`}>
+                            {pctStr}
+                          </span>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-200/60 text-xs">
+                          <div className="bg-white p-2 rounded-lg border border-slate-100 flex items-center justify-between">
+                            <span className="text-slate-500 font-medium">Lectures</span>
+                            <span className="font-bold text-slate-800">{paper.totalLectures}</span>
+                          </div>
+                          <div className="bg-white p-2 rounded-lg border border-slate-100 flex items-center justify-between">
+                            <span className="text-slate-500 font-medium">Attended</span>
+                            <span className="font-bold text-slate-800">{paper.attendedLectures}</span>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+
+                  {/* Mobile Overall Summary Card */}
+                  <div className="p-3.5 rounded-xl border border-[#7656f4]/30 bg-[#f8f6fe] shadow-2xs space-y-2.5">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <BarChart2 size={16} className="text-[#7656f4]" />
+                        <span className="text-xs font-bold text-[#7656f4]">Overall Summary</span>
+                      </div>
+                      <span className="px-3 py-1 rounded-lg bg-[#7656f4] text-white font-extrabold text-xs shadow-2xs">
+                        {overallPercentage}%
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-2 text-xs">
+                      <div className="bg-white p-2 rounded-lg border border-purple-100 flex items-center justify-between">
+                        <span className="text-slate-500 font-medium">Total Lectures</span>
+                        <span className="font-extrabold text-[#1e1548]">{totalLecturesSum}</span>
+                      </div>
+                      <div className="bg-white p-2 rounded-lg border border-purple-100 flex items-center justify-between">
+                        <span className="text-slate-500 font-medium">Total Attended</span>
+                        <span className="font-extrabold text-[#1e1548]">{totalAttendedSum}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* DESKTOP SUMMARY TABLE (>= md:) */}
+                <div className="hidden md:block bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-2xs">
                   <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse">
                       <thead>
@@ -1056,27 +1220,27 @@ export default function MentorAttendance({ initialUpload = false }) {
               </div>
 
               {/* FOOTER ACTION BUTTONS */}
-              <div className="flex items-center justify-between pt-2">
+              <div className="flex items-center justify-between gap-2 pt-2">
                 <button
                   type="button"
                   onClick={() => setUploadStep(2)}
-                  className="px-6 py-2.5 rounded-xl border border-[#7656f4] text-[#7656f4] bg-white hover:bg-[#f0eaff]/40 text-sm font-bold transition-all cursor-pointer shadow-2xs flex items-center gap-2 active:scale-98"
+                  className="px-4 sm:px-6 py-2.5 rounded-xl border border-[#7656f4] text-[#7656f4] bg-white hover:bg-[#f0eaff]/40 text-xs sm:text-sm font-bold transition-all cursor-pointer shadow-2xs flex items-center gap-1.5 sm:gap-2 active:scale-98 shrink-0"
                 >
                   <ArrowLeft size={16} />
                   <span>Back</span>
                 </button>
-                <div className="flex items-center gap-3.5">
+                <div className="flex items-center gap-2 sm:gap-3.5">
                   <button
                     type="button"
                     onClick={() => setIsUploadPage(false)}
-                    className="px-6 py-2.5 rounded-xl border border-[#7656f4] text-[#7656f4] bg-white hover:bg-[#f0eaff]/40 text-sm font-bold transition-all cursor-pointer shadow-2xs active:scale-98"
+                    className="px-4 sm:px-6 py-2.5 rounded-xl border border-[#7656f4] text-[#7656f4] bg-white hover:bg-[#f0eaff]/40 text-xs sm:text-sm font-bold transition-all cursor-pointer shadow-2xs active:scale-98 shrink-0"
                   >
                     Cancel
                   </button>
                   <button
                     type="button"
                     onClick={handleUploadSubmitFinal}
-                    className="px-6 py-2.5 rounded-xl bg-[#7656f4] hover:bg-[#6242e2] text-white text-sm font-bold transition-all shadow-xs flex items-center gap-2 cursor-pointer active:scale-98"
+                    className="px-4 sm:px-6 py-2.5 rounded-xl bg-[#7656f4] hover:bg-[#6242e2] text-white text-xs sm:text-sm font-bold transition-all shadow-xs flex items-center gap-1.5 sm:gap-2 cursor-pointer active:scale-98 whitespace-nowrap"
                   >
                     <UploadCloud size={16} />
                     <span>Upload Attendance</span>
@@ -1112,10 +1276,10 @@ export default function MentorAttendance({ initialUpload = false }) {
 
 
       {/* FILTER & SEARCH CONTROL BAR */}
-      <div className="bg-white rounded-2xl p-3 sm:p-4 border border-slate-200/80 shadow-2xs flex flex-col md:flex-row items-center justify-between gap-3">
+      <div className="bg-white rounded-2xl p-3 sm:p-4 border border-slate-200/80 shadow-2xs flex flex-col md:flex-row items-center justify-between gap-3 relative z-30">
         {/* Search input field */}
         <div className="relative flex-1 w-full">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={19} />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
           <input
             type="text"
             value={searchQuery}
@@ -1123,8 +1287,8 @@ export default function MentorAttendance({ initialUpload = false }) {
               setSearchQuery(e.target.value);
               setCurrentPage(1);
             }}
-            placeholder="Search mentee by name, college roll number, email or phone"
-            className="w-full bg-[#f8f9fc] border border-slate-200/60 rounded-xl pl-11 pr-4 py-2.5 text-sm font-medium text-slate-800 placeholder:text-slate-400 outline-none focus:border-[#7656f4] focus:bg-white transition-all shadow-inner"
+            placeholder="Search by name or roll no..."
+            className="w-full bg-[#f8f9fc] border border-slate-200/60 rounded-xl pl-11 pr-4 py-2.5 text-xs sm:text-sm font-medium text-slate-800 placeholder:text-slate-400 outline-none focus:border-[#7656f4] focus:bg-white transition-all shadow-inner"
           />
           {searchQuery && (
             <button
@@ -1136,10 +1300,10 @@ export default function MentorAttendance({ initialUpload = false }) {
           )}
         </div>
 
-        {/* Right side control buttons */}
-        <div className="flex flex-wrap items-center gap-3 w-full md:w-auto justify-between md:justify-end">
-          {/* Department Filter Dropdown */}
-          <div className="relative">
+        {/* Right side control buttons: 2-column grid on mobile (< md), flex row on desktop (>= md) */}
+        <div className="grid grid-cols-2 gap-2 w-full md:flex md:flex-wrap md:items-center md:gap-3 md:w-auto md:justify-end" data-attendance-dropdown-container>
+          {/* Row 1 Col 1: Department Filter Dropdown */}
+          <div className={`relative w-full md:w-auto ${deptDropdownOpen ? 'z-30' : 'z-10'}`} data-attendance-dropdown>
             <button
               type="button"
               onClick={() => {
@@ -1148,36 +1312,48 @@ export default function MentorAttendance({ initialUpload = false }) {
                 setYearDropdownOpen(false);
                 setSemesterDropdownOpen(false);
               }}
-              className="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 flex items-center gap-2.5 hover:border-slate-300 transition-all shadow-2xs cursor-pointer whitespace-nowrap"
+              className={`h-9 md:h-auto w-full md:w-auto bg-white border rounded-xl px-2.5 sm:px-4 py-0 md:py-2.5 text-xs sm:text-sm font-semibold flex items-center justify-between gap-1 sm:gap-2 hover:border-slate-300 transition-all shadow-2xs cursor-pointer select-none whitespace-nowrap ${
+                deptDropdownOpen
+                  ? 'border-[#7656f4] ring-2 ring-[#7656f4]/15 text-[#7656f4]'
+                  : selectedDept !== 'All Departments'
+                  ? 'border-[#7656f4]/60 bg-[#F6F3FF] text-[#6D4AFF]'
+                  : 'border-slate-200 text-slate-700'
+              }`}
             >
-              <Building2 size={18} className="text-slate-500" />
-              <span>{selectedDept}</span>
-              <ChevronDown size={16} className={`text-slate-400 transition-transform ${deptDropdownOpen ? 'rotate-180' : ''}`} />
+              <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                <Building2 size={15} className={`shrink-0 md:w-[18px] md:h-[18px] transition-colors ${deptDropdownOpen || selectedDept !== 'All Departments' ? 'text-[#7656f4]' : 'text-slate-500'}`} />
+                <span className="truncate">{selectedDept}</span>
+              </div>
+              <ChevronDown size={13} className={`shrink-0 text-slate-400 transition-transform md:w-4 md:h-4 ml-1 ${deptDropdownOpen ? 'rotate-180 text-[#7656f4]' : ''}`} />
             </button>
 
             {deptDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-64 bg-white border border-slate-200 rounded-2xl shadow-xl z-30 py-2">
+              <div className="absolute left-0 md:right-0 md:left-auto mt-1.5 w-full min-w-[200px] md:w-64 bg-white border border-slate-200/90 rounded-2xl shadow-xl z-50 py-2 max-h-60 overflow-y-auto animate-in fade-in zoom-in-95 duration-150">
                 {DEPARTMENTS.map((dept) => (
                   <button
                     key={dept}
+                    type="button"
                     onClick={() => {
                       setSelectedDept(dept);
                       setDeptDropdownOpen(false);
                       setCurrentPage(1);
                     }}
-                    className={`w-full text-left px-4 py-2 text-xs font-semibold flex items-center justify-between hover:bg-slate-50 transition-colors ${selectedDept === dept ? 'text-[#7656f4] bg-[#f0eaff]/40' : 'text-slate-700'
-                      }`}
+                    className={`w-full text-left px-3.5 py-2 text-xs font-semibold flex items-center justify-between transition-colors cursor-pointer ${
+                      selectedDept === dept
+                        ? 'text-[#6D4AFF] bg-[#F3EFFF] font-bold'
+                        : 'text-slate-700 hover:bg-[#F6F3FF] hover:text-[#6D4AFF]'
+                    }`}
                   >
-                    <span>{dept}</span>
-                    {selectedDept === dept && <Check size={14} className="text-[#7656f4]" />}
+                    <span className="truncate">{dept}</span>
+                    {selectedDept === dept && <Check size={14} className="text-[#6D4AFF] shrink-0 ml-1.5" />}
                   </button>
                 ))}
               </div>
             )}
           </div>
 
-          {/* Program Filter Dropdown */}
-          <div className="relative">
+          {/* Row 1 Col 2: Program Filter Dropdown */}
+          <div className={`relative w-full md:w-auto ${programDropdownOpen ? 'z-30' : 'z-10'}`} data-attendance-dropdown>
             <button
               type="button"
               onClick={() => {
@@ -1186,36 +1362,48 @@ export default function MentorAttendance({ initialUpload = false }) {
                 setYearDropdownOpen(false);
                 setSemesterDropdownOpen(false);
               }}
-              className="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 flex items-center gap-2.5 hover:border-slate-300 transition-all shadow-2xs cursor-pointer whitespace-nowrap"
+              className={`h-9 md:h-auto w-full md:w-auto bg-white border rounded-xl px-2.5 sm:px-4 py-0 md:py-2.5 text-xs sm:text-sm font-semibold flex items-center justify-between gap-1 sm:gap-2 hover:border-slate-300 transition-all shadow-2xs cursor-pointer select-none whitespace-nowrap ${
+                programDropdownOpen
+                  ? 'border-[#7656f4] ring-2 ring-[#7656f4]/15 text-[#7656f4]'
+                  : selectedProgram !== 'All Programs'
+                  ? 'border-[#7656f4]/60 bg-[#F6F3FF] text-[#6D4AFF]'
+                  : 'border-slate-200 text-slate-700'
+              }`}
             >
-              <GraduationCap size={18} className="text-slate-500" />
-              <span>{selectedProgram}</span>
-              <ChevronDown size={16} className={`text-slate-400 transition-transform ${programDropdownOpen ? 'rotate-180' : ''}`} />
+              <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                <GraduationCap size={15} className={`shrink-0 md:w-[18px] md:h-[18px] transition-colors ${programDropdownOpen || selectedProgram !== 'All Programs' ? 'text-[#7656f4]' : 'text-slate-500'}`} />
+                <span className="truncate">{selectedProgram}</span>
+              </div>
+              <ChevronDown size={13} className={`shrink-0 text-slate-400 transition-transform md:w-4 md:h-4 ml-1 ${programDropdownOpen ? 'rotate-180 text-[#7656f4]' : ''}`} />
             </button>
 
             {programDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white border border-slate-200 rounded-2xl shadow-xl z-30 py-2">
+              <div className="absolute right-0 mt-1.5 w-full min-w-[160px] md:w-48 bg-white border border-slate-200/90 rounded-2xl shadow-xl z-50 py-2 max-h-60 overflow-y-auto animate-in fade-in zoom-in-95 duration-150">
                 {PROGRAMS.map((prog) => (
                   <button
                     key={prog}
+                    type="button"
                     onClick={() => {
                       setSelectedProgram(prog);
                       setProgramDropdownOpen(false);
                       setCurrentPage(1);
                     }}
-                    className={`w-full text-left px-4 py-2 text-xs font-semibold flex items-center justify-between hover:bg-slate-50 transition-colors ${selectedProgram === prog ? 'text-[#7656f4] bg-[#f0eaff]/40' : 'text-slate-700'
-                      }`}
+                    className={`w-full text-left px-3.5 py-2 text-xs font-semibold flex items-center justify-between transition-colors cursor-pointer ${
+                      selectedProgram === prog
+                        ? 'text-[#6D4AFF] bg-[#F3EFFF] font-bold'
+                        : 'text-slate-700 hover:bg-[#F6F3FF] hover:text-[#6D4AFF]'
+                    }`}
                   >
-                    <span>{prog}</span>
-                    {selectedProgram === prog && <Check size={14} className="text-[#7656f4]" />}
+                    <span className="truncate">{prog}</span>
+                    {selectedProgram === prog && <Check size={14} className="text-[#6D4AFF] shrink-0 ml-1.5" />}
                   </button>
                 ))}
               </div>
             )}
           </div>
 
-          {/* Year Filter Dropdown */}
-          <div className="relative">
+          {/* Row 2 Col 1: Year Filter Dropdown */}
+          <div className={`relative w-full md:w-auto ${yearDropdownOpen ? 'z-30' : 'z-10'}`} data-attendance-dropdown>
             <button
               type="button"
               onClick={() => {
@@ -1224,35 +1412,48 @@ export default function MentorAttendance({ initialUpload = false }) {
                 setProgramDropdownOpen(false);
                 setSemesterDropdownOpen(false);
               }}
-              className="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 flex items-center gap-2.5 hover:border-slate-300 transition-all shadow-2xs cursor-pointer whitespace-nowrap"
+              className={`h-9 md:h-auto w-full md:w-auto bg-white border rounded-xl px-2.5 sm:px-4 py-0 md:py-2.5 text-xs sm:text-sm font-semibold flex items-center justify-between gap-1 sm:gap-2 hover:border-slate-300 transition-all shadow-2xs cursor-pointer select-none whitespace-nowrap ${
+                yearDropdownOpen
+                  ? 'border-[#7656f4] ring-2 ring-[#7656f4]/15 text-[#7656f4]'
+                  : selectedYear !== 'All Years'
+                  ? 'border-[#7656f4]/60 bg-[#F6F3FF] text-[#6D4AFF]'
+                  : 'border-slate-200 text-slate-700'
+              }`}
             >
-              <Calendar size={17} className="text-slate-500" />
-              <span>{selectedYear}</span>
-              <ChevronDown size={16} className={`text-slate-400 transition-transform ${yearDropdownOpen ? 'rotate-180' : ''}`} />
+              <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                <Calendar size={15} className={`shrink-0 md:w-[17px] md:h-[17px] transition-colors ${yearDropdownOpen || selectedYear !== 'All Years' ? 'text-[#7656f4]' : 'text-slate-500'}`} />
+                <span className="truncate">{selectedYear}</span>
+              </div>
+              <ChevronDown size={13} className={`shrink-0 text-slate-400 transition-transform md:w-4 md:h-4 ml-1 ${yearDropdownOpen ? 'rotate-180 text-[#7656f4]' : ''}`} />
             </button>
 
             {yearDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-44 bg-white border border-slate-200 rounded-2xl shadow-xl z-30 py-2">
+              <div className="absolute left-0 md:right-0 md:left-auto mt-1.5 w-full min-w-[150px] md:w-44 bg-white border border-slate-200/90 rounded-2xl shadow-xl z-50 py-2 max-h-60 overflow-y-auto animate-in fade-in zoom-in-95 duration-150">
                 {YEARS.map((yr) => (
                   <button
                     key={yr}
+                    type="button"
                     onClick={() => {
                       setSelectedYear(yr);
                       setYearDropdownOpen(false);
                       setCurrentPage(1);
                     }}
-                    className={`w-full text-left px-4 py-2 text-xs font-semibold flex items-center justify-between hover:bg-slate-50 transition-colors ${selectedYear === yr ? 'text-[#7656f4] bg-[#f0eaff]/40' : 'text-slate-700'}`}
+                    className={`w-full text-left px-3.5 py-2 text-xs font-semibold flex items-center justify-between transition-colors cursor-pointer ${
+                      selectedYear === yr
+                        ? 'text-[#6D4AFF] bg-[#F3EFFF] font-bold'
+                        : 'text-slate-700 hover:bg-[#F6F3FF] hover:text-[#6D4AFF]'
+                    }`}
                   >
-                    <span>{yr}</span>
-                    {selectedYear === yr && <Check size={14} className="text-[#7656f4]" />}
+                    <span className="truncate">{yr}</span>
+                    {selectedYear === yr && <Check size={14} className="text-[#6D4AFF] shrink-0 ml-1.5" />}
                   </button>
                 ))}
               </div>
             )}
           </div>
 
-          {/* Semester Filter Dropdown */}
-          <div className="relative">
+          {/* Row 2 Col 2: Semester Filter Dropdown */}
+          <div className={`relative w-full md:w-auto ${semesterDropdownOpen ? 'z-30' : 'z-10'}`} data-attendance-dropdown>
             <button
               type="button"
               onClick={() => {
@@ -1261,59 +1462,76 @@ export default function MentorAttendance({ initialUpload = false }) {
                 setProgramDropdownOpen(false);
                 setYearDropdownOpen(false);
               }}
-              className="bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 flex items-center gap-2.5 hover:border-slate-300 transition-all shadow-2xs cursor-pointer whitespace-nowrap"
+              className={`h-9 md:h-auto w-full md:w-auto bg-white border rounded-xl px-2.5 sm:px-4 py-0 md:py-2.5 text-xs sm:text-sm font-semibold flex items-center justify-between gap-1 sm:gap-2 hover:border-slate-300 transition-all shadow-2xs cursor-pointer select-none whitespace-nowrap ${
+                semesterDropdownOpen
+                  ? 'border-[#7656f4] ring-2 ring-[#7656f4]/15 text-[#7656f4]'
+                  : selectedSemester !== 'All Semesters'
+                  ? 'border-[#7656f4]/60 bg-[#F6F3FF] text-[#6D4AFF]'
+                  : 'border-slate-200 text-slate-700'
+              }`}
             >
-              <BookOpen size={17} className="text-slate-500" />
-              <span>{selectedSemester}</span>
-              <ChevronDown size={16} className={`text-slate-400 transition-transform ${semesterDropdownOpen ? 'rotate-180' : ''}`} />
+              <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                <BookOpen size={15} className={`shrink-0 md:w-[17px] md:h-[17px] transition-colors ${semesterDropdownOpen || selectedSemester !== 'All Semesters' ? 'text-[#7656f4]' : 'text-slate-500'}`} />
+                <span className="truncate">{selectedSemester}</span>
+              </div>
+              <ChevronDown size={13} className={`shrink-0 text-slate-400 transition-transform md:w-4 md:h-4 ml-1 ${semesterDropdownOpen ? 'rotate-180 text-[#7656f4]' : ''}`} />
             </button>
 
             {semesterDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white border border-slate-200 rounded-2xl shadow-xl z-30 py-2 max-h-60 overflow-y-auto">
+              <div className="absolute right-0 mt-1.5 w-full min-w-[160px] md:w-48 bg-white border border-slate-200/90 rounded-2xl shadow-xl z-50 py-2 max-h-60 overflow-y-auto animate-in fade-in zoom-in-95 duration-150">
                 {SEMESTERS.map((sem) => (
                   <button
                     key={sem}
+                    type="button"
                     onClick={() => {
                       setSelectedSemester(sem);
                       setSemesterDropdownOpen(false);
                       setCurrentPage(1);
                     }}
-                    className={`w-full text-left px-4 py-2 text-xs font-semibold flex items-center justify-between hover:bg-slate-50 transition-colors ${selectedSemester === sem ? 'text-[#7656f4] bg-[#f0eaff]/40' : 'text-slate-700'}`}
+                    className={`w-full text-left px-3.5 py-2 text-xs font-semibold flex items-center justify-between transition-colors cursor-pointer ${
+                      selectedSemester === sem
+                        ? 'text-[#6D4AFF] bg-[#F3EFFF] font-bold'
+                        : 'text-slate-700 hover:bg-[#F6F3FF] hover:text-[#6D4AFF]'
+                    }`}
                   >
-                    <span>{sem}</span>
-                    {selectedSemester === sem && <Check size={14} className="text-[#7656f4]" />}
+                    <span className="truncate">{sem}</span>
+                    {selectedSemester === sem && <Check size={14} className="text-[#6D4AFF] shrink-0 ml-1.5" />}
                   </button>
                 ))}
               </div>
             )}
           </div>
 
-          {/* View mode toggle (Grid vs List) in place of Filters */}
-          <div className="flex items-center gap-1 bg-white border border-slate-200 rounded-xl p-1 shadow-2xs">
-            <button
-              type="button"
-              onClick={() => setViewMode('grid')}
-              className={`p-1.5 rounded-lg transition-all cursor-pointer ${
-                viewMode === 'grid'
-                  ? 'bg-[#f0eaff] text-[#7656f4] border border-[#7656f4]/40 shadow-xs'
-                  : 'text-slate-400 hover:text-slate-600'
-              }`}
-              title="Grid View"
-            >
-              <LayoutGrid size={18} />
-            </button>
-            <button
-              type="button"
-              onClick={() => setViewMode('list')}
-              className={`p-1.5 rounded-lg transition-all cursor-pointer ${
-                viewMode === 'list'
-                  ? 'bg-[#f0eaff] text-[#7656f4] border border-[#7656f4]/40 shadow-xs'
-                  : 'text-slate-400 hover:text-slate-600'
-              }`}
-              title="List View"
-            >
-              <List size={18} />
-            </button>
+          {/* Row 3: Grid/List Segmented View Toggle (Right-aligned / Spanning below) */}
+          <div className="col-span-2 flex justify-end md:inline-flex w-full md:w-auto">
+            <div className="h-9 md:h-[42px] bg-white border border-[#E2E8F0] rounded-full p-1 shadow-2xs inline-flex items-center justify-center gap-1 select-none">
+              <button
+                type="button"
+                onClick={() => setViewMode('grid')}
+                className={`h-full px-3 md:px-3.5 rounded-full transition-all duration-200 cursor-pointer flex items-center justify-center ${
+                  viewMode === 'grid'
+                    ? 'bg-[#F3EFFF] text-[#6D4AFF] border border-[#D8CEFF] hover:bg-[#EAE2FF] shadow-2xs'
+                    : 'text-[#94A3B8] border border-transparent hover:bg-[#F6F3FF] hover:text-[#6D4AFF] hover:scale-105 active:scale-95'
+                }`}
+                title="Grid View"
+                aria-label="Grid View"
+              >
+                <LayoutGrid size={16} className="md:w-[17px] md:h-[17px] transition-transform" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setViewMode('list')}
+                className={`h-full px-3 md:px-3.5 rounded-full transition-all duration-200 cursor-pointer flex items-center justify-center ${
+                  viewMode === 'list'
+                    ? 'bg-[#F3EFFF] text-[#6D4AFF] border border-[#D8CEFF] hover:bg-[#EAE2FF] shadow-2xs'
+                    : 'text-[#94A3B8] border border-transparent hover:bg-[#F6F3FF] hover:text-[#6D4AFF] hover:scale-105 active:scale-95'
+                }`}
+                title="List View"
+                aria-label="List View"
+              >
+                <List size={16} className="md:w-[17px] md:h-[17px] transition-transform" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -1322,63 +1540,63 @@ export default function MentorAttendance({ initialUpload = false }) {
       {viewMode === 'list' ? (
         /* DETAILED TABLE (ADMIN PORTAL TABLE STYLE) */
         <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 overflow-hidden font-['Roboto',sans-serif]">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
+          <div className="overflow-x-auto w-full rounded-t-2xl">
+            <table className="w-full text-left border-collapse min-w-[1220px]">
+              <thead className="rounded-t-2xl">
                 <tr className="bg-gradient-to-r from-[#7656f4] via-[#6845f2] to-[#5531dc] text-white text-xs font-bold uppercase tracking-wider select-none">
-                  <th className="py-3.5 px-5 text-left">
+                  <th className="py-3.5 px-4 text-left min-w-[220px] whitespace-nowrap">
                     <div className="flex items-center gap-1 cursor-pointer">
                       <span>STUDENT</span>
                       <FigmaCaretSortIcon size={13} className="text-purple-200" />
                     </div>
                   </th>
-                  <th className="py-3.5 px-4 text-left">
+                  <th className="py-3.5 px-4 text-left min-w-[120px] whitespace-nowrap">
                     <div className="flex items-center gap-1 cursor-pointer">
                       <span>ROLL NO.</span>
                       <FigmaCaretSortIcon size={13} className="text-purple-200" />
                     </div>
                   </th>
-                  <th className="py-3.5 px-4 text-left">
+                  <th className="py-3.5 px-4 text-left min-w-[170px] whitespace-nowrap">
                     <div className="flex items-center gap-1 cursor-pointer">
                       <span>DEPARTMENT</span>
                       <FigmaCaretSortIcon size={13} className="text-purple-200" />
                     </div>
                   </th>
-                  <th className="py-3.5 px-4 text-left">
+                  <th className="py-3.5 px-4 text-left min-w-[100px] whitespace-nowrap">
                     <div className="flex items-center gap-1 cursor-pointer">
                       <span>PROGRAM</span>
                       <FigmaCaretSortIcon size={13} className="text-purple-200" />
                     </div>
                   </th>
-                  <th className="py-3.5 px-4 text-left">
+                  <th className="py-3.5 px-4 text-left min-w-[100px] whitespace-nowrap">
                     <div className="flex items-center gap-1 cursor-pointer">
                       <span>YEAR</span>
                       <FigmaCaretSortIcon size={13} className="text-purple-200" />
                     </div>
                   </th>
-                  <th className="py-3.5 px-4 text-left">
+                  <th className="py-3.5 px-4 text-left min-w-[110px] whitespace-nowrap">
                     <div className="flex items-center gap-1 cursor-pointer">
                       <span>SEMESTER</span>
                       <FigmaCaretSortIcon size={13} className="text-purple-200" />
                     </div>
                   </th>
-                  <th className="py-3.5 px-4 text-left">
+                  <th className="py-3.5 px-4 text-left min-w-[180px] whitespace-nowrap">
                     <div className="flex items-center gap-1 cursor-pointer">
                       <span>ATTENDANCE</span>
                       <FigmaCaretSortIcon size={13} className="text-purple-200" />
                     </div>
                   </th>
-                  <th className="py-3.5 px-4 text-center">STATUS</th>
-                  <th className="py-3.5 px-5 text-right">ACTIONS</th>
+                  <th className="py-3.5 px-4 text-center min-w-[110px] whitespace-nowrap">STATUS</th>
+                  <th className="py-3.5 px-4 text-right min-w-[110px] whitespace-nowrap">ACTIONS</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {paginatedMentees.map((mentee) => (
                   <tr key={mentee.id} className="hover:bg-purple-50/30 transition-colors">
                     {/* STUDENT */}
-                    <td className="py-4 px-5 text-left">
-                      <div className="flex items-center gap-3">
-                        <div className="relative flex-shrink-0">
+                    <td className="py-3.5 px-4 text-left min-w-[220px] pr-4">
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className="relative shrink-0">
                           {/* Circle Avatar with Image & Initials Fallback */}
                           {mentee.avatar ? (
                             <img
@@ -1395,44 +1613,46 @@ export default function MentorAttendance({ initialUpload = false }) {
                             {mentee.initials || 'TS'}
                           </div>
                         </div>
-                        <div className="flex flex-col">
-                          <span className="font-bold text-[#1e1548] text-sm">{mentee.name}</span>
-                          <span className="text-xs text-slate-400 font-medium">{mentee.email}</span>
+                        <div className="flex flex-col min-w-0">
+                          <span className="font-bold text-[#1e1548] text-sm truncate">{mentee.name}</span>
+                          <span className="text-xs text-slate-400 font-medium truncate max-w-[155px]" title={mentee.email}>
+                            {mentee.email}
+                          </span>
                         </div>
                       </div>
                     </td>
 
                     {/* ROLL NO. */}
-                    <td className="py-4 px-4 text-left">
-                      <span className="font-bold text-[#1e1548] text-xs">{mentee.rollNo}</span>
+                    <td className="py-3.5 px-4 text-left min-w-[120px] whitespace-nowrap">
+                      <span className="font-bold text-[#1e1548] text-xs font-mono">{mentee.rollNo}</span>
                     </td>
 
                     {/* DEPARTMENT */}
-                    <td className="py-4 px-4 text-left max-w-[200px]">
+                    <td className="py-3.5 px-4 text-left min-w-[170px]">
                       <span className="text-xs font-semibold text-slate-700 block leading-snug">
                         {mentee.department}
                       </span>
                     </td>
 
                     {/* PROGRAM */}
-                    <td className="py-4 px-4 text-left">
+                    <td className="py-3.5 px-4 text-left min-w-[100px] whitespace-nowrap">
                       <span className="text-xs font-semibold text-slate-700">{mentee.program || 'B.Tech'}</span>
                     </td>
 
                     {/* YEAR */}
-                    <td className="py-4 px-4 text-left">
+                    <td className="py-3.5 px-4 text-left min-w-[100px] whitespace-nowrap">
                       <span className="text-xs font-semibold text-slate-700">{mentee.year || '2nd Year'}</span>
                     </td>
 
                     {/* SEMESTER */}
-                    <td className="py-4 px-4 text-left">
+                    <td className="py-3.5 px-4 text-left min-w-[110px] whitespace-nowrap">
                       <span className="text-xs font-bold text-[#7656f4]">{mentee.semester || '3rd Sem'}</span>
                     </td>
 
                     {/* ATTENDANCE */}
-                    <td className="py-4 px-4 text-left min-w-[170px]">
+                    <td className="py-3.5 px-4 text-left min-w-[180px] whitespace-nowrap">
                       <div className="flex items-center gap-3">
-                        <div className="w-24 bg-slate-100 h-2 rounded-full overflow-hidden flex-shrink-0">
+                        <div className="w-24 bg-slate-100 h-2 rounded-full overflow-hidden shrink-0">
                           <div
                             className={`${getAttendanceProgressBarColor(mentee.attendanceRate)} h-full rounded-full transition-all`}
                             style={{ width: `${mentee.attendanceRate}%` }}
@@ -1446,7 +1666,7 @@ export default function MentorAttendance({ initialUpload = false }) {
                     </td>
 
                     {/* STATUS */}
-                    <td className="py-4 px-4 text-center">
+                    <td className="py-3.5 px-4 text-center min-w-[110px] whitespace-nowrap">
                       <span
                         className={`inline-block px-3 py-1 rounded-lg text-xs font-bold ${mentee.statusBg} ${mentee.statusText}`}
                       >
@@ -1455,7 +1675,7 @@ export default function MentorAttendance({ initialUpload = false }) {
                     </td>
 
                     {/* ACTIONS */}
-                    <td className="py-4 px-5 text-right">
+                    <td className="py-3.5 px-4 text-right min-w-[110px] whitespace-nowrap">
                       <div className="flex items-center justify-end gap-2 relative">
                         {/* View Square Icon Button */}
                         <button
@@ -1661,44 +1881,48 @@ export default function MentorAttendance({ initialUpload = false }) {
 
                     {/* Key-Value Details including Department, Year, Semester, Phone, Email */}
                     <div className="space-y-2 py-2.5 border-t border-b border-gray-50 my-3">
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="text-gray-400 font-medium flex items-center gap-1.5">
-                          <Building2 size={15} className="text-[#7656f4]" />
+                      <div className="flex items-center justify-between gap-3 text-xs">
+                        <span className="text-gray-400 font-medium flex items-center gap-1.5 shrink-0">
+                          <Building2 size={15} className="text-[#7656f4] shrink-0" />
                           Department
                         </span>
-                        <span className="font-bold text-gray-800">{mentee.department}</span>
+                        <span className="font-bold text-gray-800 text-right truncate max-w-[60%]" title={mentee.department}>
+                          {mentee.deptCode || mentee.department}
+                        </span>
                       </div>
 
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="text-gray-400 font-medium flex items-center gap-1.5">
-                          <Calendar size={15} className="text-[#7656f4]" />
+                      <div className="flex items-center justify-between gap-3 text-xs">
+                        <span className="text-gray-400 font-medium flex items-center gap-1.5 shrink-0">
+                          <Calendar size={15} className="text-[#7656f4] shrink-0" />
                           Year
                         </span>
-                        <span className="font-bold text-gray-800">{mentee.year || '2nd Year'}</span>
+                        <span className="font-bold text-gray-800 text-right">{mentee.year || '2nd Year'}</span>
                       </div>
 
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="text-gray-400 font-medium flex items-center gap-1.5">
-                          <BookOpen size={15} className="text-[#7656f4]" />
+                      <div className="flex items-center justify-between gap-3 text-xs">
+                        <span className="text-gray-400 font-medium flex items-center gap-1.5 shrink-0">
+                          <BookOpen size={15} className="text-[#7656f4] shrink-0" />
                           Semester
                         </span>
-                        <span className="font-bold text-gray-800">{mentee.semester || '3rd Sem'}</span>
+                        <span className="font-bold text-gray-800 text-right">{mentee.semester || '3rd Sem'}</span>
                       </div>
 
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="text-gray-400 font-medium flex items-center gap-1.5">
-                          <PhoneCall size={15} className="text-[#7656f4]" />
+                      <div className="flex items-center justify-between gap-3 text-xs">
+                        <span className="text-gray-400 font-medium flex items-center gap-1.5 shrink-0">
+                          <PhoneCall size={15} className="text-[#7656f4] shrink-0" />
                           Phone
                         </span>
-                        <span className="font-bold text-gray-800">{mentee.phone}</span>
+                        <span className="font-bold text-gray-800 text-right tabular-nums">{mentee.phone}</span>
                       </div>
 
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="text-gray-400 font-medium flex items-center gap-1.5">
-                          <Mail size={15} className="text-[#7656f4]" />
+                      <div className="flex items-center justify-between gap-3 text-xs">
+                        <span className="text-gray-400 font-medium flex items-center gap-1.5 shrink-0">
+                          <Mail size={15} className="text-[#7656f4] shrink-0" />
                           Email
                         </span>
-                        <span className="font-bold text-gray-800 truncate max-w-[170px]">{mentee.email}</span>
+                        <span className="font-bold text-gray-800 text-right truncate max-w-[60%]" title={mentee.email}>
+                          {mentee.email}
+                        </span>
                       </div>
                     </div>
 
@@ -1718,22 +1942,24 @@ export default function MentorAttendance({ initialUpload = false }) {
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="grid grid-cols-2 gap-2 mt-2 pt-1">
+                  <div className="grid grid-cols-2 gap-2.5 mt-2 pt-1">
                     <button
                       type="button"
                       onClick={() => setSelectedMenteeSemesterView(mentee)}
-                      className="bg-[#f6f2fe] border border-[#7656f4]/30 text-[#7656f4] hover:bg-purple-100 py-[10.5px] px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                      className="bg-[#f6f2fe] border border-[#7656f4]/30 text-[#7656f4] hover:bg-purple-100 py-2.5 px-2.5 sm:px-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap min-w-0"
                     >
-                      <Eye size={16} />
-                      <span>View Details</span>
+                      <Eye size={15} className="shrink-0" />
+                      <span className="truncate whitespace-nowrap">View Details</span>
                     </button>
                     <button
                       type="button"
                       onClick={() => startUploadFlow(mentee)}
-                      className="bg-[#7656f4] hover:bg-[#6242e2] text-white py-[10.5px] px-3 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-xs cursor-pointer"
+                      className="bg-[#7656f4] hover:bg-[#6242e2] text-white py-2.5 px-2.5 sm:px-3 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors shadow-xs cursor-pointer whitespace-nowrap min-w-0"
                     >
-                      <UploadCloud size={16} />
-                      <span>Upload Attendance</span>
+                      <UploadCloud size={15} className="shrink-0" />
+                      <span className="truncate whitespace-nowrap">
+                        Upload<span className="hidden sm:inline"> Attendance</span>
+                      </span>
                     </button>
                   </div>
                 </div>

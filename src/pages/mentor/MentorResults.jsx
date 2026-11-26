@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import {
   Search,
   Filter,
@@ -69,13 +69,44 @@ const mockMentees = STUDENTS_DATA.map((s, idx) => {
   };
 });
 
+const DEPARTMENTS = ['All Departments', 'CSE', 'ECE', 'EE', 'ME', 'CE', 'IT'];
+const YEARS = ['All Years', '1st Year', '2nd Year', '3rd Year', '4th Year'];
+const SEMESTERS = [
+  'All Semesters',
+  'Semester 1',
+  'Semester 2',
+  'Semester 3',
+  'Semester 4',
+  'Semester 5',
+  'Semester 6',
+  'Semester 7',
+  'Semester 8',
+];
+
 export default function MentorResults({ initialUpload = false }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [departmentFilter, setDepartmentFilter] = useState('All');
   const [yearFilter, setYearFilter] = useState('All');
   const [semesterFilter, setSemesterFilter] = useState('All');
+  const [openDropdown, setOpenDropdown] = useState(null); // 'dept' | 'year' | 'sem' | null
   const [viewMode, setViewMode] = useState('grid'); // 'grid' | 'list'
   const [currentPage, setCurrentPage] = useState(1);
+
+  // Close dropdown on outside click or tap
+  useEffect(() => {
+    if (!openDropdown) return;
+    const handleClickOutside = (e) => {
+      if (!e.target.closest('[data-dropdown]')) {
+        setOpenDropdown(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, [openDropdown]);
 
   // Upload Result Page View State
   const [isUploadView, setIsUploadView] = useState(false);
@@ -102,30 +133,47 @@ export default function MentorResults({ initialUpload = false }) {
 
   // Filtering
   const filteredMentees = useMemo(() => {
-    return mockMentees
-      .filter((mentee) => {
-        const query = searchQuery.trim().toLowerCase();
-        const matchesSearch =
-          !query ||
-          mentee.name.toLowerCase().includes(query) ||
-          mentee.rollNo.toLowerCase().includes(query) ||
-          (mentee.email && mentee.email.toLowerCase().includes(query)) ||
-          (mentee.phone && mentee.phone.toLowerCase().includes(query)) ||
-          (mentee.department && mentee.department.toLowerCase().includes(query));
+    return mockMentees.filter((mentee) => {
+      const query = searchQuery.trim().toLowerCase();
+      const matchesSearch =
+        !query ||
+        mentee.name.toLowerCase().includes(query) ||
+        mentee.rollNo.toLowerCase().includes(query) ||
+        (mentee.email && mentee.email.toLowerCase().includes(query)) ||
+        (mentee.phone && mentee.phone.toLowerCase().includes(query)) ||
+        (mentee.department && mentee.department.toLowerCase().includes(query));
 
-        const matchesDept =
-          departmentFilter === 'All' || mentee.department === departmentFilter;
+      // Department Match
+      const matchesDept =
+        departmentFilter === 'All' ||
+        departmentFilter === 'All Departments' ||
+        mentee.department?.toUpperCase() === departmentFilter.toUpperCase() ||
+        mentee.deptCode?.toUpperCase() === departmentFilter.toUpperCase() ||
+        mentee.dept?.toUpperCase()?.includes(departmentFilter.toUpperCase());
 
-        const menteeYear = mentee.year || mentee.yearSem?.split('/')[0]?.trim();
-        const matchesYear =
-          yearFilter === 'All' || menteeYear === yearFilter;
+      // Year Match
+      const yearNumFilter = yearFilter.match(/\d+/)?.[0];
+      const menteeYearNum = String(mentee.yearNum || mentee.year?.match(/\d+/)?.[0] || '');
+      const matchesYear =
+        yearFilter === 'All' ||
+        yearFilter === 'All Years' ||
+        (yearNumFilter && menteeYearNum && yearNumFilter === menteeYearNum) ||
+        mentee.year === yearFilter ||
+        mentee.yearStr === yearFilter ||
+        mentee.yearSem?.includes(yearFilter);
 
-        const menteeSem = mentee.semester || mentee.yearSem?.split('/')[1]?.trim();
-        const matchesSem =
-          semesterFilter === 'All' || menteeSem === semesterFilter;
+      // Semester Match
+      const semNumFilter = semesterFilter.match(/\d+/)?.[0];
+      const menteeSemNum = String(mentee.semNum || mentee.semester?.match(/\d+/)?.[0] || '');
+      const matchesSem =
+        semesterFilter === 'All' ||
+        semesterFilter === 'All Semesters' ||
+        (semNumFilter && menteeSemNum && semNumFilter === menteeSemNum) ||
+        mentee.semester === semesterFilter ||
+        mentee.yearSem?.includes(semesterFilter);
 
-        return matchesSearch && matchesDept && matchesYear && matchesSem;
-      });
+      return matchesSearch && matchesDept && matchesYear && matchesSem;
+    });
   }, [searchQuery, departmentFilter, yearFilter, semesterFilter]);
 
   const totalPages = Math.ceil(filteredMentees.length / itemsPerPage) || 1;
@@ -168,9 +216,31 @@ export default function MentorResults({ initialUpload = false }) {
 
   if (isUploadView) {
     return (
-      <div className="flex flex-col gap-6 max-w-6xl mx-auto w-full pb-10 animate-in fade-in duration-200">
-        {/* Header Title Section */}
-        <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 sm:gap-6 max-w-6xl mx-auto w-full pb-10 animate-in fade-in duration-200">
+        {/* Mobile Header (< md): Clean inline icon-only Back button + Title & Subtitle */}
+        <div className="flex items-center gap-3 md:hidden mb-1">
+          <button
+            type="button"
+            onClick={() => setIsUploadView(false)}
+            className="w-9 h-9 rounded-xl bg-white border border-[#E2E8F0] text-[#1E293B] hover:bg-[#F6F3FF] hover:text-[#6D4AFF] flex items-center justify-center shadow-2xs transition-all cursor-pointer active:scale-95 shrink-0"
+            title="Back to Results"
+            aria-label="Back to Results"
+          >
+            <ArrowLeft size={18} className="stroke-[2.2]" />
+          </button>
+
+          <div className="min-w-0">
+            <h1 className="text-lg font-bold text-gray-900 tracking-tight leading-tight">
+              Upload Result
+            </h1>
+            <p className="text-xs text-slate-500 font-normal mt-0.5 leading-tight">
+              Upload mentees' academic result details
+            </p>
+          </div>
+        </div>
+
+        {/* Desktop Header (>= md): Preserved 100% identical */}
+        <div className="hidden md:flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight">Upload Result</h1>
             <p className="text-sm font-medium text-gray-500 mt-1">Upload mentees' academic result details</p>
@@ -194,7 +264,7 @@ export default function MentorResults({ initialUpload = false }) {
 
         <form onSubmit={handleUploadSubmit} className="flex flex-col gap-6">
           {/* Mentee Information Card */}
-          <div className="bg-white rounded-3xl p-6 border border-gray-100/90 shadow-xs">
+          <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-gray-100/90 shadow-xs">
             <div className="flex items-center gap-3 mb-5">
               <div className="w-9 h-9 rounded-full bg-purple-50 text-[#7656f4] flex items-center justify-center shrink-0">
                 <User size={18} />
@@ -239,7 +309,7 @@ export default function MentorResults({ initialUpload = false }) {
           </div>
 
           {/* Academic Details Card */}
-          <div className="bg-white rounded-3xl p-6 border border-gray-100/90 shadow-xs">
+          <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-gray-100/90 shadow-xs">
             <div className="flex items-center gap-3 mb-5">
               <div className="w-9 h-9 rounded-full bg-purple-50 text-[#7656f4] flex items-center justify-center shrink-0">
                 <GraduationCap size={18} />
@@ -323,7 +393,7 @@ export default function MentorResults({ initialUpload = false }) {
           {/* Bottom Grid: Upload Result File & Remarks */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Upload Result File Card */}
-            <div className="bg-white rounded-3xl p-6 border border-gray-100/90 shadow-xs flex flex-col justify-between">
+            <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-gray-100/90 shadow-xs flex flex-col justify-between">
               <div>
                 <div className="flex items-center gap-3 mb-5">
                   <div className="w-9 h-9 rounded-full bg-purple-50 text-[#7656f4] flex items-center justify-center shrink-0">
@@ -366,7 +436,7 @@ export default function MentorResults({ initialUpload = false }) {
             </div>
 
             {/* Remarks (Optional) Card */}
-            <div className="bg-white rounded-3xl p-6 border border-gray-100/90 shadow-xs flex flex-col justify-between">
+            <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-gray-100/90 shadow-xs flex flex-col justify-between">
               <div>
                 <div className="flex items-center gap-3 mb-5">
                   <div className="w-9 h-9 rounded-full bg-purple-50 text-[#7656f4] flex items-center justify-center shrink-0">
@@ -440,65 +510,65 @@ export default function MentorResults({ initialUpload = false }) {
     return (
       <div className="flex flex-col gap-6 max-w-7xl mx-auto w-full pb-10 animate-in fade-in duration-200">
         {/* Header Navigation & Action Section */}
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center justify-between gap-3 sm:gap-4">
           <button
             type="button"
             onClick={() => setSelectedMenteeForDetails(null)}
-            className="w-10 h-10 rounded-xl bg-white border border-gray-200/80 text-gray-600 hover:text-[#7656f4] hover:bg-purple-50 flex items-center justify-center shadow-xs transition-colors cursor-pointer"
+            className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white border border-gray-200/80 text-gray-600 hover:text-[#7656f4] hover:bg-purple-50 flex items-center justify-center shadow-xs transition-colors cursor-pointer"
             title="Back to All Mentees"
           >
-            <ArrowLeft size={20} />
+            <ArrowLeft size={18} className="sm:w-5 sm:h-5" />
           </button>
 
           <button
             type="button"
             onClick={() => handleOpenUpload(selectedMenteeForDetails)}
-            className="bg-[#7656f4] hover:bg-[#6242e2] text-white font-semibold text-sm px-4 py-2.5 rounded-xl shadow-xs flex items-center justify-center gap-2 transition-all cursor-pointer shrink-0"
+            className="bg-[#7656f4] hover:bg-[#6242e2] text-white font-semibold text-xs sm:text-sm px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl shadow-xs flex items-center justify-center gap-1.5 sm:gap-2 transition-all cursor-pointer shrink-0"
           >
-            <UploadCloud size={18} />
+            <UploadCloud size={16} className="sm:w-[18px] sm:h-[18px]" />
             <span>Upload Result</span>
           </button>
         </div>
 
         {/* Semester Results Card */}
-        <div className="bg-white rounded-3xl border border-gray-100/90 shadow-xs p-5 sm:p-6 flex flex-col gap-6">
+        <div className="bg-white rounded-2xl sm:rounded-3xl border border-gray-100/90 shadow-xs p-3.5 sm:p-6 flex flex-col gap-4 sm:gap-6">
           {/* Card Toolbar */}
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-2 border-b border-gray-100/60">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 pb-2 border-b border-gray-100/60">
             {/* Title */}
-            <div className="flex items-center gap-3">
-              <span className="p-2 rounded-xl bg-purple-50 text-[#7656f4]">
-                <ClipboardList size={20} />
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <span className="p-1.5 sm:p-2 rounded-xl bg-purple-50 text-[#7656f4]">
+                <ClipboardList size={18} className="sm:w-5 sm:h-5" />
               </span>
-              <h2 className="text-lg font-bold text-gray-900">Semester Results</h2>
+              <h2 className="text-base sm:text-lg font-bold text-gray-900">Semester Results</h2>
             </div>
 
             {/* Controls Right */}
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
               {/* Search Bar */}
-              <div className="relative flex-1 sm:w-72">
+              <div className="relative flex-1 min-w-[130px] sm:w-72">
                 <input
                   type="text"
                   value={detailsSearchQuery}
                   onChange={(e) => setDetailsSearchQuery(e.target.value)}
-                  placeholder="Search by year, semester or mentee name..."
-                  className="w-full bg-[#f8fafc] border border-gray-200/70 rounded-xl pl-4 pr-10 py-2 text-xs sm:text-sm text-gray-800 placeholder-gray-400 outline-none focus:border-[#7656f4] focus:bg-white transition-colors"
+                  placeholder="Search results..."
+                  className="w-full h-9 bg-[#f8fafc] border border-gray-200/70 rounded-xl pl-3 pr-8 text-xs sm:text-sm text-gray-800 placeholder-gray-400 outline-none focus:border-[#7656f4] focus:bg-white transition-colors"
                 />
-                <Search size={16} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                <Search size={15} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
               </div>
 
               {/* Filters Button */}
               <button
                 type="button"
-                className="bg-[#f8fafc] hover:bg-purple-50 text-[#7656f4] border border-purple-200/60 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2 transition-colors cursor-pointer"
+                className="h-9 bg-[#f8fafc] hover:bg-purple-50 text-[#7656f4] border border-purple-200/60 px-3 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-1.5 transition-colors cursor-pointer shrink-0"
               >
-                <Filter size={16} className="text-[#7656f4]" />
+                <Filter size={15} className="text-[#7656f4]" />
                 <span>Filters</span>
               </button>
 
               {/* All Academic Years Dropdown */}
-              <div className="relative">
-                <div className="flex items-center gap-2 bg-[#f8fafc] hover:bg-gray-100 text-gray-700 border border-gray-200/70 pl-3 pr-8 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-colors cursor-pointer">
-                  <CalendarDays size={16} className="text-[#7656f4] shrink-0" />
+              <div className="relative shrink-0">
+                <div className="h-9 flex items-center gap-1.5 sm:gap-2 bg-[#f8fafc] hover:bg-gray-100 text-gray-700 border border-gray-200/70 pl-2.5 sm:pl-3 pr-7 sm:pr-8 rounded-xl text-xs sm:text-sm font-semibold transition-colors cursor-pointer">
+                  <CalendarDays size={15} className="text-[#7656f4] shrink-0" />
                   <select
                     value={detailsYearFilter}
                     onChange={(e) => setDetailsYearFilter(e.target.value)}
@@ -511,96 +581,144 @@ export default function MentorResults({ initialUpload = false }) {
                     <option value="4">4th Year</option>
                   </select>
                 </div>
-                <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                <ChevronDown size={14} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
               </div>
             </div>
           </div>
 
           {/* Semester Results Table */}
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse min-w-[700px]">
+          <div className="w-full overflow-x-auto md:overflow-x-visible">
+            <table className="w-full table-fixed md:table-auto text-left border-collapse md:min-w-[700px]">
               <thead>
                 <tr className="bg-[#f4eeff] text-[#7656f4] text-xs font-extrabold tracking-wider border-b border-purple-100/60">
-                  <th className="py-3.5 px-4 text-center w-12">#</th>
-                  <th className="py-3.5 px-4">Year</th>
-                  <th className="py-3.5 px-4">Semester</th>
-                  <th className="py-3.5 px-4">SGPA</th>
-                  <th className="py-3.5 px-4">Overall Grade</th>
-                  <th className="py-3.5 px-4">Result File</th>
-                  <th className="py-3.5 px-4">Remark</th>
-                  <th className="py-3.5 px-4 text-center w-16">Action</th>
+                  <th className="hidden md:table-cell py-3.5 px-4 text-center w-12">#</th>
+                  <th className="hidden md:table-cell py-3.5 px-4">Year</th>
+                  <th className="w-[28%] md:w-auto px-2 py-3 md:py-3.5 md:px-4 text-center md:text-left">
+                    <span className="md:hidden">Sem</span>
+                    <span className="hidden md:inline">Semester</span>
+                  </th>
+                  <th className="w-[22%] md:w-auto px-2 py-3 md:py-3.5 md:px-4 text-center md:text-left">
+                    SGPA
+                  </th>
+                  <th className="hidden md:table-cell py-3.5 px-4">Overall Grade</th>
+                  <th className="w-[32%] md:w-auto px-2 py-3 md:py-3.5 md:px-4 text-center md:text-left">
+                    <span className="md:hidden">Result File</span>
+                    <span className="hidden md:inline">Result File</span>
+                  </th>
+                  <th className="hidden md:table-cell py-3.5 px-4">Remark</th>
+                  <th className="w-[18%] md:w-16 px-2 py-3 md:py-3.5 md:px-4 text-center">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 text-xs sm:text-sm font-medium text-gray-700">
                 {filteredSemesters.map((row) => (
                   <tr key={row.id} className="hover:bg-gray-50/70 transition-colors">
-                    <td className="py-4 px-4 text-center">
+                    <td className="hidden md:table-cell py-4 px-4 text-center">
                       <span className="w-6 h-6 rounded-lg bg-purple-50 text-[#7656f4] font-bold inline-flex items-center justify-center">
                         {row.id}
                       </span>
                     </td>
-                    <td className="py-4 px-4 font-bold text-gray-800">{row.year}</td>
-                    <td className="py-4 px-4 font-bold text-gray-800">{row.sem}</td>
-                    <td className="py-4 px-4 font-black text-gray-900">{row.sgpa}</td>
-                    <td className="py-4 px-4">
+                    <td className="hidden md:table-cell py-4 px-4 font-bold text-gray-800">{row.year}</td>
+                    <td className="w-[28%] md:w-auto px-2 py-3 md:py-4 md:px-4 text-center md:text-left font-bold text-gray-800">
+                      <span className="md:hidden">Sem {row.sem}</span>
+                      <span className="hidden md:inline">{row.sem}</span>
+                    </td>
+                    <td className="w-[22%] md:w-auto px-2 py-3 md:py-4 md:px-4 text-center md:text-left font-black text-gray-900 tabular-nums">
+                      {row.sgpa}
+                    </td>
+                    <td className="hidden md:table-cell py-4 px-4">
                       <span className="bg-emerald-50 border border-emerald-100 text-emerald-600 font-extrabold px-3 py-1 rounded-lg inline-block">
                         {row.grade}
                       </span>
                     </td>
-                    <td className="py-4 px-4">
-                      <div className="flex items-center gap-2 text-[#7656f4]">
-                        <FileText size={16} className="shrink-0" />
-                        <div>
-                          <span className="font-bold block leading-tight hover:underline cursor-pointer">
-                            {row.file}
-                          </span>
-                          <span className="text-[10px] text-gray-400 font-normal">{row.size}</span>
+                    <td className="w-[32%] md:w-auto px-2 py-3 md:py-4 md:px-4 text-center md:text-left">
+                      {/* Mobile View Button */}
+                      <div className="flex items-center justify-center md:hidden">
+                        <button
+                          type="button"
+                          onClick={() => alert(`Opening official result marksheet: ${row.file}`)}
+                          className="inline-flex items-center justify-center gap-1.5 px-2.5 py-1 rounded-lg bg-purple-50 hover:bg-purple-100 text-[#7656f4] text-xs font-bold border border-purple-200/60 transition-colors cursor-pointer shadow-2xs active:scale-95 mx-auto"
+                          title={`View ${row.file}`}
+                        >
+                          <Eye size={13} className="stroke-[2.2]" />
+                          <span>View</span>
+                        </button>
+                      </div>
+
+                      {/* Desktop Result File display with View option */}
+                      <div className="hidden md:flex items-center justify-between gap-3 text-[#7656f4]">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <FileText size={16} className="shrink-0" />
+                          <div className="min-w-0">
+                            <span className="font-bold block leading-tight hover:underline cursor-pointer truncate">
+                              {row.file}
+                            </span>
+                            <span className="text-[10px] text-gray-400 font-normal">{row.size}</span>
+                          </div>
                         </div>
+                        <button
+                          type="button"
+                          onClick={() => alert(`Opening official result marksheet: ${row.file}`)}
+                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-purple-50 hover:bg-purple-100 text-[#7656f4] text-xs font-bold border border-purple-200/60 transition-colors cursor-pointer shrink-0 ml-2"
+                          title={`View ${row.file}`}
+                        >
+                          <Eye size={13} />
+                          <span>View</span>
+                        </button>
                       </div>
                     </td>
-                    <td className="py-4 px-4">
+                    <td className="hidden md:table-cell py-4 px-4">
                       <span className="bg-emerald-50/80 border border-emerald-100 text-emerald-600 text-xs font-semibold px-3.5 py-1 rounded-full inline-block">
                         {row.remark}
                       </span>
                     </td>
-                    <td className="py-4 px-4 text-center relative">
+                    <td className="w-[18%] md:w-16 px-2 py-3 md:py-4 md:px-4 text-center relative">
                       <button
                         type="button"
                         onClick={(e) => {
                           e.stopPropagation();
                           setActiveActionRowId(activeActionRowId === row.id ? null : row.id);
                         }}
-                        className="p-1.5 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors cursor-pointer"
+                        className="p-1.5 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors cursor-pointer inline-flex items-center justify-center active:scale-95"
+                        title="Actions"
                       >
                         <MoreVertical size={16} />
                       </button>
 
                       {/* Dropdown Action Menu */}
                       {activeActionRowId === row.id && (
-                        <div className="absolute right-4 top-12 z-30 bg-white rounded-2xl shadow-xl border border-gray-100 p-1.5 w-28 animate-in fade-in zoom-in duration-150">
-                          <button
-                            type="button"
-                            onClick={() => {
+                        <>
+                          <div
+                            className="fixed inset-0 z-20 cursor-default"
+                            onClick={(e) => {
+                              e.stopPropagation();
                               setActiveActionRowId(null);
-                              handleOpenUpload(selectedMenteeForDetails);
                             }}
-                            className="w-full text-left px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-purple-50 hover:text-[#7656f4] rounded-xl flex items-center gap-2 transition-colors cursor-pointer"
-                          >
-                            <Pencil size={14} className="text-[#7656f4]" />
-                            <span>Edit</span>
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setActiveActionRowId(null);
-                              alert(`Deleted result for Semester ${row.sem}`);
-                            }}
-                            className="w-full text-left px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-xl flex items-center gap-2 transition-colors cursor-pointer"
-                          >
-                            <Trash2 size={14} className="text-gray-500" />
-                            <span>Delete</span>
-                          </button>
-                        </div>
+                          />
+                          <div className="absolute right-2 md:right-4 top-10 md:top-12 z-30 bg-white rounded-2xl shadow-xl border border-gray-100 p-1.5 w-28 animate-in fade-in zoom-in duration-150 text-left">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setActiveActionRowId(null);
+                                handleOpenUpload(selectedMenteeForDetails);
+                              }}
+                              className="w-full text-left px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-purple-50 hover:text-[#7656f4] rounded-xl flex items-center gap-2 transition-colors cursor-pointer"
+                            >
+                              <Pencil size={14} className="text-[#7656f4]" />
+                              <span>Edit</span>
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setActiveActionRowId(null);
+                                alert(`Deleted result for Semester ${row.sem}`);
+                              }}
+                              className="w-full text-left px-3 py-2 text-xs font-semibold text-red-600 hover:bg-red-50 rounded-xl flex items-center gap-2 transition-colors cursor-pointer"
+                            >
+                              <Trash2 size={14} className="text-red-500" />
+                              <span>Delete</span>
+                            </button>
+                          </div>
+                        </>
                       )}
                     </td>
                   </tr>
@@ -642,10 +760,10 @@ export default function MentorResults({ initialUpload = false }) {
   return (
     <div className="flex flex-col gap-5">
       {/* FILTER & SEARCH CONTROL BAR */}
-      <div className="bg-white rounded-2xl p-3 sm:p-4 border border-slate-200/80 shadow-2xs flex flex-col md:flex-row items-center justify-between gap-3">
+      <div className="bg-white rounded-2xl p-3 sm:p-4 border border-slate-200/80 shadow-2xs flex flex-col md:flex-row items-center justify-between gap-2.5 sm:gap-3 relative z-30">
         {/* Search input field */}
         <div className="relative flex-1 w-full">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={19} />
+          <Search className="absolute left-3.5 md:left-4 top-1/2 -translate-y-1/2 text-slate-400" size={17} />
           <input
             type="text"
             value={searchQuery}
@@ -653,118 +771,201 @@ export default function MentorResults({ initialUpload = false }) {
               setSearchQuery(e.target.value);
               setCurrentPage(1);
             }}
-            placeholder="Search mentee by name, college roll number, email or phone"
-            className="w-full bg-[#f8f9fc] border border-slate-200/60 rounded-xl pl-11 pr-4 py-2.5 text-sm font-medium text-slate-800 placeholder:text-slate-400 outline-none focus:border-[#7656f4] focus:bg-white transition-all shadow-inner"
+            placeholder="Search by name or roll no..."
+            className="w-full h-9 md:h-auto bg-[#f8f9fc] border border-slate-200/60 rounded-xl pl-10 md:pl-11 pr-4 py-0 md:py-2.5 text-xs sm:text-sm font-medium text-slate-800 placeholder:text-slate-400 outline-none focus:border-[#7656f4] focus:bg-white transition-all shadow-inner"
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
             >
-              <X size={16} />
+              <X size={15} />
             </button>
           )}
         </div>
 
-        {/* Right side control buttons */}
-        <div className="flex flex-wrap items-center gap-3 w-full md:w-auto justify-between md:justify-end">
+        {/* Right side control buttons: 2x2 grid on mobile, flex on desktop */}
+        <div className="grid grid-cols-2 md:flex md:flex-wrap items-center gap-2 sm:gap-3 w-full md:w-auto">
           {/* Department Filter */}
-          <div className="relative">
-            <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-xl pl-3.5 pr-8 py-2.5 text-sm font-semibold text-slate-700 shadow-2xs hover:border-slate-300 transition-all cursor-pointer">
-              <Building2 size={18} className="text-slate-500 shrink-0" />
-              <select
-                value={departmentFilter}
-                onChange={(e) => {
-                  setDepartmentFilter(e.target.value);
-                  setCurrentPage(1);
-                }}
-                className="bg-transparent text-slate-700 font-semibold appearance-none outline-none cursor-pointer"
+          <div className={`relative w-full md:w-auto ${openDropdown === 'dept' ? 'z-30' : 'z-10'}`} data-dropdown="dept">
+            <button
+              type="button"
+              onClick={() => setOpenDropdown(openDropdown === 'dept' ? null : 'dept')}
+              className={`h-9 md:h-[42px] w-full md:w-auto flex items-center justify-between gap-1.5 sm:gap-2.5 bg-white border rounded-xl px-3 py-0 md:py-2.5 text-xs sm:text-sm font-semibold transition-all cursor-pointer select-none shadow-2xs ${
+                openDropdown === 'dept'
+                  ? 'border-[#7656f4] ring-2 ring-[#7656f4]/15 text-[#7656f4]'
+                  : departmentFilter !== 'All'
+                  ? 'border-[#7656f4]/60 bg-[#F6F3FF] text-[#6D4AFF]'
+                  : 'border-slate-200 text-slate-700 hover:border-slate-300 hover:text-slate-900'
+              }`}
+            >
+              <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                <Building2 size={16} className={`shrink-0 md:w-[18px] md:h-[18px] transition-colors ${openDropdown === 'dept' || departmentFilter !== 'All' ? 'text-[#7656f4]' : 'text-slate-500'}`} />
+                <span className="truncate">{departmentFilter === 'All' ? 'All Departments' : departmentFilter}</span>
+              </div>
+              <ChevronDown size={14} className={`shrink-0 transition-transform duration-200 md:w-4 md:h-4 ml-1.5 ${openDropdown === 'dept' ? 'rotate-180 text-[#7656f4]' : 'text-slate-400'}`} />
+            </button>
+
+            {openDropdown === 'dept' && (
+              <div
+                className="absolute left-0 top-full mt-1.5 z-50 w-full min-w-[160px] md:w-48 bg-white border border-slate-200/90 rounded-2xl shadow-xl p-1.5 max-h-60 overflow-y-auto animate-in fade-in zoom-in-95 duration-150"
               >
-                <option value="All">All Departments</option>
-                <option value="CSE">CSE</option>
-                <option value="ECE">ECE</option>
-                <option value="IT">IT</option>
-                <option value="ME">ME</option>
-                <option value="EE">EE</option>
-              </select>
-            </div>
-            <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                {DEPARTMENTS.map((dept) => {
+                  const isSelected = dept === 'All Departments' ? departmentFilter === 'All' : departmentFilter === dept;
+                  return (
+                    <button
+                      key={dept}
+                      type="button"
+                      onClick={() => {
+                        setDepartmentFilter(dept === 'All Departments' ? 'All' : dept);
+                        setCurrentPage(1);
+                        setOpenDropdown(null);
+                      }}
+                      className={`w-full text-left px-3 py-2 text-xs sm:text-sm font-semibold rounded-xl transition-all cursor-pointer flex items-center justify-between ${
+                        isSelected
+                          ? 'bg-[#F3EFFF] text-[#6D4AFF] font-bold'
+                          : 'text-slate-700 hover:bg-[#F6F3FF] hover:text-[#6D4AFF]'
+                      }`}
+                    >
+                      <span className="truncate">{dept}</span>
+                      {isSelected && <CheckCircle2 size={14} className="text-[#6D4AFF] shrink-0 ml-1.5" />}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
           {/* Year Filter */}
-          <div className="relative">
-            <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-xl pl-3.5 pr-8 py-2.5 text-sm font-semibold text-slate-700 shadow-2xs hover:border-slate-300 transition-all cursor-pointer">
-              <GraduationCap size={18} className="text-slate-500 shrink-0" />
-              <select
-                value={yearFilter}
-                onChange={(e) => {
-                  setYearFilter(e.target.value);
-                  setCurrentPage(1);
-                }}
-                className="bg-transparent text-slate-700 font-semibold appearance-none outline-none cursor-pointer"
+          <div className={`relative w-full md:w-auto ${openDropdown === 'year' ? 'z-30' : 'z-10'}`} data-dropdown="year">
+            <button
+              type="button"
+              onClick={() => setOpenDropdown(openDropdown === 'year' ? null : 'year')}
+              className={`h-9 md:h-[42px] w-full md:w-auto flex items-center justify-between gap-1.5 sm:gap-2.5 bg-white border rounded-xl px-3 py-0 md:py-2.5 text-xs sm:text-sm font-semibold transition-all cursor-pointer select-none shadow-2xs ${
+                openDropdown === 'year'
+                  ? 'border-[#7656f4] ring-2 ring-[#7656f4]/15 text-[#7656f4]'
+                  : yearFilter !== 'All'
+                  ? 'border-[#7656f4]/60 bg-[#F6F3FF] text-[#6D4AFF]'
+                  : 'border-slate-200 text-slate-700 hover:border-slate-300 hover:text-slate-900'
+              }`}
+            >
+              <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                <GraduationCap size={16} className={`shrink-0 md:w-[18px] md:h-[18px] transition-colors ${openDropdown === 'year' || yearFilter !== 'All' ? 'text-[#7656f4]' : 'text-slate-500'}`} />
+                <span className="truncate">{yearFilter === 'All' ? 'All Years' : yearFilter}</span>
+              </div>
+              <ChevronDown size={14} className={`shrink-0 transition-transform duration-200 md:w-4 md:h-4 ml-1.5 ${openDropdown === 'year' ? 'rotate-180 text-[#7656f4]' : 'text-slate-400'}`} />
+            </button>
+
+            {openDropdown === 'year' && (
+              <div
+                className="absolute right-0 md:right-auto md:left-0 top-full mt-1.5 z-50 w-full min-w-[150px] md:w-44 bg-white border border-slate-200/90 rounded-2xl shadow-xl p-1.5 max-h-60 overflow-y-auto animate-in fade-in zoom-in-95 duration-150"
               >
-                <option value="All">All Years</option>
-                <option value="1st Year">1st Year</option>
-                <option value="2nd Year">2nd Year</option>
-                <option value="3rd Year">3rd Year</option>
-                <option value="4th Year">4th Year</option>
-              </select>
-            </div>
-            <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                {YEARS.map((yr) => {
+                  const isSelected = yr === 'All Years' ? yearFilter === 'All' : yearFilter === yr;
+                  return (
+                    <button
+                      key={yr}
+                      type="button"
+                      onClick={() => {
+                        setYearFilter(yr === 'All Years' ? 'All' : yr);
+                        setCurrentPage(1);
+                        setOpenDropdown(null);
+                      }}
+                      className={`w-full text-left px-3 py-2 text-xs sm:text-sm font-semibold rounded-xl transition-all cursor-pointer flex items-center justify-between ${
+                        isSelected
+                          ? 'bg-[#F3EFFF] text-[#6D4AFF] font-bold'
+                          : 'text-slate-700 hover:bg-[#F6F3FF] hover:text-[#6D4AFF]'
+                      }`}
+                    >
+                      <span className="truncate">{yr}</span>
+                      {isSelected && <CheckCircle2 size={14} className="text-[#6D4AFF] shrink-0 ml-1.5" />}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
           {/* Semester Filter */}
-          <div className="relative">
-            <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-xl pl-3.5 pr-8 py-2.5 text-sm font-semibold text-slate-700 shadow-2xs hover:border-slate-300 transition-all cursor-pointer">
-              <CalendarDays size={18} className="text-slate-500 shrink-0" />
-              <select
-                value={semesterFilter}
-                onChange={(e) => {
-                  setSemesterFilter(e.target.value);
-                  setCurrentPage(1);
-                }}
-                className="bg-transparent text-slate-700 font-semibold appearance-none outline-none cursor-pointer"
+          <div className={`relative w-full md:w-auto ${openDropdown === 'sem' ? 'z-30' : 'z-10'}`} data-dropdown="sem">
+            <button
+              type="button"
+              onClick={() => setOpenDropdown(openDropdown === 'sem' ? null : 'sem')}
+              className={`h-9 md:h-[42px] w-full md:w-auto flex items-center justify-between gap-1.5 sm:gap-2.5 bg-white border rounded-xl px-3 py-0 md:py-2.5 text-xs sm:text-sm font-semibold transition-all cursor-pointer select-none shadow-2xs ${
+                openDropdown === 'sem'
+                  ? 'border-[#7656f4] ring-2 ring-[#7656f4]/15 text-[#7656f4]'
+                  : semesterFilter !== 'All'
+                  ? 'border-[#7656f4]/60 bg-[#F6F3FF] text-[#6D4AFF]'
+                  : 'border-slate-200 text-slate-700 hover:border-slate-300 hover:text-slate-900'
+              }`}
+            >
+              <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                <CalendarDays size={16} className={`shrink-0 md:w-[18px] md:h-[18px] transition-colors ${openDropdown === 'sem' || semesterFilter !== 'All' ? 'text-[#7656f4]' : 'text-slate-500'}`} />
+                <span className="truncate">{semesterFilter === 'All' ? 'All Semesters' : semesterFilter}</span>
+              </div>
+              <ChevronDown size={14} className={`shrink-0 transition-transform duration-200 md:w-4 md:h-4 ml-1.5 ${openDropdown === 'sem' ? 'rotate-180 text-[#7656f4]' : 'text-slate-400'}`} />
+            </button>
+
+            {openDropdown === 'sem' && (
+              <div
+                className="absolute left-0 top-full mt-1.5 z-50 w-full min-w-[160px] md:w-48 bg-white border border-slate-200/90 rounded-2xl shadow-xl p-1.5 max-h-60 overflow-y-auto animate-in fade-in zoom-in-95 duration-150"
               >
-                <option value="All">All Semesters</option>
-                <option value="1st Sem">1st Sem</option>
-                <option value="2nd Sem">2nd Sem</option>
-                <option value="3rd Sem">3rd Sem</option>
-                <option value="4th Sem">4th Sem</option>
-                <option value="5th Sem">5th Sem</option>
-                <option value="6th Sem">6th Sem</option>
-                <option value="7th Sem">7th Sem</option>
-                <option value="8th Sem">8th Sem</option>
-              </select>
-            </div>
-            <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                {SEMESTERS.map((sem) => {
+                  const isSelected = sem === 'All Semesters' ? semesterFilter === 'All' : semesterFilter === sem;
+                  return (
+                    <button
+                      key={sem}
+                      type="button"
+                      onClick={() => {
+                        setSemesterFilter(sem === 'All Semesters' ? 'All' : sem);
+                        setCurrentPage(1);
+                        setOpenDropdown(null);
+                      }}
+                      className={`w-full text-left px-3 py-2 text-xs sm:text-sm font-semibold rounded-xl transition-all cursor-pointer flex items-center justify-between ${
+                        isSelected
+                          ? 'bg-[#F3EFFF] text-[#6D4AFF] font-bold'
+                          : 'text-slate-700 hover:bg-[#F6F3FF] hover:text-[#6D4AFF]'
+                      }`}
+                    >
+                      <span className="truncate">{sem}</span>
+                      {isSelected && <CheckCircle2 size={14} className="text-[#6D4AFF] shrink-0 ml-1.5" />}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
           {/* View mode toggle (Grid vs List) */}
-          <div className="bg-white border border-slate-200/90 rounded-2xl p-1 shadow-2xs inline-flex items-center gap-1">
-            <button
-              type="button"
-              onClick={() => setViewMode('grid')}
-              className={`p-2 rounded-xl transition-all cursor-pointer ${
-                viewMode === 'grid'
-                  ? 'bg-[#f0eaff] text-[#7656f4] border border-[#7656f4]/30 shadow-2xs'
-                  : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
-              }`}
-              title="Grid View"
-            >
-              <LayoutGrid size={18} />
-            </button>
-            <button
-              type="button"
-              onClick={() => setViewMode('list')}
-              className={`p-2 rounded-xl transition-all cursor-pointer ${
-                viewMode === 'list'
-                  ? 'bg-[#f0eaff] text-[#7656f4] border border-[#7656f4]/30 shadow-2xs'
-                  : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
-              }`}
-              title="List View"
-            >
-              <List size={18} />
-            </button>
+          <div className="flex justify-end md:inline-flex w-full md:w-auto">
+            <div className="h-9 md:h-[42px] w-full md:w-auto bg-white border border-[#E2E8F0] rounded-full p-1 shadow-2xs inline-flex items-center justify-center gap-1 select-none">
+              <button
+                type="button"
+                onClick={() => setViewMode('grid')}
+                className={`flex-1 md:flex-initial h-full px-3 md:px-3.5 rounded-full transition-all duration-200 cursor-pointer flex items-center justify-center ${
+                  viewMode === 'grid'
+                    ? 'bg-[#F3EFFF] text-[#6D4AFF] border border-[#D8CEFF] hover:bg-[#EAE2FF] shadow-2xs'
+                    : 'text-[#94A3B8] border border-transparent hover:bg-[#F6F3FF] hover:text-[#6D4AFF] hover:scale-105 active:scale-95'
+                }`}
+                title="Grid View"
+                aria-label="Grid View"
+              >
+                <LayoutGrid size={16} className="md:w-[17px] md:h-[17px] transition-transform" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setViewMode('list')}
+                className={`flex-1 md:flex-initial h-full px-3 md:px-3.5 rounded-full transition-all duration-200 cursor-pointer flex items-center justify-center ${
+                  viewMode === 'list'
+                    ? 'bg-[#F3EFFF] text-[#6D4AFF] border border-[#D8CEFF] hover:bg-[#EAE2FF] shadow-2xs'
+                    : 'text-[#94A3B8] border border-transparent hover:bg-[#F6F3FF] hover:text-[#6D4AFF] hover:scale-105 active:scale-95'
+                }`}
+                title="List View"
+                aria-label="List View"
+              >
+                <List size={16} className="md:w-[17px] md:h-[17px] transition-transform" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -834,61 +1035,106 @@ export default function MentorResults({ initialUpload = false }) {
       ) : (
         /* List View */
         <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 overflow-hidden font-['Roboto',sans-serif]">
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto w-full">
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-gradient-to-r from-[#7656f4] via-[#6845f2] to-[#5531dc] text-white text-xs font-bold uppercase tracking-wider select-none">
-                  <th className="py-3.5 px-5 text-left">Student</th>
-                  <th className="py-3.5 px-4 text-center">Roll Number</th>
-                  <th className="py-3.5 px-4 text-center">Department</th>
-                  <th className="py-3.5 px-4 text-center">Year</th>
-                  <th className="py-3.5 px-4 text-center">Semester</th>
-                  <th className="py-3.5 px-4 text-center">Last Result</th>
-                  <th className="py-3.5 px-5 text-center">Actions</th>
+                  <th className="py-3.5 px-3 md:px-5 text-left min-w-[180px] md:min-w-0 whitespace-nowrap">
+                    <span className="md:hidden">MENTEE</span>
+                    <span className="hidden md:inline">Student</span>
+                  </th>
+                  <th className="hidden md:table-cell py-3.5 px-4 text-center whitespace-nowrap">
+                    Roll Number
+                  </th>
+                  <th className="py-3.5 px-3 md:px-4 text-left md:text-center min-w-[140px] md:min-w-0 whitespace-nowrap">
+                    Department
+                  </th>
+                  <th className="py-3.5 px-3 md:px-4 text-left md:text-center min-w-[130px] md:min-w-0 whitespace-nowrap">
+                    <span className="md:hidden">YEAR / SEMESTER</span>
+                    <span className="hidden md:inline">Year</span>
+                  </th>
+                  <th className="hidden md:table-cell py-3.5 px-4 text-center whitespace-nowrap">
+                    Semester
+                  </th>
+                  <th className="py-3.5 px-3 md:px-4 text-center min-w-[110px] md:min-w-0 whitespace-nowrap">
+                    Last Result
+                  </th>
+                  <th className="py-3.5 px-3 md:px-5 text-center min-w-[210px] md:min-w-0 whitespace-nowrap">
+                    Actions
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 text-sm">
                 {currentPageMentees.map((mentee) => (
                   <tr key={mentee.id} className="hover:bg-gray-50/60 transition-colors">
-                    <td className="py-3 px-5 text-left">
-                      <div className="flex items-center gap-3">
+                    {/* Mentee column */}
+                    <td className="py-3 px-3 md:px-5 text-left min-w-[180px] md:min-w-0">
+                      <div className="flex items-center gap-2.5 sm:gap-3">
                         <img
                           src={mentee.avatar}
                           alt={mentee.name}
-                          className="w-9 h-9 rounded-full object-cover border border-purple-100 shrink-0"
+                          className="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover border border-purple-100 shrink-0"
                         />
-                        <span className="font-bold text-gray-900">{mentee.name}</span>
+                        <div className="min-w-0">
+                          <span className="font-bold text-gray-900 block truncate leading-tight">{mentee.name}</span>
+                          <span className="text-[11px] text-[#7656f4] font-semibold block md:hidden mt-0.5 whitespace-nowrap">
+                            {mentee.rollNo}
+                          </span>
+                        </div>
                       </div>
                     </td>
-                    <td className="py-3 px-4 text-center">
+
+                    {/* Roll Number (hidden on mobile, visible on desktop) */}
+                    <td className="hidden md:table-cell py-3 px-4 text-center whitespace-nowrap">
                       <span className="inline-block bg-[#f6f2fe] text-[#7656f4] text-xs font-semibold px-2 py-0.5 rounded-md">
                         {mentee.rollNo}
                       </span>
                     </td>
-                    <td className="py-3 px-4 text-center font-semibold text-gray-700">{mentee.department}</td>
-                    <td className="py-3 px-4 text-center text-gray-600 font-medium">{mentee.year || mentee.yearSem?.split('/')[0]?.trim()}</td>
-                    <td className="py-3 px-4 text-center text-gray-600 font-medium">{mentee.semester || mentee.yearSem?.split('/')[1]?.trim()}</td>
-                    <td className="py-3 px-4 text-center">
-                      <span className="inline-block bg-emerald-50 text-emerald-600 font-extrabold text-xs px-2.5 py-1 rounded-lg border border-emerald-100">
+
+                    {/* Department column */}
+                    <td className="py-3 px-3 md:px-4 text-left md:text-center min-w-[140px] md:min-w-0 font-semibold text-gray-700 whitespace-nowrap">
+                      {mentee.department}
+                    </td>
+
+                    {/* Year / Semester column */}
+                    <td className="py-3 px-3 md:px-4 text-left md:text-center min-w-[130px] md:min-w-0 text-gray-600 font-medium whitespace-nowrap">
+                      <span className="md:hidden">
+                        {mentee.yearSem || `${mentee.year || mentee.yearNum + ' Year'} / ${mentee.semester}`}
+                      </span>
+                      <span className="hidden md:inline">
+                        {mentee.year || mentee.yearSem?.split('/')[0]?.trim()}
+                      </span>
+                    </td>
+
+                    {/* Semester (hidden on mobile, visible on desktop) */}
+                    <td className="hidden md:table-cell py-3 px-4 text-center text-gray-600 font-medium whitespace-nowrap">
+                      {mentee.semester || mentee.yearSem?.split('/')[1]?.trim()}
+                    </td>
+
+                    {/* Last Result column */}
+                    <td className="py-3 px-3 md:px-4 text-center min-w-[110px] md:min-w-0 whitespace-nowrap">
+                      <span className="inline-block bg-emerald-50 text-emerald-600 font-extrabold text-xs px-2.5 py-1 rounded-lg border border-emerald-100 whitespace-nowrap">
                         {mentee.lastResult}
                       </span>
                     </td>
-                    <td className="py-3 px-4 text-center">
+
+                    {/* Actions column */}
+                    <td className="py-3 px-3 md:px-4 text-center min-w-[210px] md:min-w-0 whitespace-nowrap">
                       <div className="flex items-center justify-center gap-2">
                         <button
                           type="button"
                           onClick={() => setSelectedMenteeForDetails(mentee)}
-                          className="bg-[#f6f2fe] border border-[#7656f4]/30 text-[#7656f4] hover:bg-purple-100 py-[8.5px] px-3 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
+                          className="h-8 px-2.5 md:h-auto md:py-[8.5px] md:px-3 rounded-lg bg-[#f6f2fe] border border-[#7656f4]/30 text-[#7656f4] hover:bg-purple-100 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap shrink-0 active:scale-95"
                         >
-                          <Eye size={15} />
+                          <Eye size={14} className="sm:w-[15px] sm:h-[15px]" />
                           <span>View Details</span>
                         </button>
                         <button
                           type="button"
                           onClick={() => handleOpenUpload(mentee)}
-                          className="bg-[#7656f4] hover:bg-[#6242e2] text-white py-[8.5px] px-3 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors shadow-xs cursor-pointer"
+                          className="h-8 px-2.5 md:h-auto md:py-[8.5px] md:px-3 rounded-lg bg-[#7656f4] hover:bg-[#6242e2] text-white text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-xs cursor-pointer whitespace-nowrap shrink-0 active:scale-95"
                         >
-                          <UploadCloud size={15} />
+                          <UploadCloud size={14} className="sm:w-[15px] sm:h-[15px]" />
                           <span>Upload</span>
                         </button>
                       </div>

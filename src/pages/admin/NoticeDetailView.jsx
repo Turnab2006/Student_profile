@@ -125,12 +125,12 @@ export default function NoticeDetailView({
   return (
     <div className="w-full space-y-5 animate-in fade-in duration-200 font-['Roboto',sans-serif]">
       {/* Top Header / Action Bar with Back Button */}
-      <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex items-center gap-3 min-w-0">
+      <div className="bg-white rounded-2xl border border-slate-200/90 shadow-md shadow-slate-200/50 p-3.5 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+        <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
           <button
             type="button"
             onClick={onBack}
-            className={`w-10 h-10 rounded-xl bg-gray-100/80 hover:bg-gray-200 active:scale-95 text-gray-700 flex items-center justify-center shrink-0 transition-all cursor-pointer shadow-2xs border border-gray-200/60 ${
+            className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gray-100/80 hover:bg-gray-200 active:scale-95 text-gray-700 flex items-center justify-center shrink-0 transition-all cursor-pointer shadow-2xs border border-gray-200/60 ${
               isStudentPortal
                 ? "hover:border-blue-300 hover:text-blue-600 hover:bg-blue-50"
                 : isMentorPortal
@@ -142,8 +142,8 @@ export default function NoticeDetailView({
           >
             <ArrowLeft size={18} />
           </button>
-          <div className="min-w-0">
-            <h2 className="text-lg sm:text-xl font-bold text-gray-900 tracking-tight truncate">
+          <div className="min-w-0 flex-1">
+            <h2 className="text-base sm:text-xl font-bold text-gray-900 tracking-tight truncate">
               {notice.title}
             </h2>
           </div>
@@ -172,11 +172,11 @@ export default function NoticeDetailView({
           </div>
         ) : (
           attachedFiles.length > 0 && (
-            <div className="flex items-center gap-2 self-stretch sm:self-auto justify-end">
+            <div className="w-full sm:w-auto flex items-center justify-center sm:justify-end mt-1 sm:mt-0">
               <button
                 type="button"
                 onClick={() => alert(`Downloading circular: ${attachedFiles[0].name}`)}
-                className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer shadow-sm active:scale-95 text-white ${
+                className={`w-full sm:w-auto justify-center flex items-center gap-1.5 px-4 py-2.5 sm:py-2 rounded-xl text-xs font-bold transition-all cursor-pointer shadow-sm active:scale-95 text-white ${
                   isStudentPortal
                     ? "bg-[#2563eb] hover:bg-[#1d4ed8]"
                     : "bg-[#7656f4] hover:bg-[#6242e2]"
@@ -192,7 +192,7 @@ export default function NoticeDetailView({
 
       {/* Hero Notice Banner */}
       <section
-        className={`relative overflow-hidden rounded-2xl border p-6 sm:p-7 shadow-md text-white space-y-4 ${
+        className={`relative overflow-hidden rounded-2xl border p-4 sm:p-7 shadow-md text-white space-y-4 ${
           isStudentPortal
             ? "bg-gradient-to-r from-[#2563eb] via-[#1d4ed8] to-[#1e40af] border-blue-600/30 shadow-blue-900/10"
             : isMentorPortal
@@ -231,38 +231,38 @@ export default function NoticeDetailView({
             <span>{notice.status}</span>
           </span>
 
-          <span className="text-xs font-mono font-bold text-white/90 ml-auto bg-black/25 px-2.5 py-1 rounded-lg border border-white/25 backdrop-blur-xs">
+          <span className="text-xs font-mono font-bold text-white/90 sm:ml-auto bg-black/25 px-2.5 py-1 rounded-lg border border-white/25 backdrop-blur-xs shrink-0">
             ID: {notice.id}
           </span>
         </div>
 
-        {/* Notice Title */}
-        <div className="relative z-10 space-y-1">
+        {/* Notice Title (Hidden on mobile to prevent duplicate title with top bar) */}
+        <div className="relative z-10 space-y-1 hidden sm:block">
           <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-white leading-snug tracking-tight">
             {notice.title}
           </h1>
         </div>
 
         {/* Key Logistics Pills */}
-        <div className="relative z-10 flex flex-wrap items-center gap-2.5 pt-2 border-t border-white/20">
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/15 backdrop-blur-sm border border-white/25 text-xs text-white">
-            <CalendarDays size={14} className="text-white/90" />
-            <span>Published: <strong className="font-semibold">{notice.date}</strong></span>
+        <div className="relative z-10 flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-2.5 pt-2 border-t border-white/20">
+          <div className="w-full sm:w-auto flex items-start sm:items-center gap-2 sm:gap-1.5 px-3.5 py-2.5 sm:px-3 sm:py-1.5 rounded-xl bg-white/15 backdrop-blur-sm border border-white/25 text-xs text-white">
+            <CalendarDays size={14} className="shrink-0 mt-0.5 sm:mt-0 text-white/90" />
+            <span className="min-w-0 flex-1 leading-snug">Published: <strong className="font-semibold">{notice.date}</strong></span>
           </div>
 
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/15 backdrop-blur-sm border border-white/25 text-xs text-white">
-            <Clock size={14} className="text-white/90" />
-            <span>Valid Till: <strong className="font-semibold">{notice.expiryDate || "No Expiry / Open-ended"}</strong></span>
+          <div className="w-full sm:w-auto flex items-start sm:items-center gap-2 sm:gap-1.5 px-3.5 py-2.5 sm:px-3 sm:py-1.5 rounded-xl bg-white/15 backdrop-blur-sm border border-white/25 text-xs text-white">
+            <Clock size={14} className="shrink-0 mt-0.5 sm:mt-0 text-white/90" />
+            <span className="min-w-0 flex-1 leading-snug">Valid Till: <strong className="font-semibold">{notice.expiryDate || "No Expiry / Open-ended"}</strong></span>
           </div>
 
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/15 backdrop-blur-sm border border-white/25 text-xs text-white">
-            <Users size={14} className="text-white/90" />
-            <span>Target Audience: <strong className="font-semibold">{notice.audience || "All Students"}</strong></span>
+          <div className="w-full sm:w-auto flex items-start sm:items-center gap-2 sm:gap-1.5 px-3.5 py-2.5 sm:px-3 sm:py-1.5 rounded-xl bg-white/15 backdrop-blur-sm border border-white/25 text-xs text-white">
+            <Users size={14} className="shrink-0 mt-0.5 sm:mt-0 text-white/90" />
+            <span className="min-w-0 flex-1 leading-snug">Target Audience: <strong className="font-semibold">{notice.audience || "All Students"}</strong></span>
           </div>
 
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/15 backdrop-blur-sm border border-white/25 text-xs text-white">
-            <User size={14} className="text-white/90" />
-            <span>Issued By: <strong className="font-semibold">{notice.author || "Super Admin"}</strong></span>
+          <div className="w-full sm:w-auto flex items-start sm:items-center gap-2 sm:gap-1.5 px-3.5 py-2.5 sm:px-3 sm:py-1.5 rounded-xl bg-white/15 backdrop-blur-sm border border-white/25 text-xs text-white">
+            <User size={14} className="shrink-0 mt-0.5 sm:mt-0 text-white/90" />
+            <span className="min-w-0 flex-1 leading-snug">Issued By: <strong className="font-semibold">{notice.author || "Super Admin"}</strong></span>
           </div>
         </div>
 
