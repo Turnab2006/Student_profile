@@ -396,11 +396,10 @@ export default function MentorMentees({ onNavigate }) {
             type="button"
             onClick={() => setViewMode('grid')}
             title="Grid View"
-            className={`p-2 rounded-xl transition-all cursor-pointer ${
-              viewMode === 'grid'
-                ? 'bg-[#f0eaff] text-[#7656f4] border border-[#7656f4]/30 shadow-2xs'
-                : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
-            }`}
+            className={`p-2 rounded-xl transition-all cursor-pointer ${viewMode === 'grid'
+              ? 'bg-[#f0eaff] text-[#7656f4] border border-[#7656f4]/30 shadow-2xs'
+              : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
+              }`}
           >
             <LayoutGrid size={18} />
           </button>
@@ -408,11 +407,10 @@ export default function MentorMentees({ onNavigate }) {
             type="button"
             onClick={() => setViewMode('list')}
             title="List View"
-            className={`p-2 rounded-xl transition-all cursor-pointer ${
-              viewMode === 'list'
-                ? 'bg-[#f0eaff] text-[#7656f4] border border-[#7656f4]/30 shadow-2xs'
-                : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
-            }`}
+            className={`p-2 rounded-xl transition-all cursor-pointer ${viewMode === 'list'
+              ? 'bg-[#f0eaff] text-[#7656f4] border border-[#7656f4]/30 shadow-2xs'
+              : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
+              }`}
           >
             <List size={18} />
           </button>
@@ -547,37 +545,15 @@ export default function MentorMentees({ onNavigate }) {
             </table>
           </div>
 
-          {/* PAGINATION FOOTER CONTROL INSIDE THE SAME CARD MATCHING SCREENSHOT */}
-          <div className="relative flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-6 py-4 border-t border-slate-100 bg-white">
-            {/* Rows per page dropdown */}
-            <div className="flex items-center gap-2.5 text-[13px] text-slate-600 font-medium z-10">
-              <span>Rows per page:</span>
-              <div className="relative">
-                <select
-                  value={rowsPerPage}
-                  onChange={(e) => {
-                    setRowsPerPage(Number(e.target.value));
-                    setCurrentPage(1);
-                  }}
-                  className="appearance-none pl-3 pr-8 py-1.5 bg-white border border-slate-200/90 rounded-xl text-[12px] font-semibold text-slate-800 outline-none cursor-pointer hover:border-slate-300"
-                >
-                  <option value={10}>10</option>
-                  <option value={20}>20</option>
-                  <option value={50}>50</option>
-                </select>
-                <ChevronDown
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
-                  size={14}
-                />
-              </div>
-            </div>
-
-            {/* Page navigation controls: << < 1 2 3 4 5 > >> (CENTER ALIGNED) */}
-            <div className="sm:absolute sm:left-1/2 sm:-translate-x-1/2 flex items-center justify-center gap-3.5 text-slate-600">
+          {/* PAGINATION FOOTER CONTROL INSIDE THE SAME CARD: 2 Centered Rows on Mobile, 1 Row on Desktop */}
+          <div className="relative flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-4 py-3 sm:px-6 sm:py-4 border-t border-slate-100 bg-white">
+            {/* Top row on mobile (order-1): Page navigation controls: << < 1 2 3 4 5 > >> */}
+            <div className="order-1 sm:order-2 sm:absolute sm:left-1/2 sm:-translate-x-1/2 flex items-center justify-center gap-1.5 sm:gap-2.5 text-slate-600 w-full sm:w-auto">
               <button
                 onClick={() => setCurrentPage(1)}
                 disabled={validCurrentPage === 1}
-                className="p-1 rounded-lg text-slate-500 hover:text-[#7656f4] disabled:opacity-30 transition-colors cursor-pointer"
+                className="h-8 w-8 flex items-center justify-center rounded-lg text-slate-500 hover:text-[#7656f4] disabled:opacity-30 transition-colors cursor-pointer"
+                aria-label="First page"
               >
                 <ChevronsLeft size={16} />
               </button>
@@ -585,17 +561,18 @@ export default function MentorMentees({ onNavigate }) {
               <button
                 onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
                 disabled={validCurrentPage === 1}
-                className="p-1 rounded-lg text-slate-500 hover:text-[#7656f4] disabled:opacity-30 transition-colors cursor-pointer"
+                className="h-8 w-8 flex items-center justify-center rounded-lg text-slate-500 hover:text-[#7656f4] disabled:opacity-30 transition-colors cursor-pointer"
+                aria-label="Previous page"
               >
                 <ChevronLeft size={16} />
               </button>
 
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-1">
                 {Array.from({ length: totalPages }, (_, idx) => idx + 1).map((pageNum) => (
                   <button
                     key={pageNum}
                     onClick={() => setCurrentPage(pageNum)}
-                    className={`w-8 h-8 rounded-xl text-[13px] font-bold transition-all flex items-center justify-center cursor-pointer ${validCurrentPage === pageNum
+                    className={`h-8 w-8 rounded-lg text-xs font-bold transition-all flex items-center justify-center cursor-pointer ${validCurrentPage === pageNum
                       ? 'bg-[#7656f4] text-white shadow-sm shadow-[#7656f4]/20'
                       : 'text-slate-600 hover:text-[#7656f4] hover:bg-[#f0eaff]'
                       }`}
@@ -608,7 +585,8 @@ export default function MentorMentees({ onNavigate }) {
               <button
                 onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
                 disabled={validCurrentPage === totalPages}
-                className="p-1 rounded-lg text-slate-500 hover:text-[#7656f4] disabled:opacity-30 transition-colors cursor-pointer"
+                className="h-8 w-8 flex items-center justify-center rounded-lg text-slate-500 hover:text-[#7656f4] disabled:opacity-30 transition-colors cursor-pointer"
+                aria-label="Next page"
               >
                 <ChevronRight size={16} />
               </button>
@@ -616,10 +594,35 @@ export default function MentorMentees({ onNavigate }) {
               <button
                 onClick={() => setCurrentPage(totalPages)}
                 disabled={validCurrentPage === totalPages}
-                className="p-1 rounded-lg text-slate-500 hover:text-[#7656f4] disabled:opacity-30 transition-colors cursor-pointer"
+                className="h-8 w-8 flex items-center justify-center rounded-lg text-slate-500 hover:text-[#7656f4] disabled:opacity-30 transition-colors cursor-pointer"
+                aria-label="Last page"
               >
                 <ChevronsRight size={16} />
               </button>
+            </div>
+
+            {/* Bottom row on mobile (order-2): Rows per page selector on single line */}
+            <div className="order-2 sm:order-1 flex items-center justify-center sm:justify-start gap-2 text-xs sm:text-[13px] text-slate-600 font-medium z-10 whitespace-nowrap w-full sm:w-auto">
+              <span>Show</span>
+              <div className="relative">
+                <select
+                  value={rowsPerPage}
+                  onChange={(e) => {
+                    setRowsPerPage(Number(e.target.value));
+                    setCurrentPage(1);
+                  }}
+                  className="appearance-none h-8 pl-2.5 pr-7 bg-white border border-slate-200/90 rounded-lg text-xs font-semibold text-slate-800 outline-none cursor-pointer hover:border-slate-300"
+                >
+                  <option value={10}>10</option>
+                  <option value={20}>20</option>
+                  <option value={50}>50</option>
+                </select>
+                <ChevronDown
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"
+                  size={12}
+                />
+              </div>
+              <span>per page</span>
             </div>
           </div>
         </div>

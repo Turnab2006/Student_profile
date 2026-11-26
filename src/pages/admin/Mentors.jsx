@@ -12,6 +12,7 @@ import {
   MoreHorizontal,
   SlidersHorizontal,
   Menu,
+  X,
 } from "lucide-react";
 import AdminProfile from "../../components/admin/AdminProfile";
 
@@ -41,13 +42,13 @@ const stats = [
   { icon: <Briefcase size={22} className="text-purple-500" />, bg: "bg-purple-50", value: "8", label: "Departments", sub: "Active departments" },
 ];
 
-function FilterDropdown({ value, onChange, options }) {
+function FilterDropdown({ value, onChange, options, className = "", selectClassName = "" }) {
   return (
-    <div className="relative">
+    <div className={`relative ${className}`}>
       <select
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="appearance-none min-w-[150px] px-3 py-2 pr-8 border border-gray-200 rounded-lg text-sm text-gray-600 bg-white hover:bg-gray-50 transition-colors whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-green-300"
+        className={`appearance-none w-full md:w-auto md:min-w-[150px] h-11 md:h-auto px-3.5 md:px-3 py-2 pr-8 border border-gray-200 rounded-xl md:rounded-lg text-xs sm:text-sm text-gray-600 bg-white hover:bg-gray-50 transition-colors whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-green-300 cursor-pointer ${selectClassName}`}
       >
         {options.map((option) => (
           <option key={option.value} value={option.value}>
@@ -55,7 +56,7 @@ function FilterDropdown({ value, onChange, options }) {
           </option>
         ))}
       </select>
-      <ChevronDown size={14} className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-500" />
+      <ChevronDown size={14} className="pointer-events-none absolute right-3 md:right-2.5 top-1/2 -translate-y-1/2 text-gray-500" />
     </div>
   );
 }
@@ -120,57 +121,110 @@ export default function Mentors({ onNavigate, onOpenSidebar }) {
   const openMentorDetails = (mentor) => onNavigate?.("mentor-details", mentor);
 
   return (
-    <div className="flex-1 h-full flex flex-col overflow-hidden">
-      {/* Topbar */}
-      <header className="sticky top-0 z-30 h-[65px] bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-2xs">
-        <div className="flex items-center gap-3">
+    <div className="flex-1 h-full flex flex-col overflow-hidden font-['Roboto',sans-serif]">
+      {/* Topbar: Compact single-row on mobile */}
+      <header className="sticky top-0 z-30 h-[56px] sm:h-[65px] bg-white border-b border-gray-100 px-4 py-3 sm:px-6 flex items-center justify-between shrink-0 shadow-2xs w-full">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0 pr-1">
           <button
             type="button"
             onClick={() => {
               if (onOpenSidebar) onOpenSidebar();
               else window.dispatchEvent(new CustomEvent("toggle-mobile-sidebar"));
             }}
-            className="h-10 w-10 rounded-xl bg-gray-100/80 hover:bg-gray-200 active:scale-95 flex items-center justify-center text-gray-700 lg:hidden cursor-pointer transition-all shrink-0"
+            className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl bg-gray-100/80 hover:bg-gray-200 active:scale-95 flex items-center justify-center text-gray-700 lg:hidden cursor-pointer transition-all shrink-0"
             aria-label="Open sidebar"
           >
-            <Menu size={20} />
+            <Menu size={19} />
           </button>
           <div className="min-w-0">
-            <h1 className="text-lg sm:text-xl font-bold text-gray-800 tracking-tight truncate">Mentors</h1>
+            <h1 className="text-base sm:text-xl font-bold text-gray-800 tracking-tight truncate">Mentors</h1>
             <p className="text-xs text-gray-400 mt-0.5 truncate hidden sm:block">Manage mentor accounts and profiles</p>
           </div>
         </div>
         <AdminProfile name="John Doe" role="Super Admin" avatar="JD" onNavigate={onNavigate} />
       </header>
 
-      <main className="flex-1 overflow-y-auto p-6 space-y-4">
-        {/* Search + Filters */}
-        <div className="flex items-center gap-3 flex-wrap">
-          <div className="relative flex-1 min-w-[220px]">
-            <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-            <input value={query} onChange={(event) => setQuery(event.target.value)} type="text" placeholder="Search mentors by name, ID or email..." className="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-green-300" />
+      <main className="flex-1 overflow-y-auto p-4 md:p-6 space-y-3 md:space-y-4">
+        {/* Search + Filters Bar */}
+        <div className="flex flex-col md:flex-row md:items-center gap-3 bg-white md:bg-transparent p-3.5 md:p-0 rounded-2xl md:rounded-none border md:border-0 border-slate-200/80 shadow-2xs md:shadow-none">
+          {/* Search input (Full-width on mobile, flex-1 on desktop) */}
+          <div className="relative w-full md:w-auto md:flex-1 md:min-w-[220px]">
+            <Search size={16} className="absolute left-3.5 md:left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              type="text"
+              placeholder="Search mentors by name, ID or email..."
+              className="w-full h-11 md:h-auto pl-10 md:pl-9 pr-9 md:pr-4 py-2 border border-gray-200 rounded-xl md:rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-green-300 text-gray-800 transition-all"
+            />
+            {query && (
+              <button
+                type="button"
+                onClick={() => setQuery("")}
+                className="absolute right-3 md:right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-0.5 cursor-pointer"
+              >
+                <X size={15} />
+              </button>
+            )}
           </div>
-          <FilterDropdown value={deptFilter} onChange={setDeptFilter} options={[{ value: "all", label: "All Departments" }, { value: "EE", label: "EE" }, { value: "ECE", label: "ECE" }, { value: "CS", label: "CS" }, { value: "ME", label: "ME" }, { value: "CE", label: "CE" }]} />
-          <FilterDropdown value={statusFilter} onChange={setStatusFilter} options={[{ value: "all", label: "All Status" }, { value: "Active", label: "Active" }, { value: "On Leave", label: "On Leave" }]} />
+
+          {/* 2 Filter Dropdowns: 2-Column Grid on Mobile, Contents/Inline on Desktop */}
+          <div className="grid grid-cols-2 gap-2.5 md:gap-3 w-full md:contents">
+            <FilterDropdown
+              value={deptFilter}
+              onChange={setDeptFilter}
+              className="w-full md:w-auto"
+              options={[
+                { value: "all", label: "All Departments" },
+                { value: "EE", label: "EE" },
+                { value: "ECE", label: "ECE" },
+                { value: "CS", label: "CS" },
+                { value: "ME", label: "ME" },
+                { value: "CE", label: "CE" },
+              ]}
+            />
+            <FilterDropdown
+              value={statusFilter}
+              onChange={setStatusFilter}
+              className="w-full md:w-auto"
+              options={[
+                { value: "all", label: "All Status" },
+                { value: "Active", label: "Active" },
+                { value: "On Leave", label: "On Leave" },
+              ]}
+            />
+          </div>
+
+          {/* Mobile Full-Width Add Mentor Button Directly Below Filters Inside Filter Card */}
+          <button
+            type="button"
+            onClick={() => onNavigate?.("add-mentor")}
+            className="md:hidden w-full h-11 flex items-center justify-center gap-2 px-4 bg-primary hover:bg-green-600 active:bg-green-700 text-white rounded-xl text-sm font-bold shadow-xs active:scale-98 transition-all cursor-pointer"
+          >
+            <Plus size={18} className="stroke-[2.5]" />
+            <span>Add Mentor</span>
+          </button>
+
+          {/* Desktop Add Mentor Button */}
           <button
             onClick={() => onNavigate?.("add-mentor")}
-            className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-green-600 transition-colors whitespace-nowrap"
+            className="hidden md:flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-medium hover:bg-green-600 transition-colors whitespace-nowrap cursor-pointer shadow-xs active:scale-95"
           >
             <Plus size={15} />
             Add Mentor
           </button>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        {/* Compact Summary Stat Cards (Tighter on mobile) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 md:gap-4">
           {stats.map((s) => (
             <div
               key={s.label}
-              className="bg-white rounded-2xl p-4 flex items-center gap-3.5 border border-slate-200/90 shadow-md shadow-slate-200/60 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-300/40 transition-all duration-200"
+              className="bg-white rounded-xl md:rounded-2xl p-3.5 md:p-4 flex items-center gap-3.5 border border-slate-200/90 shadow-md shadow-slate-200/60 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-slate-300/40 transition-all duration-200"
             >
-              <div className={`w-11 h-11 rounded-xl ${s.bg} flex items-center justify-center shrink-0 border border-slate-100/80 shadow-2xs`}>{s.icon}</div>
+              <div className={`w-10 h-10 md:w-11 md:h-11 rounded-xl ${s.bg} flex items-center justify-center shrink-0 border border-slate-100/80 shadow-2xs`}>{s.icon}</div>
               <div className="overflow-hidden">
-                <p className="text-lg font-bold text-gray-800 leading-tight">{s.value}</p>
+                <p className="text-base md:text-lg font-bold text-gray-800 leading-tight">{s.value}</p>
                 <p className="text-[11px] font-semibold text-gray-600 truncate">{s.label}</p>
                 <p className="text-[10px] text-gray-400 truncate">{s.sub}</p>
               </div>
@@ -215,44 +269,45 @@ export default function Mentors({ onNavigate, onOpenSidebar }) {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-gray-100 bg-gray-50/50">
-                  <th className="w-10 px-4 py-3">
+                  <th className="hidden md:table-cell w-10 px-4 py-3">
                     <input type="checkbox" checked={allVisibleSelected} onChange={toggleAll} className="rounded border-gray-300 accent-primary" />
                   </th>
-                  {["Mentor", "Employee ID", "Department", "Specialization", "Students", "Status", "Actions"].map((h) => (
-                    <th key={h} className="text-left px-3 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">{h}</th>
+                  <th className="text-left pl-4 md:pl-3 pr-3 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Mentor</th>
+                  {["Employee ID", "Department", "Specialization", "Students", "Status", "Actions"].map((h) => (
+                    <th key={h} className="text-left px-3 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide whitespace-nowrap">{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
                 {visibleMentors.map((m) => (
                   <tr key={m.empId} className={`hover:bg-gray-50/60 transition-colors ${selected.includes(m.empId) ? "bg-green-50/40" : ""}`}>
-                    <td className="px-4 py-3">
+                    <td className="hidden md:table-cell px-4 py-3">
                       <input type="checkbox" checked={selected.includes(m.empId)} onChange={() => toggleOne(m.empId)} className="rounded border-gray-300 accent-primary" />
                     </td>
-                    <td className="px-3 py-3">
+                    <td className="pl-4 md:pl-3 pr-3 py-3">
                       <div className="flex items-center gap-2.5">
                         <div className={`w-8 h-8 rounded-full ${m.avatarBg} ${m.avatarText} text-xs font-bold flex items-center justify-center shrink-0`}>{m.initials}</div>
                         <span className="font-medium text-primary text-xs">{m.name}</span>
                       </div>
                     </td>
-                    <td className="px-3 py-3 text-xs text-gray-600">{m.empId}</td>
-                    <td className="px-3 py-3">
+                    <td className="px-3 py-3 text-xs text-gray-600 whitespace-nowrap">{m.empId}</td>
+                    <td className="px-3 py-3 whitespace-nowrap">
                       <span className={`text-[11px] font-semibold px-2 py-0.5 rounded ${deptColors[m.dept] ?? "bg-gray-100 text-gray-600"}`}>{m.dept}</span>
                     </td>
-                    <td className="px-3 py-3 text-xs text-gray-600">{m.specialization}</td>
-                    <td className="px-3 py-3 text-xs text-gray-600">{m.students}</td>
-                    <td className="px-3 py-3">
+                    <td className="px-3 py-3 text-xs text-gray-600 whitespace-nowrap">{m.specialization}</td>
+                    <td className="px-3 py-3 text-xs text-gray-600 whitespace-nowrap">{m.students}</td>
+                    <td className="px-3 py-3 whitespace-nowrap">
                       <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${m.status === "Active" ? "bg-green-100 text-green-600" : "bg-orange-100 text-orange-600"}`}>{m.status}</span>
                     </td>
-                    <td className="px-3 py-3">
+                    <td className="px-3 py-3 whitespace-nowrap">
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() => openMentorDetails(m)}
-                          className="text-[11px] font-semibold text-green-600 bg-green-50 hover:bg-green-100 px-3 py-1 rounded-full transition-colors"
+                          className="text-[11px] font-semibold text-green-600 bg-green-50 hover:bg-green-100 px-3 py-1 rounded-full transition-colors cursor-pointer"
                         >
                           View
                         </button>
-                        <button className="p-1 hover:bg-gray-100 rounded-full transition-colors">
+                        <button className="p-1 hover:bg-gray-100 rounded-full transition-colors cursor-pointer">
                           <MoreHorizontal size={14} className="text-gray-400" />
                         </button>
                       </div>
@@ -263,23 +318,43 @@ export default function Mentors({ onNavigate, onOpenSidebar }) {
             </table>
           </div>
 
-          {/* Pagination */}
-          <div className="flex items-center justify-between px-5 py-3 border-t border-gray-100">
-            <div className="flex items-center gap-2 text-xs text-gray-500">
+          {/* Pagination Footer: 2 Centered Rows on Mobile, 1 Row on Desktop */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 px-4 py-3 md:px-5 border-t border-gray-100 bg-white">
+            {/* Top Row on Mobile (order-1), Centered Page Numbers */}
+            <div className="order-1 md:order-2 flex items-center justify-center gap-1.5 w-full md:w-auto">
+              <button className="h-8 w-8 md:h-7 md:w-7 flex items-center justify-center rounded-lg md:rounded hover:bg-gray-100 transition-colors cursor-pointer" aria-label="Previous page">
+                <ChevronLeft size={16} className="text-gray-500" />
+              </button>
+              {[1, 2, 3].map((p) => (
+                <button
+                  key={p}
+                  className={`h-8 w-8 md:h-7 md:w-7 text-xs rounded-lg md:rounded font-semibold transition-colors flex items-center justify-center cursor-pointer ${
+                    p === 1 ? "bg-primary text-white" : "text-gray-600 hover:bg-gray-100"
+                  }`}
+                >
+                  {p}
+                </button>
+              ))}
+              <span className="text-xs text-gray-400 px-1 select-none">...</span>
+              <button className="h-8 w-8 md:h-7 md:w-7 text-xs rounded-lg md:rounded font-semibold text-gray-600 hover:bg-gray-100 transition-colors flex items-center justify-center cursor-pointer">
+                16
+              </button>
+              <button className="h-8 w-8 md:h-7 md:w-7 flex items-center justify-center rounded-lg md:rounded hover:bg-gray-100 transition-colors cursor-pointer" aria-label="Next page">
+                <ChevronRight size={16} className="text-gray-500" />
+              </button>
+            </div>
+
+            {/* Bottom Row on Mobile (order-2), Rows Per Page Selector */}
+            <div className="order-2 md:order-1 flex items-center justify-center md:justify-start gap-2 text-xs text-gray-500 whitespace-nowrap w-full md:w-auto">
               <span>Show</span>
-              <button className="flex items-center gap-1 border border-gray-200 rounded px-2 py-1 hover:bg-gray-50">10 <ChevronDown size={11} /></button>
+              <button className="h-8 px-2.5 py-1 border border-gray-200 rounded-lg md:rounded hover:bg-gray-50 text-xs font-semibold text-gray-700 bg-white flex items-center gap-1.5 cursor-pointer">
+                10 <ChevronDown size={12} className="text-gray-500" />
+              </button>
               <span>per page</span>
             </div>
-            <div className="flex items-center gap-1">
-              <button className="p-1.5 rounded hover:bg-gray-100"><ChevronLeft size={14} className="text-gray-500" /></button>
-              {[1, 2, 3].map((p) => (
-                <button key={p} className={`w-7 h-7 text-xs rounded font-medium transition-colors ${p === 1 ? "bg-primary text-white" : "text-gray-500 hover:bg-gray-100"}`}>{p}</button>
-              ))}
-              <span className="text-xs text-gray-400 px-1">...</span>
-              <button className="w-7 h-7 text-xs rounded font-medium text-gray-500 hover:bg-gray-100">16</button>
-              <button className="p-1.5 rounded hover:bg-gray-100"><ChevronRight size={14} className="text-gray-500" /></button>
-            </div>
-            <div className="flex items-center gap-2 text-xs text-gray-500">
+
+            {/* Go to page (Desktop Only) */}
+            <div className="hidden md:flex items-center gap-2 text-xs text-gray-500 md:order-3">
               <span>Go to page</span>
               <input type="number" defaultValue={1} className="w-12 border border-gray-200 rounded px-2 py-1 text-center focus:outline-none focus:ring-1 focus:ring-green-300" />
             </div>

@@ -417,7 +417,7 @@ export default function Notices({ onNavigate, onOpenSidebar, isMentor = false, u
                 <table className="w-full text-left border-collapse">
                   <thead>
                     <tr className="bg-gradient-to-r from-[#0da651] via-[#0e9f4e] to-[#09803d] text-white text-xs font-bold uppercase tracking-wider">
-                      <th className="w-10 py-3.5 px-4 text-center">
+                      <th className="hidden md:table-cell w-10 py-3.5 px-4 text-center">
                         <input
                           type="checkbox"
                           checked={allVisibleSelected}
@@ -425,7 +425,7 @@ export default function Notices({ onNavigate, onOpenSidebar, isMentor = false, u
                           className="rounded border-white/40 accent-emerald-800 cursor-pointer"
                         />
                       </th>
-                      <th className="w-28 min-w-[105px] py-3.5 px-4 text-center">NOTICE ID</th>
+                      <th className="w-24 md:w-28 min-w-[90px] md:min-w-[105px] py-3.5 pl-4 pr-2 md:px-4 text-left md:text-center">NOTICE ID</th>
                       <th className="py-3.5 px-4 text-left max-w-xs sm:max-w-sm">TITLE &amp; SUMMARY</th>
                       <th className="w-28 min-w-[100px] py-3.5 px-4 text-center">CATEGORY</th>
                       <th className="w-28 min-w-[100px] py-3.5 px-4 text-center">PRIORITY</th>
@@ -459,7 +459,7 @@ export default function Notices({ onNavigate, onOpenSidebar, isMentor = false, u
                               }`}
                           >
                             {/* Checkbox */}
-                            <td className="py-3.5 px-4 text-center">
+                            <td className="hidden md:table-cell py-3.5 px-4 text-center">
                               <input
                                 type="checkbox"
                                 checked={isSelected}
@@ -468,8 +468,8 @@ export default function Notices({ onNavigate, onOpenSidebar, isMentor = false, u
                               />
                             </td>
 
-                            {/* Notice ID Column (Bold Font & Centered) */}
-                            <td className="py-3.5 px-4 text-center font-mono font-bold text-gray-900 text-sm sm:text-[15px] tracking-wide">
+                            {/* Notice ID Column (Left-aligned on mobile, Centered on desktop) */}
+                            <td className="py-3.5 pl-4 pr-2 md:px-4 text-left md:text-center font-mono font-bold text-gray-900 text-sm sm:text-[15px] tracking-wide">
                               {n.id}
                             </td>
 

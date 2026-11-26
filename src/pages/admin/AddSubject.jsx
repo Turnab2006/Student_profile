@@ -287,22 +287,22 @@ export default function AddSubject({ onNavigate, subjectsList = [], setSubjectsL
       {/* Main Content Area */}
       <main className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-5">
         {/* Solid Green Gradient Banner */}
-        <section className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#0da651] via-[#0e9f4e] to-[#09803d] border border-emerald-600/30 px-4 py-3.5 sm:px-6 sm:py-4 shadow-sm text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="relative z-10 flex items-center gap-3.5">
-            <div className="w-10 h-10 rounded-xl bg-white/20 text-white flex items-center justify-center shrink-0 border border-white/25 shadow-2xs">
+        <section className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#0da651] via-[#0e9f4e] to-[#09803d] border border-emerald-600/30 p-4 sm:px-6 sm:py-4 shadow-sm text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="relative z-10 flex items-start md:items-center gap-3.5">
+            <div className="w-10 h-10 rounded-xl bg-white/20 text-white flex items-center justify-center shrink-0 border border-white/25 shadow-2xs mt-0.5 md:mt-0">
               <BookPlus size={20} />
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <span className="px-2 py-0.5 rounded-md bg-white/20 text-white text-[10px] font-bold tracking-wider uppercase">
+              <div className="flex flex-col items-start gap-1.5 sm:gap-2 md:flex-row md:items-center md:gap-3">
+                <span className="whitespace-nowrap px-2.5 py-1 md:px-2 md:py-0.5 rounded-md bg-white/20 text-white text-[11px] md:text-[10px] font-bold tracking-wider uppercase">
                   Curriculum Setup
                 </span>
                 <span className="text-emerald-100 text-xs font-medium">• Academic Syllabus &amp; Faculty Allocation</span>
               </div>
-              <h2 className="text-base sm:text-lg font-extrabold text-white tracking-tight mt-0.5">
+              <h2 className="text-base sm:text-lg font-extrabold text-white tracking-tight mt-2 md:mt-0.5">
                 Add New Course Subject &amp; Syllabus
               </h2>
-              <p className="text-xs text-emerald-50/90 font-normal">
+              <p className="text-xs text-emerald-50/90 font-normal mt-1.5 md:mt-0">
                 Define credits, lecture hours, assigned faculty, and upload syllabus documents for students &amp; mentors.
               </p>
             </div>

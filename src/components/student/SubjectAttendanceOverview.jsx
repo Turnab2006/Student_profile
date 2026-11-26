@@ -94,25 +94,25 @@ export default function SubjectAttendanceOverview({
 
       {/* Mobile Subject Attendance Overview Table (Visible on mobile < md: 3 Columns Only) */}
       <div className="block md:hidden w-full overflow-hidden">
-        <table className="w-full text-left border-collapse">
+        <table className="w-full table-fixed text-left border-collapse">
           <thead>
             <tr className={`${isMentorMode ? "bg-[#f8f6fe] text-[#7656f4]" : "bg-[#f0f6ff]/90 text-[#1d61e7]"} text-[11px] font-bold rounded-xl overflow-hidden`}>
-              <th className="py-2.5 px-2.5 rounded-l-xl text-left">
-                <div className="flex items-center gap-1.5">
-                  <BookOpen size={13} className={`${isMentorMode ? "text-[#7656f4]" : "text-[#1d61e7]"} stroke-[2.4]`} />
-                  <span>Subject Name</span>
+              <th className="w-[44%] py-2.5 px-2 rounded-l-xl text-left whitespace-nowrap">
+                <div className="flex items-center gap-1.5 whitespace-nowrap">
+                  <BookOpen size={13} className={`w-3.5 h-3.5 shrink-0 ${isMentorMode ? "text-[#7656f4]" : "text-[#1d61e7]"} stroke-[2.4]`} />
+                  <span className="truncate">Subject Name</span>
                 </div>
               </th>
-              <th className="py-2.5 px-2 text-center whitespace-nowrap">
+              <th className="w-[27%] py-2.5 px-2 text-center whitespace-nowrap">
                 <div className="flex items-center justify-center gap-1 whitespace-nowrap">
-                  <Calendar size={13} className={`${isMentorMode ? "text-[#7656f4]" : "text-[#1d61e7]"} stroke-[2.4]`} />
+                  <Calendar size={13} className={`w-3.5 h-3.5 shrink-0 ${isMentorMode ? "text-[#7656f4]" : "text-[#1d61e7]"} stroke-[2.4]`} />
                   <span>Attended</span>
                 </div>
               </th>
-              <th className="py-2.5 px-2.5 rounded-r-xl text-center whitespace-nowrap">
+              <th className="w-[29%] py-2.5 px-2 pr-2.5 rounded-r-xl text-center whitespace-nowrap">
                 <div className="flex items-center justify-center gap-1 whitespace-nowrap">
-                  <Clock size={13} className={`${isMentorMode ? "text-[#7656f4]" : "text-[#1d61e7]"} stroke-[2.4]`} />
-                  <span>Attendance %</span>
+                  <Clock size={13} className={`w-3.5 h-3.5 shrink-0 ${isMentorMode ? "text-[#7656f4]" : "text-[#1d61e7]"} stroke-[2.4]`} />
+                  <span>Attendance</span>
                 </div>
               </th>
             </tr>
@@ -138,19 +138,19 @@ export default function SubjectAttendanceOverview({
               return (
                 <tr key={`mobile-${subCode}`} className="hover:bg-slate-50/70 transition-colors">
                   {/* 1. Complete Subject Name (Allowed to wrap naturally) */}
-                  <td className="py-3 px-2.5 rounded-l-xl text-left align-middle">
+                  <td className="w-[44%] py-3 px-2 rounded-l-xl text-left align-middle">
                     <span className="font-semibold text-slate-800 text-xs leading-snug break-words">
                       {subName}
                     </span>
                   </td>
 
                   {/* 2. Classes Attended (e.g. 35/40) */}
-                  <td className="py-3 px-2 text-center align-middle font-bold text-slate-700 text-xs whitespace-nowrap">
+                  <td className="w-[27%] py-3 px-2 text-center align-middle font-bold text-slate-700 text-xs whitespace-nowrap">
                     {attendedCount} / {totalCount}
                   </td>
 
                   {/* 3. Attendance Percentage (e.g. 87.5%) */}
-                  <td className="py-3 px-2.5 rounded-r-xl text-center align-middle whitespace-nowrap">
+                  <td className="w-[29%] py-3 px-2 pr-2.5 rounded-r-xl text-center align-middle whitespace-nowrap">
                     <span className={`inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-extrabold ${statusBadge} shadow-2xs`}>
                       {displayPct}%
                     </span>

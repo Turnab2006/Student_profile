@@ -324,21 +324,22 @@ export default function Subjects({ onNavigate, subjectsList = [], setSubjectsLis
       )}
 
       {/* Top Header */}
-      <header className="sticky top-0 z-30 h-[65px] bg-white border-b border-gray-100 px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-2xs">
-        <div className="flex items-center gap-3">
+      <header className="sticky top-0 z-30 h-[65px] bg-white border-b border-gray-100 w-full px-3.5 py-2.5 sm:px-6 flex items-center justify-between gap-2 overflow-hidden shrink-0 shadow-2xs">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
           <button
             type="button"
             onClick={() => {
               if (onOpenSidebar) onOpenSidebar();
               else window.dispatchEvent(new CustomEvent("toggle-mobile-sidebar"));
             }}
-            className="h-10 w-10 rounded-xl bg-gray-100/80 hover:bg-gray-200 active:scale-95 flex items-center justify-center text-gray-700 lg:hidden cursor-pointer transition-all shrink-0"
+            className="h-8 w-8 sm:h-10 sm:w-10 rounded-xl bg-gray-100/80 hover:bg-gray-200 active:scale-95 flex items-center justify-center text-gray-700 lg:hidden cursor-pointer transition-all shrink-0"
             aria-label="Open sidebar"
           >
-            <Menu size={20} />
+            <Menu size={18} className="sm:hidden" />
+            <Menu size={20} className="hidden sm:block" />
           </button>
-          <div className="min-w-0">
-            <h1 className="text-lg sm:text-xl font-bold text-gray-800 tracking-tight truncate">
+          <div className="min-w-0 flex-1">
+            <h1 className="text-base sm:text-xl font-semibold sm:font-bold text-gray-800 tracking-tight truncate min-w-0 flex-1">
               {viewingSubjectView ? `${viewingSubjectView.program} Subjects View` : "Subjects"}
             </h1>
             <p className="text-xs text-gray-400 mt-0.5 truncate hidden sm:block">
@@ -360,18 +361,23 @@ export default function Subjects({ onNavigate, subjectsList = [], setSubjectsLis
         {viewingSubjectView ? (
           <div className="space-y-4 font-['Roboto',sans-serif] w-full max-w-[1600px] mx-auto animate-in fade-in duration-200">
             {/* Top Navigation & Stream Breadcrumb */}
-            <div className="flex flex-wrap items-center justify-between gap-3 bg-white px-4 py-3 rounded-2xl border border-slate-200/90">
-              <div className="flex items-center gap-3">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 bg-white p-4 md:px-4 md:py-3 rounded-2xl border border-slate-200/90 shadow-2xs">
+              <div className="flex flex-col md:flex-row md:items-center gap-2.5 md:gap-3">
+                {/* Row 1 on mobile: Navigation */}
                 <button
                   type="button"
                   onClick={() => setViewingSubjectView(null)}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-bold text-slate-700 transition-colors cursor-pointer"
+                  className="w-fit inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-medium text-slate-700 transition-colors cursor-pointer whitespace-nowrap"
                 >
                   <ArrowLeft size={15} />
                   <span>Back to Subjects List</span>
                 </button>
-                <div className="h-4 w-[1px] bg-slate-200" />
-                <div className="flex items-center gap-2">
+
+                {/* Vertical Divider (Desktop Only) */}
+                <div className="hidden md:block h-4 w-[1px] bg-slate-200" />
+
+                {/* Row 2 on mobile: Program & Department */}
+                <div className="flex items-center gap-2.5 flex-wrap">
                   <span className={`px-2.5 py-0.5 rounded-full text-xs font-bold border ${programBadges[viewingSubjectView.program] || "bg-slate-100 text-slate-700"}`}>
                     {viewingSubjectView.program}
                   </span>
@@ -381,7 +387,8 @@ export default function Subjects({ onNavigate, subjectsList = [], setSubjectsLis
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 text-xs font-semibold text-slate-500">
+              {/* Row 3 on mobile: Course Count */}
+              <div className="flex items-center justify-between md:justify-start gap-2 text-xs font-semibold text-slate-500 pt-2.5 md:pt-0 border-t border-gray-100 md:border-0">
                 <span>Total Semester Courses:</span>
                 <span className="font-extrabold text-[#0da651] bg-[#f4fbf7] px-2.5 py-0.5 rounded-full border border-emerald-200/80">
                   {currentSubjects.length} Subjects
@@ -411,11 +418,10 @@ export default function Subjects({ onNavigate, subjectsList = [], setSubjectsLis
                     type="button"
                     onClick={() => setSubjectViewMode("grid")}
                     title="Grid View"
-                    className={`p-2 rounded-xl transition-all cursor-pointer ${
-                      subjectViewMode === "grid"
-                        ? "bg-emerald-50 text-[#0da651] border border-emerald-200 shadow-2xs"
-                        : "text-slate-400 hover:text-slate-600 hover:bg-slate-50"
-                    }`}
+                    className={`p-2 rounded-xl transition-all cursor-pointer ${subjectViewMode === "grid"
+                      ? "bg-emerald-50 text-[#0da651] border border-emerald-200 shadow-2xs"
+                      : "text-slate-400 hover:text-slate-600 hover:bg-slate-50"
+                      }`}
                   >
                     <LayoutGrid size={18} />
                   </button>
@@ -423,11 +429,10 @@ export default function Subjects({ onNavigate, subjectsList = [], setSubjectsLis
                     type="button"
                     onClick={() => setSubjectViewMode("list")}
                     title="List View"
-                    className={`p-2 rounded-xl transition-all cursor-pointer ${
-                      subjectViewMode === "list"
-                        ? "bg-emerald-50 text-[#0da651] border border-emerald-200 shadow-2xs"
-                        : "text-slate-400 hover:text-slate-600 hover:bg-slate-50"
-                    }`}
+                    className={`p-2 rounded-xl transition-all cursor-pointer ${subjectViewMode === "list"
+                      ? "bg-emerald-50 text-[#0da651] border border-emerald-200 shadow-2xs"
+                      : "text-slate-400 hover:text-slate-600 hover:bg-slate-50"
+                      }`}
                   >
                     <List size={18} />
                   </button>
@@ -624,18 +629,18 @@ export default function Subjects({ onNavigate, subjectsList = [], setSubjectsLis
           /* ========================================================================= */
           <>
             {/* Upper Green Gradient Hero Header */}
-            <section className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#0da651] via-[#0e9f4e] to-[#09803d] border border-emerald-600/30 p-5 sm:p-6 shadow-sm text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div className="relative z-10 space-y-1">
-                <div className="flex items-center gap-2">
-                  <span className="px-2.5 py-0.5 rounded-md bg-white/20 text-white text-[11px] font-bold tracking-wider uppercase backdrop-blur-xs">
+            <section className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-[#0da651] via-[#0e9f4e] to-[#09803d] border border-emerald-600/30 p-4 sm:p-5 md:p-6 shadow-sm text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="relative z-10">
+                <div className="flex flex-col items-start gap-2 md:flex-row md:items-center md:gap-3">
+                  <span className="whitespace-nowrap px-2.5 py-1 md:py-0.5 rounded-md bg-white/20 text-white text-[11px] font-bold tracking-wider uppercase backdrop-blur-xs">
                     Global Configuration
                   </span>
                   <span className="text-emerald-100 text-xs font-semibold">• Super Admin Access</span>
                 </div>
-                <h2 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+                <h2 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight mt-2.5 md:mt-1">
                   Subject Management
                 </h2>
-                <p className="text-xs sm:text-sm text-emerald-50/90 font-normal max-w-xl">
+                <p className="text-xs sm:text-sm text-emerald-50/90 font-normal max-w-xl mt-1.5 md:mt-1">
                   Manage, configure course codes, and view semester-wise subjects across all streams.
                 </p>
               </div>

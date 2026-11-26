@@ -393,24 +393,40 @@ function UpdateModal({ onClose }) {
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/25 p-0 backdrop-blur-[2px] sm:items-center sm:p-4">
-      <div className="flex max-h-[92vh] w-full flex-col overflow-hidden rounded-none border border-gray-100 bg-white shadow-2xl sm:max-w-4xl sm:rounded-3xl">
-        <div className="flex items-start justify-between gap-4 border-b border-gray-100 px-5 py-4">
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-end justify-center bg-black/30 p-0 backdrop-blur-[2px] md:items-center md:p-4"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="fixed inset-x-0 bottom-0 md:static flex flex-col max-h-[92dvh] md:max-h-[92vh] w-full overflow-hidden rounded-t-2xl md:rounded-3xl border border-gray-100 bg-white shadow-2xl md:max-w-4xl"
+      >
+        {/* Sticky/Fixed Header */}
+        <div className="flex shrink-0 items-start justify-between gap-4 border-b border-gray-100 px-4 sm:px-5 py-3.5 sm:py-4 bg-white">
           <div className="flex items-start gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary-light text-primary">
+            <div className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-xl sm:rounded-2xl bg-primary-light text-primary shrink-0">
               <BookOpen size={20} />
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-gray-800">Update Academic Session</h3>
+              <h3 className="text-base sm:text-lg font-semibold text-gray-800">Update Academic Session</h3>
               <p className="text-xs text-gray-400">Manage and update academic sessions and their current semester</p>
             </div>
           </div>
-          <button type="button" onClick={onClose} className="rounded-full p-2 text-gray-400 hover:bg-gray-50 hover:text-gray-600">
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-full p-2 text-gray-400 hover:bg-gray-50 hover:text-gray-600 cursor-pointer shrink-0"
+            aria-label="Close modal"
+          >
             <X size={18} />
           </button>
         </div>
 
-        <div className="p-5 space-y-4">
+        {/* Scrollable Body */}
+        <div
+          className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-4 sm:p-5 space-y-4 pb-8 md:pb-5 touch-pan-y"
+          style={{ WebkitOverflowScrolling: "touch" }}
+        >
           <div className="grid grid-cols-1 gap-3 md:grid-cols-[1fr_1fr_1.3fr]">
             <FilterSelect label="Program" options={["All Programs", "B.Tech", "M.Tech", "BCA", "MCA"]} />
             <FilterSelect label="Session" options={["All Academic Sessions", "2024 - 2025", "2023 - 2024", "2022 - 2023"]} />
@@ -686,9 +702,9 @@ export default function Semesters({ onNavigate, onOpenSidebar }) {
 
             <div className="space-y-4">
               {sessions.map((session) => (
-                <div key={session.year} className="rounded-2xl border border-slate-200/70 bg-white shadow-xs p-4 hover:border-emerald-200 hover:shadow-md transition-all">
+                <div key={session.year} className="relative rounded-2xl border border-slate-200/70 bg-white shadow-xs p-4 hover:border-emerald-200 hover:shadow-md transition-all">
                   <div className="grid grid-cols-1 xl:grid-cols-[220px_1fr_160px] gap-4 items-center">
-                    <div className="flex items-start gap-3">
+                    <div className="flex items-start gap-3 pr-10 md:pr-0">
                       <div className={`flex h-10 w-10 items-center justify-center rounded-full ${session.current ? "bg-emerald-50 text-emerald-600" : "bg-blue-50 text-blue-600"}`}>
                         <CalendarDays size={18} />
                       </div>
@@ -725,12 +741,16 @@ export default function Semesters({ onNavigate, onOpenSidebar }) {
                       })}
                     </div>
 
-                    <div className="flex items-center justify-between xl:justify-end gap-3">
+                    <div className="flex items-center justify-center md:justify-between xl:justify-end gap-3 w-full md:w-auto">
                       <div className="rounded-2xl bg-primary-light px-4 py-3 min-w-[120px] text-center border border-green-100">
                         <p className="text-[11px] font-medium text-gray-500">Total Students</p>
                         <p className="text-xl font-semibold text-primary mt-1">{session.totalStudents.toLocaleString()}</p>
                       </div>
-                      <button type="button" className="rounded-full p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600">
+                      <button
+                        type="button"
+                        className="absolute top-4 right-4 md:static rounded-full p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors cursor-pointer"
+                        aria-label="Session actions"
+                      >
                         <MoreHorizontal size={18} />
                       </button>
                     </div>

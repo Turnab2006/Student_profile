@@ -85,7 +85,7 @@ export default function AdminProfile({
   };
 
   return (
-    <div className="flex items-center gap-2 sm:gap-3.5 relative select-none shrink-0" ref={containerRef}>
+    <div className="flex items-center gap-1.5 sm:gap-3.5 relative select-none shrink-0" ref={containerRef}>
       {/* 1. Notification Bell Icon with Red Badge */}
       <div className="relative">
         <button
@@ -94,13 +94,14 @@ export default function AdminProfile({
             setNotifOpen((prev) => !prev);
             setProfileOpen(false);
           }}
-          className="relative flex h-9 w-9 items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors cursor-pointer focus:outline-none"
+          className="relative flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors cursor-pointer focus:outline-none"
           title="Notifications"
           aria-label="Notifications"
         >
-          <Bell size={19} className="stroke-[1.8]" />
+          <Bell size={17} className="sm:hidden stroke-[1.8]" />
+          <Bell size={19} className="hidden sm:block stroke-[1.8]" />
           {unreadCount > 0 && (
-            <span className="absolute -top-0.5 -right-0.5 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-[#FF4D4F] px-1 text-[10px] font-bold text-white shadow-sm ring-2 ring-white">
+            <span className="absolute -top-0.5 -right-0.5 flex h-[16px] min-w-[16px] sm:h-[18px] sm:min-w-[18px] items-center justify-center rounded-full bg-[#FF4D4F] px-1 text-[9px] sm:text-[10px] font-bold text-white shadow-sm ring-2 ring-white">
               {unreadCount}
             </span>
           )}
@@ -168,11 +169,12 @@ export default function AdminProfile({
       <button
         type="button"
         onClick={() => navigateTo("support")}
-        className="flex h-9 w-9 items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors cursor-pointer focus:outline-none"
+        className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors cursor-pointer focus:outline-none"
         title="Support Center"
         aria-label="Support Center"
       >
-        <HelpCircle size={19} className="stroke-[1.8]" />
+        <HelpCircle size={17} className="sm:hidden stroke-[1.8]" />
+        <HelpCircle size={19} className="hidden sm:block stroke-[1.8]" />
       </button>
 
       {/* Vertical Divider */}
@@ -186,14 +188,14 @@ export default function AdminProfile({
             setProfileOpen((prev) => !prev);
             setNotifOpen(false);
           }}
-          className="flex items-center gap-2.5 sm:gap-3 p-1 rounded-xl hover:bg-gray-100/70 transition-all cursor-pointer focus:outline-none group"
+          className="flex items-center gap-1.5 sm:gap-3 p-0.5 sm:p-1 rounded-xl hover:bg-gray-100/70 transition-all cursor-pointer focus:outline-none group"
         >
           {/* Avatar Icon on LEFT */}
           <div className="relative">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center overflow-hidden text-sm font-bold text-white shadow-sm ring-2 ring-emerald-500/20 border border-gray-200">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center overflow-hidden text-xs sm:text-sm font-bold text-white shadow-sm ring-2 ring-emerald-500/20 border border-gray-200">
               {avatar}
             </div>
-            <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-white" />
+            <span className="absolute bottom-0 right-0 h-2 sm:h-2.5 w-2 sm:w-2.5 rounded-full bg-emerald-500 ring-2 ring-white" />
           </div>
 
           {/* Name & Role Text on RIGHT of Avatar */}
@@ -206,10 +208,9 @@ export default function AdminProfile({
 
           {/* Chevron Icon */}
           <ChevronDown
-            size={15}
-            className={`text-gray-500 transition-transform duration-200 ${
-              profileOpen ? "rotate-180 text-emerald-600" : "group-hover:text-gray-700"
-            }`}
+            size={14}
+            className={`text-gray-500 transition-transform duration-200 ${profileOpen ? "rotate-180 text-emerald-600" : "group-hover:text-gray-700"
+              }`}
           />
         </button>
 
