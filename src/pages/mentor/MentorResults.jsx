@@ -45,6 +45,8 @@ const mockMentees = STUDENTS_DATA.map((s, idx) => {
     name: s.name,
     rollNo: s.roll || s.rollNo,
     roll: s.roll || s.rollNo,
+    email: s.email,
+    phone: s.phone,
     department: s.deptCode || s.dept,
     dept: s.dept,
     deptCode: s.deptCode,
@@ -631,39 +633,16 @@ export default function MentorResults({ initialUpload = false }) {
                       </span>
                     </td>
                     <td className="w-[32%] md:w-auto px-2 py-3 md:py-4 md:px-4 text-center md:text-left">
-                      {/* Mobile View Button */}
-                      <div className="flex items-center justify-center md:hidden">
-                        <button
-                          type="button"
-                          onClick={() => alert(`Opening official result marksheet: ${row.file}`)}
-                          className="inline-flex items-center justify-center gap-1.5 px-2.5 py-1 rounded-lg bg-purple-50 hover:bg-purple-100 text-[#7656f4] text-xs font-bold border border-purple-200/60 transition-colors cursor-pointer shadow-2xs active:scale-95 mx-auto"
-                          title={`View ${row.file}`}
-                        >
-                          <Eye size={13} className="stroke-[2.2]" />
-                          <span>View</span>
-                        </button>
-                      </div>
+                      {/* Mobile: just file name */}
+                      <span className="md:hidden text-xs font-semibold text-[#7656f4] truncate block">{row.file}</span>
 
-                      {/* Desktop Result File display with View option */}
-                      <div className="hidden md:flex items-center justify-between gap-3 text-[#7656f4]">
-                        <div className="flex items-center gap-2 min-w-0">
-                          <FileText size={16} className="shrink-0" />
-                          <div className="min-w-0">
-                            <span className="font-bold block leading-tight hover:underline cursor-pointer truncate">
-                              {row.file}
-                            </span>
-                            <span className="text-[10px] text-gray-400 font-normal">{row.size}</span>
-                          </div>
+                      {/* Desktop: file name with icon */}
+                      <div className="hidden md:flex items-center gap-2 text-[#7656f4] min-w-0">
+                        <FileText size={16} className="shrink-0" />
+                        <div className="min-w-0">
+                          <span className="font-bold block leading-tight truncate">{row.file}</span>
+                          <span className="text-[10px] text-gray-400 font-normal">{row.size}</span>
                         </div>
-                        <button
-                          type="button"
-                          onClick={() => alert(`Opening official result marksheet: ${row.file}`)}
-                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-purple-50 hover:bg-purple-100 text-[#7656f4] text-xs font-bold border border-purple-200/60 transition-colors cursor-pointer shrink-0 ml-2"
-                          title={`View ${row.file}`}
-                        >
-                          <Eye size={13} />
-                          <span>View</span>
-                        </button>
                       </div>
                     </td>
                     <td className="hidden md:table-cell py-4 px-4">
@@ -760,10 +739,10 @@ export default function MentorResults({ initialUpload = false }) {
   return (
     <div className="flex flex-col gap-5">
       {/* FILTER & SEARCH CONTROL BAR */}
-      <div className="bg-white rounded-2xl p-3 sm:p-4 border border-slate-200/80 shadow-2xs flex flex-col md:flex-row items-center justify-between gap-2.5 sm:gap-3 relative z-30">
+      <div className="bg-white rounded-2xl px-3 py-2.5 sm:px-4 border border-slate-200/80 shadow-2xs flex flex-col md:flex-row items-center gap-2 sm:gap-2.5 relative z-30">
         {/* Search input field */}
-        <div className="relative flex-1 w-full">
-          <Search className="absolute left-3.5 md:left-4 top-1/2 -translate-y-1/2 text-slate-400" size={17} />
+        <div className="relative flex-1 min-w-0 w-full">
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
           <input
             type="text"
             value={searchQuery}
@@ -771,8 +750,8 @@ export default function MentorResults({ initialUpload = false }) {
               setSearchQuery(e.target.value);
               setCurrentPage(1);
             }}
-            placeholder="Search by name or roll no..."
-            className="w-full h-9 md:h-auto bg-[#f8f9fc] border border-slate-200/60 rounded-xl pl-10 md:pl-11 pr-4 py-0 md:py-2.5 text-xs sm:text-sm font-medium text-slate-800 placeholder:text-slate-400 outline-none focus:border-[#7656f4] focus:bg-white transition-all shadow-inner"
+            placeholder="Search mentee by name, college roll number, email or phone"
+            className="w-full h-10 bg-[#f4f6fb] border border-slate-200/80 rounded-full pl-9 pr-4 py-0 text-sm font-medium text-slate-800 placeholder:text-slate-400 outline-none focus:border-[#7656f4] focus:bg-white transition-all"
           />
           {searchQuery && (
             <button
@@ -785,13 +764,13 @@ export default function MentorResults({ initialUpload = false }) {
         </div>
 
         {/* Right side control buttons: 2x2 grid on mobile, flex on desktop */}
-        <div className="grid grid-cols-2 md:flex md:flex-wrap items-center gap-2 sm:gap-3 w-full md:w-auto">
+        <div className="grid grid-cols-2 md:flex md:flex-nowrap items-center gap-2 sm:gap-2 md:gap-2 w-full md:w-auto">
           {/* Department Filter */}
           <div className={`relative w-full md:w-auto ${openDropdown === 'dept' ? 'z-30' : 'z-10'}`} data-dropdown="dept">
             <button
               type="button"
               onClick={() => setOpenDropdown(openDropdown === 'dept' ? null : 'dept')}
-              className={`h-9 md:h-[42px] w-full md:w-auto flex items-center justify-between gap-1.5 sm:gap-2.5 bg-white border rounded-xl px-3 py-0 md:py-2.5 text-xs sm:text-sm font-semibold transition-all cursor-pointer select-none shadow-2xs ${
+              className={`h-9 w-full flex items-center justify-between gap-1.5 sm:gap-2 bg-white border rounded-xl px-3 py-0 text-xs sm:text-sm font-semibold transition-all cursor-pointer select-none shadow-2xs ${
                 openDropdown === 'dept'
                   ? 'border-[#7656f4] ring-2 ring-[#7656f4]/15 text-[#7656f4]'
                   : departmentFilter !== 'All'
@@ -799,11 +778,11 @@ export default function MentorResults({ initialUpload = false }) {
                   : 'border-slate-200 text-slate-700 hover:border-slate-300 hover:text-slate-900'
               }`}
             >
-              <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
-                <Building2 size={16} className={`shrink-0 md:w-[18px] md:h-[18px] transition-colors ${openDropdown === 'dept' || departmentFilter !== 'All' ? 'text-[#7656f4]' : 'text-slate-500'}`} />
+              <div className="flex items-center gap-1.5 min-w-0">
+                <Building2 size={15} className={`shrink-0 transition-colors ${openDropdown === 'dept' || departmentFilter !== 'All' ? 'text-[#7656f4]' : 'text-slate-500'}`} />
                 <span className="truncate">{departmentFilter === 'All' ? 'All Departments' : departmentFilter}</span>
               </div>
-              <ChevronDown size={14} className={`shrink-0 transition-transform duration-200 md:w-4 md:h-4 ml-1.5 ${openDropdown === 'dept' ? 'rotate-180 text-[#7656f4]' : 'text-slate-400'}`} />
+              <ChevronDown size={13} className={`shrink-0 transition-transform duration-200 ml-1 ${openDropdown === 'dept' ? 'rotate-180 text-[#7656f4]' : 'text-slate-400'}`} />
             </button>
 
             {openDropdown === 'dept' && (
@@ -841,7 +820,7 @@ export default function MentorResults({ initialUpload = false }) {
             <button
               type="button"
               onClick={() => setOpenDropdown(openDropdown === 'year' ? null : 'year')}
-              className={`h-9 md:h-[42px] w-full md:w-auto flex items-center justify-between gap-1.5 sm:gap-2.5 bg-white border rounded-xl px-3 py-0 md:py-2.5 text-xs sm:text-sm font-semibold transition-all cursor-pointer select-none shadow-2xs ${
+              className={`h-9 w-full flex items-center justify-between gap-1.5 sm:gap-2 bg-white border rounded-xl px-3 py-0 text-xs sm:text-sm font-semibold transition-all cursor-pointer select-none shadow-2xs ${
                 openDropdown === 'year'
                   ? 'border-[#7656f4] ring-2 ring-[#7656f4]/15 text-[#7656f4]'
                   : yearFilter !== 'All'
@@ -849,11 +828,11 @@ export default function MentorResults({ initialUpload = false }) {
                   : 'border-slate-200 text-slate-700 hover:border-slate-300 hover:text-slate-900'
               }`}
             >
-              <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
-                <GraduationCap size={16} className={`shrink-0 md:w-[18px] md:h-[18px] transition-colors ${openDropdown === 'year' || yearFilter !== 'All' ? 'text-[#7656f4]' : 'text-slate-500'}`} />
+              <div className="flex items-center gap-1.5 min-w-0">
+                <GraduationCap size={15} className={`shrink-0 transition-colors ${openDropdown === 'year' || yearFilter !== 'All' ? 'text-[#7656f4]' : 'text-slate-500'}`} />
                 <span className="truncate">{yearFilter === 'All' ? 'All Years' : yearFilter}</span>
               </div>
-              <ChevronDown size={14} className={`shrink-0 transition-transform duration-200 md:w-4 md:h-4 ml-1.5 ${openDropdown === 'year' ? 'rotate-180 text-[#7656f4]' : 'text-slate-400'}`} />
+              <ChevronDown size={13} className={`shrink-0 transition-transform duration-200 ml-1 ${openDropdown === 'year' ? 'rotate-180 text-[#7656f4]' : 'text-slate-400'}`} />
             </button>
 
             {openDropdown === 'year' && (
@@ -891,7 +870,7 @@ export default function MentorResults({ initialUpload = false }) {
             <button
               type="button"
               onClick={() => setOpenDropdown(openDropdown === 'sem' ? null : 'sem')}
-              className={`h-9 md:h-[42px] w-full md:w-auto flex items-center justify-between gap-1.5 sm:gap-2.5 bg-white border rounded-xl px-3 py-0 md:py-2.5 text-xs sm:text-sm font-semibold transition-all cursor-pointer select-none shadow-2xs ${
+              className={`h-9 w-full flex items-center justify-between gap-1.5 sm:gap-2 bg-white border rounded-xl px-3 py-0 text-xs sm:text-sm font-semibold transition-all cursor-pointer select-none shadow-2xs ${
                 openDropdown === 'sem'
                   ? 'border-[#7656f4] ring-2 ring-[#7656f4]/15 text-[#7656f4]'
                   : semesterFilter !== 'All'
@@ -899,11 +878,11 @@ export default function MentorResults({ initialUpload = false }) {
                   : 'border-slate-200 text-slate-700 hover:border-slate-300 hover:text-slate-900'
               }`}
             >
-              <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
-                <CalendarDays size={16} className={`shrink-0 md:w-[18px] md:h-[18px] transition-colors ${openDropdown === 'sem' || semesterFilter !== 'All' ? 'text-[#7656f4]' : 'text-slate-500'}`} />
+              <div className="flex items-center gap-1.5 min-w-0">
+                <CalendarDays size={15} className={`shrink-0 transition-colors ${openDropdown === 'sem' || semesterFilter !== 'All' ? 'text-[#7656f4]' : 'text-slate-500'}`} />
                 <span className="truncate">{semesterFilter === 'All' ? 'All Semesters' : semesterFilter}</span>
               </div>
-              <ChevronDown size={14} className={`shrink-0 transition-transform duration-200 md:w-4 md:h-4 ml-1.5 ${openDropdown === 'sem' ? 'rotate-180 text-[#7656f4]' : 'text-slate-400'}`} />
+              <ChevronDown size={13} className={`shrink-0 transition-transform duration-200 ml-1 ${openDropdown === 'sem' ? 'rotate-180 text-[#7656f4]' : 'text-slate-400'}`} />
             </button>
 
             {openDropdown === 'sem' && (
@@ -937,33 +916,33 @@ export default function MentorResults({ initialUpload = false }) {
           </div>
 
           {/* View mode toggle (Grid vs List) */}
-          <div className="flex justify-end md:inline-flex w-full md:w-auto">
-            <div className="h-9 md:h-[42px] w-full md:w-auto bg-white border border-[#E2E8F0] rounded-full p-1 shadow-2xs inline-flex items-center justify-center gap-1 select-none">
+          <div className="flex justify-end col-span-2 md:col-span-1 md:inline-flex w-full md:w-auto">
+            <div className="h-9 w-[72px] bg-white border border-[#E2E8F0] rounded-[14px] p-1 shadow-2xs inline-flex items-center justify-center gap-1 select-none">
               <button
                 type="button"
                 onClick={() => setViewMode('grid')}
-                className={`flex-1 md:flex-initial h-full px-3 md:px-3.5 rounded-full transition-all duration-200 cursor-pointer flex items-center justify-center ${
+                className={`w-8 h-full rounded-[10px] transition-all duration-200 cursor-pointer flex items-center justify-center ${
                   viewMode === 'grid'
-                    ? 'bg-[#F3EFFF] text-[#6D4AFF] border border-[#D8CEFF] hover:bg-[#EAE2FF] shadow-2xs'
-                    : 'text-[#94A3B8] border border-transparent hover:bg-[#F6F3FF] hover:text-[#6D4AFF] hover:scale-105 active:scale-95'
+                    ? 'bg-[#F3EFFF] text-[#6D4AFF] border border-[#D8CEFF] shadow-2xs'
+                    : 'text-[#94A3B8] border border-transparent hover:bg-[#F6F3FF] hover:text-[#6D4AFF]'
                 }`}
                 title="Grid View"
                 aria-label="Grid View"
               >
-                <LayoutGrid size={16} className="md:w-[17px] md:h-[17px] transition-transform" />
+                <LayoutGrid size={15} />
               </button>
               <button
                 type="button"
                 onClick={() => setViewMode('list')}
-                className={`flex-1 md:flex-initial h-full px-3 md:px-3.5 rounded-full transition-all duration-200 cursor-pointer flex items-center justify-center ${
+                className={`w-8 h-full rounded-[10px] transition-all duration-200 cursor-pointer flex items-center justify-center ${
                   viewMode === 'list'
-                    ? 'bg-[#F3EFFF] text-[#6D4AFF] border border-[#D8CEFF] hover:bg-[#EAE2FF] shadow-2xs'
-                    : 'text-[#94A3B8] border border-transparent hover:bg-[#F6F3FF] hover:text-[#6D4AFF] hover:scale-105 active:scale-95'
+                    ? 'bg-[#F3EFFF] text-[#6D4AFF] border border-[#D8CEFF] shadow-2xs'
+                    : 'text-[#94A3B8] border border-transparent hover:bg-[#F6F3FF] hover:text-[#6D4AFF]'
                 }`}
                 title="List View"
                 aria-label="List View"
               >
-                <List size={16} className="md:w-[17px] md:h-[17px] transition-transform" />
+                <List size={15} />
               </button>
             </div>
           </div>
